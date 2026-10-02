@@ -358,3 +358,86 @@ test('event window: site selection must be one of the program options', () => {
   assert.deepEqual(eventBlockFor({ id: 'x', ...p }, { event_blocks: { x: '11-15' } }), { start: 11, end: 15 });
   assert.deepEqual(eventBlockFor({ id: 'x', ...p }, { event_blocks: { x: '9-13' } }), { start: 14, end: 18 });
 });
+
+// ---- Workbench interchange and interval-data shaving ----
+import { decodeRaw, buildInterval, lmParts, siteFromWorkbench, mergeAtlasIntoWorkbench, workbenchConfigId, marketFor } from '../assets/js/workbench.js';
+import { deepenAcrossDays, componentPeaks, dayUnderCaps } from '../assets/js/engine/loadshape.js';
+import { makeWorkbenchSite } from './workbench-fixture.mjs';
+
+const WB = makeWorkbenchSite({ peakKw: 400, utility: 'National Grid' });
+const IV = buildInterval(decodeRaw(WB.raw));
+
+test('workbench raw block decodes to wall-clock 15-minute data', () => {
+  const dec = decodeRaw(WB.raw);
+  assert.equal(dec.kw.length, 365 * 96);
+  assert.deepEqual(lmParts(dec.stamps[0]), { y: 2025, mo: 0, d: 1, h: 0, mi: 0 });
+  assert.deepEqual(lmParts(dec.stamps.at(-1)), { y: 2025, mo: 11, d: 31, h: 23, mi: 45 });
+  assert.equal(decodeRaw({ ...WB.raw, n: WB.raw.n + 1 }), null, 'inconsistent block is rejected');
+  assert.equal(IV.monthsCovered, 12);
+  assert.equal(IV.months[7].days.length, 31);
+  near(IV.peak_kw, Math.max(...WB.raw.kw), 1e-9);
+  assert.ok(IV.annual_kwh > 1e6 && IV.annual_kwh < 3e6);
+});
+
+test('monthly caps from interval data match a brute-force all-days search (single NCP charge)', () => {
+  const md = IV.months[7];
+  const env = { kw: md.envelope, dtHours: IV.dtHours };
+  const comps = [{ id: 'ncp', rate: 10, window: null }];
+  const battery = { kw: 30, chargeKw: 30, usableKwh: 130.2, rte: 0.8836 };
+  const opt = optimizeShave(env, comps, battery);
+  const deep = deepenAcrossDays(md.days, env, comps, opt.deltas, battery);
+  // Brute force: the lowest cap that every day can hold.
+  const peak = componentPeaks(env, comps).ncp;
+  let lo = peak - battery.kw;
+  let hi = peak;
+  for (let k = 0; k < 40; k++) {
+    const cap = (lo + hi) / 2;
+    const caps = new Array(96).fill(cap);
+    if (md.days.every((d) => dayUnderCaps(d.kw, caps, IV.dtHours, battery).ok)) hi = cap;
+    else lo = cap;
+  }
+  near(deep.deltas.ncp, peak - hi, 0.02);
+  assert.ok(deep.deltas.ncp >= opt.deltas.ncp - 1e-9, 'deepening never loses reduction found on the envelope');
+});
+
+test('interval-based demand savings hold on every day and are labelled as such', () => {
+  const site = { ...baseSite, peak_kw: IV.peak_kw, annual_kwh: IV.annual_kwh, energy_price: 0.2 };
+  const cfg = buildConfig([{ productId: 'B30-150', count: 1 }], products);
+  const tariff = { id: 't', demand_charges: [{ label: 'NCP', basis: 'ncp_monthly', rate_usd_per_kw_month: 15, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }] };
+  const r = demandChargeStreams(site, cfg, tariff, A, designDayProfile({ peakKw: site.peak_kw, annualKwh: site.annual_kwh, buildingType: 'retail' }), [], IV);
+  assert.equal(r.intervalMonths, 12);
+  assert.match(r.streams[0].basis_text, /interval data, held on every day of each month/);
+  // The realized caps (after capture) hold on every day of every month.
+  const usable = cfg.usableKwh ?? cfg.kwh * A.usable_fraction;
+  for (const [m, md] of Object.entries(IV.months)) {
+    const caps = r.monthOpt[m].caps;
+    assert.ok(md.days.every((d) => dayUnderCaps(d.kw, caps, IV.dtHours, { kw: cfg.kw, usableKwh: usable, rte: A.rte_ac }).ok), `month ${m}`);
+  }
+  assert.ok(r.cyclingKwhPerYear > 0);
+});
+
+test('slower charging (65/200 charges at 40 kW) never increases the shave', () => {
+  const env = { kw: IV.months[7].envelope, dtHours: IV.dtHours };
+  const comps = [{ id: 'ncp', rate: 10, window: null }];
+  const fast = optimizeShave(env, comps, { kw: 65, chargeKw: 65, usableKwh: 173.6, rte: 0.8836 });
+  const slow = optimizeShave(env, comps, { kw: 65, chargeKw: 5, usableKwh: 173.6, rte: 0.8836 });
+  assert.ok(slow.deltas.ncp < fast.deltas.ncp, 'a 5 kW charger cannot refill the battery overnight');
+});
+
+test('workbench site maps onto an Atlas site; results merge back without touching workbench keys', () => {
+  const realData = { jurisdictions: { MA: { code: 'MA', utilities: [{ id: 'ngrid-ma', name: 'National Grid (Massachusetts Electric Company)' }, { id: 'eversource-ma', name: 'Eversource (NSTAR Electric)' }] } } };
+  const imp = siteFromWorkbench(WB, IV, realData);
+  assert.equal(imp.patch.jurisdiction, 'MA');
+  assert.equal(imp.patch.utility_id, 'ngrid-ma');
+  assert.equal(imp.patch.service_voltage, 480);
+  near(imp.patch.peak_kw, IV.peak_kw, 0.01);
+  assert.equal(imp.workbench.selectedConfigId, '1xB65-200');
+  assert.equal(workbenchConfigId({ mix: [{ id: '30/150', n: 2 }, { id: 'RPS1200', n: 1 }] }), null, 'unmapped units are not guessed');
+  assert.equal(marketFor({ iso: 'PSEG-LI', addr: 'Islip, NY' }).code, null);
+  assert.equal(marketFor({ iso: 'NYISO', addr: '1 Main St, Brooklyn, NY 11201' }).code, 'NY-NYC');
+  const merged = mergeAtlasIntoWorkbench(WB, { version: 1, recommended: { config_id: '1xB65-200' } });
+  assert.equal(merged.raw, WB.raw, 'interval data preserved by reference');
+  assert.deepEqual(merged.someSiblingToolKey, { keep: true });
+  assert.equal(merged.atlas.recommended.config_id, '1xB65-200');
+  assert.equal(WB.atlas, undefined, 'original not mutated');
+});

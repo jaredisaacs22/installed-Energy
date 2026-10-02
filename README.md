@@ -26,6 +26,7 @@ For any site it:
 1. **Sign in** with an `@sunbeltrentals.com` email address (see [docs/ACCESS.md](docs/ACCESS.md), and note the limits of a static-site gate).
 2. **Overview:** compare markets side by side: total demand charges, peak-tag values, open programs, rate coverage and watch-outs. The product-fit table shows how much of each battery's kW a program credits for its event duration.
 3. **Site screener:** pick the market, utility and rate, enter peak kW and annual kWh, and add electrical service and siting details. Results update as you type.
+   - **Have a Site Analysis Workbench file?** Click **Open site file** at the top of the form and pick the `<site>-site.json` the workbench saved. Atlas fills in the market, utility, voltage, peak, annual kWh and minimum load. It then sizes every month from the real interval data, checking each month's demand caps against every day of that month. A **Workbench cross-check** card compares the workbench's selected system and the bills with the selected rate. **Export → Download site file for the workbench** returns the same file with Atlas results added under `atlas`; it opens in the workbench as before. Interval data stays in your browser (IndexedDB).
    - Paste a peak-day profile (24 or 96 values) from your interval model, or enter "Shave kW (your model)" per configuration, to replace the generic load-shape estimate.
    - Open the **Rate** panel to enter demand charges from the customer's bill where the database has no verified rate.
    - Work through the **accuracy checklist** at the top of the results. A site is *planning-grade* only when rates, costs, supply contract, electrical data and interval data are all in. Results are split into tabs: Sizing, Value breakdown, Site limits, Expert panel, Rates & programs, and Export. **Print site report** produces a clean PDF-ready summary.
@@ -55,6 +56,7 @@ python3 -m http.server 8080   # then open http://localhost:8080
 | `assets/js/views/` | Screener, portfolio, library, panel, methodology, settings pages |
 | `assets/js/export.js` | Dependency-free CSV / ZIP / XLSX writers and export tables |
 | `assets/js/access.js` | Email-domain sign-in gate (`ALLOWED_DOMAINS`) |
+| `assets/js/workbench.js`, `assets/js/interval-store.js` | Site Analysis Workbench file interchange (decode interval data, map fields, merge results back) and browser storage for imported files |
 | `data/jurisdictions/*.json` | Per-market utilities, tariffs, programs, site constraints, market prices, panel notes |
 | `data/global.json` | Federal tax items, model fire/electrical codes, modeling assumptions |
 | `data/products.json` | Your battery products (kW, kWh, cost, footprint) |

@@ -1373,14 +1373,14 @@
    "key": "usable_fraction",
    "value": 0.9,
    "label": "Usable AC energy fraction",
-   "description": "AC energy deliverable per kWh of product nameplate (depth of discharge × discharge losses). Set to 1.0 if the SKU kWh is already usable AC energy; PNNL’s LCOS convention uses 0.80.",
+   "description": "Fallback only: used for products without a usable-kWh spec in data/products.json. AC energy deliverable per kWh of nameplate. The Viridi units carry their own usable kWh (about 86.8% of nameplate).",
    "source": "Panel (BESS engineer); PNNL LCOS; vendor spec sheets"
   },
   {
    "key": "rte_ac",
    "value": 0.85,
    "label": "Round-trip efficiency (AC)",
-   "description": "Including PCS losses; subtract auxiliary HVAC load separately if the vendor RTE excludes it.",
+   "description": "Fallback only: used for products without charge/discharge efficiency specs. The Viridi units use 94% × 94% ≈ 88.4%. Subtract auxiliary HVAC load separately if the vendor efficiency excludes it.",
    "source": "NREL ATB 2023/2024"
   },
   {

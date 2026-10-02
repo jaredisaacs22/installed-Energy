@@ -159,16 +159,16 @@ function productFit(data, A) {
   return h('div', { class: 'card accent', style: { marginTop: '16px' } },
     h('div', { class: 'card-head' },
       h('div', {}, h('div', { class: 'eyebrow' }, 'Product fit'), h('h2', { style: { margin: 0 } }, 'Credited kW per unit by event duration')),
-      h('span', { class: 'small muted' }, `Credited kW = min(kW, usable kWh ÷ hours); usable = ${A.usable_fraction} × nameplate`),
+      h('span', { class: 'small muted' }, 'Credited kW = min(kW, usable kWh ÷ hours), using each unit’s usable kWh'),
     ),
     h('p', { class: 'small ink2' }, 'Programs pay on the kW a battery can hold for the full event. A 2-hour unit earns well below nameplate in 3–4 hour programs. Hover a column heading to see which programs use that duration.'),
     h('div', { class: 'table-wrap' }, h('table', {},
       h('thead', {}, h('tr', {}, h('th', {}, 'Product'), h('th', { class: 'num' }, 'Duration'), cols.map((d) => h('th', { class: 'num', title: durations.get(d).join('\n') }, `${d} h events`)))),
       h('tbody', {}, data.products.map((p) => h('tr', {},
-        h('td', {}, h('strong', {}, p.label)),
-        h('td', { class: 'num' }, `${num(p.kwh / p.kw, 1)} h`),
+        h('td', {}, h('strong', {}, p.label), h('div', { class: 'small muted' }, `${num(usableOf(p, A), 1)} kWh deliverable`)),
+        h('td', { class: 'num' }, `${num(usableOf(p, A) / p.kw, 1)} h`),
         cols.map((d) => {
-          const kw = Math.min(p.kw, (p.kwh * A.usable_fraction) / d);
+          const kw = Math.min(p.kw, usableOf(p, A) / d);
           const pct = kw / p.kw;
           return h('td', { class: 'num', style: { color: pct >= 0.999 ? 'var(--good-ink)' : pct >= 0.75 ? 'var(--ink)' : 'var(--critical-ink)', fontWeight: pct >= 0.999 ? 700 : 500 } }, `${num(kw, 0)} kW `, h('span', { class: 'muted small' }, `(${Math.round(pct * 100)}%)`));
         }),
@@ -177,3 +177,6 @@ function productFit(data, A) {
     h('div', { class: 'small muted', style: { marginTop: '8px' } }, cols.map((d) => h('div', {}, h('strong', {}, `${d} h: `), durations.get(d).slice(0, 6).join(' · ')))),
   );
 }
+
+// AC energy deliverable from full: stored usable kWh × discharge efficiency (workbench convention).
+const usableOf = (p, A) => (typeof p.usable_kwh === 'number' ? p.usable_kwh * (p.eff_discharge ?? 1) : p.kwh * A.usable_fraction);
