@@ -441,3 +441,55 @@ test('workbench site maps onto an Atlas site; results merge back without touchin
   assert.equal(merged.atlas.recommended.config_id, '1xB65-200');
   assert.equal(WB.atlas, undefined, 'original not mutated');
 });
+
+// ---- Savings tab: per-month detail, workbench-equivalent hold, interval-by-interval dispatch ----
+import { simulateDay } from '../assets/js/engine/loadshape.js';
+import { allHoursHolds, simBatteryOf } from '../assets/js/engine/value.js';
+
+test('simulateDay: holds a cap it has energy for, misses one it does not', () => {
+  const kw = new Array(24).fill(100);
+  kw[13] = 140;
+  kw[14] = 140;
+  const bat = { kw: 50, chargeKw: 50, storedKwh: 100, effCharge: 0.94, effDischarge: 0.94 };
+  const ok = simulateDay(kw, kw.map(() => 110), 1, bat);
+  assert.ok(ok.held);
+  near(ok.peakAfter, 110, 1e-6);
+  near(ok.energyUsed, 60, 1e-6);
+  near(ok.lowestSoc, 100 - 60 / 0.94, 1e-6);
+  // 100 kWh stored × 0.94 = 94 kWh deliverable < 2 h × 60 kW needed for a 80 kW cap
+  const miss = simulateDay(kw, kw.map(() => 80), 1, bat);
+  assert.equal(miss.held, false);
+  assert.ok(miss.peakAfter > 80);
+});
+
+test('per-month detail: sustainable hold matches an all-days brute force; dollars add up to the stream', () => {
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], [{ id: 'B65-200', label: '65/200', kw: 65, kwh: 200, usable_kwh: 173.6, charge_kw: 40, eff_charge: 0.94, eff_discharge: 0.94, installed_cost_usd: 200000 }]);
+  const site = { ...baseSite, peak_kw: IV.peak_kw, annual_kwh: IV.annual_kwh, energy_price: 0.2 };
+  const profile = designDayProfile({ peakKw: site.peak_kw, annualKwh: site.annual_kwh, buildingType: 'retail' });
+  const holds = allHoursHolds(site, cfg, A, profile, IV);
+  // Brute force for August with the same battery, all days, AC deliverable = stored × discharge efficiency.
+  const md = IV.months[8];
+  const battery = { kw: 65, chargeKw: 40, usableKwh: 173.6 * 0.94, rte: 0.94 * 0.94 };
+  let lo = Math.max(...md.envelope) - 65;
+  let hi = Math.max(...md.envelope);
+  for (let k = 0; k < 40; k++) {
+    const cap = (lo + hi) / 2;
+    if (md.days.every((d) => dayUnderCaps(d.kw, new Array(96).fill(cap), IV.dtHours, battery).ok)) hi = cap;
+    else lo = cap;
+  }
+  near(holds[8], hi, 0.02);
+  const tariff = { id: 't', demand_charges: [{ label: 'NCP', basis: 'ncp_monthly', rate_usd_per_kw_month: 15, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }] };
+  const r = demandChargeStreams(site, cfg, tariff, A, profile, [], IV);
+  const total = Object.values(r.monthDetail).reduce((n, d) => n + d.usd, 0);
+  near(total, r.streams[0].annual_usd, 1e-6);
+  const aug = r.monthDetail[8];
+  assert.equal(aug.basis, 'interval');
+  assert.equal(aug.daysTotal, 31);
+  assert.equal(aug.daysHeld, 31, 'the planned target holds every day');
+  near(aug.comps[0].reduction, (aug.comps[0].peak - aug.comps[0].hold) * A.shave_capture, 1e-6);
+  // The battery the simulation uses carries the product specs.
+  const sb = simBatteryOf(cfg, A);
+  near(sb.storedKwh, 173.6, 1e-9);
+  near(sb.effDischarge, 0.94, 1e-9);
+  assert.equal(sb.chargeKw, 40);
+});

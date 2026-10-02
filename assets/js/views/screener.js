@@ -1,7 +1,9 @@
 // Site screener: inputs on the left, ranked configurations, value stack, limits and panel review on the right.
 import { h, usd, num, yrs, pct, badge, sevBadge, sevIcon, confBadge, toast, storage, initials, sourcesList } from '../ui.js';
 import { analyzeSite, BUILDING_SHAPES, loadFactor } from '../engine/index.js';
-import { blockText } from '../engine/value.js';
+import { blockText, allHoursHolds, simBatteryOf } from '../engine/value.js';
+import { simulateDay } from '../engine/loadshape.js';
+import { dispatchDayChart, socChart, monthlySavingsChart } from '../dispatch-chart.js';
 import { valueStackChart } from '../chart.js';
 import { settingsStore } from '../app.js';
 import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, atlasBlockFor } from '../export.js';
@@ -104,6 +106,10 @@ export function renderScreener(root, data, params) {
   let scenario = 'base';
   let tariffOpen = null; // null = auto (open when rates are missing)
   let resultsTab = params.get('tab') || 'sizing';
+  if (resultsTab === 'detail') resultsTab = 'savings';
+  let savingsMonth = null; // month shown in the dispatch chart (null = month with the highest peak)
+  let savingsView = 'hold'; // 'hold' = workbench view (sustainable hold), 'plan' = the target the savings assume
+  const holdCache = new WeakMap();
 
   const formHost = h('div', { class: 'card form' });
   const resultHost = h('div', {});
@@ -310,7 +316,7 @@ export function renderScreener(root, data, params) {
     const panelCount = a.panel.length + a.briefing.length;
     const TABS = [
       ['sizing', 'Sizing'],
-      ['detail', 'Value breakdown'],
+      ['savings', 'Savings'],
       ['limits', 'Site limits'],
       ['panel', `Expert panel (${panelCount})`],
       ['rates', a.missing?.length ? `Rates & programs (${a.missing.length} missing)` : 'Rates & programs'],
@@ -331,11 +337,11 @@ export function renderScreener(root, data, params) {
           h('p', { class: 'small muted' }, 'Annual value by stream for each configuration. Click a bar or row to select it. Upside adds waitlisted, pending or unconfirmed programs, the ITC before FEOC confirmation, and tag savings a supply contract would hold back.'),
           valueStackChart(a.results, { selectedId: sel?.config.id, recommendedId: rec?.config.id, scenario, onSelect: (id) => { selectedId = id; renderResults(); } }),
           configTable(a, sel),
-          sel ? h('div', { class: 'btn-row no-print', style: { marginTop: '12px' } }, h('button', { class: 'btn primary small', type: 'button', onclick: () => { resultsTab = 'detail'; renderResults(); } }, `Value breakdown for ${sel.config.label} →`)) : null,
+          sel ? h('div', { class: 'btn-row no-print', style: { marginTop: '12px' } }, h('button', { class: 'btn primary small', type: 'button', onclick: () => { resultsTab = 'savings'; renderResults(); } }, `Savings for ${sel.config.label} →`)) : null,
         ),
         workbenchCheck(a, site),
       ),
-      pane('detail', sel ? detailCard(a, sel) : h('div', { class: 'card empty' }, 'Select a configuration on the Sizing tab.')),
+      pane('savings', sel ? savingsTab(a, sel) : h('div', { class: 'card empty' }, 'Select a configuration on the Sizing tab.')),
       pane('limits', limitsCard(a)),
       pane('panel', panelCard(a)),
       pane('rates', tariffCard(a), programsCard(a, jd)),
@@ -386,10 +392,130 @@ export function renderScreener(root, data, params) {
     );
   }
 
-  function detailCard(a, r) {
+  // Savings tab, laid out like the Site Analysis Workbench's Sizing tab (worst-day dispatch by month,
+  // state of charge, dispatch check, per-month peak targets) with the dollars added.
+  function savingsTab(a, r) {
+    const md = r.monthDetail || {};
+    const months = Object.keys(md).map(Number).sort((x, y) => x - y);
+    const iv = intervalStore.intervalFor(site.interval_id);
+    if (!holdCache.has(r)) holdCache.set(r, allHoursHolds(site, r.config, a.assumptions, a.profile, iv));
+    const holds = holdCache.get(r);
+    const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+    const peakOf = (m) => md[m]?.peak ?? (iv?.months?.[m] ? Math.max(...iv.months[m].envelope) : Math.max(...a.profile.kw));
+    const cutPct = allMonths.map((m) => (peakOf(m) > 0 ? (peakOf(m) - holds[m]) / peakOf(m) : 0));
+    const avgCut = cutPct.reduce((x, y) => x + y, 0) / 12;
+    const demandUsd = months.reduce((n, m) => n + (md[m].usd || 0), 0);
+    const basis = iv ? `interval data, every day of ${iv.monthsCovered >= 12 ? 'each month' : `${iv.monthsCovered} months`}` : 'design-day load shape';
+    const isRec = r === a.recommended;
+    const banner = h('div', { class: 'card rec-banner' },
+      h('div', { class: 'rec-line' },
+        h('span', { class: 'rec-tag' }, isRec ? 'Recommended' : 'Selected'), ' ',
+        h('strong', {}, r.config.label),
+        ` — ${num(r.config.kw)} kW / ${num(r.config.usableKwh ?? r.config.kwh * a.assumptions.usable_fraction, 0)} kWh deliverable · holds each month’s peak `, h('strong', {}, `${Math.round(avgCut * 100)}%`), ' lower on average · ',
+        h('strong', {}, `${usd(r.totals.annual_base)}/yr`), ' base value'),
+      h('div', { class: 'small muted' }, `Basis: ${basis}. Demand dollars use the selected rate’s charges and a ${a.assumptions.shave_capture} capture factor for forecasting misses.`),
+    );
+    if (!months.length) {
+      return h('div', {}, banner, h('div', { class: 'card' }, h('h3', {}, 'No priced demand charges'), h('p', { class: 'muted' }, a.tariff ? 'This rate has no demand charge with a verified rate, so there is nothing to shave against. Enter the bill’s demand rates in Rates & programs.' : 'Pick a rate to see dispatch and monthly savings.')), streamsCard(a, r));
+    }
+    const defaultMonth = months.reduce((b, m) => (md[m].peak > md[b].peak ? m : b), months[0]);
+    const m = months.includes(savingsMonth) ? savingsMonth : defaultMonth;
+    const d = md[m];
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const battery = simBatteryOf(r.config, a.assumptions);
+    // Workbench view: one all-hours cap at the sustainable hold. Plan view: the per-window caps the savings use.
+    const holdCaps = d.worstDay.kw.map(() => holds[m]);
+    const caps = savingsView === 'hold' ? holdCaps : d.targetCaps;
+    const sim = simulateDay(d.worstDay.kw, caps, d.dtHours, battery);
+    const ivDays = iv?.months?.[m]?.days || null;
+    const held = ivDays ? ivDays.filter((day) => simulateDay(day.kw, caps, d.dtHours, battery).held).length : null;
+    const eventProgs = r.streams.filter((st) => st.event && st.scenario === 'base' && st.event.months.includes(m));
+    const dayLabel = d.worstDay.date ? `${MON[m - 1]} worst day ${d.worstDay.date}` : `${MON[m - 1]} design day`;
+    const finiteCaps = caps.filter((c) => c !== Infinity);
+    const minCap = finiteCaps.length ? Math.min(...finiteCaps) : null;
+    const setMonth = (mm) => { savingsMonth = mm; renderResults(); };
+    const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
+    const daysLine = held != null
+      ? (held === ivDays.length ? h('div', { class: 'check-ok' }, '✓ ', h('strong', {}, `Holds all ${ivDays.length} days of ${MON[m - 1]}.`), ` Dispatched at ${num(minCap, 1)} kW — highest shaved peak on the worst day: ${num(sim.peakAfter, 1)} kW.`) : h('div', { class: 'check-warn' }, '⚠ ', h('strong', {}, `Holds ${held} of ${ivDays.length} days of ${MON[m - 1]}`), ' when simulated interval by interval from a full battery each morning.'))
+      : h('div', { class: 'check-info' }, 'Design day only. Open the workbench site file to check every day of every month.');
+    const viewSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Dispatch view' },
+      h('button', { type: 'button', 'aria-pressed': savingsView === 'hold' ? 'true' : 'false', onclick: () => { savingsView = 'hold'; renderResults(); } }, 'Sustainable hold (workbench view)'),
+      h('button', { type: 'button', 'aria-pressed': savingsView === 'plan' ? 'true' : 'false', onclick: () => { savingsView = 'plan'; renderResults(); } }, 'Planned target (savings basis)'));
+    const drNote = d.eventLimited && eventProgs.length
+      ? h('div', { class: 'check-warn', style: { marginBottom: '10px' } }, h('strong', {}, `${MON[m - 1]} is a ${eventProgs.map((st) => st.label.split(' - ')[0].split(' (')[0]).join(' / ')} month. `),
+          `Event days (${eventProgs.map((st) => blockText(st.event.block)).join(', ')}) fall on the hot days that set the monthly peak and take the battery’s energy, so the plan counts ${usd(d.usd)} of demand savings this month instead of shaving to the hold. The program payments are larger; see the Annual value stack. Switch views to compare.`)
+      : null;
+    const tile = (label, value, unit, sub, cls = '') => h('div', { class: `dtile ${cls}` }, h('div', { class: 'lab' }, label), h('div', { class: 'val' }, value, unit ? h('span', { class: 'u' }, ` ${unit}`) : null), sub ? h('div', { class: 'sub' }, sub) : null);
+    return h('div', {},
+      banner,
+      h('div', { class: 'card' },
+        h('div', { class: 'card-head' }, h('h2', {}, 'Daily dispatch — by month'), h('span', { class: `badge ${sim.held ? 'ok' : 'caution'}` }, sim.held ? 'Holds target' : 'Undersized')),
+        h('div', { class: 'btn-row', style: { marginBottom: '10px' } }, viewSeg),
+        drNote,
+        h('div', { class: 'disp-controls' },
+          field('Billing month', h('select', { 'aria-label': 'Billing month', onchange: (e) => setMonth(Number(e.target.value)) }, months.map((mm) => h('option', { value: mm, selected: mm === m }, `${MON[mm - 1]}${md[mm].worstDay.date ? ` — worst day ${md[mm].worstDay.date}` : ''}`)))),
+          field(savingsView === 'hold' ? 'Sustainable hold this month (kW)' : 'Planned target this month (kW)', h('div', { class: 'readout' }, minCap != null ? `${num(minCap, 1)} kW` : '—'),
+            savingsView === 'hold' ? 'Lowest all-hours peak held on every day of the month (same figure as the workbench)' : d.comps.length > 1 ? 'Lowest of the caps; each demand window has its own target' : `After the ${a.assumptions.shave_capture} capture factor${d.eventLimited ? ' and DR event days' : ''}`),
+        ),
+        h('p', { class: 'small ink2' }, `${d.worstDay.date || 'Design day'}: the battery discharges to hold this day under the target, then recharges below it (charging up to ${num(battery.chargeKw)} kW).`),
+        dispatchDayChart({ load: d.worstDay.kw, sim, caps, dtHours: d.dtHours, label: d.worstDay.date || MON[m - 1] }),
+      ),
+      h('div', { class: 'grid-2' },
+        h('div', { class: 'card' }, h('h3', {}, `State of charge — ${dayLabel}`), socChart({ sim, storedKwh: battery.storedKwh, dtHours: d.dtHours })),
+        h('div', { class: 'card' }, h('h3', {}, `Dispatch check — ${dayLabel}`),
+          h('div', { class: 'dtiles' },
+            tile('Target held (worst day)?', sim.held ? 'Yes' : 'No', null, null, sim.held ? 'good' : 'bad'),
+            tile('Peak after shave', num(sim.peakAfter, 1), 'kW', `from ${num(sim.peakBefore, 1)} kW`),
+            tile('Max discharge', num(sim.maxDischarge, 1), 'kW', `of ${num(battery.kw)} kW`),
+            tile('Energy used', num(sim.energyUsed, 0), 'kWh', `of ${num(battery.storedKwh * battery.effDischarge, 0)} kWh deliverable`),
+            tile('Lowest charge', num(sim.lowestSoc, 0), 'kWh', `${Math.round((100 * sim.lowestSoc) / battery.storedKwh)}% of stored`),
+          ),
+          daysLine,
+
+        ),
+      ),
+      h('div', { class: 'card' },
+        h('div', { class: 'card-head' }, h('h2', {}, 'Per-month peak targets & savings'), h('span', { class: 'small muted' }, 'Click a row to chart that month')),
+        h('p', { class: 'small ink2' }, iv
+          ? 'Sustainable hold is the lowest all-hours peak the battery holds on every day of that month (the workbench’s “Sustainable hold”). Target is what the savings assume after the capture factor. Dollars use every demand charge in the selected rate, including on-peak windows.'
+          : 'Sustainable hold and target come from the design day. Open the workbench site file to size each month from every day of interval data.'),
+        h('div', { class: 'table-wrap' }, h('table', { class: 'pm-table' },
+          h('thead', {}, h('tr', {}, ['Month', 'Peak', 'Sustainable hold', 'Target (kW)', 'kW reduction', 'Demand savings'].map((t, i) => h('th', { class: i ? 'num' : '' }, t)))),
+          h('tbody', {},
+            allMonths.map((mm) => {
+              const dm = md[mm];
+              const pc = dm ? primary(dm) : null;
+              return h('tr', { class: `${mm === m ? 'sel' : ''}${dm ? ' click' : ''}`, onclick: dm ? () => setMonth(mm) : null },
+                h('td', {}, MON[mm - 1], mm === m ? ' ◀' : '', dm?.eventLimited ? h('span', { class: 'badge caution', style: { marginLeft: '6px' } }, 'DR events') : null),
+                h('td', { class: 'num' }, num(peakOf(mm), 1)),
+                h('td', { class: 'num' }, num(holds[mm], 1)),
+                h('td', { class: 'num' }, pc ? num(pc.target, 1) : '—', pc && pc.window ? h('div', { class: 'small muted' }, compLabel(pc)) : null),
+                h('td', { class: 'num' }, pc ? `${num(pc.reduction, 1)} kW` : '—', dm && dm.comps.length > 1 ? h('div', { class: 'small muted' }, dm.comps.filter((c) => c !== pc).map((c) => `${compLabel(c)}: ${num(c.reduction, 1)} kW`).join(' · ')) : null),
+                h('td', { class: 'num' }, dm ? usd(dm.usd) : h('span', { class: 'muted' }, 'no demand charge')),
+              );
+            }),
+          ),
+          h('tfoot', {}, h('tr', {}, h('td', {}, h('strong', {}, 'Year')), h('td', {}), h('td', { class: 'num small muted' }, `avg cut ${Math.round(avgCut * 100)}%`), h('td', {}), h('td', {}), h('td', { class: 'num' }, h('strong', {}, usd(demandUsd))))),
+        )),
+      ),
+      h('div', { class: 'card' },
+        h('div', { class: 'card-head' }, h('h2', {}, 'Monthly demand savings'), h('span', { class: 'small muted' }, `${usd(demandUsd)}/yr from demand charges`)),
+        monthlySavingsChart({ months: allMonths.map((mm) => ({ month: mm, name: MON[mm - 1], usd: md[mm]?.usd || 0, reduction: md[mm] ? primary(md[mm]).reduction : 0 })), selected: m, onSelect: setMonth }),
+      ),
+      streamsCard(a, r),
+    );
+  }
+
+  function compLabel(c) {
+    if (!c.window) return 'all hours';
+    const f = (x) => (x === 0 || x === 24 ? '12am' : x === 12 ? '12pm' : x < 12 ? `${x}am` : `${x - 12}pm`);
+    return `${f(c.window.start)}–${f(c.window.end)}`;
+  }
+
+  function streamsCard(a, r) {
     const streams = r.streams.slice().sort((x, y) => y.annual_usd + y.upfront_usd / 5 - (x.annual_usd + x.upfront_usd / 5));
     return h('div', { class: 'card' },
-      h('div', { class: 'card-head' }, h('h2', {}, r.config.label), h('span', { class: 'muted' }, `${num(r.config.kw)} kW · ${num(r.config.kwh)} kWh · ${num(r.config.durationHr, 1)} h · ${r.config.units} unit${r.config.units > 1 ? 's' : ''}`)),
+      h('div', { class: 'card-head' }, h('h2', {}, 'Annual value stack'), h('span', { class: 'muted' }, `${r.config.label} · ${num(r.config.kw)} kW · ${num(r.config.kwh)} kWh · ${r.config.units} unit${r.config.units > 1 ? 's' : ''}`)),
       h('div', { class: 'table-wrap' },
         h('table', {},
           h('thead', {}, h('tr', {}, ['Value stream', 'How it’s calculated', 'Annual', 'Upfront', 'Case', 'Confidence', 'Source'].map((t, i) => h('th', { class: i === 2 || i === 3 ? 'num' : '' }, t)))),
@@ -624,7 +750,7 @@ function workbenchCheck(a, site) {
     rows.push(h('li', { class: diff != null && Math.abs(diff) > 0.25 ? 'warn' : '' }, h('strong', {}, 'Bills: '), `${wb.billMonths} months of bills average $${num(wb.billRate, 2)} per billed kW. The selected rate’s demand charges add up to $${num(summer, 2)}/kW if every element hits the same peak (it varies by month and window). `,
       diff != null && Math.abs(diff) > 0.25 ? 'That is a large gap: confirm the rate class, or enter the bill’s demand rates in Rates & programs.' : 'Broadly consistent.'));
   }
-  if (wb.drUsdPerKwYr) rows.push(h('li', {}, h('strong', {}, 'Workbench DR estimate: '), `$${num(wb.drUsdPerKwYr)}/kW-yr. Atlas values the territory’s programs individually (Value breakdown).`));
+  if (wb.drUsdPerKwYr) rows.push(h('li', {}, h('strong', {}, 'Workbench DR estimate: '), `$${num(wb.drUsdPerKwYr)}/kW-yr. Atlas values the territory’s programs individually (Savings → Annual value stack).`));
   if (!rows.length) return null;
   return h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h2', {}, 'Workbench cross-check'), h('span', { class: 'small muted' }, site.workbench_file || '')), h('ul', { class: 'wb-check' }, rows));
 }
