@@ -97,16 +97,40 @@ export function windowMask(len, dtHours, window) {
 }
 
 /**
+ * Demand reduction on a DR/performance event day: the battery delivers `eventKw` flat across `block`
+ * (and has no energy left to shave elsewhere). Returns {id: kW reduction} per component.
+ */
+export function eventDayReduction(profile, components, block, eventKw) {
+  const P = profile.kw;
+  const n = P.length;
+  const ev = windowMask(n, profile.dtHours, block);
+  const out = {};
+  for (const c of components) {
+    const mask = windowMask(n, profile.dtHours, c.window);
+    let peak = 0;
+    let after = 0;
+    for (let i = 0; i < n; i++) {
+      if (!mask[i]) continue;
+      peak = Math.max(peak, P[i]);
+      after = Math.max(after, P[i] - (ev[i] ? Math.min(eventKw, P[i]) : 0));
+    }
+    out[c.id] = Math.max(0, peak - after);
+  }
+  return out;
+}
+
+/**
  * Jointly optimize demand reduction across several demand-charge components on one design day.
  *
  * components: [{ id, rate, window: {start,end} | null }]  (rate = $/kW-month; window null = all hours)
  * Battery limits: kw (discharge & charge), usableKwh (AC energy deliverable), rte (for recharge energy).
  * Greedy marginal-value search: repeatedly lowers the cap of the component with the best $/kWh until the
- * battery runs out of kW, energy, or recharge room (recharging must not create a new peak).
+ * battery runs out of kW, energy, or recharge room (recharging must not create a new peak), or the next
+ * step saves less than the monthly cost of the extra round-trip losses (energyCostPerKwhMonth).
  *
  * Returns { deltas: {id: kW}, energyKwh, maxDischargeKw, feasibleRecharge }
  */
-export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, steps = 400 }) {
+export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, steps = 400, energyCostPerKwhMonth = 0 }) {
   const P = profile.kw;
   const dt = profile.dtHours;
   const n = P.length;
@@ -118,7 +142,7 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       return { ...c, mask, peak, delta: 0 };
     })
     .filter((c) => c.peak > 0);
-  const result = { deltas: {}, energyKwh: 0, maxDischargeKw: 0, feasibleRecharge: true };
+  const result = { deltas: {}, energyKwh: 0, maxDischargeKw: 0, feasibleRecharge: true, discharge: new Array(P.length).fill(0), caps: new Array(P.length).fill(Infinity) };
   components.forEach((c) => (result.deltas[c.id] = 0));
   if (!comps.length || !(kw > 0) || !(usableKwh > 0)) return result;
 
@@ -152,7 +176,7 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       room += Math.min(kw, headroom) * dt;
     }
     const needCharge = energy / rte;
-    return { energy, maxD, rechargeOk: room + 1e-9 >= needCharge };
+    return { energy, maxD, rechargeOk: room + 1e-9 >= needCharge, discharge };
   };
 
   const deltas = comps.map(() => 0);
@@ -168,6 +192,8 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       const ev = evaluate(trial);
       if (ev.maxD > kw + 1e-9 || ev.energy > usableKwh + 1e-9 || !ev.rechargeOk) return;
       const dE = ev.energy - current.energy;
+      // Stop shaving once a step saves less per month than the round-trip energy it costs to cycle.
+      if (energyCostPerKwhMonth > 0 && c.rate * step < dE * energyCostPerKwhMonth) return;
       const ratio = (c.rate * step) / Math.max(dE, 1e-6);
       if (ratio > bestRatio) {
         bestRatio = ratio;
@@ -180,6 +206,14 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
     current = bestEval;
   }
   comps.forEach((c, k) => (result.deltas[c.id] = deltas[k]));
+  result.discharge = current.discharge || result.discharge;
+  result.caps = P.map((_, i) => {
+    let cap = Infinity;
+    comps.forEach((c, k) => {
+      if (c.mask[i]) cap = Math.min(cap, c.peak - deltas[k]);
+    });
+    return cap;
+  });
   result.energyKwh = current.energy;
   result.maxDischargeKw = current.maxD;
   result.feasibleRecharge = current.rechargeOk;

@@ -28,8 +28,8 @@
      },
      {
       "name": "Level 2",
-      "max_kw": 5000,
-      "conditions": "Lab-certified inverter-based, nameplate limit by line voltage at POI: <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Screens apply.",
+      "max_kw": 3000,
+      "conditions": "Lab-certified inverter-based, nameplate limit by line voltage at POI: <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Screens apply. Screening uses 3 MW (5–15 kV circuits); limit is 500 kW where the POI line is below 5 kV.",
       "typical_timeline": null,
       "application_fee": "$100 + $1.00/kVA"
      },
@@ -110,8 +110,8 @@
      },
      {
       "name": "Level 2",
-      "max_kw": 5000,
-      "conditions": "Lab-certified inverter-based; <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW.",
+      "max_kw": 3000,
+      "conditions": "Lab-certified inverter-based; <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Screening uses 3 MW (5–15 kV circuits); limit is 500 kW where the POI line is below 5 kV.",
       "typical_timeline": null,
       "application_fee": "$100 + $1.00/kVA"
      },
@@ -254,16 +254,18 @@
      "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
      "est_value_usd_per_kw_year": 122.04,
      "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
-     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate.",
-     "passthrough": "supply"
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     },
     {
      "type": "nspl",
      "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
      "est_value_usd_per_kw_year": 46.03,
      "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
-     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item.",
-     "passthrough": "supply"
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
@@ -393,16 +395,18 @@
      "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
      "est_value_usd_per_kw_year": 122.04,
      "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
-     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate.",
-     "passthrough": "supply"
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     },
     {
      "type": "nspl",
      "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
      "est_value_usd_per_kw_year": 46.03,
      "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
-     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item.",
-     "passthrough": "supply"
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
@@ -532,16 +536,18 @@
      "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
      "est_value_usd_per_kw_year": 122.04,
      "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
-     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate.",
-     "passthrough": "supply"
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     },
     {
      "type": "nspl",
      "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
      "est_value_usd_per_kw_year": 46.03,
      "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
-     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item.",
-     "passthrough": "supply"
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
@@ -671,16 +677,18 @@
      "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
      "est_value_usd_per_kw_year": 122.04,
      "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
-     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate.",
-     "passthrough": "supply"
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     },
     {
      "type": "nspl",
      "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
      "est_value_usd_per_kw_year": 46.03,
      "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
-     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item.",
-     "passthrough": "supply"
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
@@ -785,16 +793,18 @@
      "how_set": "MISO capacity obligation assigned by Ameren Illinois to each account. Ameren's PLC derivation method (which peak hours, seasonal or annual) was NOT verified in this session.",
      "est_value_usd_per_kw_year": 46.06,
      "derivation": "MISO PRA 2026/27 Zone 4 (Zones 1-7) cleared Summer $424.30, Fall $33.92, Winter $35.97 and Spring $7.61 per MW-day. Day-weighted average = (424.30x92 + 33.92x91 + 35.97x90 + 7.61x92)/365 = $126.19/MW-day, matching MISO/Modo's published annualized value. $126.19 x 365 / 1000 = $46.06/kW-yr if the tag is a single annual PLC. 85% of the value is summer: $424.30 x 92 / 1000 = $39.04/kW per summer season. 2025/26 for comparison: summer $666.50 (record), annualized about $217.6/MW-day (implied by the 42% decrease to $126.19), or about $79/kW-yr.",
-     "passthrough_notes": "Realized under Rider HSS (if Ameren bills capacity on customer PLC) or a RES contract with capacity pass-through. Fixed-price contracts defer the benefit to renewal.",
-     "passthrough": "supply"
+     "passthrough_notes": "Realized under Rider HSS (if Ameren bills capacity on customer PLC) or a RES contract with capacity pass-through. Fixed-price contracts defer the benefit to renewal. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     },
     {
      "type": "nspl",
      "how_set": "Ameren Illinois Rider TS bills interval-metered customers transmission on a $/kW-day basis (2026 Rider TS sheet). The determinant (likely a network service peak load) and rate were not verified.",
      "est_value_usd_per_kw_year": null,
      "derivation": "Not computed: Ameren Illinois MISO Schedule 9 zonal rate and Rider TS $/kW-day were not retrieved.",
-     "passthrough_notes": "Depends on supplier contract (RES) or Rider TS (utility supply).",
-     "passthrough": "supply"
+     "passthrough_notes": "Depends on supplier contract (RES) or Rider TS (utility supply). Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "The Jan-2027 move to kVA billing with an On-Peak window and a 50% off-peak floor rewards on-peak shaving AND reactive-power support: a 4-quadrant BESS inverter can lift power factor to cut billed kVA. Off-peak charging should be capped below 2x the targeted on-peak billing demand, or the off-peak term sets the bill.",
@@ -874,8 +884,9 @@
      "how_set": "Same as DS-3 (MISO capacity obligation; method not verified).",
      "est_value_usd_per_kw_year": 46.06,
      "derivation": "See ameren-il-ds3: MISO PRA 2026/27 annualized $126.19/MW-day x 365 / 1000.",
-     "passthrough_notes": "Hourly default supply (Rider HSS) or RES pass-through.",
-     "passthrough": "supply"
+     "passthrough_notes": "Hourly default supply (Rider HSS) or RES pass-through. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
     }
    ],
    "storage_notes": "Large sites often take primary service; primary/high-voltage delivery $/kW is much lower (DS-3 primary $7.97 vs secondary $9.69), so bill-demand value is smaller.",
@@ -996,7 +1007,7 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "Statute text confirmed through search summaries of ILGA 16-107.6 ($300/$250, 25,000 kWh, 6/1/2026 IA carve-out, SDVPP 4-6 pm BTM). The non-residential $/kWh in the 2026 ComEd T&C is ambiguous across summaries. The threshold-date definition was not confirmed from statute."
+   "verification_notes": "Statute text confirmed through search summaries of ILGA 16-107.6 ($300/$250, 25,000 kWh, 6/1/2026 IA carve-out, SDVPP 4-6 pm BTM). The non-residential $/kWh in the 2026 ComEd T&C is ambiguous across summaries. The threshold-date definition was not confirmed from statute. Challenger review: statute wording reads \"capability to supply energy\" plus SDVPP participation; whether a non-export interconnection qualifies is unverified. Modeled as requiring export (conservative)."
   },
   {
    "id": "il-sdvpp",
@@ -1255,7 +1266,7 @@
     "months_per_year": null,
     "expected_event_hours_per_year": null,
     "kw_basis": "Nominated DR value (based on PLC minus firm service level), times DR ELCC class rating (92% for 2027/28)",
-    "duration_basis_hr": null,
+    "duration_basis_hr": 4,
     "cap": null,
     "tiers": [
      {
@@ -1275,7 +1286,8 @@
      }
     ],
     "term_years": 1,
-    "notes": "Gross before CSP revenue share (not verified) and penalties. In ComEd, DR capacity is measured relative to the customer's PLC. A battery that already cuts the PLC through 5CP shaving shrinks the DR nomination, so the two values largely do not stack. Choose PLC reduction OR DR for the same kW."
+    "notes": "Gross before CSP revenue share (not verified) and penalties. In ComEd, DR capacity is measured relative to the customer's PLC. A battery that already cuts the PLC through 5CP shaving shrinks the DR nomination, so the two values largely do not stack. Choose PLC reduction OR DR for the same kW.",
+    "accreditation_factor": 0.92
    },
    "dispatch": {
     "season": "Year-round from 2027/28 (summer and winter)",
@@ -1333,7 +1345,7 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "Prices high confidence. DR ELCC 92% (2027/28) and the 24-hour availability change come from secondary sources (Enel/Modo). The 100 kW minimum and no-injection rule come from PJM/secondary summaries. CSP share not verified."
+   "verification_notes": "Prices high confidence. DR ELCC 92% (2027/28) and the 24-hour availability change come from secondary sources (Enel/Modo). The 100 kW minimum and no-injection rule come from PJM/secondary summaries. CSP share not verified. Valued net: × 0.92 DR ELCC accreditation (2027/28, secondary source) and × the aggregator customer-share assumption (Settings); 4 h duration basis."
   },
   {
    "id": "pjm-economic-ancillary-dr",
@@ -1438,7 +1450,7 @@
     "months_per_year": null,
     "expected_event_hours_per_year": null,
     "kw_basis": "accredited LMR MW",
-    "duration_basis_hr": null,
+    "duration_basis_hr": 4,
     "cap": null,
     "tiers": [
      {
@@ -1492,7 +1504,7 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "low",
-   "verification_notes": "PRA prices verified. LMR program rules not verified in this session."
+   "verification_notes": "PRA prices verified. LMR program rules not verified in this session. 4 h duration basis (LMRs must sustain 4 consecutive hours); aggregator share applied."
   }
  ],
  "market_prices": [

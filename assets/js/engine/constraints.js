@@ -142,6 +142,20 @@ export function checkConfig(site, config, ctx, limits) {
     });
   }
 
+  // 4b. Tariff options that require a minimum storage size (e.g. PG&E Option S: storage ≥ 10% of peak).
+  const minPct = ctx.tariff?.applicability?.min_storage_kw_pct_of_peak;
+  if (typeof minPct === 'number' && config.kw < minPct * site.peak_kw) {
+    add({
+      id: 'tariff-min-storage',
+      persona: 'bess-ix',
+      severity: 'critical',
+      title: `${ctx.tariff.name} requires storage ≥ ${Math.round(minPct * 100)}% of peak demand`,
+      detail: `${config.kw} kW is ${((100 * config.kw) / site.peak_kw).toFixed(1)}% of the ${site.peak_kw} kW peak, so this configuration does not qualify for the rate.`,
+      mitigation: `Use at least ${Math.ceil(minPct * site.peak_kw)} kW of storage, or value the site on the standard rate.`,
+      limit: { kw: minPct * site.peak_kw },
+    });
+  }
+
   // 5. Secondary network.
   if (site.network_secondary === 'yes') {
     add({
@@ -153,6 +167,16 @@ export function checkConfig(site, config, ctx, limits) {
         : 'Non-export is required and typically needs reverse-power / minimum-import protection and a network review. Expect longer review and possible inverter-size limits relative to minimum load.',
       mitigation: 'Design as non-export with redundant reverse-power protection; get the utility network review started early.',
     });
+    if (!site.export_allowed && limits.minLoadKw != null && config.kw > limits.minLoadKw) {
+      add({
+        id: 'network-min-load',
+        severity: 'caution',
+        title: `Inverter kW above the site’s minimum load (${Math.round(limits.minLoadKw)} kW)`,
+        detail: 'On network grids any momentary export can trip network protectors, and utilities often limit DER size relative to minimum load (e.g. MA’s Simplified track uses 1/15 of minimum load on networks). The controller must hold discharge below load with an import margin at every moment.',
+        mitigation: 'Size inverter kW to the 15-minute minimum load during discharge windows, or confirm the utility’s network limit.',
+        limit: { kw: limits.minLoadKw },
+      });
+    }
   } else if (site.network_secondary === 'unknown') {
     add({ id: 'network', severity: 'info', title: 'Confirm whether the site is on a secondary network', detail: 'Dense downtown areas (Manhattan, Boston, Chicago Loop, downtown SF) are often networked, which restricts export and adds review.' });
   }

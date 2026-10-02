@@ -43,6 +43,7 @@ export const TEMPLATE_COLUMNS = [
   ['has_solar', 'bool', 'true/false'],
   ['export_allowed', 'bool', 'true/false'],
   ['disadvantaged_community', 'bool', 'true/false'],
+  ['property_owner', 'bool', 'true/false (customer owns building / pays property tax)'],
 ];
 
 export function siteFromCsvRow(row, data) {
@@ -112,7 +113,8 @@ export function renderPortfolio(root, data) {
       host.replaceChildren(h('div', { class: 'card empty' }, 'No sites yet. In the Site screener click “Save to portfolio”, or import a CSV.'));
       return;
     }
-    const ok = analyses.filter((a) => !a.error).sort((a, b) => b.score.score - a.score.score);
+    // Complete analyses rank first; sites with missing tariff rates are listed after them.
+    const ok = analyses.filter((a) => !a.error).sort((a, b) => Number(a.score.incomplete) - Number(b.score.incomplete) || b.score.score - a.score.score);
     const totalKw = ok.reduce((n, a) => n + (a.recommended?.config.kw || 0), 0);
     const totalKwh = ok.reduce((n, a) => n + (a.recommended?.config.kwh || 0), 0);
     const totalVal = ok.reduce((n, a) => n + (a.recommended?.totals.annual_base || 0), 0);
@@ -138,7 +140,7 @@ export function renderPortfolio(root, data) {
               h('td', { class: 'num' }, usd(r?.totals.annual_base, { compact: true })),
               h('td', { class: 'num' }, usd(r?.totals.upfront_base, { compact: true })),
               h('td', { class: 'num' }, yrs(r?.finance.base.simplePayback)),
-              h('td', {}, badge(`${a.score.score} · ${a.score.grade}`, a.score.score >= 65 ? 'ok' : a.score.score >= 50 ? 'info' : 'caution')),
+              h('td', {}, badge(`${a.score.score} · ${a.score.grade}`, a.score.score >= 65 ? 'ok' : a.score.score >= 50 ? 'info' : 'caution'), a.score.incomplete ? h('div', {}, badge('rates missing', 'caution')) : null),
               h('td', {}, r ? sevBadge(r.constraints.status) : '—'),
               h('td', {}, h('div', { class: 'btn-row' },
                 h('a', { class: 'btn small', href: `#/screener?s=${btoa(unescape(encodeURIComponent(JSON.stringify(a.site))))}` }, 'Open'),
@@ -164,6 +166,8 @@ export function renderPortfolio(root, data) {
       annual_kwh: a.site.annual_kwh,
       score: a.score.score,
       grade: a.score.grade,
+      data_incomplete: a.score.incomplete ? 'yes' : '',
+      missing_rates: (a.missing || []).join(' | '),
       recommended_config: a.recommended?.config.id,
       rec_kw: a.recommended?.config.kw,
       rec_kwh: a.recommended?.config.kwh,

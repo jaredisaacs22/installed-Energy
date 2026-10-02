@@ -7,12 +7,15 @@
 
 const clamp = (x, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, x));
 
-export function siteScore(rec) {
+export function siteScore(rec, { incomplete = false } = {}) {
   if (!rec) return { score: 0, grade: 'F', parts: { economics: 0, certainty: 0, feasibility: 0 }, basis: 'No feasible configuration' };
   const fin = rec.finance.base;
   let economics;
   let basis;
-  if (fin.simplePayback != null) {
+  if (fin.netCost != null && fin.simplePayback == null) {
+    economics = 0;
+    basis = 'does not pay back (year-1 net value ≤ 0)';
+  } else if (fin.simplePayback != null) {
     economics = clamp(((12 - fin.simplePayback) / 8) * 100);
     basis = `payback ${fin.simplePayback.toFixed(1)} yr`;
     // A negative NPV over the analysis horizon caps the economics score.
@@ -33,5 +36,5 @@ export function siteScore(rec) {
   const feasibility = clamp(100 - penalty);
   const score = Math.round(0.5 * economics + 0.2 * certainty + 0.3 * feasibility);
   const grade = score >= 80 ? 'A' : score >= 65 ? 'B' : score >= 50 ? 'C' : score >= 35 ? 'D' : 'F';
-  return { score, grade, parts: { economics: Math.round(economics), certainty: Math.round(certainty), feasibility: Math.round(feasibility) }, basis };
+  return { score, grade, incomplete, parts: { economics: Math.round(economics), certainty: Math.round(certainty), feasibility: Math.round(feasibility) }, basis: incomplete ? `${basis}; rates missing — incomplete` : basis };
 }

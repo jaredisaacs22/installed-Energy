@@ -74,7 +74,9 @@
      }
     ],
     "term_years": null,
-    "notes": "Model: ITC = 0.30 x eligible basis (+0.10 domestic content, +0.10 energy community where verified). Depreciable basis = cost - 0.5 x ITC. Transferable under IRC 6418 (cash at a discount); 5-yr recapture period. Low-income-community bonus (48E(h)) allocations are for solar/wind and generally not available to standalone storage (verify)."
+    "notes": "Model: ITC = 0.30 x eligible basis (+0.10 domestic content, +0.10 energy community where verified). Depreciable basis = cost - 0.5 x ITC. Transferable under IRC 6418 (cash at a discount); 5-yr recapture period. Low-income-community bonus (48E(h)) allocations are for solar/wind and generally not available to standalone storage (verify).",
+    "pwa_threshold_kw": 1000,
+    "rate_without_pwa": 0.06
    },
    "dispatch": {
     "season": null,
@@ -138,7 +140,8 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "high",
-   "verification_notes": "Phase-down schedule (2033/2034/2035/2036) and 6%/30% structure corroborated by multiple law-firm/trade sources. Domestic-content manufactured-product % for storage BOC 2026 (50%) and after 2026 (55%) from summaries focused on 48E generally (medium). Energy community bonus amounts standard IRA (+10 pp). 50% basis reduction is IRC 50(c)(3) standard (not changed by OBBBA)."
+   "verification_notes": "Phase-down schedule (2033/2034/2035/2036) and 6%/30% structure corroborated by multiple law-firm/trade sources. Domestic-content manufactured-product % for storage BOC 2026 (50%) and after 2026 (55%) from summaries focused on 48E generally (medium). Energy community bonus amounts standard IRA (+10 pp). 50% basis reduction is IRC 50(c)(3) standard (not changed by OBBBA).",
+   "feoc_applies": true
   },
   {
    "id": "fed-feoc-macr-storage",
@@ -1491,6 +1494,34 @@
    "label": "Analysis horizon (years)",
    "description": "NPV/IRR horizon.",
    "source": ""
+  },
+  {
+   "key": "aggregator_customer_share",
+   "value": 0.7,
+   "label": "Customer share after aggregator",
+   "description": "Share of aggregator/CSP program revenue kept by the site owner (programs that require an aggregator).",
+   "source": "Analyst assumption (typical CSP splits vary 60–80%)"
+  },
+  {
+   "key": "post_term_value_factor",
+   "value": 0.5,
+   "label": "Value after program term",
+   "description": "Multiplier on a program’s value after its rate-lock term ends (rate uncertain).",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "itc_feoc_confirmed",
+   "value": false,
+   "label": "ITC: products FEOC/MACR-compliant",
+   "description": "Set true once your battery supply chain is confirmed to meet the prohibited-foreign-entity material-assistance rules; until then the ITC counts in the upside case only.",
+   "source": "IRC §48E as amended July 2025 (panel research)"
+  },
+  {
+   "key": "itc_pwa_confirmed",
+   "value": true,
+   "label": "ITC: prevailing wage & apprenticeship met",
+   "description": "Projects ≥ 1 MW AC need PWA for the 30% rate (otherwise 6%).",
+   "source": "IRC §48E"
   }
  ]
 }

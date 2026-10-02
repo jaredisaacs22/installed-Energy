@@ -436,6 +436,15 @@
      ],
      "hours": "all hours",
      "notes": "Reported for >10 kW at Aug 2026 on a per-billing-kW basis by a secondary source; temporary rider - low confidence."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
     }
    ],
    "energy_rates": [],
@@ -450,9 +459,9 @@
      "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
      "est_value_usd_per_kw_year": 72.61,
      "derivation": "Oncor Transmission System Charge $6.050798/4CP-kW-month x 12 months = $72.61/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
-     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
      "min_site_peak_kw": 700,
-     "passthrough": "delivery"
+     "passthrough": "supply"
     }
    ],
    "storage_notes": "Value of reducing NCP/ratcheted billing kW: $7.946081 x 12 = $95.35/kW-yr if the battery lowers billing kW in all 12 months (requires cutting the annual NCP that sets the ratchet, AND each month's NCP). If only the annual peak is cut by 1 kW and the ratchet binds in shoulder months, those months save 0.8 kW x rate. Adding Rider IS ($0.997891 x 12 = $11.97/kW-yr) gives ~$107.33/kW-yr upper bound while the rider is in effect. Battery CHARGING counts toward NCP - charging must be capped below the target peak. Oncor may also apply a power-factor adjustment to billing kW (not verified).",
@@ -638,6 +647,15 @@
      ],
      "hours": "ERCOT 4CP intervals (Jun-Sep prior year)",
      "notes": "$6.272500/4CP kVA as of 2026-07-01 (prior value $6.177655). TCRFs are updated semi-annually."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
     }
    ],
    "energy_rates": [],
@@ -648,9 +666,9 @@
      "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). CenterPoint bills in kVA: per-kW value is approx. $75.27 x site power factor unless the inverter also supplies reactive power at the 4CP interval.",
      "est_value_usd_per_kw_year": 75.27,
      "derivation": "CenterPoint Rider TCRF $6.2725/4CP-kW-month x 12 months = $75.27/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
-     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
      "min_site_peak_kw": 700,
-     "passthrough": "delivery"
+     "passthrough": "supply"
     }
    ],
    "storage_notes": "Value of reducing billed kVA: distribution $4.893378 x 12 = $58.72/kVA-yr (base only, if reduced in all 12 months). Because billing is kVA, a battery discharging at unity PF reduces kVA by roughly kW x PF; using the inverter's reactive capability (if allowed by the interconnection agreement) can capture more. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
@@ -802,6 +820,15 @@
      ],
      "hours": "ERCOT 4CP intervals",
      "notes": "Feb-2026 filing; eff. 2026-03-20, subject to refund; same value reported for Central and North. Another 2026 filing showed $6.246357/avg 4CP kW (alternate value -> $74.96/kW-yr). May have been reset with 2026-04-30 base rates."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
     }
    ],
    "energy_rates": [],
@@ -812,9 +839,9 @@
      "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
      "est_value_usd_per_kw_year": 72.19,
      "derivation": "AEP Texas Rider TCRF $6.016059/4CP-kW-month x 12 months = $72.19/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
-     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
      "min_site_peak_kw": 700,
-     "passthrough": "delivery"
+     "passthrough": "supply"
     }
    ],
    "storage_notes": "Secondary aggregator listed an all-in Secondary >10 kW demand rate of $12.552727/kW (eff. 2026-03-01, likely NCP-billed non-IDR all-in) - context only. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
@@ -898,6 +925,15 @@
      ],
      "hours": "ERCOT 4CP intervals",
      "notes": "Same as Central per Feb-2026 filing; subject to refund."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
     }
    ],
    "energy_rates": [],
@@ -908,9 +944,9 @@
      "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
      "est_value_usd_per_kw_year": 72.19,
      "derivation": "AEP Texas Rider TCRF $6.016059/4CP-kW-month x 12 months = $72.19/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
-     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
      "min_site_peak_kw": 700,
-     "passthrough": "delivery"
+     "passthrough": "supply"
     }
    ],
    "storage_notes": "Secondary aggregator all-in Secondary >10 kW demand rate $12.301273/kW (eff. 2026-03-01) - context only. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
@@ -986,6 +1022,15 @@
      ],
      "hours": "ERCOT 4CP intervals",
      "notes": "Sept-2025 value; whether TCRF is additive not confirmed. Looks low vs. other TDUs - verify."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
     }
    ],
    "energy_rates": [],
@@ -996,9 +1041,9 @@
      "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
      "est_value_usd_per_kw_year": 43.21,
      "derivation": "TNMP transmission $3.600749/4CP-kW-month x 12 months = $43.21/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
-     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
      "min_site_peak_kw": 700,
-     "passthrough": "delivery"
+     "passthrough": "supply"
     }
    ],
    "storage_notes": "Distribution value $5.373649 x 12 = $64.48/kW-yr if billed kW reduced every month. Secondary aggregator all-in Secondary demand rate $14.870218/kW (eff. 2026-03-01) suggests riders add materially - verify. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
@@ -1096,7 +1141,8 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "low",
-   "verification_notes": "Min 100 kW confirmed via Oncor manual summary; 2026 $/kW, window and event caps not verified."
+   "verification_notes": "Min 100 kW confirmed via Oncor manual summary; 2026 $/kW, window and event caps not verified.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
   },
   {
    "id": "tx-cnp-clm-2026",
@@ -1169,7 +1215,8 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "From search summaries of CNP and Katy EDC pages; event duration not found."
+   "verification_notes": "From search summaries of CNP and Katy EDC pages; event duration not found.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
   },
   {
    "id": "tx-aep-lm-sop-2026",
@@ -1258,7 +1305,8 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "Option A/B/C rates from search summary of AEP LM SOP documents; eligibility thresholds partly conflicting."
+   "verification_notes": "Option A/B/C rates from search summary of AEP LM SOP documents; eligibility thresholds partly conflicting.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
   },
   {
    "id": "tx-tnmp-clm-2026",
@@ -1326,7 +1374,8 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "Rate and min kW from search summary of TNMP page; season/window not verified."
+   "verification_notes": "Rate and min kW from search summary of TNMP page; season/window not verified.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
   },
   {
    "id": "tx-ercot-ers",

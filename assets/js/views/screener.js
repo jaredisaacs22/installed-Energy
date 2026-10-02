@@ -199,15 +199,16 @@ export function renderScreener(root, data, params) {
           field('Export to grid', seg('export_allowed', [[false, 'No'], [true, 'Yes']])),
         ),
         field('Disadvantaged-community site', seg('disadvantaged_community', [[false, 'No'], [true, 'Yes']]), 'Some programs pay adders here.'),
+        field('Customer owns the building (pays property tax)', seg('property_owner', [[false, 'No / unknown'], [true, 'Yes']]), 'Needed for property-tax abatements such as NYC’s.'),
       ),
       h('div', { class: 'btn-row' }, h('button', { class: 'btn small', type: 'button', onclick: () => { site = defaultSite(data); storage.set(SITE_KEY, site); renderForm(); runAnalysis(); } }, 'Reset form')),
     );
     // seg() stores strings for booleans; coerce
-    for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
+    for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community', 'property_owner']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
   }
 
   function runAnalysis() {
-    for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
+    for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community', 'property_owner']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
     if (!(site.peak_kw > 0)) {
       resultHost.replaceChildren(h('div', { class: 'card empty' }, 'Enter the site’s peak demand to start.'));
       return;
@@ -362,7 +363,7 @@ export function renderScreener(root, data, params) {
     return h('div', { class: 'card' },
       h('div', { class: 'card-head' }, h('h2', {}, 'Programs & incentives in this territory'), h('a', { href: `#/library?market=${encodeURIComponent(site.jurisdiction)}`, class: 'small' }, 'Open in library →')),
       h('div', { class: 'table-wrap' }, h('table', {},
-        h('thead', {}, h('tr', {}, ['Program', 'Status', 'Rate', 'Eligible (recommended config)', 'Your rate override'].map((t) => h('th', {}, t)))),
+        h('thead', {}, h('tr', {}, ['Program', 'Status', 'Rate', 'Eligible (recommended config)', 'Your rate override', 'Confirmed eligible'].map((t) => h('th', {}, t)))),
         h('tbody', {}, rows.map(({ program: p, eligible, reason, viaAggregator }) => h('tr', {},
           h('td', {}, h('div', {}, p.name), h('div', { class: 'small muted' }, p.administrator || p.category)),
           h('td', {}, badge(p.status, p.status)),
@@ -374,6 +375,12 @@ export function renderScreener(root, data, params) {
             else o[p.id] = Number(e.target.value);
             update({ program_rate_overrides: o });
           } }) : null),
+          h('td', {}, p.requires_confirmation ? h('label', { class: 'small', title: p.requires_confirmation }, h('input', { type: 'checkbox', checked: !!site.confirmed_programs?.[p.id], 'aria-label': `Confirmed eligible: ${p.name}`, onchange: (e) => {
+            const o = { ...(site.confirmed_programs || {}) };
+            if (e.target.checked) o[p.id] = true;
+            else delete o[p.id];
+            update({ confirmed_programs: o });
+          } }), ' counts in base') : null),
         ))),
       )),
     );
@@ -454,6 +461,15 @@ export function renderScreener(root, data, params) {
 const FLAG_TEXT = {
   ratchet: 'ratchet tariff',
   fixed_supply_contract: 'held back by fixed supply contract',
+  supply_unknown: 'upside until the supply contract is confirmed to pass tags through',
+  default_service_no_tags: 'default service does not pass tags through',
+  optional_election: 'optional rate election',
+  event_days_limit_shave: 'limited on DR event days',
+  eligibility_unconfirmed: 'eligibility unconfirmed — tick “Confirmed eligible” to count in base',
+  property_owner_only: 'building owner only',
+  feoc_unconfirmed: 'upside until FEOC/MACR compliance is confirmed (Settings)',
+  pwa_unconfirmed: 'no prevailing-wage confirmation (≥ 1 MW)',
+  duration_assumed: 'event duration assumed',
   aggregator_required: 'via aggregator / CSP',
   duration_short: 'battery shorter than event duration',
 };
@@ -479,10 +495,11 @@ function dataBanner(a, data) {
   const settings = settingsStore.get(data);
   const placeholder = settings.products.some((p) => p.cost_is_placeholder && settings.raw?.products?.[p.id]?.installed_cost_usd_per_kwh == null);
   const t = a.tariff;
-  const missing = t ? (t.demand_charges || []).filter((d) => d.rate_usd_per_kw_month == null && d.basis !== 'contract' && d.basis !== 'coincident').length : 0;
+  const missing = a.missing?.length || 0;
   const msgs = [];
+  if (a.assumptions && !a.assumptions.itc_feoc_confirmed) msgs.push(h('span', {}, 'The 30% ITC counts only in the upside case until your products are confirmed FEOC/MACR-compliant. ', h('a', { href: '#/settings' }, 'Confirm in Settings'), '.'));
   if (placeholder) msgs.push(h('span', {}, 'Installed costs are a $600/kWh placeholder, so payback, NPV and the recommendation are only indicative. ', h('a', { href: '#/settings' }, 'Enter your costs in Settings'), '.'));
-  if (t && missing) msgs.push(`${missing} demand charge${missing > 1 ? 's' : ''} on ${t.name} ha${missing > 1 ? 've' : 's'} no verified rate and ${missing > 1 ? 'are' : 'is'} excluded. Enter rates from the customer bill in the Rate panel below.`);
+  if (t && missing) msgs.push(`Incomplete: ${missing} rate element${missing > 1 ? 's' : ''} on ${t.name} ha${missing > 1 ? 've' : 's'} no verified rate (${a.missing.join('; ')}), so those savings are excluded and the score is marked *. Enter rates from the customer bill in the Rate panel below.`);
   if (t && t.confidence === 'low') msgs.push(`${t.name} rates are low-confidence. Check them against the current tariff before relying on them.`);
   if (!msgs.length) return null;
   return h('div', { class: 'banner' }, msgs.map((m) => h('div', {}, m)));
@@ -501,7 +518,7 @@ function kpis(a, rec) {
   if (!rec) return h('div', { class: 'card empty' }, 'No configuration could be evaluated.');
   const f = rec.finance.base;
   return h('div', { class: 'kpis', style: { marginBottom: '14px' } },
-    h('div', { class: 'kpi score', title: `Economics ${sc.parts.economics} · Certainty ${sc.parts.certainty} · Feasibility ${sc.parts.feasibility}` }, ring(sc.score), h('div', {}, h('div', { class: 'label' }, 'Site score'), h('div', { class: 'grade' }, sc.grade), h('div', { class: 'sub' }, sc.basis))),
+    h('div', { class: 'kpi score', title: `Economics ${sc.parts.economics} · Certainty ${sc.parts.certainty} · Feasibility ${sc.parts.feasibility}` }, ring(sc.score), h('div', {}, h('div', { class: 'label' }, sc.incomplete ? 'Site score (incomplete)' : 'Site score'), h('div', { class: 'grade' }, sc.incomplete ? `${sc.grade}*` : sc.grade), h('div', { class: 'sub' }, sc.basis))),
     h('div', { class: 'kpi' }, h('div', { class: 'label' }, f.npv != null && f.npv < 0 ? 'Best available (NPV negative)' : 'Recommended'), h('div', { class: 'value', style: { fontSize: '16px' } }, rec.config.label), h('div', { class: 'sub' }, f.npv != null && f.npv < 0 ? 'No option pays back within the analysis horizon at current cost assumptions' : `${num(rec.config.kw)} kW · ${num(rec.config.kwh)} kWh · highest NPV of feasible options`)),
     h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Annual value (base)'), h('div', { class: 'value' }, usd(rec.totals.annual_base)), h('div', { class: 'sub' }, `Upside ${usd(rec.totals.annual_upside)}`)),
     h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Upfront incentives + ITC'), h('div', { class: 'value' }, usd(rec.totals.upfront_base)), h('div', { class: 'sub' }, `Installed cost ${usd(rec.config.installedCostUsd)}`)),

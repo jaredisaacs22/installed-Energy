@@ -930,7 +930,17 @@
     "max_events_per_year": 70,
     "typical_events_per_year": 55,
     "notice": "Called by the EDC (Eversource or UI) on high-demand days. Notice lead time not verified.",
-    "baseline_or_mv": "Inverter or battery telemetry (kW-AC output during events), not a meter baseline"
+    "baseline_or_mv": "Inverter or battery telemetry (kW-AC output during events), not a meter baseline",
+    "event_months": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "event_block": {
+     "start": 16,
+     "end": 19
+    }
    },
    "stacking": {
     "compatible_with": [
@@ -988,8 +998,9 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "Performance rates ($325/$275/$175) and the 10-year term were seen in summaries of the energystoragect.com program-changes page and the CT Green Bank release, with consistent results across three searches. Event counts and windows come from search summaries of the 2026 program manual. max_events_per_year = 60 summer + 10 winter, and typical = about 50 summer + 5 winter. The size cap wording, enrollment-incentive unit, seasonal split, notice and the export requirement were not verified.",
-   "panel_caution": "The researchers could not confirm that NEW non-export C&I batteries qualify under Construct 5 (a 2025 review admitted existing non-export systems interconnected before 2026). Confirm eligibility with Energy Storage Solutions before relying on this payment, since it is usually the largest value in CT."
+   "verification_notes": "Performance rates ($325/$275/$175) and the 10-year term were seen in summaries of the energystoragect.com program-changes page and the CT Green Bank release, with consistent results across three searches. Event counts and windows come from search summaries of the 2026 program manual. max_events_per_year = 60 summer + 10 winter, and typical = about 50 summer + 5 winter. The size cap wording, enrollment-incentive unit, seasonal split, notice and the export requirement were not verified. Event-day modeling assumes 3 h summer events at 4–7pm within the 12–9pm window (winter events are few and not modeled against demand).",
+   "panel_caution": "The researchers could not confirm that NEW non-export C&I batteries qualify under Construct 5 (a 2025 review admitted existing non-export systems interconnected before 2026). Confirm eligibility with Energy Storage Solutions before relying on this payment, since it is usually the largest value in CT.",
+   "requires_confirmation": "Eligibility of new non-export C&I batteries under Construct 5 is unverified."
   },
   {
    "id": "ct-ess-ci-legacy-upfront",

@@ -185,3 +185,122 @@ test('access gate: only exact @sunbeltrentals.com addresses', async () => {
   assert.equal(isAllowedEmail('@sunbeltrentals.com'), false);
   assert.equal(isAllowedEmail('jane sunbeltrentals.com'), false);
 });
+
+// ---- Challenger-review regressions ----
+import { eventDayReduction } from '../assets/js/engine/loadshape.js';
+import { coincidentStreams, arbitrageStreams, demandChargeStreams, programStream as progStream } from '../assets/js/engine/value.js';
+import { yearlyValues } from '../assets/js/engine/finance.js';
+import { missingRates } from '../assets/js/engine/index.js';
+
+test('event-day reduction only shaves the peak inside the event block', () => {
+  const kw = new Array(24).fill(100);
+  kw[12] = 150; // noon peak
+  const profile = { kw, dtHours: 1 };
+  const comps = [{ id: 'ncp', rate: 10, window: null }];
+  near(eventDayReduction(profile, comps, { start: 16, end: 19 }, 50).ncp, 0, 0.001);
+  near(eventDayReduction(profile, comps, { start: 11, end: 14 }, 50).ncp, 50, 0.001);
+});
+
+test('frequent DR events cap the monthly demand saving', () => {
+  const cfg = buildConfig([{ productId: 'B200-600', count: 1 }], products);
+  const site = { ...baseSite, building_type: 'restaurant' }; // noon and evening peaks
+  const tariff = jurisdiction.tariffs[0];
+  const free = demandChargeStreams(site, cfg, tariff, A, designDayProfile({ peakKw: 500, annualKwh: site.annual_kwh, buildingType: 'restaurant' }));
+  const ev = demandChargeStreams(site, cfg, tariff, A, designDayProfile({ peakKw: 500, annualKwh: site.annual_kwh, buildingType: 'restaurant' }), [{ program_id: 'x', months: [6, 7, 8, 9], block: { start: 8, end: 11 }, kw: 180 }]);
+  assert.ok(ev.streams[0].annual_usd < free.streams[0].annual_usd);
+  assert.ok(ev.streams[0].flags.includes('event_days_limit_shave'));
+});
+
+test('peak tags: unknown or default-service supply moves tags to upside unless passed through', () => {
+  const cfg = buildConfig([{ productId: 'B200-600', count: 1 }], products);
+  const t = { id: 't', demand_charges: [], coincident_peak_charges: [{ type: 'plc', est_value_usd_per_kw_year: 100 }, { type: 'nspl', est_value_usd_per_kw_year: 40, default_service_passthrough: true }] };
+  const unk = coincidentStreams({ ...baseSite, supply_contract: 'unknown' }, cfg, t, A);
+  assert.deepEqual(unk.map((s) => s.scenario), ['upside', 'upside']);
+  const def = coincidentStreams({ ...baseSite, supply_contract: 'default_service' }, cfg, t, A);
+  assert.deepEqual(def.map((s) => s.scenario), ['upside', 'base']);
+  // Tags are capped at site load even when export is allowed.
+  const exp = coincidentStreams({ ...baseSite, peak_kw: 100, export_allowed: true }, cfg, t, A);
+  assert.ok(exp[0].kw_used <= 100 * A.event_load_fraction * A.cp_hit_rate + 1e-9);
+});
+
+test('arbitrage excludes energy already spent shaving outside the TOU window', () => {
+  const kw = new Array(24).fill(60);
+  for (let h = 9; h < 15; h++) kw[h] = 100; // midday plateau outside 16-21
+  const profile = { kw, dtHours: 1 };
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], products);
+  const t = { id: 't', demand_charges: [{ label: 'NCP', rate_usd_per_kw_month: 20, basis: 'ncp_monthly', months: [] }], arbitrage: [{ months: [6], peak_window: { start: 16, end: 21 }, peak_price: 0.3, offpeak_price: 0.1, days: 'all' }] };
+  const d = demandChargeStreams(baseSite, cfg, t, A, profile);
+  const withShave = arbitrageStreams(baseSite, cfg, t, A, profile, d.monthOpt);
+  const alone = arbitrageStreams(baseSite, cfg, t, A, profile, {});
+  // All usable energy goes to the midday shave, so arbitrage is fully displaced (stream dropped) or reduced.
+  assert.ok((withShave[0]?.annual_usd ?? 0) < alone[0].annual_usd);
+});
+
+test('ratchet: off-season months valued at the ratchet percentage', () => {
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], products);
+  const site = { ...baseSite, shave_kw_override: { [cfg.id]: 10 } };
+  const t = { id: 't', ratchet: { pct: 0.8 }, demand_charges: [{ label: 'Dist', rate_usd_per_kw_month: 10, basis: 'ratchet', months: [] }] };
+  const d = demandChargeStreams(site, cfg, t, A, designDayProfile({ peakKw: 500, annualKwh: site.annual_kwh }));
+  near(d.streams[0].annual_usd, 10 * 10 * (4 + 0.8 * 8));
+});
+
+test('program minimum compares deliverable kW for the event duration', () => {
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], products); // 180 kWh usable / 4 h = 45 kW
+  const p = { id: 'csrp', name: 'CSRP', category: 'demand_response', status: 'open', eligibility: { min_kw: 50 }, valuation: { method: 'per_kw_month', rate: 18, months_per_year: 5, duration_basis_hr: 4 } };
+  assert.equal(progStream(p, baseSite, cfg, A, {}), null);
+  const agg = { ...p, eligibility: { min_kw: 50, aggregation_allowed: true } };
+  assert.ok(progStream(agg, baseSite, cfg, A, {}).flags.includes('aggregator_required'));
+});
+
+test('ITC: upside until FEOC confirmed; 6% at >= 1 MW without PWA', () => {
+  const itc = { id: 'itc', name: 'ITC', category: 'tax', status: 'open', feoc_applies: true, valuation: { method: 'pct_of_cost', rate: 0.3, pwa_threshold_kw: 1000, rate_without_pwa: 0.06 } };
+  const small = buildConfig([{ productId: 'B200-418', count: 1 }], products);
+  assert.equal(progStream(itc, baseSite, small, { ...A, itc_feoc_confirmed: false }, {}).scenario, 'upside');
+  assert.equal(progStream(itc, baseSite, small, { ...A, itc_feoc_confirmed: true }, {}).scenario, 'base');
+  const big = buildConfig([{ productId: 'B200-600', count: 5 }], products);
+  near(progStream(itc, { ...baseSite, peak_kw: 2000 }, big, { ...A, itc_feoc_confirmed: true, itc_pwa_confirmed: false }, {}).upfront_usd, 0.06 * big.installedCostUsd);
+});
+
+test('spread payments, confirmations and post-term value', () => {
+  const abate = { id: 'abate', name: 'Abatement', category: 'tax', status: 'open', eligibility: { requires_property_owner: true }, valuation: { method: 'pct_of_cost', rate: 0.3, cap_usd: 250000, spread_years: 4 } };
+  const cfg = buildConfig([{ productId: 'B200-418', count: 1 }], products);
+  const s = progStream(abate, baseSite, cfg, A, {});
+  assert.equal(s.upfront_usd, 0);
+  near(s.annual_usd, (0.3 * cfg.installedCostUsd) / 4);
+  assert.equal(s.scenario, 'upside');
+  assert.equal(progStream(abate, { ...baseSite, property_owner: true }, cfg, A, {}).scenario, 'base');
+  const y = yearlyValues([{ ...s, scenario: 'base' }], { years: 6, degradationPct: 2 });
+  near(y[0], y[3]);
+  assert.equal(y[4], 0);
+  const conf = { id: 'c', name: 'C', category: 'performance_incentive', status: 'open', requires_confirmation: 'unverified', valuation: { method: 'per_kw_year', rate: 100, duration_basis_hr: 2 } };
+  assert.equal(progStream(conf, baseSite, cfg, A, {}).scenario, 'upside');
+  assert.equal(progStream(conf, { ...baseSite, confirmed_programs: { c: true } }, cfg, A, {}).scenario, 'base');
+  const lock = yearlyValues([{ annual_usd: 100, scenario: 'base', category: 'performance_incentive', term_years: 5, rate: 1 }], { years: 7, degradationPct: 0, postTermFactor: 0.5 });
+  assert.deepEqual(lock.map(Math.round), [100, 100, 100, 100, 100, 50, 50]);
+});
+
+test('missing rates are reported and site-size filters apply', () => {
+  const t = { id: 't', demand_charges: [{ label: 'A', rate_usd_per_kw_month: null, basis: 'ncp_monthly' }, { label: 'B', rate_usd_per_kw_month: null, basis: 'ncp_monthly', max_site_peak_kw: 700 }], coincident_peak_charges: [{ type: '4cp', est_value_usd_per_kw_year: null, min_site_peak_kw: 700 }] };
+  assert.deepEqual(missingRates(t, { peak_kw: 400 }), ['A', 'B']);
+  assert.deepEqual(missingRates(t, { peak_kw: 900 }), ['A', 'peak tag: 4cp']);
+});
+
+test('Option S minimum storage share is enforced as a critical check', () => {
+  const tariff = { ...jurisdiction.tariffs[1], id: 'opt-s', applicability: { min_storage_kw_pct_of_peak: 0.1 } };
+  const d = { ...data, jurisdictions: { TEST: { ...jurisdiction, tariffs: [...jurisdiction.tariffs, tariff] } } };
+  const a = analyzeSite({ ...baseSite, peak_kw: 700, tariff_id: 'opt-s' }, d);
+  const small = a.results.find((r) => r.config.id === '1xB30-150');
+  assert.equal(small.constraints.status, 'critical');
+  assert.ok(a.recommended.config.kw >= 70);
+});
+
+test('optimizer stops when shaving costs more in losses than it saves', () => {
+  const kw = new Array(24).fill(50);
+  for (let h = 8; h < 20; h++) kw[h] = 100; // 12-hour flat plateau: shaving needs ~12 kWh per kW
+  const profile = { kw, dtHours: 1 };
+  const comps = [{ id: 'ncp', rate: 2, window: null }];
+  const free = optimizeShave(profile, comps, { kw: 60, usableKwh: 120, rte: 0.85 });
+  const costly = optimizeShave(profile, comps, { kw: 60, usableKwh: 120, rte: 0.85, energyCostPerKwhMonth: (1 / 0.85 - 1) * 0.25 * 21 });
+  assert.ok(free.deltas.ncp > 5);
+  assert.equal(costly.deltas.ncp, 0);
+});

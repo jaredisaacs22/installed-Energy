@@ -2,7 +2,7 @@
 
 import { designDayProfile } from './loadshape.js';
 import { candidateConfigs, buildConfig } from './configs.js';
-import { valueStack, programEligibility } from './value.js';
+import { valueStack, programEligibility, chargeAppliesToSite } from './value.js';
 import { siteLimits, checkConfig, SEVERITY_ORDER } from './constraints.js';
 import { economics, yearlyValues } from './finance.js';
 import { siteScore } from './score.js';
@@ -47,7 +47,7 @@ export function analyzeSite(site, data, settings = {}) {
     const vs = valueStack(site, config, ctx);
     const constraints = checkConfig(site, config, ctx, limits);
     const omPerYear = (assumptions.om_usd_per_kw_yr || 0) * config.kw + ((assumptions.om_pct_capex || 0) / 100) * (config.installedCostUsd || 0);
-    const yOpts = { years: assumptions.analysis_years, degradationPct: assumptions.degradation_pct_yr, escalationPct: assumptions.escalation_pct_yr };
+    const yOpts = { years: assumptions.analysis_years, degradationPct: assumptions.degradation_pct_yr, escalationPct: assumptions.escalation_pct_yr, postTermFactor: assumptions.post_term_value_factor ?? 1 };
     const common = { capex: config.installedCostUsd, omPerYear, discountRate: assumptions.discount_rate_pct / 100 };
     return {
       ...vs,
@@ -64,7 +64,8 @@ export function analyzeSite(site, data, settings = {}) {
   const pool = feasible.length ? feasible : results;
   const recommended = pickRecommended(pool);
   const analysis = { site, tariff, jurisdiction, limits, profile, results, recommended, assumptions };
-  analysis.score = siteScore(recommended);
+  analysis.missing = missingRates(tariff, site);
+  analysis.score = siteScore(recommended, { incomplete: analysis.missing.length > 0 });
   analysis.panel = panelReview(site, analysis, ctx);
   analysis.briefing = briefingNotes(site, jurisdiction, data.panel);
   analysis.programs = programs.map((p) => ({ program: p, ...(recommended ? programEligibility(p, site, recommended.config) : { eligible: false }) }));
@@ -96,6 +97,22 @@ function pickRecommended(results) {
     return withNpv.reduce((best, r) => (r.finance.base.npv > best.finance.base.npv ? r : best));
   }
   return results.reduce((best, r) => (r.totals.annual_base > best.totals.annual_base ? r : best));
+}
+
+/** Tariff elements that apply to this site but have no rate: their savings are excluded, not zero. */
+export function missingRates(tariff, site) {
+  if (!tariff) return ['tariff'];
+  const out = [];
+  for (const dc of tariff.demand_charges || []) {
+    if (dc.basis === 'contract' || dc.basis === 'coincident') continue;
+    if (!chargeAppliesToSite(dc, site)) continue;
+    if (typeof dc.rate_usd_per_kw_month !== 'number') out.push(dc.label);
+  }
+  for (const cp of tariff.coincident_peak_charges || []) {
+    if (!chargeAppliesToSite(cp, site)) continue;
+    if (typeof cp.est_value_usd_per_kw_year !== 'number') out.push(`peak tag: ${cp.type}`);
+  }
+  return out;
 }
 
 export function worstSeverity(checks) {

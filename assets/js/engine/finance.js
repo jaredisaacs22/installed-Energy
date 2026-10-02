@@ -33,18 +33,21 @@ export function economics({ capex, upfront = 0, annual = 0, yearly = null, omPer
  * bill-based streams, and program schedules (e.g. a step-down in years 6–10, or a program term) override.
  */
 const TARIFF_BASED = new Set(['demand_charge', 'coincident_peak', 'energy_arbitrage', 'cost']);
-export function yearlyValues(streams, { scenario = 'base', years = 10, degradationPct = 2, escalationPct = 0 } = {}) {
+export function yearlyValues(streams, { scenario = 'base', years = 10, degradationPct = 2, escalationPct = 0, postTermFactor = 1 } = {}) {
   const out = [];
   for (let t = 1; t <= years; t++) {
     let v = 0;
     for (const s of streams) {
       if (scenario === 'base' && s.scenario !== 'base') continue;
       if (!s.annual_usd) continue;
-      let m = Math.pow(1 - degradationPct / 100, t - 1);
+      let m = s.no_degradation ? 1 : Math.pow(1 - degradationPct / 100, t - 1);
       if (TARIFF_BASED.has(s.category)) m *= Math.pow(1 + escalationPct / 100, t - 1);
       if (s.schedule?.length) {
         const seg = s.schedule.find((x) => t >= x.start_year && t <= x.end_year);
         m *= !seg ? 0 : seg.rate != null && s.rate ? seg.rate / s.rate : seg.factor ?? 1;
+      } else if (s.term_years && t > s.term_years) {
+        // After a program's rate lock / term ends, the rate is uncertain.
+        m *= postTermFactor;
       }
       v += s.annual_usd * m;
     }

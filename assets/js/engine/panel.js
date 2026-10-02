@@ -56,10 +56,12 @@ export function panelReview(site, analysis, ctx) {
   const cpStreams = rec ? rec.streams.filter((s) => s.category === 'coincident_peak') : [];
   if (cpStreams.length) {
     const cpUsd = cpStreams.reduce((n, s) => n + s.annual_usd, 0);
-    if (site.supply_contract === 'fixed_all_in') {
+    if (site.supply_contract === 'default_service' && cpStreams.some((s) => s.flags?.includes('default_service_no_tags'))) {
+      add('constellation', 'info', 'Default utility supply does not pass peak tags through', `About $${fmt(cpUsd)}/yr of tag reduction is counted only in upside. On fixed-price default/basic service the customer pays an averaged capacity cost, so cutting their own tag doesn't lower the bill. A competitive pass-through contract would capture it.`);
+    } else if (site.supply_contract === 'fixed_all_in') {
       add('constellation', 'caution', 'Fixed all-in supply contract hides tag savings', `About $${fmt(cpUsd)}/yr of capacity/transmission tag reduction is counted only in the upside case. A fixed all-in contract won't pass it through until renewal. Re-price at renewal with tags passed through, or move to an index/pass-through product.`);
     } else if (!site.supply_contract || site.supply_contract === 'unknown') {
-      add('constellation', 'info', 'Confirm how the supply contract treats peak tags', `$${fmt(cpUsd)}/yr assumes the capacity/transmission tags are passed through (index or pass-through contract). Get the contract's tag and settlement terms before committing.`);
+      add('constellation', 'caution', 'Supply contract unknown: tag savings held in upside', `$${fmt(cpUsd)}/yr of capacity/transmission tag reduction counts only once the supply contract is confirmed to pass tags through (index or pass-through). Set the supply contract in step 5.`);
     }
     add('bess-ix', 'info', 'Peak-tag capture needs forecasting and reserved energy', `Tag values assume ${Math.round((ctx.assumptions.cp_hit_rate || 0) * 100)}% of system peak hours are caught. The battery must hold charge on likely peak days, which can conflict with daily demand shaving on the same afternoons.`);
   }
@@ -92,6 +94,22 @@ export function panelReview(site, analysis, ctx) {
     if (p.status === 'closed' || p.status === 'paused') {
       if (p.category === 'upfront_incentive') add(util, 'info', `${p.name}: ${p.status}`, p.status_notes || 'Not counted in the value stack.');
     }
+  }
+
+  // Tax credit gating.
+  if (rec?.streams.some((s) => s.flags?.includes('feoc_unconfirmed'))) {
+    add('bess-ix', 'caution', 'ITC depends on supply-chain (FEOC/MACR) compliance', 'For storage starting construction after 2025, the §48E credit requires the battery’s material-assistance cost ratio from non-prohibited foreign entities to meet the annual threshold (55% in 2026, rising after). Many LFP cabinets with Chinese cells fail it. Get the supplier’s MACR certification, then confirm in Settings to count the ITC in the base case.');
+  }
+  if (rec?.streams.some((s) => s.flags?.includes('pwa_unconfirmed'))) {
+    add('bess-ix', 'info', 'At ≥ 1 MW AC the ITC needs prevailing wage & apprenticeship', 'Without PWA the credit drops from 30% to 6%. Keep site AC capacity under 1 MW, or plan for PWA compliance.');
+  }
+  if (rec?.streams.some((s) => s.flags?.includes('event_days_limit_shave'))) {
+    add('bess-ix', 'caution', 'DR event days limit demand-charge savings', 'In months with frequent dispatch events the battery spends its energy on the event block, so it only shaves the site’s peak if that peak falls inside the event hours. The monthly demand saving here uses the lesser of a normal day and an event day. Check event windows against the site’s interval data.');
+  }
+  for (const s of rec?.streams || []) {
+    if (!s.flags?.includes('eligibility_unconfirmed')) continue;
+    const p = (ctx.programs || []).find((x) => x.id === s.program_id);
+    if (p && !p.panel_caution) add(util, 'caution', `${p.name}: eligibility unconfirmed (upside only)`, `${p.requires_confirmation} Tick “Confirmed eligible” in the programs list once confirmed to count it in the base case.`);
   }
 
   // Programs the recommended stack depends on that carry an explicit research caution.

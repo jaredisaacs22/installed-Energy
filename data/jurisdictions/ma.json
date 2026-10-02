@@ -458,8 +458,8 @@
      "how_set": "OPTIONAL for G-3 (elected; D.P.U. 23-150, available since April 2025): customer's coincident 60-minute kW at the hour of the ISO-NE Regional Network Service monthly transmission system peak, billed every month, replacing the volumetric transmission charge.",
      "est_value_usd_per_kw_year": 262.92,
      "derivation": "$21.91/kW-month x 12 months = $262.92 per kW reduced at every monthly peak hour (theoretical maximum; requires hitting all 12 monthly RNS peak hours). A second search summary showed $23.82/kW (likely a different month's rate) - confirm current value in the latest M.D.P.U. 1-26-x summary. Net benefit vs. default = avoided volumetric transmission $/kWh minus CP charge on remaining coincident kW.",
-     "passthrough_notes": "Delivery (utility) charge - realized on the utility bill regardless of competitive supplier. Election appears to carry a minimum term (Eversource analogue: 12 months) - verify NGrid election rules.",
-     "passthrough": "supply",
+     "passthrough_notes": "Delivery (utility) charge - realized on the utility bill regardless of competitive supplier. Election appears to carry a minimum term (Eversource analogue: 12 months) - verify NGrid election rules. Gross value: electing the option replaces volumetric transmission charges, so the net benefit is volumetric cost avoided minus the CP charge on the remaining CP kW. Catching all 12 monthly peaks is demanding.",
+     "passthrough": "delivery",
      "optional_election": true
     }
    ],
@@ -814,7 +814,17 @@
     "max_events_per_year": 60,
     "typical_events_per_year": null,
     "notice": "Day-ahead (night before / ~24 h)",
-    "baseline_or_mv": "Interval-meter based: average kW reduction (battery discharge net of baseline) over all event hours in the season"
+    "baseline_or_mv": "Interval-meter based: average kW reduction (battery discharge net of baseline) over all event hours in the season",
+    "event_months": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "event_block": {
+     "start": 16,
+     "end": 19
+    }
    },
    "stacking": {
     "compatible_with": [
@@ -859,7 +869,7 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "$200/kW-summer, 30-60 events and 5-year lock confirmed on NGrid pages/materials via search summaries; 150% export cap from SEA blog (secondary). typical events not published (stated range 30-60). Event window from 2023 Mass Save materials - may have changed for 2025-2027."
+   "verification_notes": "$200/kW-summer, 30-60 events and 5-year lock confirmed on NGrid pages/materials via search summaries; 150% export cap from SEA blog (secondary). typical events not published (stated range 30-60). Event window from 2023 Mass Save materials - may have changed for 2025-2027. Event-day modeling assumes 3 h events at 4–7pm within the 2–7pm window."
   },
   {
    "id": "ma-connectedsolutions-ci-targeted",

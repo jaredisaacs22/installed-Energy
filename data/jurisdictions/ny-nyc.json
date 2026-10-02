@@ -504,7 +504,18 @@
     "max_events_per_year": null,
     "typical_events_per_year": null,
     "notice": "21-hour (day-ahead) for planned events. Triggered when the day-ahead forecast is ≥92% of the forecast summer peak. Unplanned events also exist.",
-    "baseline_or_mv": "Customer baseline load (CBL) per Rider T guidelines, interval metering"
+    "baseline_or_mv": "Customer baseline load (CBL) per Rider T guidelines, interval metering",
+    "event_months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "event_block": {
+     "start": 14,
+     "end": 18
+    }
    },
    "stacking": {
     "compatible_with": [
@@ -542,7 +553,7 @@
    ],
    "last_verified": "2026-10-01",
    "confidence": "medium",
-   "verification_notes": "The $18 and $6/kW-month reservation rates come from CPower's 2026 snapshot and Energy Toolbase, and match. The call windows and 21-hour notice come from the 2026 Rider T guidelines search summary. The performance and voluntary $/kWh values come from secondary sources only."
+   "verification_notes": "The $18 and $6/kW-month reservation rates come from CPower's 2026 snapshot and Energy Toolbase, and match. The call windows and 21-hour notice come from the 2026 Rider T guidelines search summary. The performance and voluntary $/kWh values come from secondary sources only. Event-day modeling assumes the 2–6pm call window (some networks use 11am–3pm)."
   },
   {
    "id": "coned-dlrp",
@@ -1053,7 +1064,8 @@
     "requires_export": false,
     "requires_paired_solar": false,
     "requires_ul9540": null,
-    "other": "Abatement applies to the building's real property tax. It is limited by the tax payable, so tenants or BTM developers must structure with the owner."
+    "other": "Abatement applies to the building's real property tax. It is limited by the tax payable, so tenants or BTM developers must structure with the owner.",
+    "requires_property_owner": true
    },
    "valuation": {
     "method": "pct_of_cost",
@@ -1073,7 +1085,8 @@
     ],
     "term_years": 4,
     "notes": "Example: $400k installed cost -> 30% = $120k over 4 yrs ($30k/yr). $1M -> capped at $250k ($62.5k/yr).",
-    "cap_usd": 250000
+    "cap_usd": 250000,
+    "spread_years": 4
    },
    "dispatch": {
     "season": "n/a",

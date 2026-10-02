@@ -1520,7 +1520,7 @@
     }
    ],
    "confidence": "medium",
-   "verification_notes": "All numbers come from two WebSearch summaries of the canonical PG&E B-19 PDF (secondary): max demand $37.37; summer peak $46.16 and part-peak $10.52; winter peak $2.31; energy summer 0.18648/0.14775/0.12037 and winter 0.16188/0.12026/0.06442; Option S daily $1.60 peak and $0.08 part-peak per kW-day; 10% storage eligibility; 500-999 kW applicability. The PDF was not opened and the effective date of the rate pages was not shown. They are likely current (2025-2026), because the tariff-book URL serves the in-effect sheets. The values are internally consistent: Option S $1.60 x 30 is close to $46.16, and they track B-20. Confirm against the current tariff or a bill before contracting.",
+   "verification_notes": "All numbers come from two WebSearch summaries of the canonical PG&E B-19 PDF (secondary): max demand $37.37; summer peak $46.16 and part-peak $10.52; winter peak $2.31; energy summer 0.18648/0.14775/0.12037 and winter 0.16188/0.12026/0.06442; Option S daily $1.60 peak and $0.08 part-peak per kW-day; 10% storage eligibility; 500-999 kW applicability. The PDF was not opened and the effective date of the rate pages was not shown. They are likely current (2025-2026), because the tariff-book URL serves the in-effect sheets. The values are internally consistent: Option S $1.60 x 30 is close to $46.16, and they track B-20. Confirm against the current tariff or a bill before contracting. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
    "arbitrage": [
     {
      "label": "Summer (Jun–Sep)",
@@ -1539,13 +1539,8 @@
      "days": "all"
     },
     {
-     "label": "Winter (Oct–May), charge 9am–2pm",
+     "label": "Spring (Mar–May), charge 9am–2pm super-off-peak",
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -1556,6 +1551,23 @@
      },
      "peak_price": 0.16188,
      "offpeak_price": 0.06442,
+     "days": "all"
+    },
+    {
+     "label": "Winter (Oct–Feb)",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.12026,
      "days": "all"
     }
    ]
@@ -2187,7 +2199,8 @@
    "applicability": {
     "min_kw": 500,
     "max_kw": 999,
-    "text": "Option S (storage) variant of B-19 Medium-Large General Demand-Metered TOU (with Option S storage variant). Requires on-site storage ≥ 10% of peak demand (per search summary; verify)."
+    "text": "Option S (storage) variant of B-19 Medium-Large General Demand-Metered TOU (with Option S storage variant). Requires on-site storage ≥ 10% of peak demand (per search summary; verify).",
+    "min_storage_kw_pct_of_peak": 0.1
    },
    "effective_date": null,
    "demand_charges": [
@@ -2348,7 +2361,7 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use.",
+   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
    "arbitrage": [
     {
      "label": "Summer (Jun–Sep)",
@@ -2367,13 +2380,8 @@
      "days": "all"
     },
     {
-     "label": "Winter (Oct–May), charge 9am–2pm",
+     "label": "Spring (Mar–May), charge 9am–2pm super-off-peak",
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -2384,6 +2392,23 @@
      },
      "peak_price": 0.16188,
      "offpeak_price": 0.06442,
+     "days": "all"
+    },
+    {
+     "label": "Winter (Oct–Feb)",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.12026,
      "days": "all"
     }
    ]
@@ -2396,7 +2421,8 @@
    "applicability": {
     "min_kw": 1000,
     "max_kw": null,
-    "text": "Option S (storage) variant of B-20 Large General Demand-Metered TOU (>=1,000 kW; with Option S). Requires on-site storage ≥ 10% of peak demand (per search summary; verify)."
+    "text": "Option S (storage) variant of B-20 Large General Demand-Metered TOU (>=1,000 kW; with Option S). Requires on-site storage ≥ 10% of peak demand (per search summary; verify).",
+    "min_storage_kw_pct_of_peak": 0.1
    },
    "effective_date": null,
    "demand_charges": [
