@@ -27,8 +27,9 @@ export function programsForSite(site, data) {
  * @param site     site inputs (see docs/METHODOLOGY.md)
  * @param data     { products, global, panel, jurisdictions: {code: jurisdictionData} }
  * @param settings { assumptions?, products? }
+ * @param extras   { interval? } — per-month interval data from a workbench site file (workbench.js buildInterval)
  */
-export function analyzeSite(site, data, settings = {}) {
+export function analyzeSite(site, data, settings = {}, extras = {}) {
   const jurisdiction = data.jurisdictions[site.jurisdiction];
   if (!jurisdiction) throw new Error(`Unknown jurisdiction ${site.jurisdiction}`);
   const tariff = applyTariffOverrides((jurisdiction.tariffs || []).find((t) => t.id === site.tariff_id) || null, site.tariff_overrides);
@@ -36,7 +37,8 @@ export function analyzeSite(site, data, settings = {}) {
   const products = settings.products || data.products;
   const programs = programsForSite(site, data);
   const profile = designDayProfile({ peakKw: site.peak_kw, annualKwh: site.annual_kwh, buildingType: site.building_type, custom: site.custom_profile });
-  const ctx = { site, jurisdiction, global: data.global, panel: data.panel, products, assumptions, tariff, programs, profile };
+  const interval = extras.interval || null;
+  const ctx = { site, jurisdiction, global: data.global, panel: data.panel, products, assumptions, tariff, programs, profile, interval };
   const limits = siteLimits(site, ctx, profile);
 
   const configs = site.custom_configs?.length
@@ -64,6 +66,9 @@ export function analyzeSite(site, data, settings = {}) {
   const pool = feasible.length ? feasible : results;
   const recommended = pickRecommended(pool);
   const analysis = { site, tariff, jurisdiction, limits, profile, results, recommended, assumptions };
+  analysis.interval = interval
+    ? { start: interval.start, end: interval.end, days: interval.days, monthsCovered: interval.monthsCovered, peak_kw: interval.peak_kw, annual_kwh: interval.annual_kwh, p05_kw: interval.p05_kw, dt_min: Math.round(interval.dtHours * 60) }
+    : null;
   analysis.missing = missingRates(tariff, site);
   analysis.score = siteScore(recommended, { incomplete: analysis.missing.length > 0 });
   analysis.panel = panelReview(site, analysis, ctx);

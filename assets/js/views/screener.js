@@ -4,8 +4,10 @@ import { analyzeSite, BUILDING_SHAPES, loadFactor } from '../engine/index.js';
 import { blockText } from '../engine/value.js';
 import { valueStackChart } from '../chart.js';
 import { settingsStore } from '../app.js';
-import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows } from '../export.js';
+import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, atlasBlockFor } from '../export.js';
 import { addToPortfolio } from './portfolio.js';
+import { intervalStore, recordId } from '../interval-store.js';
+import { decodeRaw, buildInterval, siteFromWorkbench, mergeAtlasIntoWorkbench } from '../workbench.js';
 
 const SITE_KEY = 'atlas.site';
 
@@ -160,6 +162,66 @@ export function renderScreener(root, data, params) {
     );
   }
 
+  async function importWorkbench(file) {
+    let model;
+    try {
+      model = JSON.parse(await file.text());
+    } catch {
+      toast('That file is not valid JSON. Pick the <site>-site.json saved by the workbench.');
+      return;
+    }
+    if (!model || typeof model !== 'object' || (!model.meta && !model.raw)) {
+      toast('Not a workbench site file (no meta or interval data found).');
+      return;
+    }
+    const decoded = model.raw ? decodeRaw(model.raw) : null;
+    if (model.raw && !decoded) toast('The interval data block is inconsistent and was ignored.');
+    const iv = decoded ? buildInterval(decoded) : null;
+    const imp = siteFromWorkbench(model, iv, data);
+    const { raw, ...rest } = model;
+    const id = recordId(model);
+    if (raw) await intervalStore.put({ id, file_name: file.name, imported_at: new Date().toISOString(), model: rest, raw });
+    const worst = iv ? worstDayProfile(iv) : null;
+    site = normalizeSite(
+      {
+        ...site,
+        ...imp.patch,
+        interval_id: raw && iv ? id : null,
+        workbench_file: file.name,
+        workbench: { ...imp.workbench, notes: imp.notes, warnings: imp.warnings },
+        custom_profile: worst,
+        shave_kw_override: {},
+      },
+      data,
+    );
+    storage.set(SITE_KEY, site);
+    renderForm();
+    runAnalysis();
+    toast(imp.warnings.length ? `Imported with ${imp.warnings.length} note${imp.warnings.length > 1 ? 's' : ''} — see the workbench box.` : `Imported ${file.name}.`);
+  }
+
+  function workbenchBox() {
+    const rec = intervalStore.get(site.interval_id);
+    const iv = rec ? intervalStore.intervalFor(site.interval_id) : null;
+    const input = h('input', { type: 'file', accept: '.json,application/json', style: { display: 'none' }, 'aria-label': 'Workbench site file', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) importWorkbench(f); } });
+    const wb = site.workbench;
+    return h('div', { class: `wb-box${iv ? ' on' : ''}` },
+      h('div', { class: 'wb-head' },
+        h('div', {}, h('strong', {}, iv ? 'Interval data from the workbench' : 'Have a workbench site file?'),
+          h('div', { class: 'small muted' }, iv ? `${rec.file_name} · ${iv.start} to ${iv.end} · ${iv.days} days · ${Math.round(iv.dtHours * 60)}-min` : 'Open the <site>-site.json saved by the Site Analysis Workbench to value the site from its real interval data.')),
+        h('div', { class: 'btn-row' },
+          h('button', { class: 'btn small primary', type: 'button', onclick: () => input.click() }, iv ? 'Replace file' : 'Open site file'),
+          iv ? h('button', { class: 'btn small', type: 'button', onclick: () => { update({ interval_id: null, custom_profile: null, workbench: null, workbench_file: null }, { rerenderForm: true }); } }, 'Remove') : null,
+        ),
+        input,
+      ),
+      wb && (wb.warnings?.length || wb.notes?.length)
+        ? h('ul', { class: 'wb-notes small' }, [...(wb.warnings || []).map((t) => h('li', { class: 'warn' }, t)), ...(wb.notes || []).map((t) => h('li', {}, t))])
+        : null,
+      site.interval_id && !iv ? h('div', { class: 'small warn' }, 'The interval data for this site is not stored in this browser. Open the site file again to use it.') : null,
+    );
+  }
+
   function renderForm() {
     const jd = data.jurisdictions[site.jurisdiction];
     const utils = jd.utilities;
@@ -167,6 +229,7 @@ export function renderScreener(root, data, params) {
     const sugg = suggestTariff(tariffs, site.peak_kw);
     const lf = loadFactor(site.peak_kw, site.annual_kwh);
     formHost.replaceChildren(
+      workbenchBox(),
       h('fieldset', {}, h('legend', {}, h('span', { class: 'step' }, '1'), 'Site & utility'),
         h('div', { class: 'row2' }, field('Site name', h('input', { type: 'text', value: site.name || '', oninput: (e) => update({ name: e.target.value }) })), field('Site ID', h('input', { type: 'text', value: site.id || '', placeholder: 'optional', oninput: (e) => update({ id: e.target.value }) }))),
         field('Market', select('jurisdiction', data.manifest.jurisdictions.map((j) => [j.code, j.name]), { rerender: true })),
@@ -221,7 +284,7 @@ export function renderScreener(root, data, params) {
       return;
     }
     try {
-      analysis = analyzeSite(site, data, settings);
+      analysis = analyzeSite(site, data, settings, { interval: intervalStore.intervalFor(site.interval_id) });
     } catch (err) {
       resultHost.replaceChildren(h('div', { class: 'card' }, h('h3', {}, 'Could not analyze site'), h('pre', {}, String(err.stack || err))));
       return;
@@ -270,6 +333,7 @@ export function renderScreener(root, data, params) {
           configTable(a, sel),
           sel ? h('div', { class: 'btn-row no-print', style: { marginTop: '12px' } }, h('button', { class: 'btn primary small', type: 'button', onclick: () => { resultsTab = 'detail'; renderResults(); } }, `Value breakdown for ${sel.config.label} →`)) : null,
         ),
+        workbenchCheck(a, site),
       ),
       pane('detail', sel ? detailCard(a, sel) : h('div', { class: 'card empty' }, 'Select a configuration on the Sizing tab.')),
       pane('limits', limitsCard(a)),
@@ -489,6 +553,13 @@ export function renderScreener(root, data, params) {
           { name: 'site_limits.csv', data: toCsv(limitRows(a)) },
           { name: 'panel.csv', data: toCsv(panelRows(a)) },
         ]), 'application/zip') }, 'Download CSVs (.zip)'),
+        h('button', { class: 'btn', title: 'The workbench file with Atlas results added under “atlas”. Interval data and every workbench setting are kept unchanged.', onclick: () => {
+          const rec = intervalStore.get(site.interval_id);
+          const original = rec ? { ...rec.model, raw: rec.raw } : null;
+          const merged = mergeAtlasIntoWorkbench(original, atlasBlockFor(a, data));
+          const name = (merged.meta?.site || base).replace(/[^\w\-]+/g, '_');
+          download(`${name}-site.json`, JSON.stringify(merged, null, 2), 'application/json');
+        } }, intervalStore.get(site.interval_id) ? 'Download site file for the workbench' : 'Download workbench site file (.json)'),
         h('button', { class: 'btn', onclick: () => { addToPortfolio(site, data); toast('Saved to portfolio'); } }, 'Save to portfolio'),
         h('button', { class: 'btn', onclick: () => {
           const enc = btoa(unescape(encodeURIComponent(JSON.stringify(site))));
@@ -498,6 +569,7 @@ export function renderScreener(root, data, params) {
         h('button', { class: 'btn', onclick: () => window.print() }, 'Print site report'),
       ),
       h('p', { class: 'small muted', style: { marginTop: '8px' } }, 'Workbook sheets: Inputs, Configs, ValueStreams (long format), TariffParams (demand windows & rates for bill modeling), Programs, SiteLimits, Panel. See Methodology → Export schema.'),
+      h('p', { class: 'small muted' }, 'The workbench site file keeps everything the workbench saved (interval data included) and adds Atlas results under “atlas”: the recommended system, every configuration’s value and payback, tariff parameters, site limits and panel cautions. It opens in the workbench as before.'),
     );
   }
 
@@ -520,6 +592,42 @@ const FLAG_TEXT = {
   aggregator_required: 'via aggregator / CSP',
   duration_short: 'battery shorter than event duration',
 };
+
+/** The interval data's peak day as a profile (missing intervals filled from neighbours), for display/fallback. */
+function worstDayProfile(iv) {
+  let best = null;
+  for (const md of Object.values(iv.months)) for (const d of md.days) {
+    const mx = Math.max(...d.kw.filter(Number.isFinite));
+    if (!best || mx > best.mx) best = { mx, kw: d.kw };
+  }
+  if (!best) return null;
+  const out = best.kw.slice();
+  for (let i = 0; i < out.length; i++) if (!Number.isFinite(out[i])) out[i] = Number.isFinite(out[i - 1]) ? out[i - 1] : 0;
+  return out.map((x) => Math.round(x * 10) / 10);
+}
+
+/** Cross-check against the workbench: its selected system as valued here, and bill-implied $/kW. */
+function workbenchCheck(a, site) {
+  const wb = site.workbench;
+  if (!wb) return null;
+  const rows = [];
+  if (wb.selected) {
+    const match = wb.selectedConfigId ? a.results.find((r) => r.config.id === wb.selectedConfigId) : null;
+    const rank = match ? [...a.results].sort((x, y) => (y.finance.base.npv ?? -Infinity) - (x.finance.base.npv ?? -Infinity)).indexOf(match) + 1 : null;
+    rows.push(h('li', {}, h('strong', {}, 'Workbench selected system: '), `${wb.selected}. `,
+      match ? `Valued here at ${usd(match.totals.annual_base)}/yr (base), payback ${match.finance.base.simplePayback != null ? yrs(match.finance.base.simplePayback) : 'none'}, rank ${rank} of ${a.results.length} by NPV.` : 'Not in the Atlas product catalog (only the four standard units map), so it is not valued here.'));
+  }
+  if (wb.billRate && a.tariff) {
+    const charges = (a.tariff.demand_charges || []).filter((d) => typeof d.rate_usd_per_kw_month === 'number' && d.basis !== 'contract' && d.basis !== 'coincident');
+    const summer = charges.reduce((n, d) => n + d.rate_usd_per_kw_month, 0);
+    const diff = summer > 0 ? (wb.billRate - summer) / summer : null;
+    rows.push(h('li', { class: diff != null && Math.abs(diff) > 0.25 ? 'warn' : '' }, h('strong', {}, 'Bills: '), `${wb.billMonths} months of bills average $${num(wb.billRate, 2)} per billed kW. The selected rate’s demand charges add up to $${num(summer, 2)}/kW if every element hits the same peak (it varies by month and window). `,
+      diff != null && Math.abs(diff) > 0.25 ? 'That is a large gap: confirm the rate class, or enter the bill’s demand rates in Rates & programs.' : 'Broadly consistent.'));
+  }
+  if (wb.drUsdPerKwYr) rows.push(h('li', {}, h('strong', {}, 'Workbench DR estimate: '), `$${num(wb.drUsdPerKwYr)}/kW-yr. Atlas values the territory’s programs individually (Value breakdown).`));
+  if (!rows.length) return null;
+  return h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h2', {}, 'Workbench cross-check'), h('span', { class: 'small muted' }, site.workbench_file || '')), h('ul', { class: 'wb-check' }, rows));
+}
 
 function avgShave(r) {
   const d = r.streams.filter((s) => s.category === 'demand_charge');
@@ -573,8 +681,10 @@ export function accuracyItems(a, data) {
   const lowTariff = a.tariff?.confidence === 'low' && (a.tariff.demand_charges || []).some((d) => typeof d.rate_usd_per_kw_month === 'number' && !d.overridden);
   if (a.tariff) add(!lowTariff, lowTariff ? 'Tariff rates are low-confidence' : `Tariff confidence: ${a.tariff.confidence || 'n/a'}`, lowTariff ? 'Confirm the demand charges against a recent customer bill and override them in the Rate panel.' : 'Rates come from a primary source or two consistent sources.', lowTariff ? 'rates' : null);
   add(!placeholder, placeholder ? 'Installed cost is a placeholder' : 'Installed costs entered', placeholder ? 'Payback, NPV and the recommended size use $600/kWh. Enter your actual costs.' : 'Economics use your product costs.', placeholder ? 'settings' : null);
-  const hasInterval = Array.isArray(s.custom_profile) || Object.keys(s.shave_kw_override || {}).length > 0;
-  add(hasInterval, hasInterval ? 'Interval data applied' : 'Demand savings use a generic load shape', hasInterval ? 'Peak-day profile or shave kW from your model is in use.' : 'Paste a peak-day profile (step 2) or enter “Shave kW (your model)” for the configurations you are considering.', null);
+  const iv = a.interval;
+  const hasInterval = !!iv || Array.isArray(s.custom_profile) || Object.keys(s.shave_kw_override || {}).length > 0;
+  if (iv) add(iv.monthsCovered >= 12, iv.monthsCovered >= 12 ? 'Interval data applied (all days, every month)' : `Interval data covers ${iv.monthsCovered} of 12 months`, `${iv.start} to ${iv.end}, ${iv.days} days. Each month’s demand caps are checked against every day of that month.${iv.monthsCovered < 12 ? ' Missing months use the generic load shape.' : ''}`, null);
+  else add(hasInterval, hasInterval ? 'Peak-day profile applied' : 'Demand savings use a generic load shape', hasInterval ? 'A single peak-day profile or shave kW from your model is in use. A workbench site file adds every day of every month.' : 'Open the workbench site file (top of the form), paste a peak-day profile (step 2), or enter “Shave kW (your model)”.', null);
   const hasTags = (a.tariff?.coincident_peak_charges || []).some((c) => typeof c.est_value_usd_per_kw_year === 'number');
   if (hasTags) add(s.supply_contract && s.supply_contract !== 'unknown', s.supply_contract && s.supply_contract !== 'unknown' ? 'Supply contract set' : 'Supply contract unknown', s.supply_contract && s.supply_contract !== 'unknown' ? 'Peak-tag savings follow the contract’s pass-through terms.' : 'Peak-tag savings are held in upside until you set the contract (step 5).', null);
   const elec = s.service_voltage > 0 && s.service_amps > 0 && (s.busbar_amps > 0 || s.main_breaker_amps > 0);

@@ -9,6 +9,7 @@ import { renderSettings } from './views/settings.js';
 import { renderOverview } from './views/overview.js';
 import { renderHealth } from './views/health.js';
 import { requireSignIn, signOut } from './access.js';
+import { intervalStore } from './interval-store.js';
 
 const app = document.getElementById('app');
 
@@ -93,6 +94,7 @@ function initTheme() {
   who.replaceChildren(h('span', { class: 'email' }, session.email), h('button', { class: 'icon-btn', type: 'button', title: `Signed in as ${session.email}`, onclick: signOut }, 'Sign out'));
   try {
     DATA = await loadData();
+    await intervalStore.init(); // imported workbench interval data (IndexedDB); never throws
     document.getElementById('data-version').textContent = ` Data version ${DATA.manifest.data_version} (updated ${DATA.manifest.updated}).`;
   } catch (err) {
     app.replaceChildren(

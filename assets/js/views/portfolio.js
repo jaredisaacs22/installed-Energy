@@ -1,6 +1,7 @@
 // Portfolio: saved sites ranked side by side, bulk CSV import, combined export.
 import { h, usd, num, yrs, sevBadge, storage, toast, badge } from '../ui.js';
 import { analyzeSite } from '../engine/index.js';
+import { intervalStore } from '../interval-store.js';
 import { settingsStore } from '../app.js';
 import { normalizeSite, defaultSite } from './screener.js';
 import { xlsx, toCsv, zip, download, parseCsv, configRows, streamRows, limitRows, programRows, panelRows, README_ROWS } from '../export.js';
@@ -100,7 +101,7 @@ export function renderPortfolio(root, data) {
   function compute() {
     analyses = sites.map((s) => {
       try {
-        return analyzeSite(normalizeSite(s, data), data, settings);
+        return analyzeSite(normalizeSite(s, data), data, settings, { interval: intervalStore.intervalFor(s.interval_id) });
       } catch (err) {
         return { site: s, error: String(err) };
       }

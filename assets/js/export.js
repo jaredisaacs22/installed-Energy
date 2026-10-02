@@ -429,3 +429,57 @@ export function parseCsv(text) {
   const head = rows[0].map((h) => h.trim());
   return rows.slice(1).map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] ?? '').trim()])));
 }
+
+/**
+ * Atlas results for the workbench site file (stored under `atlas`; the workbench keeps unknown keys).
+ * Values are year-1 base case unless noted. Schema documented in docs/EXPORT-SCHEMA.md.
+ */
+export function atlasBlockFor(a, data) {
+  const r = a.recommended;
+  const cfg = (x) => ({
+    config_id: x.config.id,
+    label: x.config.label,
+    kw: x.config.kw,
+    kwh: x.config.kwh,
+    usable_kwh_delivered: x.config.usableKwh ?? null,
+    annual_value_base_usd: roundTo(x.totals.annual_base),
+    annual_value_upside_usd: roundTo(x.totals.annual_upside),
+    upfront_base_usd: roundTo(x.totals.upfront_base),
+    installed_cost_usd: x.config.installedCostUsd,
+    simple_payback_yr: x.finance.base.simplePayback,
+    npv_usd: roundTo(x.finance.base.npv),
+    constraint_status: x.constraints.status,
+    programs_not_enrolled: x.strategy?.skipped_labels || [],
+  });
+  return {
+    schema: 'atlas.v1',
+    generated_at: new Date().toISOString(),
+    data_version: data.manifest.data_version,
+    site: {
+      name: a.site.name || null,
+      market: a.site.jurisdiction,
+      utility_id: a.site.utility_id,
+      tariff_id: a.tariff?.id || null,
+      tariff_name: a.tariff?.name || null,
+      peak_kw: a.site.peak_kw,
+      annual_kwh: a.site.annual_kwh,
+      service_voltage: a.site.service_voltage,
+      supply_contract: a.site.supply_contract,
+    },
+    load_basis: a.interval ? `interval data ${a.interval.start} to ${a.interval.end} (${a.interval.days} days)` : 'design-day load shape',
+    rates_missing: a.missing || [],
+    recommended: r
+      ? {
+          ...cfg(r),
+          value_streams: r.streams.map((s) => ({ label: s.label, category: s.category, scenario: s.scenario, annual_usd: roundTo(s.annual_usd), upfront_usd: roundTo(s.upfront_usd), kw_credited: s.kw_used != null ? roundTo(s.kw_used, 1) : null, confidence: s.confidence, basis: s.basis_text })),
+        }
+      : null,
+    configurations: a.results.map(cfg),
+    tariff_params: tariffRows(a),
+    site_limits: limitRows(a),
+    panel: (a.panel || []).filter((n) => n.severity === 'critical' || n.severity === 'caution').map((n) => ({ severity: n.severity, title: n.title })),
+    disclaimer: 'Screening estimates, not investment-grade. Check confidence and last-verified dates before decisions.',
+  };
+}
+
+const roundTo = (x, d = 0) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 10 ** d) / 10 ** d);

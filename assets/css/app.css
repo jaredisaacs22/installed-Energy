@@ -1,13 +1,14 @@
-/* BESS Incentive Atlas — light theme, Sunbelt Rentals–inspired palette.
-   Brand tokens are defined once here. --gold is Sunbelt's published brand gold (#FED203, Brandfetch);
-   --green approximates "Sunbelt Green" — replace with the official hex from brand guidelines if available. */
+/* BESS Incentive Atlas — light theme in Sunbelt Rentals brand colors.
+   Brand tokens match the Sunbelt BESS Site Analysis Workbench: Sunbelt Green #008545 (primary),
+   Forest #00653E, Steel #49525E, Concrete #939598, Sunbelt Yellow #FED203 (sparing accent).
+   The brand typeface (DIN Pro) is used when installed locally; font files are not distributed here. */
 :root {
   color-scheme: light;
-  --green: #00703c;
-  --green-dark: #005a30;
-  --green-deep: #004625;
-  --green-tint: #e7f3ec;
-  --green-tint-2: #f3f9f5;
+  --green: #008545;
+  --green-dark: #00653e;
+  --green-deep: #004d2f;
+  --green-tint: #e9f4ee;
+  --green-tint-2: #f4faf6;
   --gold: #fed203;
   --gold-dark: #c99400;
   --gold-tint: #fff7cf;
@@ -17,12 +18,12 @@
   --surface: #ffffff;
   --surface-2: #f6f7f6;
   --surface-3: #eef0ef;
-  --ink: #17201b;
-  --ink-2: #47524c;
-  --muted: #6a756f;
-  --line: #e3e7e4;
+  --ink: #1a1d21;
+  --ink-2: #49525e;
+  --muted: #6b7480;
+  --line: #dfe3e7;
   --line-strong: #c8cfcb;
-  --focus: #00703c;
+  --focus: #008545;
 
   --good: #1e8e3e;
   --good-ink: #146c2e;
@@ -36,16 +37,17 @@
   --info-ink: #1d5ea8;
   --info-tint: #eaf2fc;
 
-  /* Chart series (validated: CVD-safe adjacent pairs on white) */
-  --s1: #00703c;
+  /* Chart series, in fixed order (validated: lightness band, chroma floor, CVD and normal-vision
+     separation all pass; gold is < 3:1 on white, relieved by the legend and the data table) */
+  --s1: #008545;
   --s2: #c99400;
   --s3: #2a78d6;
-  --s4: #8b7d1a;
-  --s5: #b4507a;
+  --s4: #e8622f;
+  --s5: #0a9396;
 
   --shadow: 0 1px 2px rgba(23, 32, 27, 0.06), 0 2px 8px rgba(23, 32, 27, 0.04);
   --radius: 10px;
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font: 'DIN Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -327,3 +329,13 @@ input[aria-invalid='true'] { border-color: var(--critical); }
 /* Compact select inside a table cell (e.g. a program's event window) */
 .inline-field { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--ink-2, #4a5560); }
 .inline-field select { width: auto; padding: 3px 8px; font-size: 12.5px; }
+
+/* Workbench site-file import */
+.wb-box { border: 1px dashed var(--line-strong); border-radius: 8px; padding: 12px; margin-bottom: 14px; background: var(--surface-2); }
+.wb-box.on { border-style: solid; border-color: #b6dcc3; background: var(--green-tint-2); }
+.wb-head { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.wb-head > div:first-child { min-width: 0; flex: 1 1 180px; }
+.wb-notes { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); }
+.wb-notes li.warn, .wb-check li.warn, .wb-box .warn { color: var(--warning-ink); }
+.wb-check { margin: 0; padding-left: 18px; }
+.wb-check li { margin: 4px 0; }

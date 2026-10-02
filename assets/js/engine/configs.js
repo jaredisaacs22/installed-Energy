@@ -9,6 +9,10 @@ export function buildConfig(items, products) {
   const clean = items.filter((it) => it.count > 0 && byId[it.productId]);
   let kw = 0;
   let kwh = 0;
+  let usable = 0;
+  let chargeKw = 0;
+  let effWeighted = 0;
+  let specKnown = true;
   let units = 0;
   let cost = 0;
   let costKnown = true;
@@ -16,6 +20,12 @@ export function buildConfig(items, products) {
     const p = byId[it.productId];
     kw += p.kw * it.count;
     kwh += p.kwh * it.count;
+    const u = typeof p.usable_kwh === 'number' ? p.usable_kwh : null;
+    if (u == null || typeof p.eff_charge !== 'number' || typeof p.eff_discharge !== 'number') specKnown = false;
+    // Usable kWh is stored energy; what reaches the meter is usable × discharge efficiency (workbench convention).
+    usable += (u ?? 0) * (p.eff_discharge ?? 1) * it.count;
+    chargeKw += (typeof p.charge_kw === 'number' ? p.charge_kw : p.kw) * it.count;
+    effWeighted += (u ?? 0) * (p.eff_discharge ?? 1) * it.count * (p.eff_charge ?? 1) * (p.eff_discharge ?? 1);
     units += it.count;
     const unitCost = productCost(p);
     if (unitCost == null) costKnown = false;
@@ -31,6 +41,11 @@ export function buildConfig(items, products) {
     kwh,
     units,
     durationHr: kw > 0 ? kwh / kw : 0,
+    // Product-level specs: usableKwh = AC energy deliverable from full (stored usable × discharge
+    // efficiency), charge kW, round-trip efficiency. null = use the global usable_fraction / rte_ac.
+    usableKwh: specKnown && units > 0 ? usable : null,
+    chargeKw: units > 0 ? chargeKw : 0,
+    rte: specKnown && usable > 0 ? effWeighted / usable : null,
     installedCostUsd: costKnown && units > 0 ? cost : null,
   };
 }

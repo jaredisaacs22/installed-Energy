@@ -58,3 +58,22 @@ Program id, status, eligibility for the recommended config (`yes` / `via aggrega
 
 ## Panel
 `source` (`site review` | `market briefing`), `persona`, `severity`, `title`, `text`.
+
+## Workbench site file (`<site>-site.json`)
+
+**Export → Download site file for the workbench** writes the Site Analysis Workbench's own file format. Every key the workbench saved is kept unchanged, including `raw` (interval data), `meta`, `tariffs`, `sizing` and any sibling-tool keys. Atlas adds one key, `atlas` (schema `atlas.v1`). The workbench keeps unknown keys when it opens and re-saves a file, so the block survives round trips.
+
+| Field | Contents |
+|---|---|
+| `schema`, `generated_at`, `data_version` | Format id, timestamp, Atlas data version |
+| `site` | Market, utility, tariff id/name, peak kW, annual kWh, voltage, supply contract |
+| `load_basis` | `interval data <start> to <end> (<days> days)` or `design-day load shape` |
+| `rates_missing` | Tariff elements without a rate (excluded from savings) |
+| `recommended` | Config id/label, kW, kWh, deliverable kWh, base/upside annual value, upfront incentives, installed cost, payback, NPV, constraint status, programs not enrolled, and `value_streams` (label, category, case, annual $, upfront $, kW credited, confidence, calculation basis) |
+| `configurations` | The same summary for every configuration |
+| `tariff_params` | Same rows as the TariffParams sheet |
+| `site_limits` | Same rows as the SiteLimits sheet |
+| `panel` | Critical and caution notes (severity, title) |
+
+Without an imported file, the button writes a minimal workbench file (meta plus `atlas`) that the workbench can open.
+

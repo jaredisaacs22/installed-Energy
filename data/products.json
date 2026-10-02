@@ -5,40 +5,64 @@
    "label": "30 kW / 150 kWh",
    "kw": 30,
    "kwh": 150,
+   "usable_kwh": 130.2,
+   "charge_kw": 30,
+   "eff_charge": 0.94,
+   "eff_discharge": 0.94,
    "installed_cost_usd_per_kwh": 600,
    "cost_is_placeholder": true,
    "footprint_sqft": null,
-   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER — enter your actual cost. Footprint unknown — enter from the spec sheet incl. clearances.",
+   "model": "Viridi RPSLinkEX 30 kW / 150 kWh",
+   "spec_source": "Sunbelt BESS Site Analysis Workbench unit catalog (Viridi spec: usable kWh ≈ 86.8% of nameplate, 94% charge / 94% discharge efficiency)."
   },
   {
    "id": "B65-200",
    "label": "65 kW / 200 kWh",
    "kw": 65,
    "kwh": 200,
+   "usable_kwh": 173.6,
+   "charge_kw": 40,
+   "eff_charge": 0.94,
+   "eff_discharge": 0.94,
    "installed_cost_usd_per_kwh": 600,
    "cost_is_placeholder": true,
    "footprint_sqft": null,
-   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER — enter your actual cost. Footprint unknown — enter from the spec sheet incl. clearances.",
+   "model": "Viridi RPSLinkEX 65 kW / 200 kWh",
+   "spec_source": "Sunbelt BESS Site Analysis Workbench unit catalog (Viridi spec: usable kWh ≈ 86.8% of nameplate, 94% charge / 94% discharge efficiency)."
   },
   {
    "id": "B200-418",
    "label": "200 kW / 418 kWh",
    "kw": 200,
    "kwh": 418,
+   "usable_kwh": 362.8,
+   "charge_kw": 200,
+   "eff_charge": 0.94,
+   "eff_discharge": 0.94,
    "installed_cost_usd_per_kwh": 600,
    "cost_is_placeholder": true,
    "footprint_sqft": null,
-   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+   "notes": "Rating to confirm: the product brief lists 200 kW, the site workbench catalog lists US-BESS 230 kW / 418 kWh. Usable kWh assumes the catalog's ~86.8% depth of discharge (the real US-BESS figure was not supplied). Installed cost is a $600/kWh PLACEHOLDER — enter your actual cost. Footprint unknown — enter from the spec sheet incl. clearances.",
+   "model": "US-BESS 418 kWh unit (rating to confirm: 200 kW per product brief, 230 kW in the site workbench catalog)",
+   "spec_source": "Sunbelt BESS Site Analysis Workbench unit catalog (Viridi spec: usable kWh ≈ 86.8% of nameplate, 94% charge / 94% discharge efficiency)."
   },
   {
    "id": "B200-600",
    "label": "200 kW / 600 kWh",
    "kw": 200,
    "kwh": 600,
+   "usable_kwh": 520,
+   "charge_kw": 200,
+   "eff_charge": 0.94,
+   "eff_discharge": 0.94,
    "installed_cost_usd_per_kwh": 600,
    "cost_is_placeholder": true,
    "footprint_sqft": null,
-   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER — enter your actual cost. Footprint unknown — enter from the spec sheet incl. clearances.",
+   "model": "Viridi RPSLinkEX 200 kW / 600 kWh",
+   "spec_source": "Sunbelt BESS Site Analysis Workbench unit catalog (Viridi spec: usable kWh ≈ 86.8% of nameplate, 94% charge / 94% discharge efficiency)."
   }
  ]
 }

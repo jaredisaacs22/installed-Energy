@@ -126,6 +126,7 @@ export function eventDayReduction(profile, components, block, eventKw, battery =
   if (!battery || !(battery.usableKwh > eventKwh + 1e-9) || !(battery.kw > 0)) return out;
   const opt = optimizeShave({ kw: net, dtHours: dt }, components, {
     kw: battery.kw,
+    chargeKw: battery.chargeKw,
     usableKwh: battery.usableKwh - eventKwh,
     rte: battery.rte,
     kwLimit: eventD.map((d) => Math.max(0, battery.kw - d)),
@@ -140,7 +141,8 @@ export function eventDayReduction(profile, components, block, eventKw, battery =
  * Jointly optimize demand reduction across several demand-charge components on one design day.
  *
  * components: [{ id, rate, window: {start,end} | null }]  (rate = $/kW-month; window null = all hours)
- * Battery limits: kw (discharge & charge), usableKwh (AC energy deliverable), rte (for recharge energy).
+ * Battery limits: kw (discharge), chargeKw (charge; defaults to kw), usableKwh (AC energy deliverable),
+ * rte (for recharge energy).
  * Greedy marginal-value search: repeatedly lowers the cap of the component with the best $/kWh until the
  * battery runs out of kW, energy, or recharge room (recharging must not create a new peak), or the next
  * step saves less than the monthly cost of the extra round-trip losses (energyCostPerKwhMonth).
@@ -149,7 +151,8 @@ export function eventDayReduction(profile, components, block, eventKw, battery =
  *
  * Returns { deltas: {id: kW}, energyKwh, maxDischargeKw, feasibleRecharge }
  */
-export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, steps = 400, energyCostPerKwhMonth = 0, kwLimit = null, noCharge = null, extraChargeKwh = 0 }) {
+export function optimizeShave(profile, components, { kw, chargeKw = null, usableKwh, rte = 0.85, steps = 400, energyCostPerKwhMonth = 0, kwLimit = null, noCharge = null, extraChargeKwh = 0 }) {
+  const ck = chargeKw > 0 ? chargeKw : kw;
   const P = profile.kw;
   const dt = profile.dtHours;
   const n = P.length;
@@ -193,8 +196,8 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       comps.forEach((c, k) => {
         if (c.mask[i]) cap = Math.min(cap, c.peak - deltas[k]);
       });
-      const headroom = cap === Infinity ? kw : Math.max(0, cap - P[i]);
-      room += Math.min(kw, headroom) * dt;
+      const headroom = cap === Infinity ? ck : Math.max(0, cap - P[i]);
+      room += Math.min(ck, headroom) * dt;
     }
     const needCharge = (energy + extraChargeKwh) / rte;
     return { energy, maxD, overLimit, rechargeOk: room + 1e-9 >= needCharge, discharge };
@@ -239,4 +242,93 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
   result.maxDischargeKw = current.maxD;
   result.feasibleRecharge = current.rechargeOk;
   return result;
+}
+
+// ---- Interval data: hold monthly demand caps on every day of the month ----
+
+/** Peak of each component's window on a profile: {id: kW}. */
+export function componentPeaks(profile, components) {
+  const out = {};
+  for (const c of components) {
+    const mask = windowMask(profile.kw.length, profile.dtHours, c.window);
+    let pk = 0;
+    profile.kw.forEach((v, i) => {
+      if (mask[i] && Number.isFinite(v) && v > pk) pk = v;
+    });
+    out[c.id] = pk;
+  }
+  return out;
+}
+
+/** Per-interval cap = min over components covering the interval of (component peak − reduction). */
+export function capsAt(n, dtHours, components, peaks, deltas, scale = 1) {
+  const caps = new Array(n).fill(Infinity);
+  for (const c of components) {
+    if (!(c.rate > 0)) continue;
+    const mask = windowMask(n, dtHours, c.window);
+    const cap = peaks[c.id] - scale * (deltas[c.id] || 0);
+    for (let i = 0; i < n; i++) if (mask[i] && cap < caps[i]) caps[i] = cap;
+  }
+  return caps;
+}
+
+/** Discharge needed to hold `caps` on one day, and whether the battery can do it and recharge. */
+export function dayUnderCaps(dayKw, caps, dtHours, battery) {
+  let energy = 0;
+  let maxD = 0;
+  let room = 0;
+  const ck = battery.chargeKw > 0 ? battery.chargeKw : battery.kw;
+  for (let i = 0; i < dayKw.length; i++) {
+    const p = dayKw[i];
+    if (!Number.isFinite(p)) continue; // missing interval: no discharge needed, no recharge room assumed
+    const d = caps[i] === Infinity ? 0 : Math.max(0, p - caps[i]);
+    if (d > 0) {
+      energy += d * dtHours;
+      if (d > maxD) maxD = d;
+    } else room += Math.min(ck, caps[i] === Infinity ? ck : Math.max(0, caps[i] - p)) * dtHours;
+  }
+  const ok = maxD <= battery.kw + 1e-9 && energy <= battery.usableKwh + 1e-9 && room + 1e-9 >= energy / (battery.rte || 1);
+  return { energy, maxD, ok };
+}
+
+/**
+ * Starting from reductions found on the month's envelope (a conservative worst case), deepen them
+ * proportionally as far as the caps still hold on every actual day of the month (power, energy and
+ * recharge without a new peak). If even the starting caps fail on some day, shrink instead.
+ * Returns { deltas, scale }.
+ */
+export function deepenAcrossDays(days, envelope, components, deltas, battery) {
+  const n = envelope.kw.length;
+  const dt = envelope.dtHours;
+  const peaks = componentPeaks(envelope, components);
+  const holds = (s) => {
+    const caps = capsAt(n, dt, components, peaks, deltas, s);
+    return days.every((d) => dayUnderCaps(d.kw, caps, dt, battery).ok);
+  };
+  const active = components.filter((c) => c.rate > 0 && (deltas[c.id] || 0) > 0);
+  if (!active.length) return { deltas: { ...deltas }, scale: 1 };
+  let sMax = Math.min(10, ...active.map((c) => peaks[c.id] / deltas[c.id]));
+  let lo;
+  let hi;
+  if (holds(1)) {
+    lo = 1;
+    hi = sMax;
+    if (holds(hi)) lo = hi;
+  } else {
+    lo = 0;
+    hi = 1;
+  }
+  for (let k = 0; k < 14 && hi - lo > 1e-3; k++) {
+    const mid = (lo + hi) / 2;
+    if (holds(mid)) lo = mid;
+    else hi = mid;
+  }
+  const out = {};
+  for (const c of components) out[c.id] = (deltas[c.id] || 0) * lo;
+  return { deltas: out, scale: lo };
+}
+
+/** Energy (kWh) discharged across `days` to hold `caps`. */
+export function energyUnderCaps(days, caps, dtHours, battery) {
+  return days.reduce((s, d) => s + dayUnderCaps(d.kw, caps, dtHours, battery).energy, 0);
 }
