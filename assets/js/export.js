@@ -225,6 +225,7 @@ export function configRows(a) {
     irr_base: r.finance.base.irr,
     simple_payback_upside_yr: r.finance.upside.simplePayback,
     npv_upside_usd: r.finance.upside.npv,
+    programs_not_enrolled: r.strategy ? r.strategy.skipped_labels.join(' | ') : '',
     constraint_status: r.constraints.status,
     constraint_issues: r.constraints.checks
       .filter((c) => c.severity === 'critical' || c.severity === 'caution')
@@ -344,9 +345,17 @@ export function panelRows(a) {
 
 export function inputRows(a) {
   const s = a.site;
-  const rows = Object.entries(s)
-    .filter(([k, v]) => typeof v !== 'object' || v === null)
-    .map(([k, v]) => ({ section: 'site', key: k, value: v ?? '' }));
+  const rows = [];
+  for (const [k, v] of Object.entries(s)) {
+    if (Array.isArray(v)) rows.push({ section: 'site', key: k, value: v.join(',') });
+    else if (v && typeof v === 'object') {
+      // Nested user entries (bill rate overrides, program overrides, event windows, shave overrides).
+      for (const [k2, v2] of Object.entries(v)) {
+        if (v2 && typeof v2 === 'object') for (const [k3, v3] of Object.entries(v2)) rows.push({ section: 'site', key: `${k}.${k2}.${k3}`, value: v3 ?? '' });
+        else rows.push({ section: 'site', key: `${k}.${k2}`, value: v2 ?? '' });
+      }
+    } else rows.push({ section: 'site', key: k, value: v ?? '' });
+  }
   for (const [k, v] of Object.entries(a.assumptions)) rows.push({ section: 'assumption', key: k, value: v });
   rows.push({ section: 'meta', key: 'export_schema_version', value: EXPORT_SCHEMA_VERSION });
   rows.push({ section: 'meta', key: 'generated_at', value: new Date().toISOString() });

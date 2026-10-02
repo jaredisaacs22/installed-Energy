@@ -1,0 +1,2189 @@
+{
+ "entries": [
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 12.31,
+   "confidence": "medium",
+   "evidence": "Con Ed EV Phase-In page, SC9 Rate 2 Low Tension, summer (Jun-Sep), Mon-Fri 8am-6pm demand delivery: Tier 1 $0, Tier 2 $3.08, Tier 3 $6.15, Tier 4 $9.23/kW. Con Ed FAQ / JU filing: Tier 4 (LF 20-25%) = 75% traditional demand charge + 25% TOU energy; customers at LF >=25% move to the standard rate. Standard = 9.23 / 0.75 = 12.307 -> $12.31/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs (Tier 4 = 25% TOU energy / 75% traditional demand)",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    },
+    {
+     "title": "NY PSC Case 22-E-0236 EV Phase-In Rate filing (Tier 4 collects 75% via demand charges)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B2043A628-EC7D-4064-9F32-662D82598760%7D"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 24.79,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 2 LT summer Mon-Fri 8am-10pm: Tier 2 $6.20, Tier 3 $12.39, Tier 4 $18.59/kW. Standard = 18.59 / 0.75 = 24.787 -> $24.79/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].demand_charges[2].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 22.39,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 2 LT summer all hours of all days: Tier 2 $5.60, Tier 3 $11.19, Tier 4 $16.79/kW. Standard = 16.79 / 0.75 = 22.387 -> $22.39/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].demand_charges[3].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 21.35,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 2 LT winter (Oct-May) Mon-Fri 8am-10pm: Tier 4 $16.01/kW. Standard = 16.01 / 0.75 = 21.347 -> $21.35/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].demand_charges[4].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 6.43,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 2 LT winter all hours of all days: Tier 4 $4.82/kW. Standard = 4.82 / 0.75 = 6.427 -> $6.43/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].applicability.min_kw",
+   "action": "changed",
+   "old": null,
+   "new": 1500,
+   "confidence": "medium",
+   "evidence": "Rate II applies to customers whose monthly maximum demand exceeds 1,500 kW in any annual period ending September 30 (or previously billed on Rate II, or new customers estimated above 1,500 kW). SC 9 Rate III (Voluntary TOD) is for customers above 10 kW and under 1,500 kW.",
+   "sources": [
+    {
+     "title": "Con Edison Electric Tariff (PSC 10) service classifications, August 2023",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/psc-10/tariff/sc-202308.pdf"
+    },
+    {
+     "title": "Nectar: Con Edison Rate Optimization Guide",
+     "url": "https://nectarclimate.com/rates/consolidated-edison-coned"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate1].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 48.67,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 1 LT summer (Jun-Sep) demand delivery: Tier 1 $0, Tier 2 $12.17, Tier 3 $24.33, Tier 4 $36.50/kW. Standard = 36.50 / 0.75 = 48.667 -> $48.67/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 1 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate1].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 39.27,
+   "confidence": "medium",
+   "evidence": "SC9 Rate 1 LT winter (Oct-May) Tier 4 $29.45/kW. Standard = 29.45 / 0.75 = 39.267 -> $39.27/kW.",
+   "sources": [
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 1 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate1].applicability.max_kw",
+   "action": "changed",
+   "old": null,
+   "new": 1500,
+   "confidence": "medium",
+   "evidence": "Rate II is mandatory above 1,500 kW. Customers between 10 kW and 1,500 kW are on Rate I or can elect Rate III (Voluntary TOD).",
+   "sources": [
+    {
+     "title": "Con Edison Electric Tariff (PSC 10) service classifications, August 2023",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/psc-10/tariff/sc-202308.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "market_prices[+]",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "Search summary of msccap-202606: SC 9 Rate I NYC $14.32/kW, Rate II $19.26/kW, Rate III $14.63/kW. The charge applies Mon-Fri 8 AM-6 PM for June, July, August and September.",
+   "sources": [
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, June 2026",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202606.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "programs[id=coned-csrp].valuation.rate",
+   "action": "confirmed",
+   "old": 18,
+   "new": 18,
+   "confidence": "high",
+   "evidence": "CSRP reservation rate $18/kW-month (2026 guidelines + CPower 2026 snapshot).",
+   "sources": [
+    {
+     "title": "Con Edison Demand Response (Rider T) Program Guidelines, 2026 Capability Period",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-guidelines.pdf"
+    },
+    {
+     "title": "CPower: Con Ed CSRP snapshot 2026",
+     "url": "https://cpowerenergy.com/wp-content/uploads/2024/04/NYISO_CSRP-ConEd_Snapshot-2026-1.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "programs[id=coned-dlrp].valuation.tiers",
+   "action": "confirmed",
+   "old": "Tier 1 $18, Tier 2 $25 per kW-month; $1/kWh performance",
+   "new": "Tier 1 $18, Tier 2 $25 per kW-month; $1/kWh performance (both tiers)",
+   "confidence": "high",
+   "evidence": "DLRP Tier 1 $18/kW-month, Tier 2 $25/kW-month. Performance payments for the Reservation option are $1/kWh in both tiers. New detail: in a capability period with 5 or more Contingency/Immediate events, the reservation payment rises by $5/kW-month, starting in the month in which the 5th cumulative event occurs in the network.",
+   "sources": [
+    {
+     "title": "Con Edison Demand Response (Rider T) Program Guidelines, 2026 Capability Period",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-guidelines.pdf"
+    },
+    {
+     "title": "Con Edison DR Incentive Rates Overview",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-example.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "programs[id=coned-dlrp].eligibility.min_kw",
+   "action": "confirmed",
+   "old": 50,
+   "new": 50,
+   "confidence": "high",
+   "evidence": "Customers agree to provide at least 50 kW of load reduction (applies to Rider T participation; consistent with CSRP min_kw 50 in file).",
+   "sources": [
+    {
+     "title": "Con Edison Demand Response (Rider T) Program Guidelines, 2026 Capability Period",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-guidelines.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "programs[id=nyserda-retail-storage-nyc].valuation.rate",
+   "action": "confirmed",
+   "old": 125,
+   "new": 125,
+   "confidence": "high",
+   "evidence": "NYC Retail MWh Blocks: Block 6 (New) is 300 MW / 1,125 MWh at $125/kWh, with $140,625,000 in funding. Blocks 2-5 are closed. MWh remaining in Block 6 was not shown in the search summary.",
+   "sources": [
+    {
+     "title": "NYSERDA Retail Incentive Dashboard",
+     "url": "https://www.nyserda.ny.gov/All-Programs/Energy-Storage-Program/Developers-and-Contractors/Residential-and-Retail-Storage-Incentives/Retail-Incentive-Dashboard"
+    },
+    {
+     "title": "NYSERDA Residential and Retail Energy Storage Incentive Program Manual (April 2026)",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/Residential-and-Retail-Energy-Storage-Program-Manual.pdf"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "programs[id=nyc-storage-property-tax-abatement].valuation",
+   "action": "confirmed",
+   "old": "30% of eligible cost, cap $250,000, 4 years",
+   "new": "30% of installation cost or $250,000, whichever is lower, over 4 years starting the July 1 after DOB approval (up to $62,500/yr)",
+   "confidence": "high",
+   "evidence": "Benefit equals 30% of solar PV and/or BESS installation cost or $250,000, whichever is lower, for systems effective 2024-01-01 to 2034-12-31, applied over 4 years (up to $62,500/yr). Other summaries say properties are eligible 'prior to January 1, 2036'. Nonprofit and income-restricted affordable housing owners can get a direct-pay check from DOF. Expiration: the placed-in-service window appears to close 2034-12-31, and the 2036-01-01 date is likely the application or commencement deadline. Recommend stating both. Pending 2025 bills (A5959, S4272/S4272A) were not checked for enactment.",
+   "sources": [
+    {
+     "title": "NYC Mayor's Office of Climate: Solar and Electric Storage System Property Tax Abatement fact sheet",
+     "url": "https://www.nyc.gov/assets/climate/downloads/pdfs/Solar-and-Electric-Storage-System-Property-Tax-Abatement-FactSheet.pdf"
+    },
+    {
+     "title": "NY RPTL section 499-bbbb",
+     "url": "https://www.nysenate.gov/legislation/laws/RPT/499-BBBB"
+    },
+    {
+     "title": "NY Senate Bill 2023-S6640B",
+     "url": "https://www.nysenate.gov/legislation/bills/2023/S6640/amendment/B"
+    }
+   ],
+   "panelist": "NYC/Con Edison C&I rate & DR verifier"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate56].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 7.91,
+   "confidence": "medium",
+   "evidence": "Two separate search summaries of the May 1, 2026 CT rate summary for Rate 56 (Intermediate TOD, non-manufacturers, 350-<1,000 kW): 'Distribution Demand Charge per kVA: $7.91'; 'Transmission Demand Charge per kVA: $14.93'. Rate 55 (manufacturers) shown as $6.65 / $12.00 per kVA.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 56 tariff (Intermediate TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-56-ct.pdf?sfvrsn=e941c762_62"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate56].demand_charges[0].basis",
+   "action": "changed",
+   "old": "tou_window",
+   "new": "ratchet",
+   "confidence": "medium",
+   "evidence": "Rate 56 tariff (search summary): 'The distribution demand shall be the highest average 30-minute kilovolt-ampere (kVA) demand in the current month or the preceding eleven (11) months.'",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 56 tariff (Intermediate TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-56-ct.pdf?sfvrsn=e941c762_62"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate56].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 14.93,
+   "confidence": "medium",
+   "evidence": "Rate summary search: Rate 56 'Transmission Demand Charge per kVA: $14.93'. Tariff: 'production/transmission demand shall be the highest average 30-minute kVA demand recorded during the billing month in the on-peak hours.'",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 56 tariff (Intermediate TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-56-ct.pdf?sfvrsn=e941c762_62"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate56].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "Rate 56 tariff: distribution demand = highest average 30-minute kVA demand in the current month or the preceding eleven months.",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 56 tariff (Intermediate TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-56-ct.pdf?sfvrsn=e941c762_62"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate56].demand_charges[+]",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "low",
+   "evidence": "Rate 56 summary listing: 'Electric System Improvements Charge Demand Charge (per kVA): $1.86'.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate58].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 7.91,
+   "new": 7.53,
+   "confidence": "medium",
+   "evidence": "Rate 58 tariff search summary: 'The distribution demand shall be the highest average 30-minute kVA demand in the current month or the preceding eleven (11) months. The distribution demand charge is $7.53 per kVA.' A separate summary of the May 2026 rate summary for Rate 58 listed Distribution Demand $7.53/kVA, ESIC $1.91/kVA, Transmission $17.04/kVA, plus $2.19/kVA.",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 58 tariff (Large TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-58-ct.pdf"
+    },
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate58].demand_charges[0].basis",
+   "action": "changed",
+   "old": "tou_window",
+   "new": "ratchet",
+   "confidence": "medium",
+   "evidence": "Rate 58 tariff: distribution demand = highest average 30-min kVA in the current month or preceding 11 months; production/transmission demand = highest 30-min kVA in on-peak hours of the billing month.",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 58 tariff (Large TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-58-ct.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate58].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 14.93,
+   "new": 17.04,
+   "confidence": "medium",
+   "evidence": "Search summary of the May 1, 2026 rate summary for Rate 58: 'Transmission Demand Charge: $17.04 per kVA' (plus an additional $2.19/kVA component). Prior session also saw $17.04 next to Rate 58.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 58 tariff (Large TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-58-ct.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate58].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "Rate 58 tariff: 'highest average 30-minute kVA demand in the current month or the preceding eleven (11) months'.",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 58 tariff (Large TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-58-ct.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=eversource-ct-rate58].demand_charges[+]",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "low",
+   "evidence": "Rate 58 listing: 'Electric System Improvements Charge: $1.91 per kVA'.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-gst].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 5.19,
+   "confidence": "medium",
+   "evidence": "Search summary of UI Rate GST tariff: 'Distribution Charge per kW per Month - Demand Metered: Summer (June-Sept) $5.18/kW; Winter (Oct.-May) $5.19/kW'. Minimum bill $8.71/kW summer, $7.41/kW winter.",
+   "sources": [
+    {
+     "title": "UI - General Service Time-of-Use Rate GST (tariff)",
+     "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-gst].demand_charges[2].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 12.94,
+   "confidence": "medium",
+   "evidence": "Two searches: GST demand-metered transmission charge $12.94/kW for Peak in both winter (Oct-May) and summer (Jun-Sep); $0.00/kW Off-Peak.",
+   "sources": [
+    {
+     "title": "UI - General Service Time-of-Use Rate GST (tariff)",
+     "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    },
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-gst].demand_charges[2].basis",
+   "action": "changed",
+   "old": "ncp_monthly",
+   "new": "tou_window",
+   "confidence": "medium",
+   "evidence": "Transmission $/kW: Summer Peak $12.94, Winter Peak $12.94, Off-Peak $0.00. On-peak hours Mon-Fri 12 noon-8 pm.",
+   "sources": [
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    },
+    {
+     "title": "UI - General Service Time-of-Use Rate GST (tariff)",
+     "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-lpt].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 11.49,
+   "confidence": "medium",
+   "evidence": "Two searches of UI pricing/rate schedule: LPT 'Distribution kW $11.49/kW'; Basic Service Charge $345.49 (matches file).",
+   "sources": [
+    {
+     "title": "UI - January 2025 Rate Schedule",
+     "url": "https://www.uinet.com/documents/1678076/1704192/FINAL_design_UPRB301_UI+2025+rate+schedule_12.11.24.pdf/81aee81f-6a18-897b-07a0-8e503d4a8ea2?t=1735846644025"
+    },
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-lpt].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 15.86,
+   "confidence": "medium",
+   "evidence": "Two searches: LPT 'Transmission Summer Peak $15.86/kW, Transmission Winter Peak $15.86/kW', off-peak $0.00.",
+   "sources": [
+    {
+     "title": "UI - January 2025 Rate Schedule",
+     "url": "https://www.uinet.com/documents/1678076/1704192/FINAL_design_UPRB301_UI+2025+rate+schedule_12.11.24.pdf/81aee81f-6a18-897b-07a0-8e503d4a8ea2?t=1735846644025"
+    },
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=ameren-il-ds4].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 9.69,
+   "confidence": "low",
+   "evidence": "PBR-R search summary: 'For 2026, the Distribution Delivery Charge (per kW) for All Supply Voltages under DS-4 is $9.690'. Ameren Ex. 7.1: DS-3 and DS-4 Distribution Delivery Charge is set from combined cost of service divided by the SUM of DS-3 and DS-4 billing demand units (i.e., one shared unit charge) - consistent with DS-3's $9.690.",
+   "sources": [
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges)",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel8rtpbrr.ashx"
+    },
+    {
+     "title": "Ameren Illinois - DS-4 Large General Delivery Service tariff",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel14rtds4.ashx"
+    },
+    {
+     "title": "ICC Docket P2025-0083 - Ameren Exhibit 7.1, Process of Determining Delivery Service Charges",
+     "url": "https://icc.illinois.gov/docket/P2025-0083/documents/360565/files/631634.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=comed-rds-medium].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 13.24,
+   "new": 14.94,
+   "confidence": "medium",
+   "evidence": "Two independent searches of the Jan-2025 'Summary of Typical Nonresidential Line Item Charges': secondary DFC Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49; a second search returned 'Medium Load Delivery Class Secondary DFC $14.94/kW'. Primary: Small $6.48 / Medium $8.50 / Large $11.54 / Very Large $11.05.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=comed-rds-large].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 13.59,
+   "new": 14.59,
+   "confidence": "low",
+   "evidence": "Jan-2025 summary (search): Large Load Delivery Class (>400-1,000 kW) secondary DFC $14.59/kW.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=comed-rds-very-large].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 14.09,
+   "new": 13.49,
+   "confidence": "low",
+   "evidence": "Jan-2025 summary (search): Very Large Load Delivery Class (>1,000-10,000 kW) secondary DFC $13.49/kW.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-daily].valuation.rate",
+   "action": "confirmed",
+   "old": 200,
+   "new": 200,
+   "confidence": "high",
+   "evidence": "'Daily Dispatch offers up to $200 per kW per summer'; program materials: 'Daily Dispatch offers $200/kW-Summer incentive'.",
+   "sources": [
+    {
+     "title": "National Grid MA - Daily Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "National Grid MA - ConnectedSolutions (business)",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/ConnectedSolutions"
+    },
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-daily].valuation.term_years",
+   "action": "confirmed",
+   "old": 5,
+   "new": 5,
+   "confidence": "high",
+   "evidence": "'For new battery storage systems, the customer's per-kW incentive level is locked in for the first 5 consecutive years that the customer is in the Daily Dispatch Summer program.'",
+   "sources": [
+    {
+     "title": "National Grid MA - Daily Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "National Grid MA - ConnectedSolutions (business)",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/ConnectedSolutions"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-daily].dispatch.window",
+   "action": "confirmed",
+   "old": "Events between 2pm and 7pm ...",
+   "new": "2pm-7pm, weekdays, events 2-3 h, day-ahead notice",
+   "confidence": "high",
+   "evidence": "NG Daily Dispatch: 'All events will last from 2 to 3 hours and occur between 2 p.m. and 7 p.m.'; Jun-Sep, mostly Jul-Aug; weekdays; notifications a day ahead. Note: Cape Light Compact materials say Daily Dispatch occurs 3-8 PM.",
+   "sources": [
+    {
+     "title": "National Grid MA - Daily Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "National Grid - MA Daily Dispatch Summer flyer",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-madailydispatchflyer.pdf"
+    },
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
+    },
+    {
+     "title": "Cape Light Compact - Commercial ConnectedSolutions",
+     "url": "https://www.capelightcompact.org/business/commercial-connectedsolutions/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-daily].dispatch.max_events_per_year",
+   "action": "confirmed",
+   "old": 60,
+   "new": 60,
+   "confidence": "high",
+   "evidence": "'reduce the demand on the electric system 30 to 60 times per summer'. event_duration_hr 3 = max (events 2-3 h).",
+   "sources": [
+    {
+     "title": "National Grid MA - Daily Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "National Grid - MA Daily Dispatch Summer flyer",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-madailydispatchflyer.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-targeted].valuation.rate",
+   "action": "confirmed",
+   "old": 35,
+   "new": 35,
+   "confidence": "high",
+   "evidence": "'Targeted Dispatch offers $35/kW-Summer incentive'; no more than eight events per summer, 3-hour events; weekend bonus exists. Program materials say all events 2-7pm (file says 3-8pm per NG page; window unresolved).",
+   "sources": [
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
+    },
+    {
+     "title": "National Grid MA - Targeted Dispatch & Winter Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/targeted-dispatch-winter-dispatch"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "programs[id=ma-connectedsolutions-ci-winter].valuation.rate",
+   "action": "confirmed",
+   "old": 25,
+   "new": 25,
+   "confidence": "high",
+   "evidence": "'for customers with battery storage, add $25/kW-Winter to the Winter Dispatch incentive'.",
+   "sources": [
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
+    },
+    {
+     "title": "National Grid MA - Targeted Dispatch & Winter Dispatch",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/targeted-dispatch-winter-dispatch"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "programs[id=ct-ess-ci-construct5].valuation.tiers (325 / 275 / 175)",
+   "action": "confirmed",
+   "old": "325 small-medium y1-5; 275 large y1-5; 175 y6-10",
+   "new": "325 / 275 / 175",
+   "confidence": "high",
+   "evidence": "'Small and medium commercial receive $325/kW for years 1-5 and $175/kW for years 6-10, while large commercial receive $275/kW for years 1-5 and $175/kW for years 6-10.' Effective April 1, 2026; 10-year Active Dispatch performance payments replace upfront + Passive Dispatch.",
+   "sources": [
+    {
+     "title": "Energy Storage Solutions - Program Changes for April 1, 2026",
+     "url": "https://energystoragect.com/program-changes-for-april-1-2026/"
+    },
+    {
+     "title": "CT Green Bank - ESS adopts new performance-based framework (2026)",
+     "url": "https://www.ctgreenbank.com/connecticuts-energy-storage-solutions-program-updates-2026ratepayers-and-customers/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "programs[id=ct-ess-ci-construct5].valuation.rate_by_site_peak_kw (500 kW break)",
+   "action": "confirmed",
+   "old": 500,
+   "new": "Small 0-200 kW, Medium 201-500 kW, Large 501+ kW annual peak",
+   "confidence": "high",
+   "evidence": "'small commercial customers have 0 to 200 kW annual peak demand, medium 201 to 500 kW, and large 501 kW or more.'",
+   "sources": [
+    {
+     "title": "Energy Storage Solutions - Program Changes for April 1, 2026",
+     "url": "https://energystoragect.com/program-changes-for-april-1-2026/"
+    },
+    {
+     "title": "ESS Program Manual (May 19, 2026)",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/05/Energy-Storage-Solutions-Program-Manual-Revised-for-05-19-2026.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "programs[id=il-dg-rebate-storage].valuation.rate",
+   "action": "confirmed",
+   "old": 250,
+   "new": "250 $/kWh for non-residential customers that are not small C&I; 300 $/kWh for residential and small C&I",
+   "confidence": "high",
+   "evidence": "ComEd 2026 T&C (search): 'For non-residential customers (those not residential or small C&I): $250/kWh of nameplate capacity... For residential and small C&I customers: $300/kWh.' Statute summary: small commercial = under 100 kW peak demand (or watt-hour); $300 base until Dec 31, 2029. Mandatory SDVPP participation; Rider SDVPP anticipated effective March 1, 2027; new storage rules effective June 1, 2026.",
+   "sources": [
+    {
+     "title": "ComEd Distributed Generation Rebate Terms and Conditions (2026)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2810b689df2e361f/6a19a2f492d70cb21c15fe39/DG-Rebate-Terms-and-Conditions--2026.pdf"
+    },
+    {
+     "title": "220 ILCS 5/16-107.6",
+     "url": "https://ilga.gov/legislation/ilcs/documents/022000050K16-107.6.htm"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "programs[id=il-dg-rebate-storage].eligibility.requires_export",
+   "action": "confirmed",
+   "old": true,
+   "new": true,
+   "confidence": "high",
+   "evidence": "Statute definition (search summary): 'Energy storage system' means technology ... interconnected behind the customer's meter or behind its own meter, 'that is permanently fixed to the distribution grid and capable of discharging to the distribution grid.' Standalone storage interconnected on/after 2026-06-01 also gets energy compensation under Rider POGNM (net metering). A non-export (export-blocked) interconnection would not meet 'capable of discharging to the distribution grid' - keep requires_export=true (medium; no explicit ruling on non-export found).",
+   "sources": [
+    {
+     "title": "220 ILCS 5/16-107.6",
+     "url": "https://ilga.gov/legislation/ilcs/documents/022000050K16-107.6.htm"
+    },
+    {
+     "title": "ComEd Distributed Generation Rebate Terms and Conditions (2026)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2810b689df2e361f/6a19a2f492d70cb21c15fe39/DG-Rebate-Terms-and-Conditions--2026.pdf"
+    },
+    {
+     "title": "CUB - Upcoming CRGA Programs (2026-09-14)",
+     "url": "https://www.citizensutilityboard.org/blog/2026/09/14/upcoming-crga-programs/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "market_prices[id=pjm-bra-2027-28-comed].value",
+   "action": "confirmed",
+   "old": 333.44,
+   "new": 333.44,
+   "confidence": "high",
+   "evidence": "'The price came in at the FERC-approved cap, $333.44/MW-day (UCAP) for the entire PJM footprint' (+1.3% vs 2026/27); 134,479 MW UCAP cleared.",
+   "sources": [
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM Inside Lines - PJM Auction Procures 134,479 MW",
+     "url": "https://insidelines.pjm.com/pjm-auction-procures-134479-mw-of-generation-resources/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "programs[id=pjm-capacity-dr-comed].valuation.accreditation_factor",
+   "action": "confirmed",
+   "old": 0.92,
+   "new": 0.92,
+   "confidence": "medium",
+   "evidence": "PJM BRA report: 'For the 2027/2028 BRA, the Demand Resource ELCC Class Rating is 92%' (up from 69% in 2026/27) because required DR availability increased to all hours of the year and winter peak load became coincident. Now primary-sourced (was secondary).",
+   "sources": [
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM - ELCC Class Ratings for the 2027/2028 BRA",
+     "url": "https://www.pjm.com/-/media/DotCom/planning/res-adeq/elcc/2027-28-bra-elcc-class-ratings.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "market_prices[id=isone-fca18-2027-28].value",
+   "action": "confirmed",
+   "old": 3.58,
+   "new": 3.58,
+   "confidence": "high",
+   "evidence": "FCA 18 (Feb 5, 2024) cleared 31,556 MW at $3.58/kW-month in all zones and import interfaces; finalized results filed Feb 21, 2024 confirm $3.58.",
+   "sources": [
+    {
+     "title": "ISO Newswire - FCA closes with adequate resources for 2027/2028 (2024-02-09)",
+     "url": "https://isonewswire.com/2024/02/09/new-englands-forward-capacity-auction-closes-with-adequate-power-system-resources-for-2027-2028/"
+    },
+    {
+     "title": "ISO Newswire - ISO-NE files finalized capacity auction results (2024-02-21)",
+     "url": "https://isonewswire.com/2024/02/21/iso-ne-files-finalized-capacity-auction-results/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "market_prices[id=isone-fca18-2027-28].value",
+   "action": "confirmed",
+   "old": 3.58,
+   "new": 3.58,
+   "confidence": "high",
+   "evidence": "FCA 18 (Feb 5, 2024) cleared 31,556 MW at $3.58/kW-month in all zones and import interfaces; finalized results filed Feb 21, 2024 confirm $3.58.",
+   "sources": [
+    {
+     "title": "ISO Newswire - FCA closes with adequate resources for 2027/2028 (2024-02-09)",
+     "url": "https://isonewswire.com/2024/02/09/new-englands-forward-capacity-auction-closes-with-adequate-power-system-resources-for-2027-2028/"
+    },
+    {
+     "title": "ISO Newswire - ISO-NE files finalized capacity auction results (2024-02-21)",
+     "url": "https://isonewswire.com/2024/02/21/iso-ne-files-finalized-capacity-auction-results/"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CT",
+   "item": "tariffs[id=ui-ct-gst].demand_charges[0].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 5.18,
+   "new": 5.18,
+   "confidence": "medium",
+   "evidence": "GST demand-metered distribution: Summer (Jun-Sep) $5.18/kW; Winter $5.19/kW.",
+   "sources": [
+    {
+     "title": "UI - General Service Time-of-Use Rate GST (tariff)",
+     "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=comed-rds-small].demand_charges[0].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 14.58,
+   "new": 14.58,
+   "confidence": "low",
+   "evidence": "Jan-2025 summary: Small Load (0-100 kW) secondary DFC $14.58 (both conflicting summaries agree). Still a Jan-2025 value; 2026 unverified.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=ameren-il-ds3].demand_charges[0].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 9.69,
+   "new": 9.69,
+   "confidence": "medium",
+   "evidence": "PBR-R 2026: $9.690/kW all supply voltages; Ameren Ex. 7.1 says DS-3/DS-4 share one Distribution Delivery Charge (combined cost of service / combined billing units).",
+   "sources": [
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges)",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel8rtpbrr.ashx"
+    },
+    {
+     "title": "ICC Docket P2025-0083 - Ameren Exhibit 7.1, Process of Determining Delivery Service Charges",
+     "url": "https://icc.illinois.gov/docket/P2025-0083/documents/360565/files/631634.pdf"
+    }
+   ],
+   "panelist": "NE-IL rates & storage programs (MA/CT/IL)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=cnp-sec-gt10kva].demand_charges[3].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 4.342591,
+   "confidence": "medium",
+   "evidence": "CenterPoint TCRF update (Project/Docket 58855, filed 2026-02-09): Secondary >10 kVA IDR $6.177655 per 4CP kVA; Non-IDR $4.342591 per NCP kVA (prior Sept-2025 values $5.907492 / $4.298786).",
+   "sources": [
+    {
+     "title": "PUCT filing 58855 item 12 (filed 2026-02-09) - CenterPoint TCRF update",
+     "url": "https://interchange.puc.texas.gov/Documents/58855_12_1583481.PDF"
+    },
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=cnp-sec-gt10kva].demand_charges[3].months",
+   "action": "changed",
+   "old": [],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "TCRF is a monthly charge on NCP kVA for non-IDR customers.",
+   "sources": [
+    {
+     "title": "PUCT filing 58855 item 12 (filed 2026-02-09) - CenterPoint TCRF update",
+     "url": "https://interchange.puc.texas.gov/Documents/58855_12_1583481.PDF"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tnc-sec-gt10kw].demand_charges[2].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 4.375157,
+   "confidence": "medium",
+   "evidence": "PUCT AEP rate report (Project 58511, filed 2026-01-26), Secondary >10 kW Non-IDR: transmission $4.375157 per NCP kW (Central and North); distribution $7.926116 per Billing kW (North). Sum 7.926116+4.375157 = 12.301273 = ElectricityPlans' all-in AEP North >10 kW demand rate $12.301273 (eff. 2026-03-01) - exact match.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511, filed 2026-01-26)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tnc-sec-gt10kw].demand_charges[2].months",
+   "action": "changed",
+   "old": [],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "Monthly NCP-kW transmission charge.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511, filed 2026-01-26)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tcc-sec-gt10kw].demand_charges[2].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 4.375157,
+   "confidence": "low",
+   "evidence": "Same PUCT AEP rate report summary gave $4.375157 per NCP kW for both Central and North (AEP Texas TCRF is division-uniform per the Feb-2026 filing).",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511, filed 2026-01-26)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tcc-sec-gt10kw].demand_charges[2].months",
+   "action": "changed",
+   "old": [],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "Monthly NCP-kW transmission charge.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511, filed 2026-01-26)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].demand_charges[2].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 5.600344,
+   "confidence": "medium",
+   "evidence": "TNMP PUCT Monthly Report as of 2025-09-01, Secondary >5 kW Non-IDR volumetric charges: $9.248258 per Billing kW, $5.600344 per NCP kW, $0.000961 per kWh. (9.248258+5.600344 = 14.848602 vs aggregator all-in $14.870218 eff. 2026-03-01 - consistent.)",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP (PUCT Monthly Report as of 2025-09-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].demand_charges[2].months",
+   "action": "changed",
+   "old": [],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "Monthly NCP-kW transmission charge.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP (PUCT Monthly Report as of 2025-09-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].demand_charges[1].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 3.600749,
+   "new": 7.109469,
+   "confidence": "medium",
+   "evidence": "TNMP PUCT Monthly Report as of 2025-09-01, Secondary >5 kW IDR: $9.248258 per Billing kW, $7.109469 per 4CP kW, $0.000961 per kWh.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP (PUCT Monthly Report as of 2025-09-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].coincident_peak_charges[0].est_value_usd_per_kw_year",
+   "action": "changed",
+   "old": 43.21,
+   "new": 85.31,
+   "confidence": "medium",
+   "evidence": "$7.109469/4CP-kW-month x 12 = $85.31/kW-yr.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP (PUCT Monthly Report as of 2025-09-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 5.373649,
+   "new": 9.248258,
+   "confidence": "medium",
+   "evidence": "TNMP PUCT Monthly Report as of 2025-09-01: Secondary >5 kW (IDR and Non-IDR) $9.248258 per Billing kW.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP (PUCT Monthly Report as of 2025-09-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tnc-sec-gt10kw].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": null,
+   "new": 7.926116,
+   "confidence": "low",
+   "evidence": "PUCT AEP rate report (filed 2026-01-26), Secondary >10 kW Non-IDR: distribution $7.926116 per Billing kW (North); + $4.375157/NCP kW = $12.301273, exactly the aggregator's North all-in.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511, filed 2026-01-26)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=cnp-sec-gt10kva].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "CNP tariff summary: 'Billing kVA applicable to the Distribution System Charge shall be the higher of the NCP kVA for the current billing month or 80% of the highest monthly NCP kVA established in the 11 months preceding... if the highest monthly NCP kVA ... is <= 20 kVA, Billing kVA ... shall be the NCP kVA for the current billing month.'",
+   "sources": [
+    {
+     "title": "CenterPoint Houston Tariff for Retail Delivery Service",
+     "url": "https://www.centerpointenergy.com/en-us/Documents/RatesandTariffs/HoustonElectric/CNP-Retail-Del-Tariff-Book-Hou.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tcc-sec-gt10kw].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "AEP Texas Secondary >10 kW tariff summary: 'Billing kW applicable to Riders TC, NDC, RCE charges shall be the higher of the NCP kW for the current billing month or 80% of the highest monthly NCP kW established in the 11 months preceding... For all other loads, the Billing kW applicable to the Distribution System Charge shall be the higher of ... or 80% ...'",
+   "sources": [
+    {
+     "title": "AEP Texas Tariff for Retail Delivery Service (eff. 2026-04-30)",
+     "url": "https://www.aeptexas.com/lib/docs/ratesandtariffs/Texas/AEP_TEXAS_TARIFF_Eff_April-30-2026.pdf"
+    },
+    {
+     "title": "AEP Texas Central Co. Tariff for Electric Delivery Service (PUCT 28559 item 55)",
+     "url": "https://interchange.puc.texas.gov/Documents/28559_55_418940.PDF"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=aep-tnc-sec-gt10kw].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "AEP Texas Secondary >10 kW tariff summary: 'Billing kW applicable to Riders TC, NDC, RCE charges shall be the higher of the NCP kW for the current billing month or 80% of the highest monthly NCP kW established in the 11 months preceding... For all other loads, the Billing kW applicable to the Distribution System Charge shall be the higher of ... or 80% ...'",
+   "sources": [
+    {
+     "title": "AEP Texas Tariff for Retail Delivery Service (eff. 2026-04-30)",
+     "url": "https://www.aeptexas.com/lib/docs/ratesandtariffs/Texas/AEP_TEXAS_TARIFF_Eff_April-30-2026.pdf"
+    },
+    {
+     "title": "AEP Texas Central Co. Tariff for Electric Delivery Service (PUCT 28559 item 55)",
+     "url": "https://interchange.puc.texas.gov/Documents/28559_55_418940.PDF"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].ratchet",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "TNMP Secondary >5 kW tariff summary: Billing kW for the Distribution System Charge = higher of current NCP kW or 80% of highest monthly NCP kW in the 11 preceding months; if the 11-month max NCP > 20 kW and Annual Load Factor <= 25%, Billing kW = current-month NCP kW.",
+   "sources": [
+    {
+     "title": "TNMP Retail Tariff (2025-12-29)",
+     "url": "https://tnmp.com/sites/default/files/inline-images/TNMP%20Retail%20Tariff%20(20251229)_0.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "panel_notes[6].note",
+   "action": "changed",
+   "old": "PUCT must rewrite transmission cost recovery by 12/31/2026 (Project 58484); the draft report favors more coincident peaks, longer intervals and a nonbypassable share. Underwrite 4CP savings only through 2027 at most and stress-test a 12CP/nonbypassable case that could cut the stream by half or more.",
+   "new": "PUCT must rewrite transmission cost recovery by 12/31/2026. After the Project 58484 evaluation, the PUCT on 2026-07-09 approved publication of a proposed rule (Project 58000) replacing 4CP with 12CP measured on one 30-minute interval each month, plus minimum billing demand for large loads and annual class-allocation-factor updates (comments closed 2026-08-11; not final as of 2026-10-02). If adopted, a battery must hit 12 monthly 30-minute peaks instead of four 15-minute summer peaks - more cycling and SOC hold, and each peak is worth ~1/3 as much. Underwrite 4CP savings only through 2027 at most and stress-test a 12CP case.",
+   "confidence": "medium",
+   "evidence": "EnergyChoiceMatters 2026-06-12: Staff proposed rule replaces 4CP with 12CP using a 30-minute interval, minimum billing demand for large loads; PUCT approved publication 2026-07-09 (Project 58000), comments due 2026-08-11.",
+   "sources": [
+    {
+     "title": "EnergyChoiceMatters - PUC Staff file proposed rule to replace 4CP with 12CP; minimum billing demand for large loads (2026-06-12)",
+     "url": "http://www.energychoicematters.com/stories/20260612a.html"
+    },
+    {
+     "title": "PUCT Project 58000 filing item 66 (filed 2026-08-11, comments on proposed rule)",
+     "url": "https://interchange.puc.texas.gov/Documents/58000_66_1673069.PDF"
+    },
+    {
+     "title": "TexasPowerCost - Texas 4CP transmission cost overhaul (2026) [secondary]",
+     "url": "https://www.texaspowercost.com/news/texas-transmission-cost-allocation-4cp-overhaul-2026.php"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=oncor-sec-gt10kw].demand_charges[0].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 7.946081,
+   "new": 7.946081,
+   "confidence": "high",
+   "evidence": "PUCT Oncor Monthly Report as of 2026-08-01: Secondary >10 kW (IDR and Non-IDR) $7.946081 per Billing kW. Oncor rate case (Docket 58306) order 2026-04-17, new base rates eff. 2026-06-01. CAVEAT: the PUCT rate reports sum ALL charges by billing determinant (TNMP/CNP reports show this pattern), so $7.946081 is the total per Billing kW and may already include Rider IS ($0.997891) - adding Rider IS separately (demand_charges[2]) may double count. One summary mislabeled it 'Transmission'.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - Oncor (PUCT Monthly Report as of 2026-08-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    },
+    {
+     "title": "Oncor Form 10-Q Q1 2026 (rate case Docket 58306 order 2026-04-17; new rates eff. 2026-06-01)",
+     "url": "https://www.sec.gov/Archives/edgar/data/0001193311/000119331126000014/c311-20260331x10q.htm"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=oncor-sec-gt10kw].demand_charges[1].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 6.050798,
+   "new": 6.050798,
+   "confidence": "high",
+   "evidence": "PUCT Oncor Monthly Report as of 2026-08-01: Secondary >10 kW IDR $6.050798 per 4CP kW. As an aggregated per-4CP-kW total it already includes any TCRF (TCRF reset with the 2026-06-01 base rates), resolving the 'is TCRF additive' question - not additive.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - Oncor (PUCT Monthly Report as of 2026-08-01)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=oncor-sec-gt10kw].ratchet.pct",
+   "action": "confirmed",
+   "old": 0.8,
+   "new": 0.8,
+   "confidence": "high",
+   "evidence": "Billing kW = higher of current NCP kW or 80% of highest NCP kW in preceding 11 months. Nuance: applies only to loads whose 11-month peak > 20 kW AND Annual Load Factor > 25%; otherwise billed on current NCP (low-LF exemption).",
+   "sources": [
+    {
+     "title": "ComparePower - Demand Charges Explained for Texas Businesses [secondary]",
+     "url": "https://comparepower.com/demand-charges-explained/"
+    },
+    {
+     "title": "Oncor - Delivery Charges 101",
+     "url": "https://www.oncor.com/content/oncorwww/us/en/home/about-us/regulatory/delivery-charges-101.html"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=cnp-sec-gt10kva].demand_charges[2].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 6.2725,
+   "new": 6.2725,
+   "confidence": "medium",
+   "evidence": "Summary of 07/01/2026 CNP rate report: $6.272500 per 4CP kVA (Secondary >10 kVA IDR). Prior value $6.177655 independently matches the Feb-2026 TCRF filing (58855). Note: another summary of the same report showed $4.968051/4CP kVA - conflicting, probably an older vintage; medium confidence.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    },
+    {
+     "title": "PUCT filing 58855 item 12 (filed 2026-02-09) - CenterPoint TCRF update",
+     "url": "https://interchange.puc.texas.gov/Documents/58855_12_1583481.PDF"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "programs[id=tx-cnp-clm-2026].valuation.rate",
+   "action": "confirmed",
+   "old": 40,
+   "new": 40,
+   "confidence": "medium",
+   "evidence": "CenterPoint Load Management page: participants 'can earn up to $40.00 per kW of verified curtailed load, based on average load reduction during all program events'. Page is not year-stamped (medium). Battery eligibility not stated.",
+   "sources": [
+    {
+     "title": "CenterPoint Energy - Load Management (business)",
+     "url": "https://www.centerpointenergy.com/en-us/SaveEnergyandMoney/Pages/Load-Management-.aspx?sa=ho&au=bus"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "panel_notes[6].note (SB 6 4CP rulemaking status)",
+   "action": "confirmed",
+   "old": "Project 58484 draft report; rule due 12/31/2026",
+   "new": "Proposed rule published (Project 58000, approved for publication 2026-07-09): 12CP with 30-min intervals; final rule due by 2026-12-31; not yet adopted",
+   "confidence": null,
+   "evidence": "Project 58484 (evaluation, opened 2025-08-01) led to a March-2026 draft report. In June 2026 PUCT Staff filed proposed rule language to replace 4CP with 12CP (one 30-minute coincident-peak interval in EVERY month), require minimum billing demand for large loads, and require IOU DSPs to update class allocation factors annually. PUCT approved publication 2026-07-09 in Project 58000; comments were due 2026-08-11. Staff modeling: residential share of transmission cost -3.137 pts, CP-billed customers +3.294 pts. No final adoption found as of 2026-10-02; rule must be final by 2026-12-31. Retail TDU effective date not established - an effect on 2027 TDU bills (e.g., via the Sept-2027 TCRF/class-allocation update) is plausible but unconfirmed. Note the existing 2026 4CP determinants (set summer 2026) bill through 2027 under the current tariffs unless the rule changes transition.",
+   "sources": [
+    {
+     "title": "EnergyChoiceMatters - PUC Staff file proposed rule to replace 4CP with 12CP; minimum billing demand for large loads (2026-06-12)",
+     "url": "http://www.energychoicematters.com/stories/20260612a.html"
+    },
+    {
+     "title": "PUCT Project 58000 filing item 66 (filed 2026-08-11, comments on proposed rule)",
+     "url": "https://interchange.puc.texas.gov/Documents/58000_66_1673069.PDF"
+    },
+    {
+     "title": "PUCT Project 58484 - Evaluation of Transmission Cost Recovery (opened 2025-08-01)",
+     "url": "https://interchange.puc.texas.gov/Documents/58484_4_1537101.PDF"
+    },
+    {
+     "title": "K&L Gates - Request for comments on PUCT draft report on transmission cost recovery (2026-03-30)",
+     "url": "https://www.klgates.com/Request-for-Comments-on-Texas-PUCT-Draft-Report-Regarding-Transmission-Cost-Recovery-in-the-ERCOT-Region-3-30-2026"
+    },
+    {
+     "title": "TexasPowerCost - Texas 4CP transmission cost overhaul (2026) [secondary]",
+     "url": "https://www.texaspowercost.com/news/texas-transmission-cost-allocation-4cp-overhaul-2026.php"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=cnp-sec-gt10kva].demand_charges[0].rate_usd_per_kw_month",
+   "action": "changed",
+   "old": 4.893378,
+   "new": 6.687,
+   "confidence": "medium",
+   "evidence": "Two summaries of the 07/01/2026 CNP rate report listed Secondary >10 kVA (IDR and Non-IDR) at $6.687000 per Billing kVA (customer $64.72 IDR / $4.14 non-IDR; metering $86.69 / $9.27; $0.000930/kWh). Likely the total of all per-Billing-kVA charges (base distribution + DCRF etc.), whereas $4.893378 may be the base component only - or $6.687 is the post-rate-case base. Could not resolve; for storage valuation the per-Billing-kVA total is the relevant number.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    }
+   ],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=oncor-sec-gt10kw] Rider IS line",
+   "action": "changed",
+   "old": 0.997891,
+   "new": "removed (included in $7.946081 total)",
+   "confidence": "medium",
+   "evidence": "PUCT monthly rate reports sum all charges per billing determinant; Oncor $7.946081 per Billing kW (report as of 2026-08-01).",
+   "sources": [],
+   "panelist": "tx-tdu-ercot"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].name",
+   "action": "changed",
+   "old": "AL-TOU (General Service TOU, demand-metered >=20 kW)",
+   "new": "AL-TOU-M (Medium Commercial TOU, demand-metered 20 to <200 kW) - Secondary",
+   "confidence": "medium",
+   "evidence": "SDG&E: 'Beginning April 1, 2026, SDG&E implemented a new Medium Commercial customer class... customers with demand between 20kW to less than 200kW.' EECC-CPP-D is the default commodity tariff 'for customers on AL-TOU-M whose monthly maximum demand is not less than 20 kW ... and not expected to equal or exceed 200 kW.' The Medium Comm 6-1-26 table (basic service fee $151.26 secondary, the same table cited for the $30.37/$21.22/$16.25 demand charges) lists Schedule AL-TOU-M.",
+   "sources": [
+    {
+     "title": "SDG&E - Upcoming changes to SDG&E's business customer classes",
+     "url": "https://www.sdge.com/node/33046"
+    },
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 4-1-26",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%204-1-26.pdf"
+    },
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    },
+    {
+     "title": "SDG&E 2026 Demand Flex Rate Application (A.26-02-xxx) - refers to new Medium Commercial class implemented 2026-04-01",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/2026-02/A2602XXX_SDGE%202026%20Demand%20Flex%20Rate%20Application.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].applicability.max_kw",
+   "action": "changed",
+   "old": null,
+   "new": 200,
+   "confidence": "medium",
+   "evidence": "Medium Commercial class = demand 20 kW to less than 200 kW (SDG&E, effective 2026-04-01).",
+   "sources": [
+    {
+     "title": "SDG&E - Upcoming changes to SDG&E's business customer classes",
+     "url": "https://www.sdge.com/node/33046"
+    },
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[0].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.31851,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Summer On-Peak: $0.03739 UDC + $0.00591 WF-NBC/DWR-BC + $0.27521 EECC = $0.31851/kWh (sums check).",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[1].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.20918,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Summer Off-Peak: 0.03739 + 0.00591 + 0.16588 = $0.20918/kWh.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[2].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.1879,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Summer Super Off-Peak: 0.03739 + 0.00591 + 0.14460 = $0.18790/kWh.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[3].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.34686,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Winter On-Peak: 0.03739 + 0.00591 + 0.30356 = $0.34686/kWh.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[4].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.21349,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Winter Off-Peak: 0.03739 + 0.00591 + 0.17019 = $0.21349/kWh.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].energy_rates[5].rate_usd_per_kwh",
+   "action": "changed",
+   "old": null,
+   "new": 0.1748,
+   "confidence": "low",
+   "evidence": "AL-TOU-M Secondary, Winter Super Off-Peak: 0.03739 + 0.00591 + 0.13150 = $0.17480/kWh.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=sdge-al-tou].arbitrage",
+   "action": "changed",
+   "old": null,
+   "new": "added",
+   "confidence": "low",
+   "evidence": "From the AL-TOU-M secondary energy rows above: summer spread $0.1306/kWh and winter spread $0.1721/kWh (on-peak minus super-off-peak).",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 6-1-26 (WebSearch summary; PDF not opened)",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].energy_rates[5].months",
+   "action": "changed",
+   "old": [
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "B-19 tariff summary: super off-peak is '9:00 a.m. to 2:00 p.m. every day in March, April and May, including weekends and holidays.'",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19-s].energy_rates[5].months",
+   "action": "changed",
+   "old": [
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "new": "added",
+   "confidence": "high",
+   "evidence": "Same B-19 TOU period definition (Option S uses the B-19 TOU periods).",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-20].energy_rates[5].months",
+   "action": "changed",
+   "old": [
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "PG&E's new B-series rates share one TOU period structure; B-19 defines super-off-peak as 9am–2pm daily in Mar–May only.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    },
+    {
+     "title": "PG&E Electric Schedule B-20 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-20-s].energy_rates[5].months",
+   "action": "changed",
+   "old": [
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "As for pge-b-20.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    },
+    {
+     "title": "PG&E Electric Schedule B-20 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-10].energy_rates[5].months",
+   "action": "changed",
+   "old": [
+    10,
+    11,
+    12,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "new": "added",
+   "confidence": "medium",
+   "evidence": "As for pge-b-20; B-1 in the same file already uses Mar–May.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].dispatch.window",
+   "action": "changed",
+   "old": "Typically within 4pm-9pm, triggered by CAISO emergency or alert conditions",
+   "new": "4pm-9pm, any day of the week (incl. weekends), May-Oct; events last 1-5 hours; participation capped at 60 event hours per year",
+   "confidence": "medium",
+   "evidence": "'The program runs between May and October and events can occur any day of the week between 4-9 p.m., with events lasting anywhere from one to five hours.' 'You won't be asked to participate for more than 60 hours per year.'",
+   "sources": [
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    },
+    {
+     "title": "SCE ELRP fact sheet",
+     "url": "https://www.sce.com/factsheet/emergency-load-reduction-program"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].dispatch.event_duration_hr",
+   "action": "changed",
+   "old": null,
+   "new": 3,
+   "confidence": "medium",
+   "evidence": "PG&E PY2024 evaluation: 'The most common event window covered 5pm to 8pm and 6pm to 9pm... three hours.' Program max is 5 h.",
+   "sources": [
+    {
+     "title": "PG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/7._PGE_2024_ELRP_Rpt_PUBLIC.pdf"
+    },
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].dispatch.typical_events_per_year",
+   "action": "changed",
+   "old": null,
+   "new": 10,
+   "confidence": "low",
+   "evidence": "PY2024: PG&E called 9 event days, SCE 12, SDG&E 3 (all in September).",
+   "sources": [
+    {
+     "title": "PG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/7._PGE_2024_ELRP_Rpt_PUBLIC.pdf"
+    },
+    {
+     "title": "SCE PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SCE_DR_Program_Report_ELRP_FINAL_PUBLIC.pdf"
+    },
+    {
+     "title": "SDG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SDG&E_ELRP_Evaluation_-_FINAL_PUBLIC.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].valuation.expected_event_hours_per_year",
+   "action": "changed",
+   "old": null,
+   "new": 30,
+   "confidence": "low",
+   "evidence": "2024 event days (PG&E 9, SCE 12, SDG&E 3) x typical 3-h events = about 27 h (PG&E), 36 h (SCE), 9 h (SDG&E); program cap 60 h/yr.",
+   "sources": [
+    {
+     "title": "PG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/7._PGE_2024_ELRP_Rpt_PUBLIC.pdf"
+    },
+    {
+     "title": "SCE PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SCE_DR_Program_Report_ELRP_FINAL_PUBLIC.pdf"
+    },
+    {
+     "title": "SDG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SDG&E_ELRP_Evaluation_-_FINAL_PUBLIC.pdf"
+    },
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].demand_charges[0].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 37.37,
+   "new": 37.37,
+   "confidence": "medium",
+   "evidence": "Search summary of the PG&E B-19 PDF: 'Maximum Demand Summer rate is $37.37 per kW' (secondary). The previous panel had only the winter figure, so summer = winter is now confirmed.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].demand_charges[1].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 46.16,
+   "new": 46.16,
+   "confidence": "medium",
+   "evidence": "'Maximum Peak Demand Summer rate is $46.16 per kW' (secondary).",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].demand_charges[2].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 10.52,
+   "new": 10.52,
+   "confidence": "medium",
+   "evidence": "'Maximum Part-Peak Demand Summer rate is $10.52 per kW' (secondary).",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].demand_charges[3].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 2.31,
+   "new": 2.31,
+   "confidence": "medium",
+   "evidence": "'Maximum Peak Demand Winter charge for secondary voltage is $2.31 per kW.'",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-19].verification_notes (super-off-peak 9am-2pm applies Mar-May only)",
+   "action": "confirmed",
+   "old": "Mar-May only",
+   "new": "9am-2pm every day in March, April and May incl. weekends/holidays",
+   "confidence": "medium",
+   "evidence": "B-19 tariff summary: 'the super off-peak period is defined as 9:00 a.m. to 2:00 p.m. every day in March, April and May, including weekends and holidays.' Energy_rates[5].months still lists Oct-May; see the proposed change.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "tariffs[id=pge-b-20-s].demand_charges[2].rate_usd_per_kw_month",
+   "action": "confirmed",
+   "old": 5.56,
+   "new": 5.56,
+   "confidence": "low",
+   "evidence": "Search summary: Option S secondary Maximum Demand (monthly, all hours except 9am-2pm) $5.56/kW, 'appears to be from the B-20 Option S schedule'.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-20 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-sgip-nonres-storage].status",
+   "action": "confirmed",
+   "old": "closed",
+   "new": "closed",
+   "confidence": "high",
+   "evidence": "D.25-12-003 'established conditions for returning ratepayer funds and closing out all activities related to the ratepayer-funded portion of SGIP'; 'As of December 31, 2025, every SGIP budget (except the income-qualified Residential Solar and Storage Equity tier) has stopped accepting new applications.' GGRF portion closes in 2028.",
+   "sources": [
+    {
+     "title": "CPUC D.25-12-003 (SGIP ratepayer-funded closure)",
+     "url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M589/K959/589959535.PDF"
+    },
+    {
+     "title": "EcoFlow - California SGIP Rebate Guide 2026 (secondary)",
+     "url": "https://www.ecoflow.com/us/blog/california-sgip-rebate-guide-waitlist-itc-steps"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].status",
+   "action": "confirmed",
+   "old": "open",
+   "new": "open (pilot funded through end of 2027)",
+   "confidence": "medium",
+   "evidence": "'The ELRP pilot is funded through the end of 2027.' In the 2026 DR bridge-period record, all three IOUs support extending ELRP sub-groups A.4 and A.5 for 2028-2029; most stakeholders support continuing ELRP through the bridge period.",
+   "sources": [
+    {
+     "title": "CPUC - Emergency Load Reduction Program",
+     "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/demand-response-dr/emergency-load-reduction-program"
+    },
+    {
+     "title": "CPUC filing on DR bridge period / ELRP continuation (2026)",
+     "url": "https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M604/K023/604023876.PDF"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].valuation.rate",
+   "action": "confirmed",
+   "old": 2.0,
+   "new": 2.0,
+   "confidence": "high",
+   "evidence": "'businesses will earn $2 per kWh or $2,000 per MWh of actual load reduction during an event.'",
+   "sources": [
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    },
+    {
+     "title": "SCE ELRP fact sheet",
+     "url": "https://www.sce.com/factsheet/emergency-load-reduction-program"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "CA",
+   "item": "programs[id=ca-elrp].dispatch.season",
+   "action": "confirmed",
+   "old": "May-Oct",
+   "new": "May-Oct",
+   "confidence": "medium",
+   "evidence": "'The program runs between May and October'.",
+   "sources": [
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    }
+   ],
+   "panelist": "CA IOU C&I rates verifier (SCE/PG&E/SDG&E)"
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "file": "data/jurisdictions/ny-nyc.json",
+   "item": "programs[id=coned-csrp].dispatch.event_block_options",
+   "action": "changed",
+   "old": null,
+   "new": "11-15, 14-18, 16-20, 19-23",
+   "confidence": "high",
+   "evidence": "Each network falls within one of four fixed call windows: 11:00 AM-3:00 PM, 2:00 PM-6:00 PM, 4:00 PM-8:00 PM and 7:00 PM-11:00 PM. A number of networks have new call window assignments for 2025; confirm with the Network Lookup tool.",
+   "sources": [
+    {
+     "title": "Con Edison Smart Usage Rewards: networks and tiers",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf?la=en"
+    }
+   ]
+  },
+  {
+   "date": "2026-10-02",
+   "market": "IL",
+   "item": "tariffs[id=comed-rds-medium].confidence",
+   "action": "changed",
+   "old": "low",
+   "new": "medium",
+   "confidence": "medium",
+   "evidence": "Two independent searches agree on the Jan-2025 Medium secondary DFC of $14.94/kW and the MKD window is confirmed; 2026 escalation not yet verified.",
+   "sources": []
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate1].confidence",
+   "action": "changed",
+   "old": "low",
+   "new": "medium",
+   "confidence": "medium",
+   "evidence": "All demand rates derived from Con Ed primary pages (EV Phase-In Tier 4 ÷ 0.75); effective date unconfirmed.",
+   "sources": []
+  },
+  {
+   "date": "2026-10-02",
+   "market": "NY-NYC",
+   "item": "tariffs[id=coned-sc9-rate2].confidence",
+   "action": "changed",
+   "old": "low",
+   "new": "medium",
+   "confidence": "medium",
+   "evidence": "Window structure confirmed; all demand rates derived from Con Ed primary pages (EV Phase-In Tier 4 ÷ 0.75); effective date unconfirmed.",
+   "sources": []
+  },
+  {
+   "date": "2026-10-02",
+   "market": "TX",
+   "item": "tariffs[id=tnmp-sec-gt5kw].confidence",
+   "action": "changed",
+   "old": "low",
+   "new": "medium",
+   "confidence": "medium",
+   "evidence": "All charges from the PUCT monthly report (Sept-2025) and consistent with an aggregator all-in figure effective 2026-03-01; a newer base-rate case may change them.",
+   "sources": []
+  },
+  {
+   "date": "2026-10-02",
+   "market": "MA",
+   "item": "tariffs[id=ngrid-ma-g3].verification_notes",
+   "action": "confirmed",
+   "old": null,
+   "new": null,
+   "confidence": "medium",
+   "evidence": "Default G-3 transmission is billed per kWh; G-3 customers can opt to have transmission calculated on kW (D.P.U. 23-150). Matches the optional-election modeling.",
+   "sources": [
+    {
+     "title": "pv magazine USA (D.P.U. 23-150)",
+     "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage"
+    }
+   ]
+  }
+ ]
+}

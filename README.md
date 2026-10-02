@@ -24,11 +24,14 @@ For any site it:
 ## Using the site
 
 1. **Sign in** with an `@sunbeltrentals.com` email address (see [docs/ACCESS.md](docs/ACCESS.md), and note the limits of a static-site gate).
-2. **Site screener:** pick the market, utility and rate, enter peak kW and annual kWh, and add electrical service and siting details. Results update as you type.
+2. **Overview:** compare markets side by side: total demand charges, peak-tag values, open programs, rate coverage and watch-outs. The product-fit table shows how much of each battery's kW a program credits for its event duration.
+3. **Site screener:** pick the market, utility and rate, enter peak kW and annual kWh, and add electrical service and siting details. Results update as you type.
    - Paste a peak-day profile (24 or 96 values) from your interval model, or enter "Shave kW (your model)" per configuration, to replace the generic load-shape estimate.
    - Open the **Rate** panel to enter demand charges from the customer's bill where the database has no verified rate.
-3. **Portfolio:** save sites or import a CSV ([template](templates/site_import_template.csv)) to rank many sites at once and export the whole portfolio.
-4. **Settings:** enter your **actual installed cost** per product (the shipped $600/kWh is a placeholder) and product footprints (to enable the space check). These are saved in your browser.
+   - Work through the **accuracy checklist** at the top of the results. A site is *planning-grade* only when rates, costs, supply contract, electrical data and interval data are all in. Results are split into tabs: Sizing, Value breakdown, Site limits, Expert panel, Rates & programs, and Export. **Print site report** produces a clean PDF-ready summary.
+4. **Data health:** see which rates are verified, which are missing, which values are low-confidence, and the verification log of every change and its evidence.
+5. **Portfolio:** save sites or import a CSV ([template](templates/site_import_template.csv)) to rank many sites at once and export the whole portfolio.
+6. **Settings:** enter your **actual installed cost** per product (the shipped $600/kWh is a placeholder) and product footprints (to enable the space check). These are saved in your browser.
 
 ## Deploying to GitHub Pages
 

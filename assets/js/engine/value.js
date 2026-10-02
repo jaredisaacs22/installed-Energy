@@ -41,8 +41,10 @@ export function chargeAppliesToSite(item, site) {
 
 /**
  * Demand-charge reduction across the year. Months are grouped by the set of active charges and by which
- * dispatch programs call events that month. On event days the battery's energy goes to the event, so the
- * month's reduction is the lesser of a normal day's optimized shave and the event day's incidental shave.
+ * dispatch programs call events that month. Event days are assumed to fall on the month's peak day (events
+ * are called on hot, high-load days), so the month's reduction is the lesser of a normal day's optimized
+ * shave and what the battery achieves on an event day: the event discharge plus any shaving its leftover
+ * energy and kW allow.
  *
  * events: [{ program_id, months, block: {start,end}, kw }]
  * Returns { streams, dailyEnergyKwh, cyclingKwhPerYear, monthOpt: {month: optimizer result} }.
@@ -73,7 +75,8 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
     const opt = optimizeShave(profile, comps, { kw: config.kw, usableKwh: usableKwh(config, a), rte: a.rte_ac, energyCostPerKwhMonth });
     dailyEnergyKwh = Math.max(dailyEnergyKwh, opt.energyKwh);
     months.forEach((m) => (monthOpt[m] = opt));
-    const eventRed = evs.map((e) => eventDayReduction(profile, comps, e.block, e.kw));
+    const battery = { kw: config.kw, usableKwh: usableKwh(config, a), rte: a.rte_ac };
+    const eventRed = evs.map((e) => eventDayReduction(profile, comps, e.block, e.kw, battery));
     let optValue = 0;
     let realizedValue = 0;
     for (const { dc, i } of active) {
@@ -270,6 +273,25 @@ export function programEligibility(program, site, config, creditedKw) {
   return { eligible: true, viaAggregator: !!e.requires_aggregator_or_csp };
 }
 
+const CONF_RANK = { low: 0, medium: 1, high: 2 };
+/** The weaker of the program's confidence and the confidence of the estimate its value depends on. */
+export const weakerConfidence = (a, b) => (b && CONF_RANK[b] < CONF_RANK[a] ? b : a);
+
+/** Event window for a dispatch program: the site's selection when it is one of the program's options. */
+export function eventBlockFor(program, site) {
+  const d = program.dispatch || {};
+  const sel = site.event_blocks?.[program.id];
+  if (sel && d.event_block_options?.length) {
+    const [start, end] = String(sel).split('-').map(Number);
+    const opt = d.event_block_options.find((o) => o.start === start && o.end === end);
+    if (opt) return { start: opt.start, end: opt.end };
+  }
+  return d.event_block || null;
+}
+
+const hr = (x) => (x === 0 || x === 24 ? '12am' : x === 12 ? '12pm' : x < 12 ? `${x}am` : `${x - 12}pm`);
+export const blockText = (b) => `${hr(b.start)}–${hr(b.end)}`;
+
 /** Value of one program for a config. Returns a stream or null. */
 export function programStream(program, site, config, a, ctx = {}) {
   const v = program.valuation || {};
@@ -371,7 +393,7 @@ export function programStream(program, site, config, a, ctx = {}) {
 
   // Base vs upside.
   let scenario = BASE_STATUSES.has(program.status) ? 'base' : 'upside';
-  if (program.requires_confirmation && !site.confirmed_programs?.[program.id]) {
+  if (program.requires_confirmation && !site.confirmed_programs?.[program.id] && !(program.confirmation_waived_if_export && site.export_allowed)) {
     scenario = 'upside';
     flags.push('eligibility_unconfirmed');
     notes.push(program.requires_confirmation);
@@ -390,7 +412,10 @@ export function programStream(program, site, config, a, ctx = {}) {
   if (hours && config.durationHr < hours) flags.push('duration_short');
   if (assumedHours && hours) flags.push('duration_assumed');
   const d = program.dispatch || {};
-  const event = isDispatch && d.event_block && d.event_months?.length ? { program_id: program.id, months: d.event_months, block: d.event_block, kw: dk } : null;
+  if (v.value_confidence && v.value_confidence !== program.confidence && v.value_confidence_notes) notes.push(v.value_confidence_notes);
+  const block = eventBlockFor(program, site);
+  const event = isDispatch && block && d.event_months?.length ? { program_id: program.id, months: d.event_months, block, kw: dk } : null;
+  if (event && d.event_block_options?.length) notes.push(`Event window modeled: ${blockText(block)}${site.event_blocks?.[program.id] ? ' (your selection)' : ' (default; set your network’s window in Rates & programs)'}.`);
   return {
     key: `prog:${program.id}`,
     category: program.category,
@@ -399,7 +424,7 @@ export function programStream(program, site, config, a, ctx = {}) {
     annual_usd: annual,
     upfront_usd: upfront,
     scenario,
-    confidence: program.confidence || 'medium',
+    confidence: weakerConfidence(program.confidence || 'medium', v.value_confidence),
     kw_used: dk,
     rate,
     unit: v.unit || v.method,
@@ -478,45 +503,93 @@ export function valueStack(site, config, ctx) {
     if (s) progStreams.push(s);
   }
   const { kept, excluded } = resolveConflicts(progStreams);
-  const events = kept.filter((s) => s.event && s.scenario === 'base').map((s) => s.event);
 
-  const { streams: demand, cyclingKwhPerYear, monthOpt } = demandChargeStreams(site, config, tariff, a, profile, events);
-  const cp = coincidentStreams(site, config, tariff, a);
-  const arb = arbitrageStreams(site, config, tariff, a, profile, monthOpt);
-  const otherUpfront = kept.filter((s) => s.scenario === 'base').reduce((n, s) => n + s.upfront_usd, 0);
-  const tax = taxPrograms.map((p) => programStream(p, site, config, a, { ...ctx, otherUpfront })).filter(Boolean);
-  const loss = cyclingLossStream(site, config, a, cyclingKwhPerYear, arb.length > 0);
+  // Build the stack for a given set of enrolled programs.
+  const build = (enrolled) => {
+    const dropped = [];
+    const events = enrolled.filter((s) => s.event && s.scenario === 'base').map((s) => s.event);
+    const { streams: demand, cyclingKwhPerYear, monthOpt } = demandChargeStreams(site, config, tariff, a, profile, events);
+    const cp = coincidentStreams(site, config, tariff, a);
+    const arb = arbitrageStreams(site, config, tariff, a, profile, monthOpt);
+    const otherUpfront = enrolled.filter((s) => s.scenario === 'base').reduce((n, s) => n + s.upfront_usd, 0);
+    const tax = taxPrograms.map((p) => programStream(p, site, config, a, { ...ctx, otherUpfront })).filter(Boolean);
+    const loss = cyclingLossStream(site, config, a, cyclingKwhPerYear, arb.length > 0);
 
-  // Programs that pay for the same kW as a peak-tag reduction (e.g. PJM capacity DR vs. PLC): keep the larger.
-  let cpKept = cp;
-  const progKept = [];
-  for (const p of kept) {
-    const types = (p.conflicts_with || []).filter((c) => c.startsWith('cp:')).map((c) => c.slice(3));
-    if (!types.length) {
-      progKept.push(p);
-      continue;
+    // Programs that pay for the same kW as a peak-tag reduction (e.g. PJM capacity DR vs. PLC): keep the larger.
+    let cpKept = cp;
+    const progKept = [];
+    for (const p of enrolled) {
+      const types = (p.conflicts_with || []).filter((c) => c.startsWith('cp:')).map((c) => c.slice(3));
+      if (!types.length) {
+        progKept.push(p);
+        continue;
+      }
+      const clash = cpKept.filter((s) => types.includes(s.cp_type) || types.includes('*'));
+      const clashUsd = clash.reduce((n, s) => n + s.annual_usd, 0);
+      if (clash.length && clashUsd >= p.annual_usd) dropped.push({ ...p, excluded_by: clash.map((s) => s.label).join(', ') });
+      else {
+        clash.forEach((s) => dropped.push({ ...s, excluded_by: p.program_id }));
+        cpKept = cpKept.filter((s) => !clash.includes(s));
+        progKept.push(p);
+      }
     }
-    const clash = cpKept.filter((s) => types.includes(s.cp_type) || types.includes('*'));
-    const clashUsd = clash.reduce((n, s) => n + s.annual_usd, 0);
-    if (clash.length && clashUsd >= p.annual_usd) excluded.push({ ...p, excluded_by: clash.map((s) => s.label).join(', ') });
-    else {
-      clash.forEach((s) => excluded.push({ ...s, excluded_by: p.program_id }));
-      cpKept = cpKept.filter((s) => !clash.includes(s));
-      progKept.push(p);
+    const nonZero = (s) => Math.abs(s.annual_usd) > 0.5 || Math.abs(s.upfront_usd) > 0.5;
+    const streams = [...demand, ...cpKept, ...arb, ...progKept, ...tax, ...(loss ? [loss] : [])].filter(nonZero);
+    const sum = (pred, field) => streams.filter(pred).reduce((n, s) => n + s[field], 0);
+    const isBase = (s) => s.scenario === 'base';
+    const totals = {
+      annual_base: sum(isBase, 'annual_usd'),
+      annual_upside: sum(() => true, 'annual_usd'),
+      upfront_base: sum(isBase, 'upfront_usd'),
+      upfront_upside: sum(() => true, 'upfront_usd'),
+    };
+    const demandUsd = demand.reduce((n, s) => n + s.annual_usd, 0);
+    const eventLimited = demand.some((s) => s.flags.includes('event_days_limit_shave'));
+    return { streams, dropped, totals, demandUsd, eventLimited };
+  };
+
+  // Dispatch strategy: when event days cut into demand-charge savings, also try skipping those programs
+  // (each one, and all together) and keep whichever earns more in the base case.
+  let best = build(kept);
+  let strategy = null;
+  const eventProgs = kept.filter((s) => s.event && s.scenario === 'base');
+  if (best.eventLimited && eventProgs.length) {
+    const subsets = eventProgs.length <= 3 ? nonEmptySubsets(eventProgs) : [eventProgs];
+    const enrolledBest = best;
+    for (const skip of subsets) {
+      const alt = build(kept.filter((s) => !skip.includes(s)));
+      if (alt.totals.annual_base > best.totals.annual_base + 1) {
+        best = alt;
+        strategy = { skipped: skip, enrolled: enrolledBest };
+      }
+    }
+    if (strategy) {
+      const progUsd = strategy.skipped.reduce((n, s) => n + s.annual_usd, 0);
+      const demandGain = best.demandUsd - strategy.enrolled.demandUsd;
+      strategy = {
+        skipped_ids: strategy.skipped.map((s) => s.program_id),
+        skipped_labels: strategy.skipped.map((s) => s.label),
+        program_usd: progUsd,
+        demand_gain_usd: demandGain,
+        net_gain_usd: best.totals.annual_base - strategy.enrolled.totals.annual_base,
+      };
+      strategy.other_usd = strategy.net_gain_usd - (demandGain - progUsd);
+      const other = Math.abs(strategy.other_usd) >= 1 ? `; ${strategy.other_usd < 0 ? 'after' : 'plus'} $${fmt(Math.abs(strategy.other_usd))}/yr of ${strategy.other_usd < 0 ? 'extra round-trip losses and other changes' : 'other stack changes'}` : '';
+      strategy.text = `its event days would cost about $${fmt(demandGain)}/yr in demand-charge savings for $${fmt(progUsd)}/yr in program payments${other}, net $${fmt(strategy.net_gain_usd)}/yr better without it`;
+      for (const st of eventProgs.filter((s) => strategy.skipped_ids.includes(s.program_id))) {
+        excluded.push({ ...st, excluded_by: 'dispatch strategy', excluded_reason: `Not enrolled: ${strategy.text}.` });
+      }
     }
   }
-  const nonZero = (s) => Math.abs(s.annual_usd) > 0.5 || Math.abs(s.upfront_usd) > 0.5;
-  const streams = [...demand, ...cpKept, ...arb, ...progKept, ...tax, ...(loss ? [loss] : [])].filter(nonZero);
+  excluded.push(...best.dropped);
+  const { streams, totals } = best;
+  return { config, profile, streams, excluded, totals, strategy };
+}
 
-  const sum = (pred, field) => streams.filter(pred).reduce((n, s) => n + s[field], 0);
-  const isBase = (s) => s.scenario === 'base';
-  const totals = {
-    annual_base: sum(isBase, 'annual_usd'),
-    annual_upside: sum(() => true, 'annual_usd'),
-    upfront_base: sum(isBase, 'upfront_usd'),
-    upfront_upside: sum(() => true, 'upfront_usd'),
-  };
-  return { config, profile, streams, excluded, totals };
+function nonEmptySubsets(items) {
+  const out = [];
+  for (let mask = 1; mask < 1 << items.length; mask++) out.push(items.filter((_, i) => mask & (1 << i)));
+  return out;
 }
 
 export function fmt(x) {

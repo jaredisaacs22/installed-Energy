@@ -304,7 +304,8 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "comed-rds-medium",
@@ -321,7 +322,7 @@
     {
      "label": "Distribution Facilities Charge (DFC), secondary voltage",
      "component": "delivery",
-     "rate_usd_per_kw_month": 13.24,
+     "rate_usd_per_kw_month": 14.94,
      "basis": "tou_window",
      "months": [
       1,
@@ -338,12 +339,15 @@
       12
      ],
      "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
-     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. Jan-2024 Medium DFC was $12.84/kW.",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. Jan-2024 Medium DFC was $12.84/kW. The file's 13.24/13.59/14.09 set appeared in only one prior summary. The 14.94/14.59/13.49 pattern (Medium > Large > Very Large) also matches the ordering in ComEd's ICC rate-design exhibits for 2026 (Medium $15.37, Large $13.72, Very Large $13.34 - proposed/test-year values, docket year not confirmed). Still Jan-2025 values; 2026 not verified. From Jan-2026 billing a Delivery Adjustment Amount (reconciliation) also applies to delivery charges.",
      "window": {
       "start": 9,
       "end": 18
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "medium",
+     "effective_date": "2025-01-01",
+     "verified": "2026-10-02"
     }
    ],
    "energy_rates": [
@@ -444,8 +448,9 @@
      "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
     }
    ],
-   "confidence": "low",
-   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+   "confidence": "medium",
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The second set (Medium $14.94) is used: two independent searches in the 2026-10-02 verification round returned it. Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Two independent searches of the Jan-2025 'Summary of Typical Nonresidential Line Item Charges': secondary DFC Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49; a second search returned 'Medium Load Delivery Class Secondary DFC $14.94/kW'. Primary: Small $6.48 / Medium $8.50 / Large $1",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "comed-rds-large",
@@ -462,7 +467,7 @@
     {
      "label": "Distribution Facilities Charge (DFC), secondary voltage",
      "component": "delivery",
-     "rate_usd_per_kw_month": 13.59,
+     "rate_usd_per_kw_month": 14.59,
      "basis": "tou_window",
      "months": [
       1,
@@ -479,12 +484,15 @@
       12
      ],
      "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
-     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. ",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint.  Same caveats as Medium. ICC exhibit shows $13.72 for Large in a 2026 filing (proposed; low).",
      "window": {
       "start": 9,
       "end": 18
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "low",
+     "effective_date": "2025-01-01",
+     "verified": "2026-10-02"
     }
    ],
    "energy_rates": [
@@ -586,7 +594,8 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Jan-2025 summary (search): Large Load Delivery Class (>400-1,000 kW) secondary DFC $14.59/kW.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "comed-rds-very-large",
@@ -603,7 +612,7 @@
     {
      "label": "Distribution Facilities Charge (DFC), secondary voltage",
      "component": "delivery",
-     "rate_usd_per_kw_month": 14.09,
+     "rate_usd_per_kw_month": 13.49,
      "basis": "tou_window",
      "months": [
       1,
@@ -620,12 +629,15 @@
       12
      ],
      "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
-     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. ",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint.  ICC exhibit shows $13.34 for Very Large in a 2026 filing (proposed; low).",
      "window": {
       "start": 9,
       "end": 18
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "low",
+     "effective_date": "2025-01-01",
+     "verified": "2026-10-02"
     }
    ],
    "energy_rates": [
@@ -727,7 +739,8 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Jan-2025 summary (search): Very Large Load Delivery Class (>1,000-10,000 kW) secondary DFC $13.49/kW.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "ameren-il-ds3",
@@ -836,10 +849,19 @@
     {
      "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
      "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    },
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges)",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel8rtpbrr.ashx"
+    },
+    {
+     "title": "ICC Docket P2025-0083 - Ameren Exhibit 7.1, Process of Determining Delivery Service Charges",
+     "url": "https://icc.illinois.gov/docket/P2025-0083/documents/360565/files/631634.pdf"
     }
    ],
    "confidence": "medium",
-   "verification_notes": "DS-3 applicability and the Jan-2027 kVA billing-demand definition were confirmed from tariff text in search summaries. The 2026 $9.690/kW figure is from a search summary of the PBR-R appendix; the voltage label is ambiguous. Current (2026) billing-demand definition and any ratchet were not verified. MISO PRA prices were cross-checked against two secondary sources and the MISO release."
+   "verification_notes": "DS-3 applicability and the Jan-2027 kVA billing-demand definition were confirmed from tariff text in search summaries. The 2026 $9.690/kW figure is from a search summary of the PBR-R appendix; the voltage label is ambiguous. Current (2026) billing-demand definition and any ratchet were not verified. MISO PRA prices were cross-checked against two secondary sources and the MISO release.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "ameren-il-ds4",
@@ -856,7 +878,7 @@
     {
      "label": "Distribution Delivery Charge",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 9.69,
      "basis": "ncp_monthly",
      "months": [
       1,
@@ -873,7 +895,10 @@
       12
      ],
      "hours": "not verified",
-     "notes": "Rate is in the Rate PBR-R appendix, but the value was not retrieved. Check whether DS-4 also moves to kVA on-peak billing in Jan-2027 as DS-3 does."
+     "notes": "Rate is in the Rate PBR-R appendix; the value used is from a search summary. Check whether DS-4 also moves to kVA on-peak billing in Jan-2027 as DS-3 does. Voltage mapping is ambiguous: another summary gave DS-4 Primary $9.379, High Voltage $2.659, 100 kV+ $0.275 (vs DS-3 file: Primary $7.970, HV $1.767). Treat $9.69 as the secondary/all-supply-voltage value. DS-4 tariff also has a Transformation Charge billed on the highest demand in the last 12 billing periods (ratchet) and a billing demand = max(on-peak max demand, 50% of off-peak max demand); from Jan-2027 billing the charge moves to $/kVA. Whether the on-peak/50%-off-peak definition is already in force in 2026 was not confirmed.",
+     "confidence": "low",
+     "effective_date": "2026-01-01",
+     "verified": "2026-10-02"
     }
    ],
    "energy_rates": [],
@@ -898,10 +923,19 @@
     {
      "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges), rev. 2025-08-28",
      "url": "https://www.ameren.com/-/media/rates/illinois/non-residential/electric-rates/distribution-delivery/aiel8rtpbrr08282025.ashx"
+    },
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges)",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel8rtpbrr.ashx"
+    },
+    {
+     "title": "ICC Docket P2025-0083 - Ameren Exhibit 7.1, Process of Determining Delivery Service Charges",
+     "url": "https://icc.illinois.gov/docket/P2025-0083/documents/360565/files/631634.pdf"
     }
    ],
    "confidence": "low",
-   "verification_notes": "DS-4 rates were not retrieved (search budget exhausted). Only the tariff existence and URL are confirmed."
+   "verification_notes": "The DS-4 distribution delivery charge ($9.69/kW) is from a single search summary (low confidence). Only the tariff's existence and URL were confirmed from the primary source. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: PBR-R search summary: 'For 2026, the Distribution Delivery Charge (per kW) for All Supply Voltages under DS-4 is $9.690'. Ameren Ex. 7.1: DS-3 and DS-4 Distribution Delivery Charge is set from combined cost of service divided by the SUM of DS-3 and DS-4 billing demand units (i.e., one shared unit ch",
+   "last_verified": "2026-10-02"
   }
  ],
  "programs": [
@@ -962,7 +996,19 @@
     ],
     "term_years": 5,
     "notes": "One-time upfront rebate. The 5-year term refers to the mandatory SDVPP commitment (5 seasons). Sources conflict on whether non-residential storage receives $250 or $300/kWh in 2026. $250 is used as the conservative value. Clawback/penalty terms for SDVPP non-performance were not verified.",
-    "max_kwh_incentivized": 25000
+    "max_kwh_incentivized": 25000,
+    "rate_by_site_peak_kw": [
+     {
+      "max_peak_kw": 100,
+      "rate": 300,
+      "label": "Small C&I (≤ 100 kW), $300/kWh"
+     },
+     {
+      "max_peak_kw": null,
+      "rate": 250,
+      "label": "Other non-residential, $250/kWh"
+     }
+    ]
    },
    "dispatch": {
     "season": "Jun-Sep",
@@ -1003,10 +1049,14 @@
     {
      "title": "theday.company - ComEd Battery Storage Rebate 2026 (secondary)",
      "url": "https://theday.company/answers/comed-battery-storage-rebate"
+    },
+    {
+     "title": "220 ILCS 5/16-107.6",
+     "url": "https://ilga.gov/legislation/ilcs/documents/022000050K16-107.6.htm"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "Statute text confirmed through search summaries of ILGA 16-107.6 ($300/$250, 25,000 kWh, 6/1/2026 IA carve-out, SDVPP 4-6 pm BTM). The non-residential $/kWh in the 2026 ComEd T&C is ambiguous across summaries. The threshold-date definition was not confirmed from statute. Challenger review: statute wording reads \"capability to supply energy\" plus SDVPP participation; whether a non-export interconnection qualifies is unverified. Modeled as requiring export (conservative)."
   },
   {
@@ -1341,9 +1391,13 @@
     {
      "title": "PJM Energy Storage fact sheet",
      "url": "https://www.pjm.com/-/media/DotCom/about-pjm/newsroom/fact-sheets/energy-storage-fact-sheet.pdf"
+    },
+    {
+     "title": "PJM - ELCC Class Ratings for the 2027/2028 BRA",
+     "url": "https://www.pjm.com/-/media/DotCom/planning/res-adeq/elcc/2027-28-bra-elcc-class-ratings.pdf"
     }
    ],
-   "last_verified": "2026-10-01",
+   "last_verified": "2026-10-02",
    "confidence": "medium",
    "verification_notes": "Prices high confidence. DR ELCC 92% (2027/28) and the 24-hour availability change come from secondary sources (Enel/Modo). The 100 kW minimum and no-injection rule come from PJM/secondary summaries. CSP share not verified. Valued net: × 0.92 DR ELCC accreditation (2027/28, secondary source) and × the aggregator customer-share assumption (Settings); 4 h duration basis."
   },
@@ -1552,10 +1606,15 @@
     {
      "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
      "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM Inside Lines - PJM Auction Procures 134,479 MW",
+     "url": "https://insidelines.pjm.com/pjm-auction-procures-134479-mw-of-generation-resources/"
     }
    ],
    "confidence": "high",
-   "notes": "No zonal separation; 134,479 MW cleared; short of reliability requirement. = $122.04/kW-yr (366 days). Set by summer-2026 PLC."
+   "notes": "No zonal separation; 134,479 MW cleared; short of reliability requirement. = $122.04/kW-yr (366 days). Set by summer-2026 PLC.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "pjm-bra-2028-29-comed",
@@ -2093,6 +2152,9 @@
   "PJM CSP revenue shares, DR notice times, and the 2027/28+ DR performance and winter rules (PJM Manual 18/11). Also whether SDVPP-enrolled kW can also be PJM DR.",
   "MISO LMR rules for Ameren-side BTM batteries (minimum size, notice, accreditation reform timing) and whether IL allows ARCs in MISO.",
   "Whether Illinois OSFM has adopted NFPA 1/NFPA 855 statewide (Illinois Register vol. 50 2026), and Chicago's local amendments to IFC 2018 Section 1206 (600 kWh fire-area limit, spacing).",
-  "Part 466 typical timelines by level and the Level 3 non-export cap for radial (non-network) circuits."
+  "Part 466 typical timelines by level and the Level 3 non-export cap for radial (non-network) circuits.",
+  "ComEd 2026 DFC by class still not found from a 2026 primary sheet; ICC exhibits show Medium $15.37 / Large $13.72 / Very Large $13.34 (proposed, test year unconfirmed). A 2026 Delivery Adjustment Amount also applies.",
+  "Ameren DS-4: confirm voltage mapping ($9.690 all/secondary vs $9.379 primary), whether billing demand = max(on-peak, 50% off-peak) already applies in 2026, and the Transformation Charge (12-month ratchet) rate for secondary-delivery customers.",
+  "IL DG storage rebate: rate depends on class - sites <100 kW peak (small commercial) get $300/kWh vs $250/kWh for larger non-residential; model should select by site peak kW."
  ]
 }

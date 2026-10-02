@@ -17,6 +17,7 @@ One row per input: `section` (`site` | `assumption` | `meta`), `key`, `value`. I
 | `om_usd_per_yr` | Year-1 O&M |
 | `net_cost_base_usd`, `simple_payback_base_yr`, `npv_base_usd`, `irr_base` | Base-case economics |
 | `simple_payback_upside_yr`, `npv_upside_usd` | Upside economics |
+| `programs_not_enrolled` | Dispatch programs left out because their event days would cost more in demand-charge savings than they pay (see the Panel sheet) |
 | `constraint_status` | Worst site-check severity: `ok` / `info` / `caution` / `critical` |
 | `constraint_issues` | Caution/critical checks, pipe-separated |
 

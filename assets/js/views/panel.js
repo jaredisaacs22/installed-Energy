@@ -10,7 +10,7 @@ export function renderPanel(root, data, params) {
   root.append(
     h('div', { class: 'page-head' }, h('div', {}, h('h1', {}, 'Expert panel'), h('p', {}, data.panel.disclaimer || ''))),
     h('div', { class: 'lib-grid', style: { marginBottom: '18px' } }, personas.map((p) => h('div', { class: 'prog' },
-      h('div', { style: { display: 'flex', gap: '10px', alignItems: 'center' } }, h('div', { class: `avatar ${p.kind === 'utility' ? 'utility' : ''}` }, p.initials || initials(p.name)), h('div', {}, h('h3', { style: { margin: 0 } }, p.name), h('div', { class: 'small muted' }, `${p.role}${p.jurisdictions?.length ? ' · ' + p.jurisdictions.join(', ') : ' · all markets'}`))),
+      h('div', { style: { display: 'flex', gap: '10px', alignItems: 'center' } }, h('div', { class: `avatar ${p.kind === 'utility' ? 'utility' : 'specialist'}` }, p.initials || initials(p.name)), h('div', {}, h('h3', { style: { margin: 0 } }, p.name), h('div', { class: 'small muted' }, `${p.role}${p.jurisdictions?.length ? ' · ' + p.jurisdictions.join(', ') : ' · all markets'}`))),
       h('p', { class: 'small ink2', style: { marginTop: '8px' } }, p.lens),
       p.challenges?.length ? h('ul', { class: 'small ink2', style: { margin: '4px 0 0', paddingLeft: '18px' } }, p.challenges.map((c) => h('li', {}, c))) : null,
     ))),

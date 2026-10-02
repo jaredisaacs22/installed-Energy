@@ -103,8 +103,12 @@ export function panelReview(site, analysis, ctx) {
   if (rec?.streams.some((s) => s.flags?.includes('pwa_unconfirmed'))) {
     add('bess-ix', 'info', 'At ≥ 1 MW AC the ITC needs prevailing wage & apprenticeship', 'Without PWA the credit drops from 30% to 6%. Keep site AC capacity under 1 MW, or plan for PWA compliance.');
   }
+  if (rec?.strategy) {
+    const st = rec.strategy;
+    add('bess-ix', 'caution', `Dispatch strategy: skip ${st.skipped_labels.map(shortProgram).join(' and ')} at this site`, `Events are called on the hot days that set the monthly peak, and on those days the battery’s energy goes to the event window, leaving too little to hold down the site’s peak outside it. Enrolling: ${st.text}. The recommended stack leaves it out. Check the network’s call window (Rates & programs); a window that covers the site’s peak hours, or more battery energy, can make both work.`);
+  }
   if (rec?.streams.some((s) => s.flags?.includes('event_days_limit_shave'))) {
-    add('bess-ix', 'caution', 'DR event days limit demand-charge savings', 'In months with frequent dispatch events the battery spends its energy on the event block, so it only shaves the site’s peak if that peak falls inside the event hours. The monthly demand saving here uses the lesser of a normal day and an event day. Check event windows against the site’s interval data.');
+    add('bess-ix', 'caution', 'DR event days limit demand-charge savings', 'Events are assumed to land on the month’s peak day, because utilities call them on hot, high-load days. On those days the battery delivers the event first and shaves with whatever energy and kW are left, so the monthly saving uses the lesser of a normal day and an event day. Check event windows against the site’s interval data.');
   }
   for (const s of rec?.streams || []) {
     if (!s.flags?.includes('eligibility_unconfirmed')) continue;
@@ -163,3 +167,5 @@ export function panelReview(site, analysis, ctx) {
 
   return notes;
 }
+
+const shortProgram = (label) => (label.match(/\(([A-Z]{3,6})\)/)?.[1] || label.split(',')[0]);
