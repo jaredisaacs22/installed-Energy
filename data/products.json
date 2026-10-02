@@ -1,0 +1,44 @@
+{
+ "products": [
+  {
+   "id": "B30-150",
+   "label": "30 kW / 150 kWh",
+   "kw": 30,
+   "kwh": 150,
+   "installed_cost_usd_per_kwh": 600,
+   "cost_is_placeholder": true,
+   "footprint_sqft": null,
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+  },
+  {
+   "id": "B65-200",
+   "label": "65 kW / 200 kWh",
+   "kw": 65,
+   "kwh": 200,
+   "installed_cost_usd_per_kwh": 600,
+   "cost_is_placeholder": true,
+   "footprint_sqft": null,
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+  },
+  {
+   "id": "B200-418",
+   "label": "200 kW / 418 kWh",
+   "kw": 200,
+   "kwh": 418,
+   "installed_cost_usd_per_kwh": 600,
+   "cost_is_placeholder": true,
+   "footprint_sqft": null,
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+  },
+  {
+   "id": "B200-600",
+   "label": "200 kW / 600 kWh",
+   "kw": 200,
+   "kwh": 600,
+   "installed_cost_usd_per_kwh": 600,
+   "cost_is_placeholder": true,
+   "footprint_sqft": null,
+   "notes": "Installed cost is a $600/kWh PLACEHOLDER \u2014 enter your actual cost. Footprint unknown \u2014 enter from the spec sheet incl. clearances."
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "data_version": "2026.10.02",
+ "updated": "2026-10-02",
+ "research_note": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "jurisdictions": [
+  {
+   "code": "MA",
+   "name": "Massachusetts",
+   "file": "ma.json"
+  },
+  {
+   "code": "CT",
+   "name": "Connecticut",
+   "file": "ct.json"
+  },
+  {
+   "code": "NY-NYC",
+   "name": "New York City (Con Edison)",
+   "file": "ny-nyc.json"
+  },
+  {
+   "code": "IL",
+   "name": "Illinois",
+   "file": "il.json"
+  },
+  {
+   "code": "TX",
+   "name": "Texas (ERCOT)",
+   "file": "tx.json"
+  },
+  {
+   "code": "CA",
+   "name": "California",
+   "file": "ca.json"
+  }
+ ]
+}

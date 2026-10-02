@@ -1,0 +1,1912 @@
+{
+ "code": "MA",
+ "name": "Massachusetts",
+ "researched_on": "2026-10-01",
+ "summary": "Massachusetts is one of the strongest US markets for BTM C&I storage because several large value streams line up on summer weekday afternoons. ConnectedSolutions Daily Dispatch pays up to $200/kW-summer (5-yr rate lock, 30-60 day-ahead ~3-h events), with Winter Dispatch adding $25/kW. Peak-window demand charges are high: about $10.48/kW for NGrid G-3, and roughly $30-35/kW-month of distribution plus transmission demand on Eversource Greater Boston G-2/G-3. NGrid G-3 customers can elect a transmission coincident-peak charge (~$21.91/kW-month at the ISO-NE monthly peak hour). Capacity tags are worth ~$31/kW-yr (FCA 17) rising to ~$43/kW-yr (FCA 18), but only through pass-through supply contracts, and the 2028+ prompt-auction price is unknown. Key risks: CPS price softening after the May 2026 minimum-standard cut, no upfront C&I storage incentive, Expedited/Standard interconnection for anything above 25 kW (and network service in Boston), and NFPA 855-2020 limits (600 kWh per indoor fire area) that push larger units outdoors.",
+ "default_energy_price_usd_per_kwh": 0.22,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "ngrid-ma",
+   "name": "National Grid (Massachusetts Electric Company)",
+   "state": "MA",
+   "iso": "ISO-NE",
+   "load_zone": "Mostly WCMA; also parts of NEMA (North Shore/Merrimack Valley) and SEMA (zone mapping from general knowledge, not re-verified). FCA 17/18 cleared at a single price in all zones, so zone does not change capacity value for 2026/27-2027/28.",
+   "retail_choice": true,
+   "default_supply_notes": "Basic Service: large C&I (G-3) priced monthly (varying monthly fixed $/kWh, procured via wholesale RFPs); small/medium C&I on fixed multi-month prices. Capacity and transmission costs embedded in Basic Service $/kWh, so ICAP tag reductions have no direct value on Basic Service (structure from general knowledge; confirm in current Basic Service filings).",
+   "network_grid_notes": "Secondary spot/area networks exist in some downtown areas (e.g., Worcester, Lowell, Brockton-type urban cores; locations not verified). Network-served BESS face Simplified limits of < 1/15 of minimum load (area network also <=15 kW) and network-protector reverse-power constraints; plan on non-export and Standard review.",
+   "interconnection": {
+    "rule_name": "Standards for Interconnection of Distributed Generation (statewide DPU-approved DG Interconnection Tariff; National Grid M.D.P.U. No. 1579 eff. 2025-04-15; Eversource M.D.P.U. No. 55; Unitil Schedule IC)",
+    "tracks": [
+     {
+      "name": "Simplified",
+      "max_kw": 25,
+      "conditions": "Listed (UL 1741) inverter-based facility on a radial EPS: <=15 kW single-phase or <=25 kW three-phase (subject to service configuration and aggregate-on-transformer conditions). On a spot network: rating < 1/15 of the customer's minimum load. On an area network: < 1/15 of minimum load AND <=15 kW. The 15->25 kW three-phase threshold was a TSRG consensus revision reflected in the 2025 tariff.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Expedited",
+      "max_kw": null,
+      "conditions": "Listed facilities on a radial EPS that pass the tariff's pre-specified screens (no single kW cap; screens on feeder/section penetration, transformer loading, etc.). Facilities with zero Export Capacity (non-exporting) skip the export-related screen. TSRG consensus also proposed a Group Study exemption for certain Expedited facilities.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Standard",
+      "max_kw": null,
+      "conditions": "All facilities that do not qualify for or fail Simplified/Expedited, including most facilities on secondary networks above the Simplified network limits; full impact/facilities studies; may be placed in a group study.",
+      "typical_timeline": null,
+      "application_fee": null
+     }
+    ],
+    "non_export_path": "Tariff defines Export Capacity as nameplate or a lower amount if limited by an acceptable means (e.g., PCS / UL 1741 CRD power control, reverse/minimum-power relays). Non-exporting systems (zero Export Capacity) skip the export screen in Expedited; storage is evaluated on export capacity rather than nameplate where controls are accepted. Exact list of acceptable export-limiting means and inadvertent-export allowances not verified in this pass.",
+    "storage_specific_notes": "Energy storage definitions were updated in the Simplified/Expedited redlines (TSRG / D.P.U. 25-29 proceeding). A 30 kW three-phase battery exceeds the 25 kW Simplified limit (Expedited at minimum). For network-served sites, Simplified is effectively limited to tiny systems (< 1/15 of minimum load); expect Standard review and strict non-export.",
+    "sources": [
+     {
+      "title": "National Grid MA M.D.P.U. No. 1579 DG Interconnection Tariff (eff. 2025-04-15)",
+      "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/2025/mdpu_1579_dg_interconnection_tariff.pdf"
+     },
+     {
+      "title": "D.P.U. 25-29 Notice of Filing and Request for Comments (interconnection tariff revisions)",
+      "url": "https://www.nationalgridus.com/media/pdfs/our-company/dpu/2025/d.p.u._25-29_-_notice_of_filing_and_request_for_comments.pdf"
+     },
+     {
+      "title": "TSRG Meeting 37 - Simplified Process proposal",
+      "url": "https://www.mass.gov/doc/tsrg-meeting-37-simplified-process-proposal/download"
+     },
+     {
+      "title": "Massachusetts TSRG Common Technical Standards Manual (2019)",
+      "url": "https://www.mass.gov/doc/2019-common-technical-standards-manual/download"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "National Grid MA Business Service Rates page",
+     "url": "https://www.nationalgridus.com/MA-Business/Rates/Service-Rates"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    },
+    {
+     "title": "National Grid MA M.D.P.U. No. 1579 DG Interconnection Tariff (eff. 2025-04-15)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/2025/mdpu_1579_dg_interconnection_tariff.pdf"
+    }
+   ]
+  },
+  {
+   "id": "eversource-ma",
+   "name": "Eversource Energy (NSTAR Electric Company) - Massachusetts",
+   "state": "MA",
+   "iso": "ISO-NE",
+   "load_zone": "NEMA (Greater Boston/Cambridge), SEMA (South Shore, Cape Cod, Martha's Vineyard, New Bedford area) and WCMA (Western MA/Springfield) (zone mapping from general knowledge). Rate summaries are still published per legacy area (Greater Boston, Cambridge, South Shore/Cape/MV, Western MA) - always pull the summary for the site's area.",
+   "retail_choice": true,
+   "default_supply_notes": "Basic Service procured by RFP; large C&I Basic Service priced monthly. Capacity/transmission embedded in Basic Service price - no ICAP tag pass-through on Basic Service.",
+   "network_grid_notes": "Downtown Boston and Cambridge are served by secondary spot/area networks (general knowledge). Network protectors trip on reverse power, so BESS must be strictly non-exporting with fast export control; Simplified only below 1/15 of minimum load. Eversource publishes an MA hosting capacity map.",
+   "interconnection": {
+    "rule_name": "Standards for Interconnection of Distributed Generation (statewide DPU-approved DG Interconnection Tariff; National Grid M.D.P.U. No. 1579 eff. 2025-04-15; Eversource M.D.P.U. No. 55; Unitil Schedule IC)",
+    "tracks": [
+     {
+      "name": "Simplified",
+      "max_kw": 25,
+      "conditions": "Listed (UL 1741) inverter-based facility on a radial EPS: <=15 kW single-phase or <=25 kW three-phase (subject to service configuration and aggregate-on-transformer conditions). On a spot network: rating < 1/15 of the customer's minimum load. On an area network: < 1/15 of minimum load AND <=15 kW. The 15->25 kW three-phase threshold was a TSRG consensus revision reflected in the 2025 tariff.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Expedited",
+      "max_kw": null,
+      "conditions": "Listed facilities on a radial EPS that pass the tariff's pre-specified screens (no single kW cap; screens on feeder/section penetration, transformer loading, etc.). Facilities with zero Export Capacity (non-exporting) skip the export-related screen. TSRG consensus also proposed a Group Study exemption for certain Expedited facilities.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Standard",
+      "max_kw": null,
+      "conditions": "All facilities that do not qualify for or fail Simplified/Expedited, including most facilities on secondary networks above the Simplified network limits; full impact/facilities studies; may be placed in a group study.",
+      "typical_timeline": null,
+      "application_fee": null
+     }
+    ],
+    "non_export_path": "Tariff defines Export Capacity as nameplate or a lower amount if limited by an acceptable means (e.g., PCS / UL 1741 CRD power control, reverse/minimum-power relays). Non-exporting systems (zero Export Capacity) skip the export screen in Expedited; storage is evaluated on export capacity rather than nameplate where controls are accepted. Exact list of acceptable export-limiting means and inadvertent-export allowances not verified in this pass.",
+    "storage_specific_notes": "Energy storage definitions were updated in the Simplified/Expedited redlines (TSRG / D.P.U. 25-29 proceeding). A 30 kW three-phase battery exceeds the 25 kW Simplified limit (Expedited at minimum). For network-served sites, Simplified is effectively limited to tiny systems (< 1/15 of minimum load); expect Standard review and strict non-export.",
+    "sources": [
+     {
+      "title": "Eversource (NSTAR Electric) M.D.P.U. No. 55 DG Interconnection Tariff",
+      "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/55-tariff-ma.pdf?sfvrsn=943800bb_9"
+     },
+     {
+      "title": "Mass.gov - Utility Interconnection in Massachusetts",
+      "url": "https://www.mass.gov/info-details/utility-interconnection-in-massachusetts"
+     },
+     {
+      "title": "Massachusetts TSRG Common Technical Standards Manual (2019)",
+      "url": "https://www.mass.gov/doc/2019-common-technical-standards-manual/download"
+     },
+     {
+      "title": "Eversource MA Hosting Capacity Map",
+      "url": "https://www.eversource.com/residential/about/doing-business-with-us/interconnections/massachusetts/hosting-capacity-map"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "Eversource Eastern MA - Greater Boston rate summary (R-1 ... G-3)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ema-greater-boston-rates.pdf?sfvrsn=c27ef362_40"
+    },
+    {
+     "title": "Eversource EMA Electric Delivery Rates page",
+     "url": "https://www.eversource.com/residential/account-billing/manage-bill/about-your-bill/rates-tariffs/electric-delivery-rates/ema"
+    },
+    {
+     "title": "Eversource (NSTAR Electric) M.D.P.U. No. 55 DG Interconnection Tariff",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/55-tariff-ma.pdf?sfvrsn=943800bb_9"
+    }
+   ]
+  },
+  {
+   "id": "unitil-ma",
+   "name": "Unitil (Fitchburg Gas and Electric Light Company)",
+   "state": "MA",
+   "iso": "ISO-NE",
+   "load_zone": "WCMA (Fitchburg/Townsend/Lunenburg/Ashby area; general knowledge)",
+   "retail_choice": true,
+   "default_supply_notes": "Basic Service via RFP; same pass-through logic as other MA EDCs. Small territory - verify G-2/G-3 demand charges from Unitil MA rate summary (G2 delivery rates effective 2026-06-01 referenced but not captured).",
+   "network_grid_notes": "No secondary-network information found; low priority territory.",
+   "interconnection": {
+    "rule_name": "Standards for Interconnection of Distributed Generation (statewide DPU-approved DG Interconnection Tariff; National Grid M.D.P.U. No. 1579 eff. 2025-04-15; Eversource M.D.P.U. No. 55; Unitil Schedule IC)",
+    "tracks": [
+     {
+      "name": "Simplified",
+      "max_kw": 25,
+      "conditions": "Listed (UL 1741) inverter-based facility on a radial EPS: <=15 kW single-phase or <=25 kW three-phase (subject to service configuration and aggregate-on-transformer conditions). On a spot network: rating < 1/15 of the customer's minimum load. On an area network: < 1/15 of minimum load AND <=15 kW. The 15->25 kW three-phase threshold was a TSRG consensus revision reflected in the 2025 tariff.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Expedited",
+      "max_kw": null,
+      "conditions": "Listed facilities on a radial EPS that pass the tariff's pre-specified screens (no single kW cap; screens on feeder/section penetration, transformer loading, etc.). Facilities with zero Export Capacity (non-exporting) skip the export-related screen. TSRG consensus also proposed a Group Study exemption for certain Expedited facilities.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Standard",
+      "max_kw": null,
+      "conditions": "All facilities that do not qualify for or fail Simplified/Expedited, including most facilities on secondary networks above the Simplified network limits; full impact/facilities studies; may be placed in a group study.",
+      "typical_timeline": null,
+      "application_fee": null
+     }
+    ],
+    "non_export_path": "Tariff defines Export Capacity as nameplate or a lower amount if limited by an acceptable means (e.g., PCS / UL 1741 CRD power control, reverse/minimum-power relays). Non-exporting systems (zero Export Capacity) skip the export screen in Expedited; storage is evaluated on export capacity rather than nameplate where controls are accepted. Exact list of acceptable export-limiting means and inadvertent-export allowances not verified in this pass.",
+    "storage_specific_notes": "Energy storage definitions were updated in the Simplified/Expedited redlines (TSRG / D.P.U. 25-29 proceeding). A 30 kW three-phase battery exceeds the 25 kW Simplified limit (Expedited at minimum). For network-served sites, Simplified is effectively limited to tiny systems (< 1/15 of minimum load); expect Standard review and strict non-export.",
+    "sources": [
+     {
+      "title": "Unitil (FG&E) Schedule IC - Standards for Interconnection of Distributed Generation",
+      "url": "https://unitil.com/sites/default/files/2024-01/FGE-Schedule-IC.pdf"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "Fitchburg Gas and Electric Light Co. d/b/a Unitil - MA Commercial Electric Rates",
+     "url": "https://unitil.com/sites/default/files/2024-01/MA-Commercial-Electric-Rates.pdf"
+    },
+    {
+     "title": "Unitil ConnectedSolutions for Businesses (MA)",
+     "url": "https://unitil.com/rebates/connectedsolutions-businesses-ma"
+    },
+    {
+     "title": "Unitil (FG&E) Schedule IC - Standards for Interconnection of Distributed Generation",
+     "url": "https://unitil.com/sites/default/files/2024-01/FGE-Schedule-IC.pdf"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "ngrid-ma-g1",
+   "utility_id": "ngrid-ma",
+   "name": "G-1 General Service - Small Commercial & Industrial",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Energy-only rate for small C&I using < ~10,000 kWh/month on average; moved to G-2 above 10,000 kWh/month."
+   },
+   "effective_date": "2026 (M.D.P.U. 1-26-x summaries; exact effective date of current rates not captured)",
+   "demand_charges": [],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "No demand charge, so BTM storage value on G-1 is limited to ConnectedSolutions, ICAP tag (if supply passes through) and CPS. Sites this small rarely justify even the 30 kW/150 kWh unit unless resilience-driven.",
+   "sources": [
+    {
+     "title": "National Grid MA Rate G-2 tariff (Demand G-2 Retail Delivery Service)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_g2.pdf"
+    },
+    {
+     "title": "National Grid MA Business Service Rates page",
+     "url": "https://www.nationalgridus.com/MA-Business/Rates/Service-Rates"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Class definition confirmed from search summary of NGrid G-2 tariff/service-rate pages; G-1 $/kWh delivery rates not captured."
+  },
+  {
+   "id": "ngrid-ma-g2",
+   "utility_id": "ngrid-ma",
+   "name": "G-2 General Service - Demand (Medium C&I)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 200,
+    "text": "New customers estimated > 10,000 kWh/month and not exceeding 200 kW demand; moved to G-3 if 12-month average demand > 200 kW for 3 consecutive months; may leave G-2 if < 8,000 kWh/month."
+   },
+   "effective_date": "2026 (M.D.P.U. 1-26-H delivery summary; exact date not captured)",
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 15.06,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (assumed - G-2 is not a TOU rate; demand determination text not captured)",
+     "notes": "Value from search summary of NGrid 2026 summary of rates. Whether the first N kW are exempt and whether billing demand is 15-min max kW or kVA-adjusted was not verified."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Transmission (volumetric)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.03596,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Search summary attributed 3.596 cents/kWh transmission to G-2; may belong to another class - verify."
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Monthly non-coincident (all-hours) demand basis means any single 15-minute spike, including on weekends/nights, sets the bill - battery must guard 24x7 (assumed). G-2 sites growing above 200 kW migrate to G-3, which changes the demand basis to an 8am-9pm weekday window.",
+   "sources": [
+    {
+     "title": "National Grid MA Rate G-2 tariff (Demand G-2 Retail Delivery Service)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_g2.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    },
+    {
+     "title": "National Grid MA Business Service Rates page",
+     "url": "https://www.nationalgridus.com/MA-Business/Rates/Service-Rates"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Applicability confirmed (tariff text in search summary). $15.06/kW demand from a single search summary of the 2026 summary of rates (medium). Demand basis/hours inferred, not confirmed."
+  },
+  {
+   "id": "ngrid-ma-g3",
+   "utility_id": "ngrid-ma",
+   "name": "G-3 General Service - Time-of-Use (Large C&I)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 200,
+    "max_kw": null,
+    "text": "New customers estimated to exceed 200 kW average demand; existing customers whose 12-month average demand exceeds 200 kW for 3 consecutive months; TOU metering required."
+   },
+   "effective_date": "Tariff terms M.D.P.U. No. 1591 eff. 2025-03-31; 2026 rate levels per M.D.P.U. 1-26-D (Mar 2026) / 1-26-H summaries",
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 10.48,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Peak hours 8:00am-9:00pm Mon-Fri excluding holidays",
+     "notes": "Billing demand = greater of (a) max 15-min kW during Peak hours or (b) 90% of max 15-min kVA during Peak hours. Off-peak/weekend demand is not billed -> battery charging at night/weekends adds no demand charge.",
+     "window": {
+      "start": 8,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Transmission coincident peak demand (OPTIONAL election)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 21.91,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Hour of ISO-NE RNS monthly transmission system peak (60-min coincident kW)",
+     "notes": "Optional alternative to volumetric transmission charge, available since April 2025 (D.P.U. 23-150). One search summary showed $23.82/kW - confirm current month value."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Distribution energy - Peak",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00979,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "8am-9pm Mon-Fri excl. holidays"
+    },
+    {
+     "label": "Distribution energy - Off-peak",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00709,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all other hours"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    },
+    {
+     "type": "transmission_tag",
+     "how_set": "OPTIONAL for G-3 (elected; D.P.U. 23-150, available since April 2025): customer's coincident 60-minute kW at the hour of the ISO-NE Regional Network Service monthly transmission system peak, billed every month, replacing the volumetric transmission charge.",
+     "est_value_usd_per_kw_year": 262.92,
+     "derivation": "$21.91/kW-month x 12 months = $262.92 per kW reduced at every monthly peak hour (theoretical maximum; requires hitting all 12 monthly RNS peak hours). A second search summary showed $23.82/kW (likely a different month's rate) - confirm current value in the latest M.D.P.U. 1-26-x summary. Net benefit vs. default = avoided volumetric transmission $/kWh minus CP charge on remaining coincident kW.",
+     "passthrough_notes": "Delivery (utility) charge - realized on the utility bill regardless of competitive supplier. Election appears to carry a minimum term (Eversource analogue: 12 months) - verify NGrid election rules.",
+     "passthrough": "supply",
+     "optional_election": true
+    }
+   ],
+   "storage_notes": "Customer charge $350/month. Demand window (8am-9pm weekdays, all months) is 13 h long - a 2-3 h battery can only shave short/peaky profiles; flat daytime loads need long-duration (5 h) units. kVA basis (90% of kVA) means a PF-correcting inverter can also cut billed demand. The optional transmission CP charge is the single largest BTM lever on G-3 and aligns with ConnectedSolutions/ICAP hours in summer; winter monthly peaks are typically early evening (verify against ISO-NE history).",
+   "sources": [
+    {
+     "title": "National Grid MA Rate G-3 tariff, M.D.P.U. No. 1591 (terms eff. 2025-03-31)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_g3.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-D (Mar 2026)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/electric-rates/ma/2026/0326meco.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-C (Feb 2026)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/electric-rates/ma/2026/0226_meco_wbr.pdf"
+    },
+    {
+     "title": "pv magazine USA (2025-02-19): Massachusetts allows increased demand charges to drive energy storage (NGrid G-3 optional transmission CP demand, D.P.U. 23-150)",
+     "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage/"
+    }
+   ],
+   "confidence": "high",
+   "verification_notes": "Distribution demand $10.48/kW, $350 customer charge and peak/off-peak distribution kWh rates seen in multiple search summaries citing NGrid tariff/summary PDFs (high). Peak-hours and demand-determination text from M.D.P.U. 1591 summary (high). Optional CP transmission $21.91/kW seen twice; $23.82 seen once (medium). Default (non-elected) G-3 transmission charge level not captured. No ratchet found in search text (verify)."
+  },
+  {
+   "id": "eversource-ma-g1",
+   "utility_id": "eversource-ma",
+   "name": "G-1 Small General Service (Greater Boston and other EMA areas)",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 10,
+    "text": "Small general service; G-2 applies to demand > 10 kW (Greater Boston summary). G-1 demand/energy rates not captured."
+   },
+   "effective_date": "2026 (Greater Boston rate summary; exact date not captured)",
+   "demand_charges": [],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Likely too small for the product line except resilience applications.",
+   "sources": [
+    {
+     "title": "Eversource Eastern MA - Greater Boston rate summary (R-1 ... G-3)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ema-greater-boston-rates.pdf?sfvrsn=c27ef362_40"
+    },
+    {
+     "title": "Eversource EMA Electric Delivery Rates page",
+     "url": "https://www.eversource.com/residential/account-billing/manage-bill/about-your-bill/rates-tariffs/electric-delivery-rates/ema"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Only the G-2 '>10 kW' boundary was seen; G-1 rates not verified."
+  },
+  {
+   "id": "eversource-ma-g2-greater-boston",
+   "utility_id": "eversource-ma",
+   "name": "G-2 Medium General Service (Greater Boston) - demand-tiered",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": 300,
+    "text": "Medium general service with distribution demand charge for customers > 10 kW; summary lists demand tiers (e.g., >150 kW and <=300 kW tier with $110/month customer charge)."
+   },
+   "effective_date": "2026 (Greater Boston rate summary; Eversource EMA rates changed 2026-02-01 per search summary)",
+   "demand_charges": [
+    {
+     "label": "Distribution demand (150-300 kW tier)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 19.39,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "not verified (assumed monthly max 15-min demand)",
+     "notes": "Tier >150 kW and <=300 kW. Rates for <=150 kW tiers not captured. A different search summary reported G-2 distribution demand of $3.50/kW (<=150 kW) and $7.00/kW (150-300 kW) - likely another legacy area or an older/partial table; unresolved."
+    },
+    {
+     "label": "Transmission demand (150-300 kW tier)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 15.2,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "not verified",
+     "notes": "Delivery-side transmission demand charge."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Distribution energy (150-300 kW tier)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.01848,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    },
+    {
+     "label": "Revenue decoupling charge",
+     "component": "delivery",
+     "rate_usd_per_kwh": -0.00047,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Combined distribution+transmission demand ~$34.59/kW-month in the 150-300 kW tier (19.39 + 15.20) - among the richest demand-charge targets in New England if basis is monthly max. Tier boundaries mean a battery that drops a site from >150 kW to <=150 kW may change the tier's customer charge and per-kW rates - model tier migration explicitly.",
+   "sources": [
+    {
+     "title": "Eversource Eastern MA - Greater Boston rate summary (R-1 ... G-3)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ema-greater-boston-rates.pdf?sfvrsn=c27ef362_40"
+    },
+    {
+     "title": "NSTAR Electric d/b/a Eversource tariff M.D.P.U. No. 2 (general service)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/2-tariff-ma.pdf?sfvrsn=779dc462_23"
+    },
+    {
+     "title": "Eversource EMA Electric Delivery Rates page",
+     "url": "https://www.eversource.com/residential/account-billing/manage-bill/about-your-bill/rates-tariffs/electric-delivery-rates/ema"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "150-300 kW tier values from a single search summary of ema-greater-boston-rates.pdf (medium). Demand basis/hours and lower-tier rates not verified; conflicting $3.50/$7.00 figures unresolved."
+  },
+  {
+   "id": "eversource-ma-g3-greater-boston",
+   "utility_id": "eversource-ma",
+   "name": "G-3 Large General Service - Time-of-Use (Greater Boston)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Large general service TOU. One tariff summary: service < 14,000 V and monthly demand > average 100 kW for 12 consecutive months; another: available at >= 14,000 V in Greater Boston. Threshold conflicts between legacy-area tariffs - verify for the site's area."
+   },
+   "effective_date": "2026 (Greater Boston rate summary; G-3 variants for South Shore and Cambridge effective 2026-02-01 per search summary)",
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 15.32,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Peak Load Period: 9am-6pm weekdays (EDT months / Jun-Sep); one tariff summary gives 8am-9pm weekdays Oct-May",
+     "notes": "Billing demand = highest 15-min kVA in the Peak Load Period of the month; a minimum based on a % of the max 15-min demand in any period also applies (search summary said 26% - unverified).",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Transmission demand",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 15.29,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "same as billing demand (assumed)",
+     "notes": "Customer may instead elect Coincident Peak Demand billing for transmission (demand at ISO-NE RNS monthly transmission peak, legacy NSTAR system), minimum 12 consecutive months. CP option rate not captured.",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "ISO-NE capacity tag (peak load contribution): customer's metered load in the single hour of the ISO-NE annual system peak; the tag is applied to the customer's supply for the following year (EDCs reset tags annually; Jan-1 reset convention assumed, not re-verified).",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Next controllable tag-setting peak is summer 2027 (summer 2026 peak has passed). Proxy price = FCA 18 clearing price for 2027/28 = $3.580/kW-month x 12 = $42.96/kW-yr. For comparison, current 2026/27 (FCA 17) = $2.590 x 12 = $31.08/kW-yr. A tag applied Jan-Dec 2028 would span Jan-May 2028 at $3.580 and Jun-Dec 2028 at the (unknown) first prompt-auction price for 2028/29. Excludes ISO-NE capacity-load-obligation scaling (CSO vs. sum of peak contributions), losses and supplier margin - gross-up factor not verified, so 1.0 used.",
+     "passthrough_notes": "Supply-side only. Realized only if the competitive supply contract passes capacity through at the customer's tag (index/pass-through product). On utility Basic Service or a fixed all-in contract the saving accrues to the supplier, not the customer (until contract renewal re-prices the tag).",
+     "passthrough": "supply"
+    },
+    {
+     "type": "transmission_tag",
+     "how_set": "OPTIONAL Coincident Peak Demand election: customer kW/kVA at hour of ISO-NE RNS monthly transmission system peak (legacy NSTAR system); 12-month minimum election.",
+     "est_value_usd_per_kw_year": null,
+     "derivation": "CP option $/kW not captured. If the CP rate equals the standard transmission demand rate ($15.29/kW-mo), value would be up to 15.29 x 12 = $183.48/kW-yr for kW avoided at all 12 monthly peaks - illustrative only, not verified.",
+     "passthrough_notes": "Delivery charge - realized on the utility bill regardless of supplier.",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "kVA-based billing demand -> inverter reactive support can reduce billed demand. Standard transmission demand ($15.29) is billed on the same peak-window demand as distribution, so each kW shaved in-window is worth ~$30.61/kW-month (15.32 + 15.29) if the summary values are current.",
+   "sources": [
+    {
+     "title": "Eversource Eastern MA - Greater Boston rate summary (R-1 ... G-3)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ema-greater-boston-rates.pdf?sfvrsn=c27ef362_40"
+    },
+    {
+     "title": "NSTAR Electric d/b/a Eversource tariff M.D.P.U. No. 13 (G-3 Large General Service TOU)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/13-tariff-ma.pdf?sfvrsn=f3ec062_6"
+    },
+    {
+     "title": "NSTAR Electric d/b/a Eversource tariff M.D.P.U. No. 21 (large general service; billing demand / CP option text)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/21-tariff-ma.pdf?sfvrsn=e57e110f_3"
+    },
+    {
+     "title": "Eversource EMA Electric Delivery Rates page",
+     "url": "https://www.eversource.com/residential/account-billing/manage-bill/about-your-bill/rates-tariffs/electric-delivery-rates/ema"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Rates $15.32 dist / $15.29 transmission from one search summary of ema-greater-boston-rates.pdf. Billing-demand (kVA, peak period) and CP option text from search summaries of Eversource tariff PDFs (No. 13 / No. 21). Peak-window month split and minimum-demand % conflict between summaries - verify on tariff sheet."
+  }
+ ],
+ "programs": [
+  {
+   "id": "ma-connectedsolutions-ci-daily",
+   "name": "ConnectedSolutions C&I - Daily Dispatch (Summer)",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma",
+    "unitil-ma"
+   ],
+   "administrator": "Mass Save Program Administrators (National Grid, Eversource, Unitil, Cape Light Compact) - Active Demand Reduction initiative, 2025-2027 Plan",
+   "category": "performance_incentive",
+   "status": "open",
+   "status_notes": "Continues in the 2025-2027 Three-Year Plan (PAs continue the 2022-2024 storage mechanisms; plan targets ~31.5 MW of C&I battery performance capacity). Summer 2026 season ran Jun 1-Sep 30; enrollment for 2027 typically closes in spring - confirm deadline.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Battery must be behind-the-meter at a C&I account of a participating PA. Customers may enroll directly or through a Curtailment Service Provider / solution provider (CSP role common but not mandatory - verify current materials). Sites exporting during events: performance capped at 150% of the site's annual peak load (cap independent of battery charge/discharge and BTM PV)."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 200,
+    "unit": "$/kW-summer",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Average kW reduction delivered across ALL called event hours of the season (missed/under-performed hours count against the average)",
+    "duration_basis_hr": 3,
+    "cap": "Exporting sites: performance capped at 150% of site annual peak load.",
+    "tiers": [],
+    "term_years": 5,
+    "notes": "'Up to $200/kW-summer' per National Grid MA Daily Dispatch page (2026). Rate locked for the first 5 consecutive enrolled years for new battery systems. Residential battery rate is different ($275/kW) - do not confuse. Example: 65 kW/200 kWh sustaining 65 kW for 3 h -> 65 x $200 = $13,000/season if perfect; 200 kW/418 kWh can only hold ~139 kW for 3 h (418/3) -> ~$27,900/season."
+   },
+   "dispatch": {
+    "season": "Jun-Sep (most events Jul-Aug)",
+    "window": "Events between 2pm and 7pm, starting/ending on the hour (2023 offering materials; confirm 2026 window)",
+    "event_duration_hr": 3,
+    "max_events_per_year": 60,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead (night before / ~24 h)",
+    "baseline_or_mv": "Interval-meter based: average kW reduction (battery discharge net of baseline) over all event hours in the season"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-winter",
+     "ma-clean-peak-standard",
+     "icap tag reduction",
+     "ngrid-ma-g3 optional transmission CP",
+     "demand charge management"
+    ],
+    "conflicts_with": [
+     "isone-adcr-aggregator",
+     "ma-connectedsolutions-ci-targeted"
+    ],
+    "notes": "Event hours (2-7pm summer weekdays) usually overlap the ISO-NE annual peak and monthly RNS peaks, so DD dispatch also cuts the ICAP tag and transmission CP. Conflicts: 30-60 events of ~3 h each can leave the battery depleted for a later in-window demand peak (NGrid G-3 window runs to 9pm). Conflicts as researched: ma-connectedsolutions-ci-targeted (cannot enroll same kW in both summer options); isone-adcr-aggregator (dual participation of same kW generally not allowed - verify)"
+   },
+   "vpp_relevance": "Core MA VPP revenue: PAs dispatch day-ahead to fleets; a single CSP/aggregator can enroll multiple sites, which is the natural on-ramp to a multi-site VPP.",
+   "sources": [
+    {
+     "title": "National Grid MA Daily Dispatch page",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "National Grid MA ConnectedSolutions (Business)",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/ConnectedSolutions"
+    },
+    {
+     "title": "National Grid - Program Materials for ConnectedSolutions for C&I customers",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
+    },
+    {
+     "title": "Mass Save C&I ConnectedSolutions Offering Materials (June 2023)",
+     "url": "https://www.masssave.com/-/media/Files/PDFs/Business/CI-ConnectedSolutions-Offering-Materials_June-2023.pdf"
+    },
+    {
+     "title": "Massachusetts 2025-2027 Energy Efficiency and Decarbonization Plan (final draft)",
+     "url": "https://ma-eeac.org/wp-content/uploads/Final-Draft-MA-2025-2027-Plan-04-01-24.pdf"
+    },
+    {
+     "title": "SEA (Sustainable Energy Advantage) - MA ConnectedSolutions Changes: What They Mean for Project Revenue",
+     "url": "https://www.seadvantage.com/blog-post/cpmo-ma-connectedsolutions-changes/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "$200/kW-summer, 30-60 events and 5-year lock confirmed on NGrid pages/materials via search summaries; 150% export cap from SEA blog (secondary). typical events not published (stated range 30-60). Event window from 2023 Mass Save materials - may have changed for 2025-2027."
+  },
+  {
+   "id": "ma-connectedsolutions-ci-targeted",
+   "name": "ConnectedSolutions C&I - Targeted Dispatch (Summer)",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma",
+    "unitil-ma"
+   ],
+   "administrator": "Mass Save Program Administrators",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Offered in 2025-2027 plan.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 3,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Any curtailment technology (load shed, generators subject to rules, storage)."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 35,
+    "unit": "$/kW-summer",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Average kW reduction across event hours",
+    "duration_basis_hr": 3,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "Weekend bonus",
+      "rate": 10,
+      "conditions": "Extra $10/kW-summer if weekend events are called"
+     }
+    ],
+    "term_years": null,
+    "notes": "'Up to $35/kW-summer' + $10/kW weekend bonus (NGrid 2026 page). One secondary source cites $45/kW - treat as unverified. For a battery, Daily Dispatch ($200) dominates."
+   },
+   "dispatch": {
+    "season": "Jun-Sep",
+    "window": "3pm-8pm (NGrid page) - earlier 2023 materials said 2pm-7pm",
+    "event_duration_hr": 3,
+    "max_events_per_year": 8,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead",
+    "baseline_or_mv": "Baseline-based load reduction (customer baseline method not captured)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-winter",
+     "ma-clean-peak-standard"
+    ],
+    "conflicts_with": [
+     "ma-connectedsolutions-ci-daily"
+    ],
+    "notes": "Pick one summer option per resource."
+   },
+   "vpp_relevance": "Low value for batteries; useful for flexible-load sites in a portfolio.",
+   "sources": [
+    {
+     "title": "National Grid MA Targeted Dispatch & Winter Dispatch page",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/targeted-dispatch-winter-dispatch"
+    },
+    {
+     "title": "Mass Save C&I ConnectedSolutions Offering Materials (June 2023)",
+     "url": "https://www.masssave.com/-/media/Files/PDFs/Business/CI-ConnectedSolutions-Offering-Materials_June-2023.pdf"
+    },
+    {
+     "title": "Mass Save Commercial ConnectedSolutions page",
+     "url": "https://www.masssave.com/business/rebates-offers-services/commercialconnectedsolutions"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Rate/event counts from NGrid Targeted Dispatch page summary; window conflict noted."
+  },
+  {
+   "id": "ma-connectedsolutions-ci-winter",
+   "name": "ConnectedSolutions C&I - Winter Dispatch",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma",
+    "unitil-ma"
+   ],
+   "administrator": "Mass Save Program Administrators",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Offered alongside summer options; winter window/eligibility details not captured.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 3,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 25,
+    "unit": "$/kW-winter",
+    "months_per_year": null,
+    "expected_event_hours_per_year": 15,
+    "kw_basis": "Average kW reduction across event hours",
+    "duration_basis_hr": 3,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Up to 5 events x 3 h per winter on the coldest days (expected_event_hours = 5 x 3 = 15, the stated maximum)."
+   },
+   "dispatch": {
+    "season": "Winter (months not captured; typically Dec-Mar)",
+    "window": null,
+    "event_duration_hr": 3,
+    "max_events_per_year": 5,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead (assumed same as summer)",
+    "baseline_or_mv": "Average kW reduction across event hours"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-daily",
+     "ma-clean-peak-standard"
+    ],
+    "conflicts_with": [],
+    "notes": "Easy add-on for a battery already in Daily Dispatch."
+   },
+   "vpp_relevance": "Adds winter value as New England shifts to a winter-peaking system.",
+   "sources": [
+    {
+     "title": "National Grid MA Targeted Dispatch & Winter Dispatch page",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/targeted-dispatch-winter-dispatch"
+    },
+    {
+     "title": "National Grid MA Daily Dispatch page",
+     "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "$25/kW-winter, 5 events, 3 h from NGrid page summaries; winter window not captured."
+  },
+  {
+   "id": "ma-clean-peak-standard",
+   "name": "Massachusetts Clean Peak Energy Standard (CPS) - Clean Peak Energy Certificates (CPECs)",
+   "state": "MA",
+   "utility_ids": [],
+   "administrator": "MA DOER (225 CMR 21.00); certificates tracked in NEPOOL GIS",
+   "category": "performance_incentive",
+   "status": "open",
+   "status_notes": "May 28, 2026 emergency rulemaking reduced the CPS Minimum Standard for 2026-2030 and modified the Near-Term Resource Multiplier for Qualified Energy Storage Systems; hearing held 2026-07-06; DOER made no changes and Notice of Compliance (permanent) publishes 2026-08-28. Lower minimum standard = downside risk to CPEC prices. Banking reduced to 2 years.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "Residential",
+     "Front-of-meter"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": true,
+    "requires_ul9540": null,
+    "other": "Behind-the-meter storage can qualify as a Qualified Energy Storage System (QESS) when it meets 225 CMR 21 charging criteria (co-location with / charging from qualified RPS resources or other DOER-approved criteria) and has revenue-grade metering reported to NEPOOL GIS. Exact standalone-BTM charging test not re-verified in this pass."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": 55,
+    "unit": "$/CPEC (1 MWh of multiplied clean-peak discharge)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "MWh discharged during DOER Seasonal Peak Periods x applicable multipliers",
+    "duration_basis_hr": null,
+    "cap": "Price ceiling = ACP: $45/MWh through CY2025; $65/MWh from CY2026 (fixed through 2032 per emergency regs).",
+    "tiers": [
+     {
+      "label": "ACP ceiling CY2026+",
+      "rate": 65,
+      "conditions": "Alternative Compliance Payment; CPECs reportedly trade 2-8% below ACP when market is short"
+     },
+     {
+      "label": "Seasonal multiplier (summer/winter)",
+      "rate": 4,
+      "conditions": "Multiplier on MWh in summer and winter seasonal peak periods (per search summary; verify table)"
+     },
+     {
+      "label": "Actual monthly system peak hour multiplier",
+      "rate": 25,
+      "conditions": "Applied retroactively to the hour of each month's system peak"
+     }
+    ],
+    "term_years": null,
+    "notes": "$55 = historically observed clearing level cited by secondary sources (Modo/Aurora); used as conservative planning price, not a quote. Near-Term Resource Multiplier for QESS modified in May 2026 - new values not captured. Seasonal peak-period windows not captured (verify in 225 CMR 21 / DOER program details)."
+   },
+   "dispatch": {
+    "season": "Year-round (seasonal peak windows)",
+    "window": "DOER Seasonal Peak Periods (approx. 4-h late-afternoon/evening windows; exact hours not captured)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "None - fixed windows; actual-peak multiplier determined after the fact",
+    "baseline_or_mv": "Revenue-grade meter on storage discharge; reported via NEPOOL GIS; charging rules apply"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-daily",
+     "ma-connectedsolutions-ci-winter",
+     "icap tag reduction",
+     "demand charge management"
+    ],
+    "conflicts_with": [],
+    "notes": "Summer DD events and CPS summer windows largely overlap, so CPECs accrue on the same discharge."
+   },
+   "vpp_relevance": "Fleet-level GIS registration and metering by an aggregator reduces per-site overhead; small BTM units often bundle CPECs through an aggregator/broker.",
+   "sources": [
+    {
+     "title": "Mass.gov - Clean Peak Energy Standard Program Details",
+     "url": "https://www.mass.gov/info-details/clean-peak-energy-standard-program-details"
+    },
+    {
+     "title": "225 CMR 21.00 Clean Peak Energy Standard (regulation text)",
+     "url": "https://www.mass.gov/doc/225-cmr-21-clean-peak-energy-standard-clean/download"
+    },
+    {
+     "title": "Mass.gov - Public Comment Period, CPS Emergency Rulemaking (filed 2026-05-28)",
+     "url": "https://www.mass.gov/event/public-comment-period-clean-peak-energy-standard-emergency-rulemaking-05-28-2026"
+    },
+    {
+     "title": "Mass.gov - Public Hearing, CPS Emergency Rulemaking (2026-07-06)",
+     "url": "https://www.mass.gov/event/public-hearing-clean-peak-energy-standard-emergency-rulemaking-07-06-2026"
+    },
+    {
+     "title": "Clean Peak Market Outlook - Third Round of CPS Emergency Regulations Increases and Fixes ACP Rate",
+     "url": "https://cleanpeakmarketoutlook.com/third-round-of-cps-emergency-regulations-increases-and-fixes-acp-rate/"
+    },
+    {
+     "title": "Modo Energy - What is the Massachusetts Clean Peak Energy Certificate for BESS?",
+     "url": "https://modoenergy.com/research/en/isone-ma-clean-peak-cpec-bess-battery-storage"
+    },
+    {
+     "title": "Aurora - Massachusetts' Clean Peak Energy Standard: Market Outlook",
+     "url": "https://auroraer.com/resources/aurora-insights/policy-notes/massachusetts-clean-peak-energy-standard-market-outlook"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Emergency rulemaking dates from mass.gov (high). ACP $65 from CY2026 from secondary market sources (medium). Multiplier values from search summaries (low-medium). BTM QESS charging criteria not re-verified."
+  },
+  {
+   "id": "ma-smart-3-storage-adder",
+   "name": "SMART 3.0 Energy Storage Adder (solar-paired only)",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma",
+    "unitil-ma"
+   ],
+   "administrator": "MA DOER (225 CMR 28.00)",
+   "category": "performance_incentive",
+   "status": "open",
+   "status_notes": "SMART 3.0 promulgated 2025-06-20 (emergency regulation replacing 225 CMR 20.00); applications opened 2025-10-15. Capacity blocks/adder values set in Program Year reports.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "Residential"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": true,
+    "requires_ul9540": null,
+    "other": "Storage must be paired with a new SMART 3.0 solar generation unit and meet the DOER SMART 3.0 Guideline on Energy Storage (sizing/duration/operation). Not available to standalone BTM storage."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kWh of solar generation (adder)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Adder on solar kWh output",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "A secondary source cites +$0.04/kWh storage adder (residential example); C&I adder value not verified - check the Program Year 2025/2026 Annual Report."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Per SMART 3.0 Energy Storage Guideline"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-daily",
+     "ma-clean-peak-standard"
+    ],
+    "conflicts_with": [],
+    "notes": "Only relevant when the site also adds new solar."
+   },
+   "vpp_relevance": "Minor; paired solar+storage sites can still join ConnectedSolutions.",
+   "sources": [
+    {
+     "title": "SMART 3.0 Guideline on Energy Storage (DOER)",
+     "url": "https://www.mass.gov/doc/smart-30-guideline-on-energy-storage/download"
+    },
+    {
+     "title": "Mass.gov - SMART 3.0 Program Details / How to Apply",
+     "url": "https://www.mass.gov/info-details/smart-30-program-details"
+    },
+    {
+     "title": "NuWatt - Massachusetts SMART Program 2026: SMART 3.0 Rates & Guide (secondary)",
+     "url": "https://nuwattenergy.com/en/massachusetts/smart-program-2026"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Program dates medium (secondary summaries consistent); adder value not verified from DOER."
+  },
+  {
+   "id": "ma-ci-upfront-storage-incentive",
+   "name": "C&I upfront (capex) BTM storage incentive - none identified",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma",
+    "unitil-ma"
+   ],
+   "administrator": "n/a",
+   "category": "upfront_incentive",
+   "status": "closed",
+   "status_notes": "No statewide utility/MassCEC upfront $/kWh or $/kW rebate for C&I BTM batteries was found as of 2026-10-01. Mass Save supports storage through ConnectedSolutions performance payments only (2025-2027 Plan continues 2022-2024 mechanisms).",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Model zero upfront incentive. Federal tax credits are outside this state file."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "None.",
+   "sources": [
+    {
+     "title": "Mass Save Commercial ConnectedSolutions page",
+     "url": "https://www.masssave.com/business/rebates-offers-services/commercialconnectedsolutions"
+    },
+    {
+     "title": "Massachusetts 2025-2027 Energy Efficiency and Decarbonization Plan (final draft)",
+     "url": "https://ma-eeac.org/wp-content/uploads/Final-Draft-MA-2025-2027-Plan-04-01-24.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Absence finding - based on 2025-2027 Plan statement and searches; MassCEC grants (e.g., resilience/multifamily pilots) may exist case-by-case."
+  },
+  {
+   "id": "ma-transmission-cp-option",
+   "name": "Optional transmission Coincident Peak (CP) demand billing - NGrid G-3 / Eversource large C&I",
+   "state": "MA",
+   "utility_ids": [
+    "ngrid-ma",
+    "eversource-ma"
+   ],
+   "administrator": "EDC tariffs (DPU-approved; NGrid via D.P.U. 23-150)",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "NGrid G-3 option available since April 2025; Eversource legacy-NSTAR large C&I CP option with 12-month minimum election.",
+   "eligibility": {
+    "customer_classes": [
+     "Large C&I"
+    ],
+    "min_kw": 200,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "NGrid: G-3 customers (>200 kW). Eversource: per tariff (G-3/legacy NSTAR large C&I)."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": 21.91,
+    "unit": "$/kW-month (NGrid G-3)",
+    "months_per_year": 12,
+    "expected_event_hours_per_year": 12,
+    "kw_basis": "60-min kW coincident with ISO-NE RNS monthly transmission peak hour",
+    "duration_basis_hr": 1,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Max theoretical value $262.92/kW-yr (21.91 x 12) if every monthly peak hour is hit. Peak-hour forecasting risk; use 2-4 h dispatch blocks around forecast peak to raise hit rate (duration_basis 1 h is the metered interval, not the recommended dispatch length)."
+   },
+   "dispatch": {
+    "season": "All months",
+    "window": "ISO-NE RNS monthly peak hour (unknown in advance)",
+    "event_duration_hr": 1,
+    "max_events_per_year": 12,
+    "typical_events_per_year": 12,
+    "notice": "None - self-forecast",
+    "baseline_or_mv": "Utility interval meter at the RNS monthly peak hour"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-connectedsolutions-ci-daily",
+     "icap tag reduction",
+     "ma-clean-peak-standard"
+    ],
+    "conflicts_with": [],
+    "notes": "Summer monthly peaks usually fall in Daily Dispatch windows; winter peaks need evening reserve SOC."
+   },
+   "vpp_relevance": "High - a fleet operator that forecasts ISO-NE monthly peaks can apply one signal to all G-3 sites.",
+   "sources": [
+    {
+     "title": "pv magazine USA (2025-02-19): Massachusetts allows increased demand charges to drive energy storage (NGrid G-3 optional transmission CP demand, D.P.U. 23-150)",
+     "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage/"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-C (Feb 2026)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/electric-rates/ma/2026/0226_meco_wbr.pdf"
+    },
+    {
+     "title": "NSTAR Electric d/b/a Eversource tariff M.D.P.U. No. 21 (large general service; billing demand / CP option text)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ma-electric/21-tariff-ma.pdf?sfvrsn=e57e110f_3"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "NGrid rate $21.91 seen twice (one $23.82); Eversource CP option rate not captured. Modeled as an optional transmission peak tag on the G-3 tariff (upside case) to avoid double counting."
+  },
+  {
+   "id": "isone-adcr-aggregator",
+   "name": "ISO-NE wholesale participation via aggregator (Active Demand Capacity Resource / DER Aggregation)",
+   "state": "MA",
+   "utility_ids": [],
+   "administrator": "ISO New England (via Lead Market Participant / aggregator)",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "Forward Capacity Market in transition: FCA 18 (2027/28) done; FCA 19 delayed to Feb 2028 as first prompt/seasonal auction for the commitment period starting 2028-06-01 (Capacity Auction Reforms). New capacity entry via ADCR effectively waits for the prompt auction. Energy/reserve participation via DER aggregation models available.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Aggregation threshold, telemetry and metering requirements not captured."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kW-month (capacity) + energy/reserve revenues",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Qualified/accredited capacity (MRI-based accreditation planned)",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Reference prices: FCA 17 $2.590/kW-mo (2026/27), FCA 18 $3.580/kW-mo (2027/28); aggregator keeps a share. Capacity Performance (Pay-for-Performance) penalty exposure applies to ADCR."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "ISO dispatch",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Real-time/day-ahead per ISO rules",
+    "baseline_or_mv": "ISO-NE demand response baseline / DER meter data"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ma-clean-peak-standard"
+    ],
+    "conflicts_with": [
+     "ma-connectedsolutions-ci-daily"
+    ],
+    "notes": "For BTM C&I in MA, ConnectedSolutions ($200/kW-summer ~ $16.7/kW-month equivalent over 12 months) far exceeds capacity-market value (~$2.6-3.6/kW-month), so ADCR is usually secondary. Conflicts as researched: ma-connectedsolutions-ci-daily (dual participation of same kW typically prohibited or requires PA approval - verify); icap tag reduction double-count considerations"
+   },
+   "vpp_relevance": "Long-term path for a multi-site VPP once prompt/seasonal market and DER aggregation rules settle (2028+).",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 17 initial results (2023-03-10)",
+     "url": "https://www.iso-ne.com/static-assets/documents/2023/03/20230310_pr_fca17_initial_results_final.pdf"
+    },
+    {
+     "title": "ISO-NE press release - FCA 18 initial results (2024-02-09)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100008/20240209_pr_fca18_initial_results.pdf"
+    },
+    {
+     "title": "ISO-NE filing to further delay FCA 19 (2024-04-05)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100010/rev_to_further_delay_19th_fca.pdf"
+    },
+    {
+     "title": "ISO-NE Forward Capacity Market page (Capacity Auction Reforms, prompt/seasonal from 2028-06-01)",
+     "url": "https://www.iso-ne.com/markets-operations/markets/forward-capacity-market"
+    },
+    {
+     "title": "ISO Newswire (2026-05-11) - ISO-NE expands behind-the-meter forecast to include batteries",
+     "url": "https://isonewswire.com/2026/05/11/iso-ne-expands-behind-the-meter-forecast-to-include-batteries/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Market timing confirmed from ISO-NE sources; ADCR-specific rules and ConnectedSolutions dual-participation policy not re-verified."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "isone-fca17-2026-27",
+   "label": "ISO-NE FCA 17 clearing price (2026/27 CCP), all capacity zones",
+   "value": 2.59,
+   "unit": "$/kW-month",
+   "period": "2026-06 to 2027-05",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 17 initial results (2023-03-10)",
+     "url": "https://www.iso-ne.com/static-assets/documents/2023/03/20230310_pr_fca17_initial_results_final.pdf"
+    },
+    {
+     "title": "NEPOOL news - FCA17 closes; 31,370 MW cleared",
+     "url": "https://nepool.com/news/fca17-closes-31370-mw-cleared-2-59-kw-mo-all-capacity-zones-and-ny-ac-tie-imports-nb-tie-imports-2-55/"
+    }
+   ],
+   "confidence": "high",
+   "notes": "Preliminary auction price $2.590 all zones and NY AC ties; New Brunswick interface $2.551. NOTE: $2.639 (schema example) is the FCA 16 SENE price for 2025/26, not FCA 17. = $31.08/kW-yr."
+  },
+  {
+   "id": "isone-fca18-2027-28",
+   "label": "ISO-NE FCA 18 clearing price (2027/28 CCP), all zones",
+   "value": 3.58,
+   "unit": "$/kW-month",
+   "period": "2027-06 to 2028-05",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 18 initial results (2024-02-09)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100008/20240209_pr_fca18_initial_results.pdf"
+    },
+    {
+     "title": "ISO-NE filing to further delay FCA 19 (2024-04-05)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100010/rev_to_further_delay_19th_fca.pdf"
+    }
+   ],
+   "confidence": "high",
+   "notes": "~38% above FCA 17. = $42.96/kW-yr."
+  },
+  {
+   "id": "isone-capacity-2028-29",
+   "label": "ISO-NE first prompt/seasonal capacity auction (2028/29) - price unknown",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "2028-06 onward",
+   "sources": [
+    {
+     "title": "ISO-NE filing to further delay FCA 19 (2024-04-05)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100010/rev_to_further_delay_19th_fca.pdf"
+    },
+    {
+     "title": "ISO-NE Forward Capacity Market page (Capacity Auction Reforms, prompt/seasonal from 2028-06-01)",
+     "url": "https://www.iso-ne.com/markets-operations/markets/forward-capacity-market"
+    }
+   ],
+   "confidence": "high",
+   "notes": "FCA 19 delayed to Feb 2028 to implement prompt + seasonal market with MRI accreditation; no price yet."
+  },
+  {
+   "id": "ma-cps-acp-2026",
+   "label": "MA Clean Peak Standard Alternative Compliance Payment (CY2026+)",
+   "value": 65,
+   "unit": "$/MWh (per CPEC)",
+   "period": "CY2026-CY2032",
+   "sources": [
+    {
+     "title": "Clean Peak Market Outlook - Third Round of CPS Emergency Regulations Increases and Fixes ACP Rate",
+     "url": "https://cleanpeakmarketoutlook.com/third-round-of-cps-emergency-regulations-increases-and-fixes-acp-rate/"
+    },
+    {
+     "title": "Modo Energy - What is the Massachusetts Clean Peak Energy Certificate for BESS?",
+     "url": "https://modoenergy.com/research/en/isone-ma-clean-peak-cpec-bess-battery-storage"
+    },
+    {
+     "title": "Aurora - Massachusetts' Clean Peak Energy Standard: Market Outlook",
+     "url": "https://auroraer.com/resources/aurora-insights/policy-notes/massachusetts-clean-peak-energy-standard-market-outlook"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "$45/MWh through CY2025. Acts as CPEC price ceiling."
+  },
+  {
+   "id": "ma-cpec-observed",
+   "label": "MA CPEC observed clearing level (historical, secondary)",
+   "value": 55,
+   "unit": "$/MWh",
+   "period": "historical (pre-2026)",
+   "sources": [
+    {
+     "title": "Modo Energy - What is the Massachusetts Clean Peak Energy Certificate for BESS?",
+     "url": "https://modoenergy.com/research/en/isone-ma-clean-peak-cpec-bess-battery-storage"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Secondary-source reference; May 2026 reduction of the Minimum Standard (2026-2030) is bearish for CPEC prices."
+  },
+  {
+   "id": "ngrid-g3-tx-cp-2026",
+   "label": "National Grid MA G-3 optional transmission CP demand charge",
+   "value": 21.91,
+   "unit": "$/kW-month",
+   "period": "2026",
+   "sources": [
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-H (current delivery summary)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/meco_delivery.pdf"
+    },
+    {
+     "title": "Massachusetts Electric Summary of Rates, M.D.P.U. No. 1-26-C (Feb 2026)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/electric-rates/ma/2026/0226_meco_wbr.pdf"
+    },
+    {
+     "title": "pv magazine USA (2025-02-19): Massachusetts allows increased demand charges to drive energy storage (NGrid G-3 optional transmission CP demand, D.P.U. 23-150)",
+     "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage/"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "One summary showed $23.82/kW; confirm against latest monthly summary."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "ma-ic-simplified-limit",
+   "topic": "interconnection",
+   "title": "Simplified interconnection capped at 25 kW (3-phase radial)",
+   "rule": "Simplified Process: listed inverter-based facilities <=15 kW single-phase or <=25 kW three-phase on radial EPS (MDPU 1579, eff. 2025-04-15).",
+   "threshold": {
+    "metric": "kW",
+    "value": 25,
+    "comparison": "max",
+    "scope": "per site (facility rating)"
+   },
+   "impact_on_sizing": "Even the smallest product (30 kW) exceeds Simplified - expect Expedited at minimum; non-export configuration helps pass Expedited screens.",
+   "applies_to": "state-wide (NGrid, Eversource, Unitil)",
+   "sources": [
+    {
+     "title": "National Grid MA M.D.P.U. No. 1579 DG Interconnection Tariff (eff. 2025-04-15)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/2025/mdpu_1579_dg_interconnection_tariff.pdf"
+    },
+    {
+     "title": "TSRG Meeting 37 - Simplified Process proposal",
+     "url": "https://www.mass.gov/doc/tsrg-meeting-37-simplified-process-proposal/download"
+    },
+    {
+     "title": "D.P.U. 25-29 Notice of Filing and Request for Comments (interconnection tariff revisions)",
+     "url": "https://www.nationalgridus.com/media/pdfs/our-company/dpu/2025/d.p.u._25-29_-_notice_of_filing_and_request_for_comments.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "ma-ic-network-limit",
+   "topic": "network_grid",
+   "title": "Spot/area network Simplified limit: < 1/15 of minimum load",
+   "rule": "On spot networks, Simplified only if rating < 1/15 of the customer's minimum load; on area networks also <=15 kW. Otherwise Standard Process with network-protector analysis.",
+   "threshold": {
+    "metric": "other",
+    "value": 0.0667,
+    "comparison": "max",
+    "scope": "ratio of facility rating to customer minimum load"
+   },
+   "impact_on_sizing": "Downtown Boston/Cambridge (Eversource) and other urban network areas: plan strictly non-exporting systems with fast export control and Standard review; size kW well below minimum site load to avoid reverse power at network protectors.",
+   "applies_to": "network-served sites (Eversource Boston/Cambridge; NGrid urban cores)",
+   "sources": [
+    {
+     "title": "National Grid MA M.D.P.U. No. 1579 DG Interconnection Tariff (eff. 2025-04-15)",
+     "url": "https://www.nationalgridus.com/media/pdfs/billing-payments/tariffs/mae/2025/mdpu_1579_dg_interconnection_tariff.pdf"
+    },
+    {
+     "title": "Massachusetts TSRG Common Technical Standards Manual (2019)",
+     "url": "https://www.mass.gov/doc/2019-common-technical-standards-manual/download"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "ma-fire-code-edition",
+   "topic": "fire_code",
+   "title": "527 CMR 1.00 (NFPA 1-2021) Chapter 52 with NFPA 855-2020 extracts",
+   "rule": "Massachusetts Comprehensive Fire Safety Code 527 CMR 1.00 is based on NFPA 1 (2021 ed.) with MA amendments, effective 2022-12-09 (amended version effective 2023-05-12). Chapter 52 (ESS) includes material extracted from NFPA 855 (2020 ed.). A 2024 edition of 527 CMR 1.00 is in process (code-change proposals closed); BFPR will accept proposals for the 2027 edition later in 2026. Local fire department permit required for lithium-ion BESS above threshold quantities.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "state-wide code edition"
+   },
+   "impact_on_sizing": "Design to NFPA 855-2020 limits unless/until the 2024 edition (likely referencing NFPA 855-2023) takes effect - confirm edition in force at permit date.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "527 CMR 1.00 Massachusetts Comprehensive Fire Safety Code (NFPA 1, 2021 ed.) - UpCodes",
+     "url": "https://up.codes/viewer/massachusetts/nfpa-1-2021"
+    },
+    {
+     "title": "Mass.gov - 527 CMR 1.00 2021 edition (amended, effective 2023-05-12)",
+     "url": "https://www.mass.gov/doc/massachusetts-527-cmr-100-2021-edition-effective-may-12-2023/download"
+    },
+    {
+     "title": "Mass.gov - Massachusetts Fire Code and Electrical Code",
+     "url": "https://www.mass.gov/massachusetts-fire-code-and-electrical-code"
+    },
+    {
+     "title": "Mass.gov - BESS FAQ on Fire Safety and Public Health",
+     "url": "https://www.mass.gov/info-details/battery-energy-storage-systems-frequently-asked-questions-on-fire-safety-and-public-health"
+    },
+    {
+     "title": "Mass.gov - Submit Proposed Changes to the State Fire Code",
+     "url": "https://www.mass.gov/how-to/submit-proposed-changes-to-the-state-fire-code"
+    },
+    {
+     "title": "Code Red Consultants - MA Fire Code Update",
+     "url": "https://coderedconsultants.com/insights/ma-fire-code-update/"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "text"
+  },
+  {
+   "id": "ma-nfpa855-indoor-600kwh",
+   "topic": "fire_code",
+   "title": "Lithium-ion max stored energy 600 kWh per fire area (indoor, non-dedicated building)",
+   "rule": "NFPA 855-2020 maximum stored energy for lithium-ion ESS: 600 kWh per fire area in buildings other than dedicated-use ESS buildings (AHJ may approve more with large-scale fire testing/hazard mitigation analysis).",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Indoors, at most one 200 kW/600 kWh unit, or e.g. 418 + 150 kWh, per fire-rated room; larger sites go outdoors or into multiple separated fire areas.",
+   "applies_to": "state-wide (via 527 CMR 1.00 Ch. 52)",
+   "sources": [
+    {
+     "title": "BESS SDK - NFPA 855 2020 and 2023 Editions code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    },
+    {
+     "title": "Mayfield Renewables - Code Corner: NFPA 855 ESS Unit Spacing Limitations",
+     "url": "https://www.mayfield.energy/technical-articles/code-corner-nfpa-855-ess-unit-spacing-limitations/"
+    },
+    {
+     "title": "527 CMR 1.00 Massachusetts Comprehensive Fire Safety Code (NFPA 1, 2021 ed.) - UpCodes",
+     "url": "https://up.codes/viewer/massachusetts/nfpa-1-2021"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "indoor_max_kwh"
+  },
+  {
+   "id": "ma-nfpa855-50kwh-spacing",
+   "topic": "fire_code",
+   "title": "50 kWh unit/group limit and 3 ft spacing unless UL 9540A large-scale test data",
+   "rule": "NFPA 855-2020: ESS units/groups limited to 50 kWh with 3 ft separation between groups and to walls, unless large-scale fire testing (UL 9540A) acceptable to the AHJ demonstrates fire will not propagate. Listing to UL 9540 required.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per unit/group without large-scale fire test relief"
+   },
+   "impact_on_sizing": "All four products (150-600 kWh per unit) rely on UL 9540A large-scale test data and AHJ acceptance for unit size and reduced spacing - have the test report ready for each fire department.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "Mayfield Renewables - Code Corner: NFPA 855 ESS Unit Spacing Limitations",
+     "url": "https://www.mayfield.energy/technical-articles/code-corner-nfpa-855-ess-unit-spacing-limitations/"
+    },
+    {
+     "title": "BESS SDK - NFPA 855 2020 and 2023 Editions code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    },
+    {
+     "title": "Boston Fire Department presentation (fire prevention / plan review)",
+     "url": "https://www.boston.gov/sites/default/files/file/document_files/2018/03/afaa_ne_presentation_3-14-2018.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "unit_max_kwh"
+  },
+  {
+   "id": "ma-outdoor-separation",
+   "topic": "fire_code",
+   "title": "Outdoor BESS separation ~10 ft from buildings/exposures (reducible to 3 ft)",
+   "rule": "Outdoor installations generally require 10 ft separation from buildings, lot lines and other exposures, reducible (e.g., to 3 ft) with fire-rated barriers or test data per code exceptions.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "per unit to exposures"
+   },
+   "impact_on_sizing": "Retail/C&I parking-lot pads need footprint for clearances; tight urban lots may only fit smaller cabinets or need rated barriers.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "BESS SDK - NFPA 855 2020 and 2023 Editions code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "outdoor_setback_ft"
+  },
+  {
+   "id": "boston-fire-permit",
+   "topic": "permitting",
+   "title": "Boston Fire Department permit and plan review",
+   "rule": "Boston requires BFD permit and plan submittal (UL 9540 listing, manufacturer cut sheets, battery calculations); where BESS serves emergency/backup roles, BFD has required stored energy for emergency loads for at least 2 hours (multifamily case study).",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Expect longer review, possible third-party HMA, and conservative siting in Boston; resilience use may require reserving SOC.",
+   "applies_to": "Boston (Eversource territory)",
+   "sources": [
+    {
+     "title": "MassCEC - Battery Backup in Multifamily Housing: A Case Study in Code Compliance (Boston)",
+     "url": "https://www.masscec.com/resources/battery-backup-multifamily-housing-case-study"
+    },
+    {
+     "title": "Boston Fire Department presentation (fire prevention / plan review)",
+     "url": "https://www.boston.gov/sites/default/files/file/document_files/2018/03/afaa_ne_presentation_3-14-2018.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ma-local-zoning",
+   "topic": "zoning",
+   "title": "Local BESS zoning bylaws (DOER model bylaw, Oct 2025)",
+   "rule": "DOER issued a model BESS zoning bylaw (Oct 2025) and Commonwealth guidance (Aug 2025) for municipalities; local adoption varies.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per municipality"
+   },
+   "impact_on_sizing": "Check town bylaws for setbacks/size tiers that may be stricter than fire code.",
+   "applies_to": "municipality-specific",
+   "sources": [
+    {
+     "title": "DOER Model Zoning Bylaw for BESS (October 2025)",
+     "url": "https://www.mass.gov/doc/doer-draft-battery-energy-storage-systems-bess-model-bylaw/download"
+    },
+    {
+     "title": "Commonwealth guidance on electric battery storage and EV chargers (August 2025)",
+     "url": "https://www.mass.gov/doc/guidance-on-electric-battery-storage-and-electric-vehicle-chargersaugust-2025/download"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ma-cs-export-cap",
+   "topic": "program_rule",
+   "title": "ConnectedSolutions performance capped at 150% of site annual peak load for exporters",
+   "rule": "Sites exporting during ConnectedSolutions events have performance capped at 150% of the site's annual peak load (independent of battery and BTM PV).",
+   "threshold": {
+    "metric": "other",
+    "value": 1.5,
+    "comparison": "max",
+    "scope": "paid kW / site annual peak kW"
+   },
+   "impact_on_sizing": "Battery kW beyond ~1.5x site peak earns no ConnectedSolutions value; with non-export interconnection the practical cap is the coincident site load during events.",
+   "applies_to": "ngrid-ma, eversource-ma, unitil-ma",
+   "sources": [
+    {
+     "title": "SEA (Sustainable Energy Advantage) - MA ConnectedSolutions Changes: What They Mean for Project Revenue",
+     "url": "https://www.seadvantage.com/blog-post/cpmo-ma-connectedsolutions-changes/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (National Grid MA)",
+   "topic": "G-3 optional transmission CP",
+   "severity": "critical",
+   "note": "The G-3 transmission CP election (~$21.91/kW-month at the ISO-NE monthly RNS peak) is worth more per kW than distribution demand; but it is all-or-nothing each month, so a missed peak hour can erase the savings versus the volumetric default. Model the election with real ISO-NE peak-hour history before opting in.",
+   "persona_id": "ngrid-ma"
+  },
+  {
+   "persona": "Utility program manager (National Grid MA)",
+   "topic": "G-3 demand window and kVA",
+   "severity": "caution",
+   "note": "G-3 bills the max 15-min demand in the 8am-9pm weekday window or 90% of kVA, so a 2-h battery rarely flattens a 13-h window on flat loads. Use inverter reactive support for PF-driven sites; and charge nights/weekends, which carry no billed demand.",
+   "persona_id": "ngrid-ma"
+  },
+  {
+   "persona": "Utility program manager (National Grid MA)",
+   "topic": "ConnectedSolutions performance math",
+   "severity": "caution",
+   "note": "Daily Dispatch pays on average kW across every event hour of the season - one empty battery on a 3-h event drags the season average. Reserve SOC for the 2-7pm events before chasing late-afternoon demand peaks.",
+   "persona_id": "ngrid-ma"
+  },
+  {
+   "persona": "Utility program manager (Eversource MA)",
+   "topic": "Pick the right legacy-area rate sheet",
+   "severity": "caution",
+   "note": "Eversource still publishes separate rate summaries for Greater Boston, Cambridge, South Shore/Cape/MV and Western MA, and G-2/G-3 thresholds and charges differ by area. Pull the site's own summary; the Greater Boston G-2 150-300 kW tier carries ~$19.39 distribution + $15.20 transmission per kW.",
+   "persona_id": "eversource-ma"
+  },
+  {
+   "persona": "Utility program manager (Eversource MA)",
+   "topic": "Boston network service",
+   "severity": "critical",
+   "note": "Downtown Boston and Cambridge sites on spot/area networks will not pass Simplified (< 1/15 of minimum load). Plan on Standard review with strict non-export and network-protector coordination.",
+   "persona_id": "eversource-ma"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Capacity tag pass-through",
+   "severity": "critical",
+   "note": "ICAP tag value (~$31/kW-yr at FCA 17, ~$43/kW-yr at FCA 18) only reaches the customer on a pass-through/index supply contract, not on Basic Service or a fixed all-in price. Align contract renewals so the reduced tag is priced in, and note the 2028/29 prompt-auction price is unknown.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Value stack alignment",
+   "severity": "info",
+   "note": "In MA the ConnectedSolutions summer events, the ISO-NE annual peak (ICAP), summer RNS monthly peaks and CPS summer windows mostly line up in weekday late afternoons, so one dispatch strategy captures all four. ConnectedSolutions (~$200/kW-summer) dwarfs wholesale capacity (~$2.6-3.6/kW-month), so keep ADCR as optional upside.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "CPS price risk",
+   "severity": "caution",
+   "note": "The May 2026 emergency cut to the 2026-2030 CPS minimum standard and shorter banking make CPEC prices more surplus-sensitive. Underwrite well below the $65 ACP and treat CPS as upside for BTM C&I.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Duration vs 3-h events",
+   "severity": "caution",
+   "note": "Against 3-h Daily Dispatch events, the 200 kW/418 kWh unit delivers only ~139 kW average (418/3), while 65 kW/200 kWh (3.1 h) and 200 kW/600 kWh (3.0 h) hold full power. Size enrolled kW to usable kWh/3 after reserve and round-trip losses.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Interconnection track",
+   "severity": "caution",
+   "note": "Every product exceeds the 25 kW Simplified cap, so file Expedited as non-exporting (UL 1741 PCS/CRD export control) to skip export screens. Watch the 150%-of-peak ConnectedSolutions cap if you plan any export.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "NFPA 855 indoor limits",
+   "severity": "critical",
+   "note": "Under 527 CMR 1.00 Ch. 52 / NFPA 855-2020, indoor Li-ion is capped at 600 kWh per fire area, and >50 kWh units need UL 9540A large-scale test acceptance. For 418/600 kWh units, default to outdoor pads with 10 ft clearances, and confirm whether the 2024 527 CMR edition is in force at permitting.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "Confirm NGrid G-3 optional transmission CP charge for the current month ($21.91 vs $23.82/kW) and the default (non-elected) G-3 transmission charge - latest M.D.P.U. 1-26-x Summary of Rates.",
+  "Confirm NGrid G-2 distribution demand ($15.06/kW) basis: free-kW block, kW vs kVA, all-hours max - meco_g2.pdf.",
+  "Eversource Greater Boston G-2: rates for <=150 kW tiers and demand basis; resolve conflicting $3.50/$7.00 figures; G-3 peak-window month split (Jun-Sep 9-6 vs Oct-May 8-9) and the minimum-demand % (26%?) - Eversource tariff sheets for the site's legacy area.",
+  "Eversource transmission Coincident Peak option rate ($/kW) and election rules.",
+  "Unitil (FG&E) G-2/G-3 demand charges effective 2026-06-01 - Unitil MA rate summary.",
+  "ConnectedSolutions 2026/2027 C&I offering materials: event window (2-7pm vs 3-8pm), minimum size, CSP requirement, winter window, whether DD rate for new 2027 enrollees changes - Mass Save C&I ConnectedSolutions Offering Materials (2025-2027 version).",
+  "CPS: post-May-2026 Near-Term Resource Multiplier values for QESS, seasonal peak-period hours, and BTM standalone storage charging criteria - 225 CMR 21.00 as amended and DOER CPS program details.",
+  "SMART 3.0 storage adder value for C&I units - DOER SMART Program Year report.",
+  "ISO-NE capacity-tag mechanics: tag reset date (Jan 1 vs Jun 1) used by NGrid/Eversource and ISO-NE CLO scaling factor (CSO / sum of peak contributions) to gross up $/kW-tag.",
+  "Whether 527 CMR 1.00 2024 edition (likely referencing NFPA 855-2023) took effect in 2026 - Mass.gov DFS Board of Fire Prevention Regulations.",
+  "MA DG interconnection application fees and timelines by track (MDPU 1579 Exhibit/fee schedule) and post-D.P.U. 25-29 storage definitions.",
+  "ADCR / DER aggregation dual-participation rules with ConnectedSolutions."
+ ]
+}

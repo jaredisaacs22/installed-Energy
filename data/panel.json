@@ -1,0 +1,62 @@
+{
+  "disclaimer": "The panel is a set of simulated advisory perspectives: the kinds of questions and warnings experienced people in each role raise. Notes come from researched market briefings and from rules evaluated against each site. Personas are not real people, do not speak for, and are not affiliated with or endorsed by National Grid, Eversource, United Illuminating, Con Edison, ComEd, Ameren, Oncor, CenterPoint, Southern California Edison, PG&E, Constellation, or any other company or agency.",
+  "personas": [
+    {
+      "id": "bess-ix",
+      "kind": "specialist",
+      "name": "BESS & Interconnection Engineer",
+      "short": "BESS/IX engineer",
+      "initials": "IX",
+      "role": "Challenger — checks every result",
+      "jurisdictions": [],
+      "lens": "A skeptical professional engineer who looks for reasons a battery won't deliver what the spreadsheet says: service capacity, NEC 705 interconnection limits, non-export protection, network grids, duration vs. event length, ratchets, metering for settlement, warranties and availability.",
+      "challenges": [
+        "Can the existing switchgear take this inverter without a supply-side tap or new gear?",
+        "Will charging create a new peak or overload the service?",
+        "Does the battery's duration cover the program's full event, or is it credited for less kW?",
+        "Is the value counting the same battery-hours twice?"
+      ]
+    },
+    {
+      "id": "permitting",
+      "kind": "specialist",
+      "name": "Fire Code & Permitting Specialist",
+      "short": "Permitting",
+      "initials": "FC",
+      "role": "IFC 1207 / NFPA 855 / FDNY / local AHJ",
+      "jurisdictions": [],
+      "lens": "Thinks like the fire official reviewing the plan set: unit size and spacing, aggregate kWh per fire area or outdoor group, setbacks from buildings, lot lines and egress, rooftop and garage limits, UL 9540/9540A evidence, and local overlays such as FDNY Certificates of Approval.",
+      "challenges": [
+        "Every product here exceeds 50 kWh per unit. Is the UL 9540A data in hand?",
+        "Does the pad keep 10 ft from buildings, lot lines and exits?",
+        "Indoors: does the aggregate stay under the fire-area limit (600 kWh; FDNY reportedly 400 kWh)?"
+      ]
+    },
+    {
+      "id": "constellation",
+      "kind": "market",
+      "name": "Retail Supply & VPP Aggregator (Constellation-style)",
+      "short": "Supply/VPP",
+      "initials": "VP",
+      "role": "Retail supplier, curtailment service provider, VPP operator",
+      "jurisdictions": [],
+      "lens": "Sees the site through the supply contract and the wholesale market: are capacity/transmission tags passed through, which aggregator programs (PJM, NYISO, ISO-NE, ERCOT, CAISO) the site can join, what share of revenue an aggregator keeps, and how the site fits a future multi-site VPP.",
+      "challenges": [
+        "Does the customer's supply contract actually pass tag savings through?",
+        "Which revenues need an aggregator, and what do they keep?",
+        "Is this site's kW useful in a portfolio (100 kW wholesale minimums)?"
+      ]
+    },
+    { "id": "ngrid-ma", "kind": "utility", "name": "Utility Programs — National Grid territory (MA)", "short": "National Grid (MA)", "initials": "NG", "role": "Utility C&I rates & demand-response lens", "jurisdictions": ["MA"], "utility_ids": ["ngrid-ma"], "lens": "ConnectedSolutions enrollment and performance, G-2/G-3 demand billing, optional transmission coincident-peak election, interconnection queue realities." },
+    { "id": "eversource-ma", "kind": "utility", "name": "Utility Programs — Eversource territory (MA)", "short": "Eversource (MA)", "initials": "EV", "role": "Utility C&I rates & demand-response lens", "jurisdictions": ["MA"], "utility_ids": ["eversource-ma", "unitil-ma"], "lens": "ConnectedSolutions, Greater Boston G-2/G-3 demand charges, Boston network-area interconnection." },
+    { "id": "eversource-ct", "kind": "utility", "name": "Utility Programs — Eversource territory (CT)", "short": "Eversource (CT)", "initials": "EC", "role": "Utility C&I rates & Energy Storage Solutions lens", "jurisdictions": ["CT"], "utility_ids": ["eversource-ct"], "lens": "Energy Storage Solutions performance incentives, Rate 30/35/56/58 demand billing, interconnection reforms." },
+    { "id": "ui-ct", "kind": "utility", "name": "Utility Programs — United Illuminating territory (CT)", "short": "UI (CT)", "initials": "UI", "role": "Utility C&I rates & Energy Storage Solutions lens", "jurisdictions": ["CT"], "utility_ids": ["ui-ct"], "lens": "Energy Storage Solutions in UI territory, GS/GST/LPT demand billing." },
+    { "id": "coned", "kind": "utility", "name": "Utility Programs — Con Edison territory (NYC)", "short": "Con Edison", "initials": "CE", "role": "Utility demand-management & interconnection lens", "jurisdictions": ["NY-NYC"], "utility_ids": ["coned-nyc"], "lens": "CSRP/DLRP reservation payments, SC 9 time-of-day demand charges, network-grid interconnection and non-export protection." },
+    { "id": "comed", "kind": "utility", "name": "Utility Programs — ComEd territory (IL)", "short": "ComEd", "initials": "CO", "role": "Utility C&I rates & storage rebate lens", "jurisdictions": ["IL"], "utility_ids": ["comed"], "lens": "Distribution Facilities Charge billing, PLC/NSPL tag mechanics, CEJA/CRGA storage rebate and the new scheduled-dispatch VPP." },
+    { "id": "ameren", "kind": "utility", "name": "Utility Programs — Ameren Illinois territory", "short": "Ameren IL", "initials": "AM", "role": "Utility C&I rates lens (MISO)", "jurisdictions": ["IL"], "utility_ids": ["ameren-il"], "lens": "DS-3/DS-4 delivery demand charges, MISO capacity tags, rebate administration." },
+    { "id": "oncor", "kind": "utility", "name": "TDU Large-Customer Lens — Oncor (TX)", "short": "Oncor", "initials": "ON", "role": "Texas TDU rates & load-management lens", "jurisdictions": ["TX"], "utility_ids": ["oncor", "aep-texas-central", "aep-texas-north", "tnmp", "austin-energy", "cps-energy"], "lens": "Distribution demand ratchets, 4CP transmission billing for IDR customers, Commercial Load Management SOP." },
+    { "id": "centerpoint", "kind": "utility", "name": "TDU Large-Customer Lens — CenterPoint (TX)", "short": "CenterPoint", "initials": "CP", "role": "Texas TDU rates & load-management lens", "jurisdictions": ["TX"], "utility_ids": ["centerpoint-houston"], "lens": "kVA-based billing, TCRF 4CP charges, hurricane/flood resilience, load-management SOP." },
+    { "id": "sce", "kind": "utility", "name": "Utility Programs — Southern California Edison territory", "short": "SCE", "initials": "SC", "role": "Utility C&I rates & demand-response lens", "jurisdictions": ["CA"], "utility_ids": ["sce", "sdge"], "lens": "TOU-GS/TOU-8 facilities and time-related demand charges, CPP, Rule 21 non-export interconnection, SGIP/DSGS status." },
+    { "id": "pge", "kind": "utility", "name": "Utility Programs — PG&E territory", "short": "PG&E", "initials": "PG", "role": "Utility C&I rates & demand-response lens", "jurisdictions": ["CA"], "utility_ids": ["pge"], "lens": "B-10/B-19/B-20 demand charges, Option S for storage, Peak Day Pricing, downtown SF/Oakland secondary networks." }
+  ]
+}

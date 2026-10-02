@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BESS Incentive Atlas</title>
+    <meta name="description" content="Behind-the-meter C&amp;I battery storage screening: incentives, tariffs, demand response, site limits and value stacks for MA, CT, NYC, IL, TX and CA." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231c5cab'/%3E%3Crect x='9' y='7' width='14' height='20' rx='2' fill='none' stroke='white' stroke-width='2.4'/%3E%3Crect x='13' y='4' width='6' height='3' rx='1' fill='white'/%3E%3Cpath d='M17 11l-4 6h4l-2 5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="assets/css/app.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#/screener">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M10 2h4"/><path d="M13 8l-3 5h4l-2 4"/></svg>
+        </span>
+        <span>BESS Incentive Atlas <small>BTM C&amp;I screening</small></span>
+      </a>
+      <nav class="tabs" aria-label="Main">
+        <a href="#/screener" data-route="screener">Site screener</a>
+        <a href="#/portfolio" data-route="portfolio">Portfolio</a>
+        <a href="#/library" data-route="library">Programs &amp; tariffs</a>
+        <a href="#/panel" data-route="panel">Expert panel</a>
+        <a href="#/method" data-route="method">Methodology</a>
+        <a href="#/settings" data-route="settings">Settings</a>
+      </nav>
+      <span class="spacer"></span>
+      <span id="signed-in" class="signed-in"></span>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">◐</button>
+    </header>
+    <main id="app" aria-live="polite">
+      <div class="empty">Loading data…</div>
+    </main>
+    <footer>
+      Indicative screening estimates, not investment-grade. Tariffs and programs change. Check each value's confidence and last-verified date, and confirm it against the cited source before an investment decision.
+      Expert-panel personas are simulated advisory perspectives and are not affiliated with or endorsed by any utility, supplier or agency.
+      <span id="data-version"></span>
+    </footer>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>
