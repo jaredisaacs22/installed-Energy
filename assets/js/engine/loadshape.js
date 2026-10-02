@@ -332,3 +332,58 @@ export function deepenAcrossDays(days, envelope, components, deltas, battery) {
 export function energyUnderCaps(days, caps, dtHours, battery) {
   return days.reduce((s, d) => s + dayUnderCaps(d.kw, caps, dtHours, battery).energy, 0);
 }
+
+/**
+ * Interval-by-interval dispatch of one day against per-interval caps, the same way the workbench
+ * simulates it: the day starts full; above the cap the battery discharges (limited by kW and stored
+ * energy × discharge efficiency); below the cap it recharges into the headroom (limited by charge kW
+ * and room in the battery, × charge efficiency).
+ * battery: { kw, chargeKw, storedKwh, effCharge, effDischarge }
+ * Returns { shaved, discharge (+) / charge (−) kW, soc (kWh stored at the end of each interval),
+ *           peakBefore, peakAfter, maxDischarge, energyUsed (AC kWh), lowestSoc, held }.
+ */
+export function simulateDay(dayKw, caps, dtHours, battery) {
+  const E = battery.storedKwh;
+  const effD = battery.effDischarge || 1;
+  const effC = battery.effCharge || 1;
+  const P = battery.kw;
+  const Pc = battery.chargeKw > 0 ? battery.chargeKw : battery.kw;
+  let soc = E;
+  let lowest = E;
+  let maxD = 0;
+  let used = 0;
+  let peakBefore = 0;
+  let peakAfter = 0;
+  let held = true;
+  const shaved = [];
+  const flow = [];
+  const socs = [];
+  for (let i = 0; i < dayKw.length; i++) {
+    const load = Number.isFinite(dayKw[i]) ? dayKw[i] : 0;
+    const cap = caps[i];
+    let net = load;
+    let f = 0;
+    if (cap !== Infinity && load > cap) {
+      const dis = Math.min(load - cap, P, (soc * effD) / dtHours);
+      soc -= (dis / effD) * dtHours;
+      net = load - dis;
+      f = dis;
+      used += dis * dtHours;
+      if (dis > maxD) maxD = dis;
+      if (net > cap + 0.05) held = false;
+    } else {
+      const head = cap === Infinity ? Pc : cap - load;
+      const chg = Math.max(0, Math.min(head, Pc, (E - soc) / dtHours / effC));
+      soc += chg * effC * dtHours;
+      net = load + chg;
+      f = -chg;
+    }
+    if (soc < lowest) lowest = soc;
+    if (load > peakBefore) peakBefore = load;
+    if (net > peakAfter) peakAfter = net;
+    shaved.push(net);
+    flow.push(f);
+    socs.push(soc);
+  }
+  return { shaved, flow, soc: socs, peakBefore, peakAfter, maxDischarge: maxD, energyUsed: used, lowestSoc: lowest, held };
+}

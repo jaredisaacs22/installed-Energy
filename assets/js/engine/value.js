@@ -2,7 +2,7 @@
 // All results are indicative screening estimates. Every stream carries the inputs used so the export can
 // feed an interval-data dispatch model.
 
-import { designDayProfile, optimizeShave, windowMask, eventDayReduction, deepenAcrossDays, componentPeaks, capsAt, energyUnderCaps } from './loadshape.js';
+import { designDayProfile, optimizeShave, windowMask, eventDayReduction, deepenAcrossDays, componentPeaks, capsAt, energyUnderCaps, simulateDay } from './loadshape.js';
 import { daysInMonth } from '../workbench.js';
 
 export const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -19,6 +19,18 @@ export function usableKwh(config, a) {
 /** Round-trip efficiency for a configuration: product spec when known, else the global assumption. */
 export function rteOf(config, a) {
   return typeof config.rte === 'number' ? config.rte : a.rte_ac;
+}
+
+/** Battery parameters for the interval-by-interval simulation (falls back to global assumptions). */
+export function simBatteryOf(config, a) {
+  const rte = rteOf(config, a);
+  return {
+    kw: config.kw,
+    chargeKw: chargeKwOf(config),
+    storedKwh: typeof config.storedKwh === 'number' ? config.storedKwh : usableKwh(config, a),
+    effCharge: typeof config.effCharge === 'number' ? config.effCharge : rte,
+    effDischarge: typeof config.effDischarge === 'number' ? config.effDischarge : 1,
+  };
 }
 
 /** Charge kW for a configuration (some units charge slower than they discharge). */
@@ -64,7 +76,7 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
   const charges = (tariff?.demand_charges || [])
     .map((dc, idx) => ({ dc, idx }))
     .filter(({ dc }) => typeof dc.rate_usd_per_kw_month === 'number' && dc.rate_usd_per_kw_month > 0 && dc.basis !== 'coincident' && dc.basis !== 'contract' && chargeAppliesToSite(dc, site));
-  if (!charges.length) return { streams: [], dailyEnergyKwh: 0, cyclingKwhPerYear: 0, monthOpt: {}, intervalMonths: 0 };
+  if (!charges.length) return { streams: [], dailyEnergyKwh: 0, cyclingKwhPerYear: 0, monthOpt: {}, intervalMonths: 0, monthDetail: {} };
   const override = site.shave_kw_override?.[config.id];
   const ratchetPeakMonths = a.ratchet_peak_months || [6, 7, 8, 9];
   const rte = rteOf(config, a);
@@ -74,6 +86,8 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
   let cyclingKwhPerYear = 0;
   let intervalMonths = 0;
   const monthOpt = {};
+  const monthDetail = {};
+  const simBattery = simBatteryOf(config, a);
   // Months are grouped by active charges and event programs when they share the design-day profile.
   // With interval data each month is its own group: its envelope, its days.
   const groups = new Map();
@@ -104,16 +118,21 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
     let optValue = 0;
     let realizedValue = 0;
     const realizedDeltas = {};
+    const theoreticalDeltas = {};
+    const compUsd = {};
+    let groupEventLimited = false;
     for (const { dc, i } of active) {
       let theoretical = deltas[String(i)] || 0;
       for (const er of eventRed) {
         if (er[String(i)] < theoretical) {
           theoretical = er[String(i)];
           totals[i].eventLimited = true;
+          groupEventLimited = true;
         }
       }
       const realized = override != null ? Math.min(Number(override), config.kw) : theoretical * a.shave_capture;
       realizedDeltas[String(i)] = realized;
+      theoreticalDeltas[String(i)] = theoretical;
       optValue += monthlyRate(dc, months[0]) * (deltas[String(i)] || 0);
       realizedValue += monthlyRate(dc, months[0]) * (override != null ? realized : theoretical);
       const ratchetPct = dc.basis === 'ratchet' && typeof tariff.ratchet?.pct === 'number' ? tariff.ratchet.pct : null;
@@ -124,6 +143,45 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
         totals[i].usd += monthlyRate(dc, m) * realized * f;
         totals[i].months.push(m);
         totals[i].kwByMonth[m] = realized;
+        ((compUsd[m] ||= {})[String(i)] = monthlyRate(dc, m) * realized * f);
+      }
+    }
+    // Per-month detail for the savings view: peaks, holds, targets and dollars by charge, the month's
+    // worst day under the target caps, and how many days the target holds.
+    {
+      const peaks = componentPeaks(prof, comps);
+      const n = prof.kw.length;
+      const holdCaps = capsAt(n, prof.dtHours, comps, peaks, theoreticalDeltas);
+      const targetCaps = capsAt(n, prof.dtHours, comps, peaks, realizedDeltas);
+      const days = md ? md.days : null;
+      const worst = days ? days.reduce((b, d) => { const mx = Math.max(...d.kw.filter(Number.isFinite)); return !b || mx > b.mx ? { mx, d } : b; }, null) : null;
+      let daysHeld = null;
+      if (days) daysHeld = days.filter((d) => simulateDay(d.kw, targetCaps, prof.dtHours, simBattery).held).length;
+      for (const m of months) {
+        monthDetail[m] = {
+          basis: md ? 'interval' : 'design',
+          peak: Math.max(...prof.kw.filter(Number.isFinite)),
+          dtHours: prof.dtHours,
+          comps: active.map(({ dc, i }) => ({
+            index: i,
+            label: dc.label,
+            window: dc.window || null,
+            rate: monthlyRate(dc, m),
+            peak: peaks[String(i)],
+            hold: peaks[String(i)] - (theoreticalDeltas[String(i)] || 0),
+            target: peaks[String(i)] - (realizedDeltas[String(i)] || 0),
+            reduction: realizedDeltas[String(i)] || 0,
+            usd: compUsd[m]?.[String(i)] || 0,
+          })),
+          usd: Object.values(compUsd[m] || {}).reduce((x, y) => x + y, 0),
+          holdCaps,
+          targetCaps,
+          worstDay: worst ? { date: worst.d.date, kw: worst.d.kw } : { date: null, kw: prof.kw },
+          daysTotal: days ? days.length : null,
+          daysHeld,
+          eventLimited: groupEventLimited,
+          override: override != null,
+        };
       }
     }
     if (md) {
@@ -169,7 +227,7 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
       flags: [ratchet || tariff.ratchet ? 'ratchet' : '', totals[i].eventLimited ? 'event_days_limit_shave' : ''].filter(Boolean),
     };
   });
-  return { streams, dailyEnergyKwh, cyclingKwhPerYear, monthOpt, intervalMonths };
+  return { streams, dailyEnergyKwh, cyclingKwhPerYear, monthOpt, intervalMonths, monthDetail };
 }
 
 /** Whether a peak-tag saving reaches the customer under their supply arrangement. */
@@ -552,7 +610,7 @@ export function valueStack(site, config, ctx) {
   const build = (enrolled) => {
     const dropped = [];
     const events = enrolled.filter((s) => s.event && s.scenario === 'base').map((s) => s.event);
-    const { streams: demand, cyclingKwhPerYear, monthOpt } = demandChargeStreams(site, config, tariff, a, profile, events, ctx.interval || null);
+    const { streams: demand, cyclingKwhPerYear, monthOpt, monthDetail } = demandChargeStreams(site, config, tariff, a, profile, events, ctx.interval || null);
     const cp = coincidentStreams(site, config, tariff, a);
     const arb = arbitrageStreams(site, config, tariff, a, profile, monthOpt);
     const otherUpfront = enrolled.filter((s) => s.scenario === 'base').reduce((n, s) => n + s.upfront_usd, 0);
@@ -589,7 +647,7 @@ export function valueStack(site, config, ctx) {
     };
     const demandUsd = demand.reduce((n, s) => n + s.annual_usd, 0);
     const eventLimited = demand.some((s) => s.flags.includes('event_days_limit_shave'));
-    return { streams, dropped, totals, demandUsd, eventLimited };
+    return { streams, dropped, totals, demandUsd, eventLimited, monthDetail };
   };
 
   // Dispatch strategy: when event days cut into demand-charge savings, also try skipping those programs
@@ -627,7 +685,7 @@ export function valueStack(site, config, ctx) {
   }
   excluded.push(...best.dropped);
   const { streams, totals } = best;
-  return { config, profile, streams, excluded, totals, strategy };
+  return { config, profile, streams, excluded, totals, strategy, monthDetail: best.monthDetail };
 }
 
 function nonEmptySubsets(items) {
@@ -642,4 +700,27 @@ export function fmt(x) {
   if (x == null || Number.isNaN(x)) return '—';
   const abs = Math.abs(x);
   return abs >= 100 ? Math.round(x).toLocaleString('en-US') : abs >= 10 ? x.toFixed(1) : x.toFixed(2);
+}
+
+/**
+ * The workbench's kW-only figure: the lowest all-hours monthly peak this configuration holds on every
+ * day of the month (interval data) or on the design day. Independent of the tariff, so it can be
+ * compared one-to-one with the workbench's "Sustainable hold". Returns {month: kW}.
+ */
+export function allHoursHolds(site, config, a, profile, interval = null) {
+  const battery = { kw: config.kw, chargeKw: chargeKwOf(config), usableKwh: usableKwh(config, a), rte: rteOf(config, a) };
+  const comps = [{ id: 'all', rate: 1, window: null }];
+  const out = {};
+  const designOpt = optimizeShave(profile, comps, battery);
+  const designPeak = Math.max(...profile.kw);
+  for (const m of ALL_MONTHS) {
+    const md = interval?.months?.[m];
+    if (md?.days?.length) {
+      const env = { kw: md.envelope, dtHours: interval.dtHours };
+      const opt = optimizeShave(env, comps, battery);
+      const deep = deepenAcrossDays(md.days, env, comps, opt.deltas, battery);
+      out[m] = Math.max(...md.envelope) - deep.deltas.all;
+    } else out[m] = designPeak - designOpt.deltas.all;
+  }
+  return out;
 }

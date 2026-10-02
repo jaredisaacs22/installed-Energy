@@ -10,6 +10,8 @@ export function buildConfig(items, products) {
   let kw = 0;
   let kwh = 0;
   let usable = 0;
+  let stored = 0;
+  let effCw = 0;
   let chargeKw = 0;
   let effWeighted = 0;
   let specKnown = true;
@@ -24,6 +26,8 @@ export function buildConfig(items, products) {
     if (u == null || typeof p.eff_charge !== 'number' || typeof p.eff_discharge !== 'number') specKnown = false;
     // Usable kWh is stored energy; what reaches the meter is usable × discharge efficiency (workbench convention).
     usable += (u ?? 0) * (p.eff_discharge ?? 1) * it.count;
+    stored += (u ?? 0) * it.count;
+    effCw += (u ?? 0) * (p.eff_charge ?? 1) * it.count;
     chargeKw += (typeof p.charge_kw === 'number' ? p.charge_kw : p.kw) * it.count;
     effWeighted += (u ?? 0) * (p.eff_discharge ?? 1) * it.count * (p.eff_charge ?? 1) * (p.eff_discharge ?? 1);
     units += it.count;
@@ -46,6 +50,10 @@ export function buildConfig(items, products) {
     usableKwh: specKnown && units > 0 ? usable : null,
     chargeKw: units > 0 ? chargeKw : 0,
     rte: specKnown && usable > 0 ? effWeighted / usable : null,
+    // For the interval-by-interval state-of-charge simulation (stored kWh, charge/discharge efficiency).
+    storedKwh: specKnown && units > 0 ? stored : null,
+    effCharge: specKnown && stored > 0 ? effCw / stored : null,
+    effDischarge: specKnown && stored > 0 ? usable / stored : null,
     installedCostUsd: costKnown && units > 0 ? cost : null,
   };
 }

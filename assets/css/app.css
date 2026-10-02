@@ -339,3 +339,42 @@ input[aria-invalid='true'] { border-color: var(--critical); }
 .wb-notes li.warn, .wb-check li.warn, .wb-box .warn { color: var(--warning-ink); }
 .wb-check { margin: 0; padding-left: 18px; }
 .wb-check li { margin: 4px 0; }
+
+/* Savings tab (mirrors the workbench Sizing tab) */
+.rec-banner { border-left: 4px solid var(--green); }
+.rec-line { font-size: 14px; margin-bottom: 4px; }
+.rec-tag { display: inline-block; font-size: 11px; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-dark); }
+.disp-controls { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+.disp-controls .field { margin-bottom: 6px; }
+.readout { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); font-weight: 650; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-2 > .card { margin-bottom: 16px; min-width: 0; }
+@media (max-width: 900px) { .grid-2, .disp-controls { grid-template-columns: 1fr; } }
+.dtiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 8px 0 12px; }
+.dtile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.dtile .lab { font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+.dtile .val { font-size: 24px; font-weight: 750; line-height: 1.2; margin-top: 4px; color: var(--ink); }
+.dtile .u { font-size: 12px; font-weight: 600; color: var(--muted); }
+.dtile .sub { font-size: 11.5px; color: var(--muted); }
+.dtile.good { border-top: 3px solid var(--green); }
+.dtile.bad { border-top: 3px solid var(--critical); }
+.check-ok, .check-warn, .check-info { border-left: 3px solid var(--green); background: var(--green-tint-2); padding: 8px 10px; border-radius: 6px; font-size: 13px; margin-top: 6px; }
+.check-warn { border-left-color: var(--warning); background: var(--warning-tint); }
+.check-info { border-left-color: var(--line-strong); background: var(--surface-2); color: var(--ink-2); }
+.pm-table tr.click { cursor: pointer; }
+.pm-table tr.click:hover td { background: var(--surface-2); }
+.pm-table tr.sel td { background: var(--green-tint); }
+.pm-table tfoot td { border-top: 2px solid var(--line-strong); }
+.dchart-wrap { width: 100%; }
+.dchart { display: block; width: 100%; height: auto; overflow: visible; }
+.dchart .grid line { stroke: var(--line); stroke-width: 1; }
+.dchart .axis text { fill: var(--muted); font-size: 11px; font-family: var(--font); }
+.dchart .axis text.sel { fill: var(--ink); font-weight: 700; }
+.dchart .axis-title { fill: var(--ink-2); font-size: 11.5px; }
+.dchart .crosshair { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.dchart .bar-label { fill: var(--ink); font-size: 11px; font-weight: 650; font-family: var(--font); }
+.dchart .mbar { cursor: pointer; outline: none; }
+.dchart .mbar:focus-visible path { stroke: var(--ink); stroke-width: 1.5; }
+.legend .sw.line { height: 3px; width: 16px; border-radius: 2px; vertical-align: 3px; }
+.legend .sw.dash { height: 0; width: 16px; border-radius: 0; border-top: 2.5px dashed currentColor; background: none; vertical-align: 3px; }
+@media print { .grid-2 { grid-template-columns: 1fr 1fr; } }
