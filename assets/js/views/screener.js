@@ -94,6 +94,7 @@ export function renderScreener(root, data, params) {
   let analysis = null;
   let personaFilter = 'all';
   let scenario = 'base';
+  let tariffOpen = null; // null = auto (open when rates are missing)
 
   const formHost = h('div', { class: 'card form' });
   const resultHost = h('div', {});
@@ -128,7 +129,10 @@ export function renderScreener(root, data, params) {
       value: site[key] ?? '',
       placeholder: opts.placeholder || '',
       'aria-label': opts.label || key,
-      oninput: (e) => update({ [key]: e.target.value === '' ? null : Number(e.target.value) }, { rerenderForm: !!opts.rerender }),
+      // Recalculate while typing; rebuild the form (tariff suggestions, load factor) only once the value is committed,
+      // so focus and cursor position are never interrupted mid-entry.
+      oninput: (e) => update({ [key]: e.target.value === '' ? null : Number(e.target.value) }),
+      onchange: opts.rerender ? () => update({}, { rerenderForm: true }) : null,
     });
   }
   function select(key, options, opts = {}) {
@@ -223,6 +227,9 @@ export function renderScreener(root, data, params) {
     const rec = a.recommended;
     const sel = a.results.find((r) => r.config.id === selectedId) || rec;
     const jd = a.jurisdiction;
+    // Re-rendering replaces inputs; remember which one had focus so typing isn't interrupted.
+    const active = document.activeElement;
+    const focusLabel = active && resultHost.contains(active) ? active.getAttribute('aria-label') : null;
     resultHost.replaceChildren(
       ...[dataBanner(a, data),
       kpis(a, rec),
@@ -240,6 +247,13 @@ export function renderScreener(root, data, params) {
       programsCard(a, jd),
       exportCard(a)].filter(Boolean),
     );
+    if (focusLabel) {
+      const el = [...resultHost.querySelectorAll('[aria-label]')].find((x) => x.getAttribute('aria-label') === focusLabel);
+      if (el) {
+        el.focus();
+        if (el.type === 'text') el.setSelectionRange(el.value.length, el.value.length);
+      }
+    }
   }
 
   function configTable(a, sel) {
@@ -262,7 +276,7 @@ export function renderScreener(root, data, params) {
               h('td', { class: 'num' }, yrs(fin(r).simplePayback)),
               h('td', { class: 'num' }, usd(fin(r).npv, { compact: true })),
               h('td', {}, sevBadge(r.constraints.status)),
-              h('td', {}, h('input', { type: 'number', min: 0, step: 'any', 'aria-label': `Demand reduction kW for ${r.config.label}`, value: site.shave_kw_override?.[r.config.id] ?? '', placeholder: num(avgShave(r), 0), oninput: (e) => {
+              h('td', {}, h('input', { type: 'number', min: 0, step: 'any', 'aria-label': `Demand reduction kW for ${r.config.label}`, value: site.shave_kw_override?.[r.config.id] ?? '', placeholder: num(avgShave(r), 0), onchange: (e) => {
                 const o = { ...(site.shave_kw_override || {}) };
                 if (e.target.value === '') delete o[r.config.id];
                 else o[r.config.id] = Number(e.target.value);
@@ -354,7 +368,7 @@ export function renderScreener(root, data, params) {
           h('td', {}, badge(p.status, p.status)),
           h('td', { class: 'small' }, p.valuation?.rate != null ? `${p.valuation.rate} ${p.valuation.unit || ''}` : h('span', { class: 'muted' }, 'n/a')),
           h('td', { class: 'small' }, eligible ? (viaAggregator ? badge('via aggregator', 'info') : badge('yes', 'ok')) : badge('no', 'closed'), reason ? h('div', { class: 'muted' }, reason) : null),
-          h('td', {}, p.valuation?.rate != null && p.valuation.method !== 'text_only' ? h('input', { type: 'number', step: 'any', value: site.program_rate_overrides?.[p.id] ?? '', placeholder: String(p.valuation.rate), 'aria-label': `Rate override for ${p.name}`, oninput: (e) => {
+          h('td', {}, p.valuation?.rate != null && p.valuation.method !== 'text_only' ? h('input', { type: 'number', step: 'any', value: site.program_rate_overrides?.[p.id] ?? '', placeholder: String(p.valuation.rate), 'aria-label': `Rate override for ${p.name}`, onchange: (e) => {
             const o = { ...(site.program_rate_overrides || {}) };
             if (e.target.value === '') delete o[p.id];
             else o[p.id] = Number(e.target.value);
@@ -375,7 +389,8 @@ export function renderScreener(root, data, params) {
       else o[kind][i] = Number(v);
       update({ tariff_overrides: o });
     };
-    return h('details', { class: 'card', open: (base.demand_charges || []).some((d) => d.rate_usd_per_kw_month == null) },
+    const autoOpen = (base.demand_charges || []).some((d) => d.rate_usd_per_kw_month == null && d.basis !== 'contract' && d.basis !== 'coincident');
+    return h('details', { class: 'card', open: tariffOpen ?? autoOpen, ontoggle: (e) => { tariffOpen = e.target.open; } },
       h('summary', { style: { cursor: 'pointer' } }, h('strong', {}, `Rate: ${t.name}`), ' ', confBadge(t.confidence), ' ', h('span', { class: 'small muted' }, t.effective_date ? `effective ${t.effective_date} · ` : '', 'click to review or enter rates from the customer bill')),
       h('div', { class: 'table-wrap', style: { marginTop: '10px' } }, h('table', {},
         h('thead', {}, h('tr', {}, ['Charge', 'Basis', 'Months', 'Window', 'Database rate', 'Bill override'].map((x) => h('th', {}, x)))),
@@ -386,7 +401,7 @@ export function renderScreener(root, data, params) {
             h('td', { class: 'small' }, d.months?.length && d.months.length < 12 ? d.months.join(',') : 'all'),
             h('td', { class: 'small' }, d.window ? `${d.window.start}:00–${d.window.end}:00${d.days ? ' ' + d.days : ''}` : d.hours || 'all hours'),
             h('td', { class: 'num' }, d.rate_usd_per_kw_month != null ? `$${d.rate_usd_per_kw_month}/${d.basis === 'daily' ? 'kW-day' : 'kW-mo'}` : h('span', { class: 'muted' }, 'not verified')),
-            h('td', {}, h('input', { type: 'number', step: 'any', value: site.tariff_overrides?.demand?.[i] ?? '', placeholder: d.rate_usd_per_kw_month ?? 'enter', 'aria-label': `Override ${d.label}`, oninput: (e) => setOv('demand', i, e.target.value) })),
+            h('td', {}, h('input', { type: 'number', step: 'any', value: site.tariff_overrides?.demand?.[i] ?? '', placeholder: d.rate_usd_per_kw_month ?? 'enter', 'aria-label': `Override ${d.label}`, onchange: (e) => setOv('demand', i, e.target.value) })),
           )),
           (base.coincident_peak_charges || []).map((c, i) => h('tr', {},
             h('td', {}, `Peak tag: ${c.type}`, h('div', { class: 'small muted' }, c.how_set || '')),
@@ -394,7 +409,7 @@ export function renderScreener(root, data, params) {
             h('td', { class: 'small' }, '—'),
             h('td', { class: 'small' }, '—'),
             h('td', { class: 'num' }, c.est_value_usd_per_kw_year != null ? `$${c.est_value_usd_per_kw_year}/kW-yr` : h('span', { class: 'muted' }, 'not verified')),
-            h('td', {}, h('input', { type: 'number', step: 'any', value: site.tariff_overrides?.cp?.[i] ?? '', placeholder: c.est_value_usd_per_kw_year ?? 'enter', 'aria-label': `Override tag value ${c.type}`, oninput: (e) => setOv('cp', i, e.target.value) })),
+            h('td', {}, h('input', { type: 'number', step: 'any', value: site.tariff_overrides?.cp?.[i] ?? '', placeholder: c.est_value_usd_per_kw_year ?? 'enter', 'aria-label': `Override tag value ${c.type}`, onchange: (e) => setOv('cp', i, e.target.value) })),
           )),
         ),
       )),
