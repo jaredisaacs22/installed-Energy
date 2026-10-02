@@ -304,3 +304,57 @@ test('optimizer stops when shaving costs more in losses than it saves', () => {
   assert.ok(free.deltas.ncp > 5);
   assert.equal(costly.deltas.ncp, 0);
 });
+
+// ---- Event-day residual shaving and dispatch strategy ----
+import { eventBlockFor } from '../assets/js/engine/value.js';
+
+test('event day: leftover battery energy still shaves a peak outside the event block', () => {
+  // 100 kW by day, 50 kW overnight (room to recharge), noon peak; event at 4-7pm.
+  const kw = Array.from({ length: 24 }, (_, h) => (h >= 7 && h < 22 ? 100 : 50));
+  kw[12] = 150;
+  const profile = { kw, dtHours: 1 };
+  const comps = [{ id: 'ncp', rate: 10, window: null }];
+  const block = { start: 16, end: 19 };
+  // 50 kW × 3 h = 150 kWh for the event; 300 kWh usable leaves energy to shave noon.
+  const withEnergy = eventDayReduction(profile, comps, block, 50, { kw: 100, usableKwh: 300, rte: 0.85 }).ncp;
+  assert.ok(withEnergy >= 49.5, `leftover energy shaves the noon spike (got ${withEnergy})`);
+  near(eventDayReduction(profile, comps, block, 50).ncp, 0, 0.001); // legacy: event discharge only
+  // On a flat 24 h load there is no room to recharge the event energy without a new peak.
+  const flat = new Array(24).fill(100);
+  flat[12] = 150;
+  assert.ok(eventDayReduction({ kw: flat, dtHours: 1 }, comps, block, 50, { kw: 100, usableKwh: 300, rte: 0.85 }).ncp < 45);
+  // No energy left after the event: no shave outside the block.
+  near(eventDayReduction(profile, comps, block, 50, { kw: 100, usableKwh: 150, rte: 0.85 }).ncp, 0, 0.001);
+  // kW fully committed to the event cannot also discharge inside the block.
+  const kw2 = new Array(24).fill(100);
+  kw2[17] = 160;
+  const r = eventDayReduction({ kw: kw2, dtHours: 1 }, comps, block, 50, { kw: 50, usableKwh: 400, rte: 0.85 });
+  near(r.ncp, 50, 0.02);
+});
+
+test('dispatch strategy: skip a DR program whose events cost more demand savings than it pays', () => {
+  const cfg = buildConfig([{ productId: 'B30-150', count: 1 }], products);
+  const site = { ...baseSite, peak_kw: 400, building_type: 'retail' };
+  const tariff = { id: 't', demand_charges: [{ label: 'NCP', basis: 'ncp_monthly', rate_usd_per_kw_month: 45, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }] };
+  const prog = (rate) => ({
+    id: 'dr', name: 'Test DR (TDR)', category: 'demand_response', status: 'open', utility_ids: [], confidence: 'high',
+    eligibility: {}, valuation: { method: 'per_kw_month', rate, months_per_year: 5, duration_basis_hr: 4 },
+    dispatch: { event_duration_hr: 4, event_months: [5, 6, 7, 8, 9], event_block: { start: 19, end: 23 } },
+  });
+  const cheap = valueStack(site, cfg, { tariff, programs: [prog(2)], assumptions: A });
+  assert.ok(cheap.strategy, 'low-paying program is skipped');
+  assert.deepEqual(cheap.strategy.skipped_ids, ['dr']);
+  assert.ok(cheap.excluded.some((s) => s.program_id === 'dr' && /Not enrolled/.test(s.excluded_reason)));
+  assert.ok(!cheap.streams.some((s) => s.program_id === 'dr'));
+  assert.ok(cheap.strategy.net_gain_usd > 0);
+  const rich = valueStack(site, cfg, { tariff, programs: [prog(200)], assumptions: A });
+  assert.equal(rich.strategy, null, 'high-paying program stays enrolled');
+  assert.ok(rich.streams.some((s) => s.program_id === 'dr'));
+});
+
+test('event window: site selection must be one of the program options', () => {
+  const p = { dispatch: { event_block: { start: 14, end: 18 }, event_block_options: [{ start: 11, end: 15 }, { start: 14, end: 18 }] } };
+  assert.deepEqual(eventBlockFor(p, { event_blocks: { x: '11-15' } }), { start: 14, end: 18 });
+  assert.deepEqual(eventBlockFor({ id: 'x', ...p }, { event_blocks: { x: '11-15' } }), { start: 11, end: 15 });
+  assert.deepEqual(eventBlockFor({ id: 'x', ...p }, { event_blocks: { x: '9-13' } }), { start: 14, end: 18 });
+});

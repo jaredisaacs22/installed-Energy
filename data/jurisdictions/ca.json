@@ -1274,11 +1274,6 @@
      "component": "total",
      "rate_usd_per_kwh": null,
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -1294,10 +1289,14 @@
     {
      "title": "PG&E Electric Schedule B-10 (tariff book; values from WebSearch summary)",
      "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-10.pdf"
+    },
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
     }
    ],
    "confidence": "medium",
-   "verification_notes": "From a WebSearch summary of the canonical PG&E B-10 PDF (secondary): max demand $11.37; energy summer 0.21228/0.15059/0.11803 and winter peak 0.15424. The PDF was not opened and the rate-page effective date was not shown (assumed 2025-2026 vintage, since the tariff book shows current sheets). Winter off-peak and super-off-peak not extracted.",
+   "verification_notes": "From a WebSearch summary of the canonical PG&E B-10 PDF (secondary): max demand $11.37; energy summer 0.21228/0.15059/0.11803 and winter peak 0.15424. The PDF was not opened and the rate-page effective date was not shown (assumed 2025-2026 vintage, since the tariff book shows current sheets). Winter off-peak and super-off-peak not extracted. [2026-10-02] energy_rates[5].months: As for pge-b-20; B-1 in the same file already uses Mar–May.",
    "arbitrage": [
     {
      "label": "Summer (Jun–Sep)",
@@ -1315,7 +1314,8 @@
      "offpeak_price": 0.11803,
      "days": "all"
     }
-   ]
+   ],
+   "last_verified": "2026-10-02"
   },
   {
    "id": "pge-b-19",
@@ -1493,11 +1493,6 @@
      "component": "total",
      "rate_usd_per_kwh": 0.06442,
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -1520,7 +1515,7 @@
     }
    ],
    "confidence": "medium",
-   "verification_notes": "All numbers come from two WebSearch summaries of the canonical PG&E B-19 PDF (secondary): max demand $37.37; summer peak $46.16 and part-peak $10.52; winter peak $2.31; energy summer 0.18648/0.14775/0.12037 and winter 0.16188/0.12026/0.06442; Option S daily $1.60 peak and $0.08 part-peak per kW-day; 10% storage eligibility; 500-999 kW applicability. The PDF was not opened and the effective date of the rate pages was not shown. They are likely current (2025-2026), because the tariff-book URL serves the in-effect sheets. The values are internally consistent: Option S $1.60 x 30 is close to $46.16, and they track B-20. Confirm against the current tariff or a bill before contracting. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
+   "verification_notes": "All numbers come from two WebSearch summaries of the canonical PG&E B-19 PDF (secondary): max demand $37.37; summer peak $46.16 and part-peak $10.52; winter peak $2.31; energy summer 0.18648/0.14775/0.12037 and winter 0.16188/0.12026/0.06442; Option S daily $1.60 peak and $0.08 part-peak per kW-day; 10% storage eligibility; 500-999 kW applicability. The PDF was not opened and the effective date of the rate pages was not shown. They are likely current (2025-2026), because the tariff-book URL serves the in-effect sheets. The values are internally consistent: Option S $1.60 x 30 is close to $46.16, and they track B-20. Confirm against the current tariff or a bill before contracting. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price. [2026-10-02] energy_rates[5].months: B-19 tariff summary: super off-peak is '9:00 a.m. to 2:00 p.m. every day in March, April and May, including weekends and holidays.'",
    "arbitrage": [
     {
      "label": "Summer (Jun–Sep)",
@@ -1570,7 +1565,8 @@
      "offpeak_price": 0.12026,
      "days": "all"
     }
-   ]
+   ],
+   "last_verified": "2026-10-02"
   },
   {
    "id": "pge-b-20",
@@ -1751,11 +1747,6 @@
      "component": "total",
      "rate_usd_per_kwh": null,
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -1771,10 +1762,15 @@
     {
      "title": "PG&E Electric Schedule B-20 (tariff book; values from WebSearch summary)",
      "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    },
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
     }
    ],
    "confidence": "medium",
-   "verification_notes": "Secondary values come from a WebSearch summary of the canonical B-20 PDF (Oakland-header sheets; rate effective date not shown). Summer off-peak, all winter energy, and the full set of Option S monthly components were not extracted."
+   "verification_notes": "Secondary values come from a WebSearch summary of the canonical B-20 PDF (Oakland-header sheets; rate effective date not shown). Summer off-peak, all winter energy, and the full set of Option S monthly components were not extracted. [2026-10-02] energy_rates[5].months: PG&E's new B-series rates share one TOU period structure; B-19 defines super-off-peak as 9am–2pm daily in Mar–May only.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "sdge-tou-a",
@@ -1889,12 +1885,12 @@
   {
    "id": "sdge-al-tou",
    "utility_id": "sdge",
-   "name": "AL-TOU (General Service TOU, demand-metered >=20 kW)",
+   "name": "AL-TOU-M (Medium Commercial TOU, demand-metered 20 to <200 kW) - Secondary",
    "customer_class": "Medium/Large C&I",
    "applicability": {
     "min_kw": 20,
-    "max_kw": null,
-    "text": "Commercial/industrial customers with demand of about 20 kW or more; secondary, primary and transmission voltage (recalled; verify)"
+    "max_kw": 200,
+    "text": "SDG&E Medium Commercial class (since 2026-04-01): demand from 20 kW to under 200 kW, Schedule AL-TOU-M. Larger customers are on AL-TOU."
    },
    "effective_date": "2026-06-01",
    "demand_charges": [
@@ -1967,7 +1963,7 @@
     {
      "label": "Summer on-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.31851,
      "months": [
       6,
       7,
@@ -1981,7 +1977,7 @@
     {
      "label": "Summer off-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.20918,
      "months": [
       6,
       7,
@@ -1994,7 +1990,7 @@
     {
      "label": "Summer super-off-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.1879,
      "months": [
       6,
       7,
@@ -2007,7 +2003,7 @@
     {
      "label": "Winter on-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.34686,
      "months": [
       11,
       12,
@@ -2022,7 +2018,7 @@
     {
      "label": "Winter off-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.21349,
      "months": [
       11,
       12,
@@ -2037,7 +2033,7 @@
     {
      "label": "Winter super-off-peak",
      "component": "total",
-     "rate_usd_per_kwh": null,
+     "rate_usd_per_kwh": 0.1748,
      "months": [
       11,
       12,
@@ -2053,7 +2049,8 @@
    "ratchet": {
     "pct": 0.5,
     "lookback_months": 11,
-    "applies_to": "Non-coincident (maximum) demand: billed on the greater of monthly max demand or 50% of the maximum annual demand. The exact 12-month window wording was not verified."
+    "applies_to": "Non-coincident (maximum) demand: billed on the greater of monthly max demand or 50% of the maximum annual demand. The exact 12-month window wording was not verified.",
+    "notes": "The 50% annual NCD ratchet was researched for AL-TOU; whether it applies to AL-TOU-M is unverified."
    },
    "coincident_peak_charges": [],
    "storage_notes": "Strongest demand-charge case of the three IOUs: about $51.6/kW-month in summer ($30.37 NCD + $21.22 on-peak) and $46.6 in winter at secondary. The on-peak window runs every day, including weekends, so on-peak shaving needs daily cycling. The 50% annual ratchet on NCD means a single unshaved spike raises the NCD floor for up to 12 months, so size for the worst day, not the typical one. The basic service fee is $151.26/month at secondary (summary table title). CPP-D overlay may apply (see sdge-cpp-d).",
@@ -2069,10 +2066,158 @@
     {
      "title": "SDG&E Total Electric Rates page (index of rate tables)",
      "url": "https://www.sdge.com/total-electric-rates"
+    },
+    {
+     "title": "SDG&E - Upcoming changes to SDG&E's business customer classes",
+     "url": "https://www.sdge.com/node/33046"
+    },
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 4-1-26",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%204-1-26.pdf"
+    },
+    {
+     "title": "SDG&E 2026 Demand Flex Rate Application (A.26-02-xxx) - refers to new Medium Commercial class implemented 2026-04-01",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/2026-02/A2602XXX_SDGE%202026%20Demand%20Flex%20Rate%20Application.pdf"
     }
    ],
    "confidence": "medium",
-   "verification_notes": "Demand charges (secondary: NCD $30.37; summer on-peak $21.22; winter on-peak $16.25) and the 50%-of-annual-max NCD ratchet come from a WebSearch summary of SDG&E's 6/1/26 Medium Commercial summary table, a primary source. The PDF was not opened. An 8/1/26 SDG&E rate change was seen for residential tables; check whether commercial rates also changed then. Energy $/kWh and the UDC/EECC split were not extracted. Off-peak and super-off-peak windows are recalled."
+   "verification_notes": "Demand charges (secondary: NCD $30.37; summer on-peak $21.22; winter on-peak $16.25) and the 50%-of-annual-max NCD ratchet come from a WebSearch summary of SDG&E's 6/1/26 Medium Commercial summary table, a primary source. The PDF was not opened. An 8/1/26 SDG&E rate change was seen for residential tables; check whether commercial rates also changed then. Energy $/kWh and the UDC/EECC split were not extracted. Off-peak and super-off-peak windows are recalled. [2026-10-02] name: SDG&E: 'Beginning April 1, 2026, SDG&E implemented a new Medium Commercial customer class... customers with demand between 20kW to less than 200kW.' EECC-CPP-D is the default commodity tariff 'for customers on AL-TOU-M whose monthly maximum demand is not less than 20 kW ... and not expected to equal [2026-10-02] applicability.max_kw: Medium Commercial class = demand 20 kW to less than 200 kW (SDG&E, effective 2026-04-01). [2026-10-02] energy_rates[0].rate_usd_per_kwh: AL-TOU-M Secondary, Summer On-Peak: $0.03739 UDC + $0.00591 WF-NBC/DWR-BC + $0.27521 EECC = $0.31851/kWh (sums check). [2026-10-02] energy_rates[1].rate_usd_per_kwh: AL-TOU-M Secondary, Summer Off-Peak: 0.03739 + 0.00591 + 0.16588 = $0.20918/kWh. [2026-10-02] energy_rates[2].rate_usd_per_kwh: AL-TOU-M Secondary, Summer Super Off-Peak: 0.03739 + 0.00591 + 0.14460 = $0.18790/kWh. [2026-10-02] energy_rates[3].rate_usd_per_kwh: AL-TOU-M Secondary, Winter On-Peak: 0.03739 + 0.00591 + 0.30356 = $0.34686/kWh. [2026-10-02] energy_rates[4].rate_usd_per_kwh: AL-TOU-M Secondary, Winter Off-Peak: 0.03739 + 0.00591 + 0.17019 = $0.21349/kWh. [2026-10-02] energy_rates[5].rate_usd_per_kwh: AL-TOU-M Secondary, Winter Super Off-Peak: 0.03739 + 0.00591 + 0.13150 = $0.17480/kWh. [2026-10-02] arbitrage: From the AL-TOU-M secondary energy rows above: summer spread $0.1306/kWh and winter spread $0.1721/kWh (on-peak minus super-off-peak).",
+   "last_verified": "2026-10-02",
+   "arbitrage": [
+    {
+     "label": "Summer (Jun–Oct), charge midnight–6am super-off-peak",
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.31851,
+     "offpeak_price": 0.1879,
+     "days": "all"
+    },
+    {
+     "label": "Winter (Nov–May), charge midnight–6am super-off-peak (also 10am–2pm Mar–Apr weekdays)",
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.34686,
+     "offpeak_price": 0.1748,
+     "days": "all"
+    }
+   ]
+  },
+  {
+   "id": "sdge-al-tou-large",
+   "utility_id": "sdge",
+   "name": "AL-TOU (Large Commercial, ≥ 200 kW) — Secondary",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 200,
+    "max_kw": null,
+    "text": "SDG&E large commercial/industrial customers (200 kW and up) after the 2026-04-01 Medium Commercial split."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Non-coincident (maximum) demand - Secondary",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "hours": "all hours",
+     "notes": "Undated SDG&E table showed $31.32/kW (reference only, not used). Enter from the bill."
+    },
+    {
+     "label": "On-peak demand - Summer (Jun–Oct), Secondary",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all",
+     "hours": "4–9pm daily",
+     "notes": "Undated table showed $39.98/kW (reference only)."
+    },
+    {
+     "label": "On-peak demand - Winter (Nov–May), Secondary",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all",
+     "hours": "4–9pm daily",
+     "notes": "Undated table showed $28.74/kW (reference only)."
+    }
+   ],
+   "energy_rates": [],
+   "coincident_peak_charges": [],
+   "ratchet": null,
+   "storage_notes": "Values intentionally left blank: the only large-customer figures found were from an undated table. Enter current rates from the customer bill.",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial rates, effective 6-1-26",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    },
+    {
+     "title": "SDG&E Schedule AL-TOU tariff",
+     "url": "https://www.sdge.com/sites/default/files/elec_elec-scheds_al-tou.pdf"
+    },
+    {
+     "title": "SDG&E Total Electric Rates page (index of rate tables)",
+     "url": "https://www.sdge.com/total-electric-rates"
+    },
+    {
+     "title": "SDG&E - Upcoming changes to SDG&E's business customer classes",
+     "url": "https://www.sdge.com/node/33046"
+    },
+    {
+     "title": "SDG&E Summary Table for Medium Commercial, effective 4-1-26",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%204-1-26.pdf"
+    },
+    {
+     "title": "SDG&E 2026 Demand Flex Rate Application (A.26-02-xxx) - refers to new Medium Commercial class implemented 2026-04-01",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/2026-02/A2602XXX_SDGE%202026%20Demand%20Flex%20Rate%20Application.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "[2026-10-02] Added after the verification panel found the existing SDG&E entry describes AL-TOU-M (Medium Commercial)."
   },
   {
    "id": "sdge-al-tou-2",
@@ -2334,11 +2479,6 @@
      "component": "total",
      "rate_usd_per_kwh": 0.06442,
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -2361,7 +2501,7 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
+   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price. [2026-10-02] energy_rates[5].months: Same B-19 TOU period definition (Option S uses the B-19 TOU periods).",
    "arbitrage": [
     {
      "label": "Summer (Jun–Sep)",
@@ -2411,7 +2551,8 @@
      "offpeak_price": 0.12026,
      "days": "all"
     }
-   ]
+   ],
+   "last_verified": "2026-10-02"
   },
   {
    "id": "pge-b-20-s",
@@ -2559,11 +2700,6 @@
      "component": "total",
      "rate_usd_per_kwh": null,
      "months": [
-      10,
-      11,
-      12,
-      1,
-      2,
       3,
       4,
       5
@@ -2579,10 +2715,15 @@
     {
      "title": "PG&E Electric Schedule B-20 (tariff book; values from WebSearch summary)",
      "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    },
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
     }
    ],
    "confidence": "low",
-   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use."
+   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use. [2026-10-02] energy_rates[5].months: As for pge-b-20.",
+   "last_verified": "2026-10-02"
   }
  ],
  "programs": [
@@ -2709,10 +2850,18 @@
     {
      "title": "CPUC SGIP page",
      "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/self-generation-incentive-program"
+    },
+    {
+     "title": "CPUC D.25-12-003 (SGIP ratepayer-funded closure)",
+     "url": "https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M589/K959/589959535.PDF"
+    },
+    {
+     "title": "EcoFlow - California SGIP Rebate Guide 2026 (secondary)",
+     "url": "https://www.ecoflow.com/us/blog/california-sgip-rebate-guide-waitlist-itc-steps"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "Closure and the D.25-12-003 changes are confirmed across multiple search results citing selfgenca.com and CPUC documents. Historical rates come from search excerpts of the 2025 handbook. Primary pages could not be opened directly because of the egress block."
   },
   {
@@ -3017,20 +3166,22 @@
     "rate": 2.0,
     "unit": "$/kWh",
     "months_per_year": null,
-    "expected_event_hours_per_year": null,
+    "expected_event_hours_per_year": 30,
     "kw_basis": "incremental load reduction vs. baseline during event hours",
     "duration_basis_hr": null,
     "cap": null,
     "tiers": [],
     "term_years": null,
-    "notes": "$2/kWh for all participants since the 2022 modification. There are no capacity payments and no penalties (pay-for-performance). Event counts depend on grid emergencies and vary widely year to year, so treat the expected value as uncertain."
+    "notes": "$2/kWh for all participants since the 2022 modification. There are no capacity payments and no penalties (pay-for-performance). Event counts depend on grid emergencies and vary widely year to year, so treat the expected value as uncertain.",
+    "value_confidence": "low",
+    "value_confidence_notes": "The $2/kWh rate is confirmed. The 30 expected event-hours/yr (about 10 events × 3 h) is an estimate; ELRP event counts depend on grid emergencies and vary widely by year, so the annual value is low confidence."
    },
    "dispatch": {
     "season": "May-Oct",
-    "window": "Typically within 4pm-9pm, triggered by CAISO emergency or alert conditions",
-    "event_duration_hr": null,
+    "window": "4pm-9pm, any day of the week (incl. weekends), May-Oct; events last 1-5 hours; participation capped at 60 event hours per year",
+    "event_duration_hr": 3,
     "max_events_per_year": null,
-    "typical_events_per_year": null,
+    "typical_events_per_year": 10,
     "notice": "Day-ahead or day-of, triggered by CAISO EEA Watch or alerts",
     "baseline_or_mv": "Baseline-based incremental load reduction (interval meter)"
    },
@@ -3064,11 +3215,35 @@
     {
      "title": "SCE PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
      "url": "https://www.calmac.org/publications/PY2024_SCE_DR_Program_Report_ELRP_FINAL_PUBLIC.pdf"
+    },
+    {
+     "title": "Pioneer Community Energy - ELRP (non-residential)",
+     "url": "https://pioneercommunityenergy.org/commercial/elrp/"
+    },
+    {
+     "title": "SCE ELRP fact sheet",
+     "url": "https://www.sce.com/factsheet/emergency-load-reduction-program"
+    },
+    {
+     "title": "PG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/7._PGE_2024_ELRP_Rpt_PUBLIC.pdf"
+    },
+    {
+     "title": "SDG&E PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SDG&E_ELRP_Evaluation_-_FINAL_PUBLIC.pdf"
+    },
+    {
+     "title": "CPUC - Emergency Load Reduction Program",
+     "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/demand-response-dr/emergency-load-reduction-program"
+    },
+    {
+     "title": "CPUC filing on DR bridge period / ELRP continuation (2026)",
+     "url": "https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M604/K023/604023876.PDF"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
-   "verification_notes": "Confirmed in search: the extension through 2027 (D.23-12-005), the end of A.6 after 2025, the $2/kWh rate, and A.4 as the battery VPP sub-group. Not verified: 2026-specific terms, the maximum event-hour cap, and treatment of export."
+   "last_verified": "2026-10-02",
+   "confidence": "high",
+   "verification_notes": "Confirmed in search: the extension through 2027 (D.23-12-005), the end of A.6 after 2025, the $2/kWh rate, and A.4 as the battery VPP sub-group. Not verified: 2026-specific terms, the maximum event-hour cap, and treatment of export. [2026-10-02] dispatch.window: 'The program runs between May and October and events can occur any day of the week between 4-9 p.m., with events lasting anywhere from one to five hours.' 'You won't be asked to participate for more than 60 hours per year.' [2026-10-02] dispatch.event_duration_hr: PG&E PY2024 evaluation: 'The most common event window covered 5pm to 8pm and 6pm to 9pm... three hours.' Program max is 5 h. [2026-10-02] dispatch.typical_events_per_year: PY2024: PG&E called 9 event days, SCE 12, SDG&E 3 (all in September). [2026-10-02] valuation.expected_event_hours_per_year: 2024 event days (PG&E 9, SCE 12, SDG&E 3) x typical 3-h events = about 27 h (PG&E), 36 h (SCE), 9 h (SDG&E); program cap 60 h/yr."
   },
   {
    "id": "ca-cbp",
@@ -4007,6 +4182,14 @@
   "Verify the 2025 CFC (effective 2026-01-01) changes to Section 1207 (unit kWh limits, fire-area aggregates, outdoor separation) and LAFD, LACoFD and SFFD local ESS requirements.",
   "Confirm whether any successor non-residential storage incentive has been authorized after the SGIP sunset, e.g., a CPUC or CEC VPP or DR program or legislation in the 2026 session.",
   "Confirm whether storage-only sites are exempt from standby charges (SCE Schedule S, PG&E Schedule S) in 2026.",
-  "LADWP, SMUD and other municipal utilities are out of scope. Their rates, programs and interconnection rules differ, and they are not covered by Rule 21 or IOU programs (DSGS has historically included POU customers)."
+  "LADWP, SMUD and other municipal utilities are out of scope. Their rates, programs and interconnection rules differ, and they are not covered by Rule 21 or IOU programs (DSGS has historically included POU customers).",
+  "SCE TOU-GS-2-D, TOU-GS-3-D and TOU-8-D (Below 2 kV) $ values remain unfilled after 9 targeted searches. Search summaries never surface the SCE rate tables. Pull the values from sce.com tariff PDFs (ELECTRIC_SCHEDULES_TOU-GS-2.pdf, ..._TOU-GS-3.pdf, ..._TOU-8.pdf) or a 2026 bill. The only hint is TOU-GS-2-RTP (Sheet 74764-E): FRD shown as $3.80 + $19.62 (= $23.42, consistent with the earlier excerpt) and summer on-peak TRD $16.23/kW. It is an RTP schedule, so it was NOT applied to Option D.",
+  "SCE 2025 GRC Phase 2 decision (A.24-03-019, issued 2026-05-04) adopted settlements that change C&I rate design. For TOU-8 and TOU-GS-3, summer mid- and off-peak capacity costs move into summer on-/mid-peak energy charges, the FRD on TOU-8-Sub absorbs additional capacity costs, and Option D eligibility is kept. Confirm the implementation date (likely a late-2026 or 2027 rate change). Any 2026 SCE values found may be superseded.",
+  "A legacy SCE TOU-GS-2 sheet (pre-2019 TOU periods) defined FRD billing demand as the greater of the monthly max demand or 50% of the highest max demand in the preceding 11 months (a ratchet). Verify whether the current TOU-GS-2/3 and TOU-8 FRD still carries a 50% ratchet. If it does, set tariffs[id=sce-*].ratchet = {pct: 0.5, lookback_months: 11}.",
+  "SCE TOU-8 / TOU-GS Option E eligibility: one secondary source (Nectar) says Option E is limited to customers with qualifying technologies (DER/solar, PLS, ZEV, BTM paired or standalone storage) and is capacity-capped. Verify and update sce-tou-8-e applicability.",
+  "SDG&E: add a separate AL-TOU entry for >=200 kW (Large Commercial table, 2026 vintage). Confirm whether the Large Commercial AL-TOU secondary values NCD $31.32 / summer on-peak $39.98 / winter on-peak $28.74 are current (2026) or older (2022-2024 tables). Also pull the AL-TOU energy rates. SDG&E JRCs dated 2026-08-01 exist, so check for an 8-1-26 commercial rate change.",
+  "SDG&E Medium Commercial table: confirm the AL-TOU-M vs TOU-M row attribution for the energy rates used here (AL-TOU-M UDC energy flat $0.03739; TOU-M UDC on-peak $0.32043).",
+  "PG&E B-20 secondary summer off-peak and all winter energy rates, and the B-19 Option S monthly max-demand charge, are still unfilled. Pull them from the PG&E tariff PDFs or a PG&E/CCA joint rate comparison.",
+  "ELRP: confirm 2025 event counts and hours by IOU, and whether 2024 event days applied to all sub-groups (A.1/A.2/A.4) or only some, before relying on the 30 h/yr screening value."
  ]
 }

@@ -6,6 +6,8 @@ import { renderLibrary } from './views/library.js';
 import { renderPanel } from './views/panel.js';
 import { renderMethod } from './views/method.js';
 import { renderSettings } from './views/settings.js';
+import { renderOverview } from './views/overview.js';
+import { renderHealth } from './views/health.js';
 import { requireSignIn, signOut } from './access.js';
 
 const app = document.getElementById('app');
@@ -25,7 +27,8 @@ export async function loadData() {
       jurisdictions[j.code] = await loadJson(`data/jurisdictions/${j.file}`);
     }),
   );
-  return { manifest, products: products.products, global, panel, jurisdictions };
+  const verification_log = await loadJson('data/verification-log.json').catch(() => null);
+  return { manifest, products: products.products, global, panel, jurisdictions, verification_log };
 }
 
 /** Settings = user overrides of products & assumptions, stored per browser. */
@@ -44,7 +47,9 @@ export const settingsStore = {
 };
 
 const routes = {
+  overview: renderOverview,
   screener: renderScreener,
+  health: renderHealth,
   portfolio: renderPortfolio,
   library: renderLibrary,
   panel: renderPanel,
@@ -55,14 +60,16 @@ const routes = {
 function parseHash() {
   const raw = location.hash.replace(/^#\/?/, '');
   const [path, query = ''] = raw.split('?');
-  return { route: routes[path] ? path : 'screener', params: new URLSearchParams(query) };
+  return { route: routes[path] ? path : 'overview', params: new URLSearchParams(query) };
 }
 
 let DATA = null;
+const TITLES = { overview: 'Overview', screener: 'Site screener', portfolio: 'Portfolio', library: 'Programs & tariffs', health: 'Data health', panel: 'Expert panel', method: 'Methodology', settings: 'Settings' };
 
 async function render() {
   const { route, params } = parseHash();
-  document.querySelectorAll('nav.tabs a').forEach((a) => a.setAttribute('aria-current', a.dataset.route === route ? 'page' : 'false'));
+  document.querySelectorAll('[data-route]').forEach((a) => a.setAttribute('aria-current', a.dataset.route === route ? 'page' : 'false'));
+  document.title = `${TITLES[route] || 'BESS Incentive Atlas'} · BESS Incentive Atlas`;
   app.replaceChildren();
   try {
     routes[route](app, DATA, params);
@@ -73,23 +80,17 @@ async function render() {
   window.scrollTo({ top: 0 });
 }
 
+// Light theme only (white background); clear any theme saved by earlier versions.
 function initTheme() {
-  const btn = document.getElementById('theme-toggle');
-  const saved = storage.get('atlas.theme', null);
-  if (saved) document.documentElement.setAttribute('data-theme', saved);
-  btn.addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    storage.set('atlas.theme', next);
-  });
+  document.documentElement.removeAttribute('data-theme');
+  storage.del('atlas.theme');
 }
 
 (async function main() {
   initTheme();
   const session = await requireSignIn(app);
   const who = document.getElementById('signed-in');
-  who.replaceChildren(h('span', { class: 'small muted' }, session.email), ' ', h('button', { class: 'icon-btn', type: 'button', onclick: signOut }, 'Sign out'));
+  who.replaceChildren(h('span', { class: 'email' }, session.email), h('button', { class: 'icon-btn', type: 'button', title: `Signed in as ${session.email}`, onclick: signOut }, 'Sign out'));
   try {
     DATA = await loadData();
     document.getElementById('data-version').textContent = ` Data version ${DATA.manifest.data_version} (updated ${DATA.manifest.updated}).`;

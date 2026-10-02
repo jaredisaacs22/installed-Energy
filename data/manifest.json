@@ -1,7 +1,7 @@
 {
- "data_version": "2026.10.02.1",
+ "data_version": "2026.10.02.3",
  "updated": "2026-10-02",
- "research_note": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "research_note": "Researched 2026-10-01 and re-verified 2026-10-02 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked). See Data health for the verification log and remaining gaps.",
  "jurisdictions": [
   {
    "code": "MA",

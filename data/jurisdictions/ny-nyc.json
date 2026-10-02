@@ -91,16 +91,16 @@
    "name": "SC 9 General Large, Rate II (Time-of-Day demand), Low Tension",
    "customer_class": "Large C&I",
    "applicability": {
-    "min_kw": null,
+    "min_kw": 1500,
     "max_kw": null,
-    "text": "General Large service. Rate II is the time-of-day demand rate, labeled 'Mandatory Time-of-Day' in Con Ed rate documents and mandatory for larger SC 9 customers. The kW threshold that makes TOD mandatory was not verified in this pass (commonly cited around 1,500 kW; verify in the current PSC 10 leaf). Smaller SC 9 customers may be on Rate I."
+    "text": "SC 9 Rate II (time-of-day): mandatory when monthly maximum demand exceeds 1,500 kW. Most 30–200 kW battery hosts are on Rate I or the voluntary Rate III TOD (not yet in this database)."
    },
    "effective_date": "2026 rate year 1 of the rate plan adopted 2026-01-22 (Case 25-E-0072). Exact leaf effective date not confirmed.",
    "demand_charges": [
     {
      "label": "Delivery demand, summer, Mon-Fri 8am-6pm",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 12.31,
      "basis": "tou_window",
      "months": [
       6,
@@ -109,17 +109,19 @@
       9
      ],
      "hours": "Mon-Fri 8am-6pm",
-     "notes": "Separate charge on the monthly max kW within this window, additive to the 8am-10pm and all-hours charges. The 2026 $/kW was not verified. An older (pre-PSC 10) tariff summary showed $8.35/kW. Do not use it.",
+     "notes": "Separate charge on the monthly max kW within this window, additive to the 8am-10pm and all-hours charges. An older (pre-PSC 10) tariff summary showed $8.35/kW. Do not use it. Derived: EV Phase-In Tier 4 ($9.23) ÷ 0.75 (FAQ: Tier 4 = 75% of the traditional demand charge; tiers step 0/25/50/75%). Effective date unconfirmed.",
      "window": {
       "start": 8,
       "end": 18
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "Delivery demand, summer, Mon-Fri 8am-10pm",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 24.79,
      "basis": "tou_window",
      "months": [
       6,
@@ -128,17 +130,19 @@
       9
      ],
      "hours": "Mon-Fri 8am-10pm",
-     "notes": "Typically the largest component. The 2026 value was not verified. An older tariff summary showed $19.89/kW. Do not use it.",
+     "notes": "Typically the largest component. An older tariff summary showed $19.89/kW. Do not use it. Derived: Tier 4 $18.59 ÷ 0.75. Effective date unconfirmed.",
      "window": {
       "start": 8,
       "end": 22
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "Delivery demand, all hours (summer)",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 22.39,
      "basis": "ncp_monthly",
      "months": [
       6,
@@ -147,12 +151,14 @@
       9
      ],
      "hours": "all hours, all days",
-     "notes": "Set by the monthly max kW at any hour, so night-time battery charging can set it. Cap the charging kW. The 2026 value was not verified. An older tariff summary showed $16.51/kW. Do not use it."
+     "notes": "Set by the monthly max kW at any hour, so night-time battery charging can set it. Cap the charging kW. An older tariff summary showed $16.51/kW. Do not use it. Derived: Tier 4 $16.79 ÷ 0.75. Effective date unconfirmed.",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "Delivery demand, non-summer, Mon-Fri 8am-10pm",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 21.35,
      "basis": "tou_window",
      "months": [
       1,
@@ -165,17 +171,19 @@
       12
      ],
      "hours": "Mon-Fri 8am-10pm",
-     "notes": "The 2026 value was not verified.",
+     "notes": "Derived: Tier 4 $16.01 ÷ 0.75. Effective date unconfirmed.",
      "window": {
       "start": 8,
       "end": 22
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "Delivery demand, non-summer, all hours",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 6.43,
      "basis": "ncp_monthly",
      "months": [
       1,
@@ -188,7 +196,9 @@
       12
      ],
      "hours": "all hours, all days",
-     "notes": "The 2026 value was not verified."
+     "notes": "Derived: Tier 4 $4.82 ÷ 0.75. Effective date unconfirmed.",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "MSC capacity component (full-service supply only)",
@@ -254,10 +264,27 @@
     {
      "title": "Con Edison Statement of Market Supply Charge - Capacity, May 2026",
      "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202605.pdf"
+    },
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 2 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs (Tier 4 = 25% TOU energy / 75% traditional demand)",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
+    },
+    {
+     "title": "NY PSC Case 22-E-0236 EV Phase-In Rate filing (Tier 4 collects 75% via demand charges)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B2043A628-EC7D-4064-9F32-662D82598760%7D"
+    },
+    {
+     "title": "Nectar: Con Edison Rate Optimization Guide",
+     "url": "https://nectarclimate.com/rates/consolidated-edison-coned"
     }
    ],
-   "confidence": "low",
-   "verification_notes": "Confirmed: the rate plan was adopted 2026-01-22, with delivery revenue +3.5% (2026), +3.2% (2027) and +3.1% (2028), and the SC 9 Rate II demand-window structure (summer Mon-Fri 8am-6pm, Mon-Fri 8am-10pm, all hours). Search summaries returned only historical $/kW values, and inconsistent ones ($8.35/$19.89/$16.51 and $12.68 or $9.26 for 8am-10pm), so all 2026 rates are null. Pull the current PSC 10 leaf for SC 9 (coned.com/rates) or the JP rate-design appendix."
+   "confidence": "medium",
+   "verification_notes": "Confirmed: the rate plan was adopted 2026-01-22, with delivery revenue +3.5% (2026), +3.2% (2027) and +3.1% (2028), and the SC 9 Rate II demand-window structure (summer Mon-Fri 8am-6pm, Mon-Fri 8am-10pm, all hours). Search summaries of older tariff sheets returned inconsistent historical $/kW values ($8.35/$19.89/$16.51 and $12.68 or $9.26 for 8am-10pm); they are not used. The rates used are derived from Con Ed's EV Phase-In rate page (Tier 4 ÷ 0.75). Confirm against the current PSC 10 leaf for SC 9 (coned.com/rates) or a customer bill. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Con Ed EV Phase-In page, SC9 Rate 2 Low Tension, summer (Jun-Sep), Mon-Fri 8am-6pm demand delivery: Tier 1 $0, Tier 2 $3.08, Tier 3 $6.15, Tier 4 $9.23/kW. Con Ed FAQ / JU filing: Tier 4 (LF 20-25%) = 75% traditional demand charge + 25% TOU energy; customers at LF >=25% move to the standard rate. St [2026-10-02] demand_charges[1].rate_usd_per_kw_month: SC9 Rate 2 LT summer Mon-Fri 8am-10pm: Tier 2 $6.20, Tier 3 $12.39, Tier 4 $18.59/kW. Standard = 18.59 / 0.75 = 24.787 -> $24.79/kW. [2026-10-02] demand_charges[2].rate_usd_per_kw_month: SC9 Rate 2 LT summer all hours of all days: Tier 2 $5.60, Tier 3 $11.19, Tier 4 $16.79/kW. Standard = 16.79 / 0.75 = 22.387 -> $22.39/kW. [2026-10-02] demand_charges[3].rate_usd_per_kw_month: SC9 Rate 2 LT winter (Oct-May) Mon-Fri 8am-10pm: Tier 4 $16.01/kW. Standard = 16.01 / 0.75 = 21.347 -> $21.35/kW. [2026-10-02] demand_charges[4].rate_usd_per_kw_month: SC9 Rate 2 LT winter all hours of all days: Tier 4 $4.82/kW. Standard = 4.82 / 0.75 = 6.427 -> $6.43/kW. [2026-10-02] applicability.min_kw: Rate II applies to customers whose monthly maximum demand exceeds 1,500 kW in any annual period ending September 30 (or previously billed on Rate II, or new customers estimated above 1,500 kW). SC 9 Rate III (Voluntary TOD) is for customers above 10 kW and under 1,500 kW.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "coned-sc9-rate1",
@@ -266,15 +293,15 @@
    "customer_class": "Medium/Large C&I",
    "applicability": {
     "min_kw": 10,
-    "max_kw": null,
-    "text": "General service customers above about 10 kW not on Rate II. Search snippets referenced separate demand pricing for the 'first 10 kW of maximum demand' and 'over 10 kW'. The applicability boundary and the mandatory-TOD threshold were not confirmed."
+    "max_kw": 1500,
+    "text": "SC 9 Rate I (non-TOD), low tension: general large service above 10 kW up to 1,500 kW (Rate II above)."
    },
    "effective_date": "2026 (rate plan adopted 2026-01-22)",
    "demand_charges": [
     {
      "label": "Delivery demand, summer, monthly max",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 48.67,
      "basis": "ncp_monthly",
      "months": [
       6,
@@ -283,12 +310,14 @@
       9
      ],
      "hours": "all hours",
-     "notes": "The 2026 value was not verified."
+     "notes": "Derived: Tier 4 $36.50 ÷ 0.75. Rate I may bill the first few kW in a separate block; treat as the marginal $/kW. Effective date unconfirmed.",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     },
     {
      "label": "Delivery demand, non-summer, monthly max",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 39.27,
      "basis": "ncp_monthly",
      "months": [
       1,
@@ -301,7 +330,9 @@
       12
      ],
      "hours": "all hours",
-     "notes": "The 2026 value was not verified."
+     "notes": "Derived: Tier 4 $29.45 ÷ 0.75. Effective date unconfirmed.",
+     "confidence": "medium",
+     "verified": "2026-10-02"
     }
    ],
    "energy_rates": [],
@@ -320,10 +351,19 @@
     {
      "title": "NYSERDA Energy Storage Customer Electric Rates Reference Guide for Project Developers",
      "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/energy-storage-customer-electric-rates-reference-guide.pdf"
+    },
+    {
+     "title": "Con Edison: EV Phase-In Rates (SC9 Rate 1 Low Tension tier table)",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/ev-phase-in-rates"
+    },
+    {
+     "title": "Con Edison: Electric Vehicle Charging Rates FAQs",
+     "url": "https://www.coned.com/en/our-energy-future/electric-vehicles/best-electric-delivery-rate-for-your-charging-station/faqs"
     }
    ],
-   "confidence": "low",
-   "verification_notes": "Structure only. All 2026 $/kW values are null."
+   "confidence": "medium",
+   "verification_notes": "Rates derived from Con Ed's EV Phase-In rate page: Tier 4 rates ÷ 0.75, since Tier 4 bills 75% of the traditional demand charge. The effective date is unconfirmed; confirm on a customer bill. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: SC9 Rate 1 LT summer (Jun-Sep) demand delivery: Tier 1 $0, Tier 2 $12.17, Tier 3 $24.33, Tier 4 $36.50/kW. Standard = 36.50 / 0.75 = 48.667 -> $48.67/kW. [2026-10-02] demand_charges[1].rate_usd_per_kw_month: SC9 Rate 1 LT winter (Oct-May) Tier 4 $29.45/kW. Standard = 29.45 / 0.75 = 39.267 -> $39.27/kW. [2026-10-02] applicability.max_kw: Rate II is mandatory above 1,500 kW. Customers between 10 kW and 1,500 kW are on Rate I or can elect Rate III (Voluntary TOD).",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "coned-sc2",
@@ -499,7 +539,7 @@
    },
    "dispatch": {
     "season": "Capability period (May-Sep assumed)",
-    "window": "4-hour call windows on weekdays excluding holidays: 11am-3pm or 2pm-6pm (other windows may exist by network)",
+    "window": "4-hour call window on weekdays (excluding holidays), fixed by network: 11am-3pm, 2pm-6pm, 4pm-8pm or 7pm-11pm. Several networks were reassigned for 2025; confirm with the Network Lookup tool in the DR/SUR portal.",
     "event_duration_hr": 4,
     "max_events_per_year": null,
     "typical_events_per_year": null,
@@ -515,7 +555,26 @@
     "event_block": {
      "start": 14,
      "end": 18
-    }
+    },
+    "event_block_options": [
+     {
+      "start": 11,
+      "end": 15
+     },
+     {
+      "start": 14,
+      "end": 18
+     },
+     {
+      "start": 16,
+      "end": 20
+     },
+     {
+      "start": 19,
+      "end": 23
+     }
+    ],
+    "event_block_notes": "Default 2pm-6pm when the site's network window is not set. Pick the network's window in the screener (Rates & programs)."
    },
    "stacking": {
     "compatible_with": [
@@ -549,10 +608,14 @@
     {
      "title": "Con Edison DR Incentive Rates Overview (Reservation Rates)",
      "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-example.pdf"
+    },
+    {
+     "title": "Con Edison Smart Usage Rewards: networks and tiers",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf?la=en"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "The $18 and $6/kW-month reservation rates come from CPower's 2026 snapshot and Energy Toolbase, and match. The call windows and 21-hour notice come from the 2026 Rider T guidelines search summary. The performance and voluntary $/kWh values come from secondary sources only. Event-day modeling assumes the 2–6pm call window (some networks use 11am–3pm)."
   },
   {
@@ -652,8 +715,8 @@
      "url": "https://www.coned.com/en/save-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers/smart-usage-rewards"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "Rates ($18/$25 per kW-month, $1/kWh), the 50 kW minimum and the 8am-midnight window come from the 2026 guidelines and Con Ed DR documents, via search summaries. The event duration and voluntary rate were not verified. Duration basis set to the 4-hour CSRP event length for battery sizing (DLRP events can run longer; verify)."
   },
   {
@@ -964,8 +1027,8 @@
      "url": "https://www.hodgsonruss.com/newsroom/publications/new-york-state-public-service-commission-approves-the-retail-and-residential-energy-storage-program-implementation-plan"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "$125/kWh and the block sizes come from the implementation plan as proposed and approved. The current dashboard step was not verified."
   },
   {
@@ -1128,11 +1191,19 @@
     {
      "title": "NY Assembly Bill 2025-A5959 (pending amendments to abatement)",
      "url": "https://www.nysenate.gov/legislation/bills/2025/A5959/amendment/original"
+    },
+    {
+     "title": "NYC Mayor's Office of Climate: Solar and Electric Storage System Property Tax Abatement fact sheet",
+     "url": "https://www.nyc.gov/assets/climate/downloads/pdfs/Solar-and-Electric-Storage-System-Property-Tax-Abatement-FactSheet.pdf"
+    },
+    {
+     "title": "NY RPTL section 499-bbbb",
+     "url": "https://www.nysenate.gov/legislation/laws/RPT/499-BBBB"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
-   "verification_notes": "The 30%/$250k over 4 years comes from a law-firm summary and the bill search summary. One search summary also showed 10%/$62,500 language tied to 2026-2028 placed-in-service dates, possibly from a pending bill. Confirm the current RPTL 499-bbbb text."
+   "last_verified": "2026-10-02",
+   "confidence": "high",
+   "verification_notes": "The 30%/$250k over 4 years comes from a law-firm summary and the bill search summary. One search summary also showed 10%/$62,500 language tied to 2026-2028 placed-in-service dates, possibly from a pending bill. Confirm the current RPTL 499-bbbb text. Eligibility window: NYC fact sheet says systems placed in service 2024-01-01 to 2034-12-31; other summaries say before 2036-01-01 — reconcile with RPTL 499-bbbb."
   },
   {
    "id": "ny-vder-value-stack",
@@ -1363,6 +1434,21 @@
    ],
    "confidence": "medium",
    "notes": "Full-service supply only. Westchester was $3.18/kW. This is a winter month. Summer 2026 statements (e.g., msccap-202605) should be much higher but were not read."
+  },
+  {
+   "id": "coned-msc-capacity-sc9-2026-06",
+   "label": "Con Ed MSC capacity charge, SC 9, NYC, June 2026",
+   "value": 19.26,
+   "unit": "$/kW-month",
+   "period": "2026-06",
+   "sources": [
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, June 2026",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202606.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "SC 9 Rate II NYC $19.26/kW; Rate I $14.32/kW; Rate III $14.63/kW (full-service only). Statement summary indicates the summer charge applies to Mon-Fri 8am-6pm demand, Jun-Sep, i.e., a billing-demand window rather than the ICAP tag (verify)."
   }
  ],
  "site_constraints": [
@@ -1830,6 +1916,12 @@
   "CSRP and DLRP voluntary-option $/kWh, DLRP event duration, the CSRP minimum kW, the performance-factor formula and SCR dual-participation rules: 2026 Rider T Program Guidelines.",
   "Term-DLM bid cap and clearing prices, and Auto-DLM fixed location prices: Con Ed DLM RFP 2026-2027, section 4.1.",
   "NYC storage property tax abatement: confirm current terms (30%/$250k over 4 yrs vs 10%/$62.5k per yr) and sunset under RPTL 499-bbbb, plus the status of 2025 bills A5959/S2470.",
-  "SIR simplified-track threshold (50 kW) and application fees in the 2026-02-09 SIR. Also the contents of Con Ed's 2026-01-14 SIR energy storage notice."
+  "SIR simplified-track threshold (50 kW) and application fees in the 2026-02-09 SIR. Also the contents of Con Ed's 2026-01-14 SIR energy storage notice.",
+  "Confirm the 75% Tier-4 factor by reading the current PSC 10 SC 9 leaf directly. Derived standard SC 9 LT rates are: Rate II summer $12.31 (8a-6p), $24.79 (8a-10p), $22.39 (all hours); Rate II winter $21.35 (8a-10p), $6.43 (all hours); Rate I $48.67 summer, $39.27 winter. If Tier 4 were 100%, the EV Phase-In Tier 4 values themselves apply: $9.23/$18.59/$16.79/$16.01/$4.82 and $36.50/$29.45.",
+  "Add SC 9 Rate III (Voluntary Time-of-Day, about 10-1,500 kW) as a tariff. Rate II is mandatory only above 1,500 kW, so most hosts for 30-200 kW batteries sit on Rate I or Rate III. One snippet cited Rate III summer 8am-6pm charges up to $44.87/kW (vintage unknown).",
+  "Con Ed MSC capacity charge basis for SC 9 (msccap-2026xx): the summary indicates summer Mon-Fri 8am-6pm demand (Jun-Sep). If so, full-service customers capture capacity value through window peak-shaving each month, and the ICAP-tag passthrough mainly concerns ESCO customers. Read the msccap-202607/08/09 statements for the post-CHPE $/kW.",
+  "Zone J Jul-Oct 2026 spot prices and the Winter 2026-27 strip (results posted 2026-10-02) are on the icappublic.nyiso.com spot/strip auction summary pages.",
+  "DLRP/CSRP: add the $5/kW-month reservation bonus after 5 or more events in a capability period to the program tiers or notes.",
+  "Property-tax abatement window: the NYC fact sheet gives 2024-01-01 to 2034-12-31. Other summaries say eligibility runs 'prior to January 1, 2036'. Reconcile against the RPTL 499-bbbb text."
  ]
 }

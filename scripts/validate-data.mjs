@@ -57,10 +57,16 @@ export function validate(data, { maxAgeDays = 180, today = new Date() } = {}) {
     if (!METHODS.has(v.method)) err(`${w}: bad valuation.method "${v.method}"`);
     if (v.method === 'pct_of_cost' && typeof v.rate === 'number' && v.rate > 1) err(`${w}: pct_of_cost rate must be a fraction (got ${v.rate})`);
     if (v.rate != null && typeof v.rate !== 'number') err(`${w}: rate must be number or null`);
+    if (v.value_confidence != null) checkConf(`${w} valuation.value_confidence`, v.value_confidence);
     for (const u of p.utility_ids || []) if (utilIds && !utilIds.has(u)) err(`${w}: unknown utility_id ${u}`);
     for (const c of p.stacking?.conflicts_with || []) {
       if (!c.startsWith('cp:') && !allProgramIds.has(c)) err(`${w}: conflicts_with unknown program "${c}"`);
     }
+    const d = p.dispatch || {};
+    const okBlock = (b) => b && Number.isFinite(b.start) && Number.isFinite(b.end) && b.start >= 0 && b.start < 24 && b.end > 0 && b.end <= 24 && b.start !== b.end;
+    if (d.event_block && !okBlock(d.event_block)) err(`${w}: bad dispatch.event_block`);
+    for (const b of d.event_block_options || []) if (!okBlock(b)) err(`${w}: bad dispatch.event_block_options entry ${JSON.stringify(b)}`);
+    if (d.event_block_options?.length && !d.event_block_options.some((b) => b.start === d.event_block?.start && b.end === d.event_block?.end)) err(`${w}: default event_block is not one of event_block_options`);
     if (ageDays(p.last_verified) > maxAgeDays) warn(`${w}: last verified ${p.last_verified} (> ${maxAgeDays} days)`);
   };
 

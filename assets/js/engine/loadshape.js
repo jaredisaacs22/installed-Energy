@@ -97,25 +97,42 @@ export function windowMask(len, dtHours, window) {
 }
 
 /**
- * Demand reduction on a DR/performance event day: the battery delivers `eventKw` flat across `block`
- * (and has no energy left to shave elsewhere). Returns {id: kW reduction} per component.
+ * Demand reduction on a DR/performance event day. The battery delivers `eventKw` flat across `block`.
+ * When `battery` ({ kw, usableKwh, rte }) is given, energy and kW left over after the event are used to
+ * shave outside it (no charging during the event, and the event energy must also be recharged without a
+ * new peak). Without `battery`, only the event discharge itself counts. Returns {id: kW reduction}.
  */
-export function eventDayReduction(profile, components, block, eventKw) {
+export function eventDayReduction(profile, components, block, eventKw, battery = null) {
   const P = profile.kw;
   const n = P.length;
-  const ev = windowMask(n, profile.dtHours, block);
+  const dt = profile.dtHours;
+  const ev = windowMask(n, dt, block);
+  const eventD = P.map((p, i) => (ev[i] ? Math.min(eventKw, p) : 0));
+  const net = P.map((p, i) => p - eventD[i]);
+  const eventKwh = eventD.reduce((s, d) => s + d * dt, 0);
   const out = {};
-  for (const c of components) {
-    const mask = windowMask(n, profile.dtHours, c.window);
+  const peaks = components.map((c) => {
+    const mask = windowMask(n, dt, c.window);
     let peak = 0;
     let after = 0;
     for (let i = 0; i < n; i++) {
       if (!mask[i]) continue;
       peak = Math.max(peak, P[i]);
-      after = Math.max(after, P[i] - (ev[i] ? Math.min(eventKw, P[i]) : 0));
+      after = Math.max(after, net[i]);
     }
     out[c.id] = Math.max(0, peak - after);
-  }
+    return { peak, after };
+  });
+  if (!battery || !(battery.usableKwh > eventKwh + 1e-9) || !(battery.kw > 0)) return out;
+  const opt = optimizeShave({ kw: net, dtHours: dt }, components, {
+    kw: battery.kw,
+    usableKwh: battery.usableKwh - eventKwh,
+    rte: battery.rte,
+    kwLimit: eventD.map((d) => Math.max(0, battery.kw - d)),
+    noCharge: ev,
+    extraChargeKwh: eventKwh,
+  });
+  components.forEach((c, k) => (out[c.id] = Math.max(0, peaks[k].peak - (peaks[k].after - (opt.deltas[c.id] || 0)))));
   return out;
 }
 
@@ -127,10 +144,12 @@ export function eventDayReduction(profile, components, block, eventKw) {
  * Greedy marginal-value search: repeatedly lowers the cap of the component with the best $/kWh until the
  * battery runs out of kW, energy, or recharge room (recharging must not create a new peak), or the next
  * step saves less than the monthly cost of the extra round-trip losses (energyCostPerKwhMonth).
+ * Optional: kwLimit (per-interval discharge limit), noCharge (intervals where charging is not allowed),
+ * extraChargeKwh (AC energy already discharged elsewhere that must also be recharged).
  *
  * Returns { deltas: {id: kW}, energyKwh, maxDischargeKw, feasibleRecharge }
  */
-export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, steps = 400, energyCostPerKwhMonth = 0 }) {
+export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, steps = 400, energyCostPerKwhMonth = 0, kwLimit = null, noCharge = null, extraChargeKwh = 0 }) {
   const P = profile.kw;
   const dt = profile.dtHours;
   const n = P.length;
@@ -153,6 +172,7 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
     // cap per interval = min over components covering it of (componentPeak − delta)
     let energy = 0;
     let maxD = 0;
+    let overLimit = false;
     const discharge = new Array(n).fill(0);
     for (let i = 0; i < n; i++) {
       let cap = Infinity;
@@ -163,11 +183,12 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       discharge[i] = d;
       energy += d * dt;
       if (d > maxD) maxD = d;
+      if (kwLimit && d > kwLimit[i] + 1e-9) overLimit = true;
     }
     // Recharge in intervals with no discharge, without exceeding any covering cap (no new peaks).
     let room = 0;
     for (let i = 0; i < n; i++) {
-      if (discharge[i] > 0) continue;
+      if (discharge[i] > 0 || noCharge?.[i]) continue;
       let cap = Infinity;
       comps.forEach((c, k) => {
         if (c.mask[i]) cap = Math.min(cap, c.peak - deltas[k]);
@@ -175,8 +196,8 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       const headroom = cap === Infinity ? kw : Math.max(0, cap - P[i]);
       room += Math.min(kw, headroom) * dt;
     }
-    const needCharge = energy / rte;
-    return { energy, maxD, rechargeOk: room + 1e-9 >= needCharge, discharge };
+    const needCharge = (energy + extraChargeKwh) / rte;
+    return { energy, maxD, overLimit, rechargeOk: room + 1e-9 >= needCharge, discharge };
   };
 
   const deltas = comps.map(() => 0);
@@ -190,7 +211,7 @@ export function optimizeShave(profile, components, { kw, usableKwh, rte = 0.85, 
       const trial = deltas.slice();
       trial[k] += step;
       const ev = evaluate(trial);
-      if (ev.maxD > kw + 1e-9 || ev.energy > usableKwh + 1e-9 || !ev.rechargeOk) return;
+      if (ev.maxD > kw + 1e-9 || ev.overLimit || ev.energy > usableKwh + 1e-9 || !ev.rechargeOk) return;
       const dE = ev.energy - current.energy;
       // Stop shaving once a step saves less per month than the round-trip energy it costs to cycle.
       if (energyCostPerKwhMonth > 0 && c.rate * step < dE * energyCostPerKwhMonth) return;

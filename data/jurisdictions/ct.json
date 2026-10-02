@@ -382,10 +382,10 @@
    "effective_date": "2026-05-01",
    "demand_charges": [
     {
-     "label": "Distribution demand (on-peak)",
+     "label": "Distribution demand (per kVA, 12-month ratchet)",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
-     "basis": "tou_window",
+     "rate_usd_per_kw_month": 7.91,
+     "basis": "ratchet",
      "months": [
       1,
       2,
@@ -400,109 +400,14 @@
       11,
       12
      ],
-     "hours": "Weekdays 12pm-8pm EST / 1pm-9pm DST",
-     "notes": "Value not retrieved. Large-rate siblings bill per kVA.",
-     "window": {
-      "start": 13,
-      "end": 21
-     },
-     "days": "weekdays"
+     "hours": "all hours (highest 30-min kVA; 12-month 100% ratchet)",
+     "notes": "Per kVA, not kW. $7.91 is from the Rate 56 tariff summary (2026-10-02 verification). Rate 56 tariff summary: distribution demand = highest 30-min kVA in the current month or preceding 11 months (ALL hours, not on-peak) - see basis/ratchet changes below. Rate 56 sheet shows revisions effective 2026-07-01 (Motion Ruling No. 5) and 2026-10-01 (Motion Ruling No. 7), so the value may have moved after May 1. Modeled as all hours (30-min kVA) with a 100% 12-month ratchet. A battery only lowers this charge if it caps the site's 12-month max kVA in every hour.",
+     "confidence": "medium",
+     "effective_date": "2026-05-01",
+     "verified": "2026-10-02"
     },
     {
      "label": "Transmission demand",
-     "component": "transmission",
-     "rate_usd_per_kw_month": null,
-     "basis": "tou_window",
-     "months": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12
-     ],
-     "hours": "Weekdays 12pm-8pm EST / 1pm-9pm DST (assumed same window)",
-     "notes": "Value not retrieved",
-     "window": {
-      "start": 13,
-      "end": 21
-     },
-     "days": "weekdays"
-    }
-   ],
-   "energy_rates": [],
-   "ratchet": null,
-   "coincident_peak_charges": [
-    {
-     "type": "capacity_tag",
-     "how_set": "ISO-NE annual system peak hour",
-     "est_value_usd_per_kw_year": 42.96,
-     "derivation": "FCA 18 proxy $3.580 x 12",
-     "passthrough_notes": "Only with a pass-through supply contract. Customers of 500 kW and above are typically on competitive supply or LRS.",
-     "passthrough": "supply"
-    }
-   ],
-   "storage_notes": "On-peak window: weekdays 1-9pm during DST and noon-8pm during EST. An 8-hour window favors 3-5 h batteries (200 kW/600 kWh or 30 kW/150 kWh) for demand shaving.",
-   "sources": [
-    {
-     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
-     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
-    },
-    {
-     "title": "CL&P dba Eversource - Rate 55 tariff",
-     "url": "https://author.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-55-ct.pdf?sfvrsn=c346c762_64"
-    }
-   ],
-   "confidence": "low",
-   "verification_notes": "Availability band and on-peak hours come from a search summary of the May 2026 rate summary. All $ values are missing."
-  },
-  {
-   "id": "eversource-ct-rate58",
-   "utility_id": "eversource-ct",
-   "name": "Rate 58 - Large Time-of-Day Electric Service (non-manufacturers); Rate 57 is the manufacturer version",
-   "customer_class": "Large C&I TOU",
-   "applicability": {
-    "min_kw": 1000,
-    "max_kw": null,
-    "text": "Non-manufacturers with annual maximum demand of at least 1,000 kW. Rate 57 is the same for manufacturers."
-   },
-   "effective_date": "2026-05-01",
-   "demand_charges": [
-    {
-     "label": "Distribution demand (on-peak, per kVA)",
-     "component": "delivery",
-     "rate_usd_per_kw_month": 7.91,
-     "basis": "tou_window",
-     "months": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12
-     ],
-     "hours": "Weekdays 1pm-9pm DST (noon-8pm EST assumed per sibling rates)",
-     "notes": "Billed per kVA, not kW. A second distribution figure of $7.53/kVA was labelled 'off-peak' in the search summary, but the column mapping is uncertain.",
-     "window": {
-      "start": 13,
-      "end": 21
-     },
-     "days": "weekdays"
-    },
-    {
-     "label": "Transmission demand (per kVA)",
      "component": "transmission",
      "rate_usd_per_kw_month": 14.93,
      "basis": "tou_window",
@@ -520,17 +425,175 @@
       11,
       12
      ],
-     "hours": "on-peak (as labelled)",
-     "notes": "Billed per kVA. A second transmission figure of $17.04/kVA also appeared, and which one applies on-peak vs all-hours is unverified. Rate 57 (manufacturers) shows distribution $5.45/kVA and transmission $13.13/kVA.",
+     "hours": "on-peak weekdays 12–8pm EST / 1–9pm DST (monthly max 30-min kVA)",
+     "notes": "Per kVA. On-peak = weekdays 12-8pm EST / 1-9pm DST; monthly (no ratchet). Existing window 13-21 weekdays is the DST version.",
      "window": {
       "start": 13,
       "end": 21
      },
-     "days": "weekdays"
+     "days": "weekdays",
+     "confidence": "medium",
+     "effective_date": "2026-05-01",
+     "verified": "2026-10-02"
+    },
+    {
+     "label": "Electric System Improvements demand (per kVA)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 1.86,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "assumed billed on distribution demand (12-month ratchet, all hours) - not verified",
+     "notes": "Search summary of May 2026 rate summary listed Rate 56: Demand $7.91/kVA, ESIC demand $1.86/kVA, then $14.93 and $1.85/kVA. The $1.85 component is unidentified."
     }
    ],
    "energy_rates": [],
-   "ratchet": null,
+   "ratchet": {
+    "pct": 1.0,
+    "lookback_months": 11,
+    "applies_to": "Distribution demand (and likely the ESIC demand charge): highest 30-min kVA in the current or preceding 11 months, all hours"
+   },
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "FCA 18 proxy $3.580 x 12",
+     "passthrough_notes": "Only with a pass-through supply contract. Customers of 500 kW and above are typically on competitive supply or LRS.",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "On-peak window: weekdays 1-9pm during DST and noon-8pm during EST. An 8-hour window favors 3-5 h batteries (200 kW/600 kWh or 30 kW/150 kWh) for demand shaving. Distribution demand is a 100% 12-month all-hours ratchet: the battery lowers it only if it trims the site’s annual peak and never misses; billed per kVA.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 55 tariff",
+     "url": "https://author.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-55-ct.pdf?sfvrsn=c346c762_64"
+    },
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 56 tariff (Intermediate TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-56-ct.pdf?sfvrsn=e941c762_62"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Availability band and on-peak hours come from a search summary of the May 2026 rate summary. All $ values are missing. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Two separate search summaries of the May 1, 2026 CT rate summary for Rate 56 (Intermediate TOD, non-manufacturers, 350-<1,000 kW): 'Distribution Demand Charge per kVA: $7.91'; 'Transmission Demand Charge per kVA: $14.93'. Rate 55 (manufacturers) shown as $6.65 / $12.00 per kVA. [2026-10-02] demand_charges[0].basis: Rate 56 tariff (search summary): 'The distribution demand shall be the highest average 30-minute kilovolt-ampere (kVA) demand in the current month or the preceding eleven (11) months.' [2026-10-02] demand_charges[1].rate_usd_per_kw_month: Rate summary search: Rate 56 'Transmission Demand Charge per kVA: $14.93'. Tariff: 'production/transmission demand shall be the highest average 30-minute kVA demand recorded during the billing month in the on-peak hours.' [2026-10-02] ratchet: Rate 56 tariff: distribution demand = highest average 30-minute kVA demand in the current month or the preceding eleven months. [2026-10-02] demand_charges[+]: Rate 56 summary listing: 'Electric System Improvements Charge Demand Charge (per kVA): $1.86'.",
+   "last_verified": "2026-10-02"
+  },
+  {
+   "id": "eversource-ct-rate58",
+   "utility_id": "eversource-ct",
+   "name": "Rate 58 - Large Time-of-Day Electric Service (non-manufacturers); Rate 57 is the manufacturer version",
+   "customer_class": "Large C&I TOU",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": null,
+    "text": "Non-manufacturers with annual maximum demand of at least 1,000 kW. Rate 57 is the same for manufacturers."
+   },
+   "effective_date": "2026-05-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand (per kVA, 12-month ratchet)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 7.53,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (highest 30-min kVA; 12-month 100% ratchet)",
+     "notes": "Billed per kVA, not kW. A second distribution figure of $7.53/kVA was labelled 'off-peak' in the search summary, but the column mapping is uncertain. The current $7.91 is the Rate 56 value (confirmed twice for Rate 56). Rate 58 should be $7.53/kVA. Per kVA. Rate 57 (manufacturers) $5.45 is consistent with the manufacturer discount pattern (R55 $6.65 vs R56 $7.91). Distribution demand is NOT on-peak; it is all-hours with a 12-month 100% ratchet. Set hours to 'all hours' and remove window/days for this component. Big effect on modeled savings: only reductions in the annual max kVA count.",
+     "confidence": "medium",
+     "effective_date": "2026-05-01",
+     "verified": "2026-10-02"
+    },
+    {
+     "label": "Transmission demand (per kVA)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 17.04,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "on-peak weekdays 12–8pm EST / 1–9pm DST (monthly max 30-min kVA)",
+     "notes": "Billed per kVA. A second transmission figure of $17.04/kVA also appeared, and which one applies on-peak vs all-hours is unverified. Rate 57 (manufacturers) shows distribution $5.45/kVA and transmission $13.13/kVA. $14.93 is the Rate 56 transmission value. On-peak monthly max 30-min kVA (weekdays 12-8pm EST / 1-9pm DST). The $2.19/kVA additional line is unidentified (could be another transmission/rate-adjustment demand component) - not added.",
+     "window": {
+      "start": 13,
+      "end": 21
+     },
+     "days": "weekdays",
+     "confidence": "medium",
+     "effective_date": "2026-05-01",
+     "verified": "2026-10-02"
+    },
+    {
+     "label": "Electric System Improvements demand (per kVA)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 1.91,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "assumed billed on distribution demand (12-month ratchet) - not verified",
+     "notes": "From search summary of the May 2026 rate summary for Rate 58."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": {
+    "pct": 1.0,
+    "lookback_months": 11,
+    "applies_to": "Distribution demand (and likely ESIC demand): highest 30-min kVA in current or preceding 11 months, all hours"
+   },
    "coincident_peak_charges": [
     {
      "type": "capacity_tag",
@@ -541,7 +604,7 @@
      "passthrough": "supply"
     }
    ],
-   "storage_notes": "Demand is billed in kVA, so a 4-quadrant battery inverter that supplies reactive power can cut billed kVA even without kW discharge. The model should track kVA, not kW.",
+   "storage_notes": "Demand is billed in kVA, so a 4-quadrant battery inverter that supplies reactive power can cut billed kVA even without kW discharge. The model should track kVA, not kW. Distribution demand is a 100% 12-month all-hours ratchet: the battery lowers it only if it trims the site’s annual peak and never misses; billed per kVA.",
    "sources": [
     {
      "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
@@ -550,10 +613,19 @@
     {
      "title": "CL&P dba Eversource - Rate 57 tariff",
      "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-57-ct.pdf?sfvrsn=1940c762_58"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 58 tariff (Large TOD, non-manufacturers)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-58-ct.pdf"
+    },
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_56"
     }
    ],
    "confidence": "low",
-   "verification_notes": "Values come from LLM search summaries that gave inconsistent on/off-peak labels. Open the May 1, 2026 rate summary and confirm which $/kVA applies to which period and whether billed demand is on-peak only or the monthly maximum."
+   "verification_notes": "Values come from LLM search summaries that gave inconsistent on/off-peak labels. Open the May 1, 2026 rate summary and confirm which $/kVA applies to which period and whether billed demand is on-peak only or the monthly maximum. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Rate 58 tariff search summary: 'The distribution demand shall be the highest average 30-minute kVA demand in the current month or the preceding eleven (11) months. The distribution demand charge is $7.53 per kVA.' A separate summary of the May 2026 rate summary for Rate 58 listed Distribution Demand [2026-10-02] demand_charges[0].basis: Rate 58 tariff: distribution demand = highest average 30-min kVA in the current month or preceding 11 months; production/transmission demand = highest 30-min kVA in on-peak hours of the billing month. [2026-10-02] demand_charges[1].rate_usd_per_kw_month: Search summary of the May 1, 2026 rate summary for Rate 58: 'Transmission Demand Charge: $17.04 per kVA' (plus an additional $2.19/kVA component). Prior session also saw $17.04 next to Rate 58. [2026-10-02] ratchet: Rate 58 tariff: 'highest average 30-minute kVA demand in the current month or the preceding eleven (11) months'. [2026-10-02] demand_charges[+]: Rate 58 listing: 'Electric System Improvements Charge: $1.91 per kVA'.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "ui-ct-gst",
@@ -579,12 +651,12 @@
       9
      ],
      "hours": "peak demand (definition not verified)",
-     "notes": "Jun-Sep. The winter (Oct-May) distribution demand value was not retrieved."
+     "notes": "Jun-Sep. Winter (Oct-May) is a separate element."
     },
     {
      "label": "Distribution demand, winter (demand-metered)",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 5.19,
      "basis": "ncp_monthly",
      "months": [
       10,
@@ -597,13 +669,16 @@
       5
      ],
      "hours": null,
-     "notes": "Not retrieved"
+     "notes": "Confirms summer $5.18 (DC0). Demand-measurement definition (all-hours vs on-peak) still not verified.",
+     "confidence": "medium",
+     "effective_date": "2026-01-01",
+     "verified": "2026-10-02"
     },
     {
      "label": "Transmission demand",
      "component": "transmission",
-     "rate_usd_per_kw_month": null,
-     "basis": "ncp_monthly",
+     "rate_usd_per_kw_month": 12.94,
+     "basis": "tou_window",
      "months": [
       1,
       2,
@@ -618,8 +693,16 @@
       11,
       12
      ],
-     "hours": null,
-     "notes": "Not retrieved"
+     "hours": "Mon–Fri 12–8pm (on-peak only)",
+     "notes": "Transmission demand is on-peak only. UI on-peak = Mon-Fri 12 noon-8 pm. Value might be the Jan-2025 schedule figure (transmission rates reset annually) - verify 2026 sheet. Modeled Mon-Fri 12pm-8pm.",
+     "confidence": "medium",
+     "effective_date": "2026-01-01",
+     "verified": "2026-10-02",
+     "window": {
+      "start": 12,
+      "end": 20
+     },
+     "days": "weekdays"
     }
    ],
    "energy_rates": [
@@ -660,10 +743,15 @@
     {
      "title": "UI - General Service Time-of-Use Rate GST (tariff)",
      "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    },
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
     }
    ],
    "confidence": "medium",
-   "verification_notes": "Summer distribution demand, minimum charges, fixed charge and distribution energy come from a search summary of the UI GST tariff (effective Jan 1, 2026). Winter demand and transmission demand were not retrieved."
+   "verification_notes": "Summer distribution demand, minimum charges, fixed charge and distribution energy come from a search summary of the UI GST tariff (effective Jan 1, 2026). Winter demand and transmission demand were added in the 2026-10-02 verification round. [2026-10-02] demand_charges[1].rate_usd_per_kw_month: Search summary of UI Rate GST tariff: 'Distribution Charge per kW per Month - Demand Metered: Summer (June-Sept) $5.18/kW; Winter (Oct.-May) $5.19/kW'. Minimum bill $8.71/kW summer, $7.41/kW winter. [2026-10-02] demand_charges[2].rate_usd_per_kw_month: Two searches: GST demand-metered transmission charge $12.94/kW for Peak in both winter (Oct-May) and summer (Jun-Sep); $0.00/kW Off-Peak. [2026-10-02] demand_charges[2].basis: Transmission $/kW: Summer Peak $12.94, Winter Peak $12.94, Off-Peak $0.00. On-peak hours Mon-Fri 12 noon-8 pm.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "ui-ct-lpt",
@@ -680,8 +768,8 @@
     {
      "label": "Distribution demand",
      "component": "delivery",
-     "rate_usd_per_kw_month": null,
-     "basis": "tou_window",
+     "rate_usd_per_kw_month": 11.49,
+     "basis": "ncp_monthly",
      "months": [
       1,
       2,
@@ -696,13 +784,16 @@
       11,
       12
      ],
-     "hours": null,
-     "notes": "The rate structure includes $/kW of peak demand for distribution, but the 2026 values were not retrieved"
+     "hours": "definition unverified — modeled as monthly maximum (conservative)",
+     "notes": "Second search attributed the figure to UI's January 2025 Rate Schedule - may not be the 2026 value. Demand definition (on-peak vs max) not verified; modeled as the monthly maximum (all hours) until confirmed.",
+     "confidence": "medium",
+     "effective_date": "2025-01-01",
+     "verified": "2026-10-02"
     },
     {
      "label": "Transmission demand (summer peak / winter peak)",
      "component": "transmission",
-     "rate_usd_per_kw_month": null,
+     "rate_usd_per_kw_month": 15.86,
      "basis": "tou_window",
      "months": [
       1,
@@ -718,8 +809,16 @@
       11,
       12
      ],
-     "hours": null,
-     "notes": "The structure shows separate summer-peak and winter-peak transmission charges. Values not retrieved."
+     "hours": "Mon–Fri 12–8pm (on-peak only)",
+     "notes": "The structure shows separate summer-peak and winter-peak transmission charges. On-peak only (UI on-peak Mon-Fri 12-8pm). Likely Jan-2025 vintage; transmission rates reset each Jan - verify 2026.",
+     "confidence": "medium",
+     "effective_date": "2025-01-01",
+     "verified": "2026-10-02",
+     "window": {
+      "start": 12,
+      "end": 20
+     },
+     "days": "weekdays"
     }
    ],
    "energy_rates": [
@@ -779,7 +878,8 @@
     }
    ],
    "confidence": "low",
-   "verification_notes": "Only the customer charge and SS generation rates were retrieved. The demand charges must be pulled from the UI rate schedule (C.P.U.C.A. No. 2530 or later) or the PURA Docket 26-01-02 compliance filing."
+   "verification_notes": "Demand charges come from two search summaries of UI's rate schedule, probably January 2025 values, and the distribution demand definition is approximated. Confirm against the UI rate schedule (C.P.U.C.A. No. 2530 or later) or the PURA Docket 26-01-02 compliance filing. [2026-10-02] demand_charges[0].rate_usd_per_kw_month: Two searches of UI pricing/rate schedule: LPT 'Distribution kW $11.49/kW'; Basic Service Charge $345.49 (matches file). [2026-10-02] demand_charges[1].rate_usd_per_kw_month: Two searches: LPT 'Transmission Summer Peak $15.86/kW, Transmission Winter Peak $15.86/kW', off-peak $0.00.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "ui-ct-gs",
@@ -858,7 +958,7 @@
     "requires_export": null,
     "requires_paired_solar": false,
     "requires_ul9540": null,
-    "other": "Customer of Eversource or UI. The class (small/medium/large) is set by annual peak demand. The kW eligible for incentive is capped at 150% of annual peak demand or 2 MW, 'whichever is greater' per the summary; verify, as this may be 'lesser'. Priority customers are critical facilities, grid-edge, small businesses, and C&I sites replacing onsite fossil generation. Only batteries with an interconnection agreement may export. A 2025 review allowed existing non-export batteries interconnected before 2026 to enroll. Whether NEW non-export C&I systems qualify under Construct 5 is unverified."
+    "other": "Customer of Eversource or UI. The class (small/medium/large) is set by annual peak demand. The kW eligible for incentive is capped at 150% of annual peak demand or 2 MW, 'whichever is greater' per the summary; verify, as this may be 'lesser'. Priority customers are critical facilities, grid-edge, small businesses, and C&I sites replacing onsite fossil generation. Only batteries with an interconnection agreement may export. A 2025 review allowed existing non-export batteries interconnected before 2026 to enroll. Whether NEW non-export C&I systems qualify under Construct 5 is unverified. Verified 2026-10-02: new non-export systems qualify only through a discretionary utility exemption; Priority C&I customers also get a $10/kWh enrollment incentive."
    },
    "valuation": {
     "method": "per_kw_year",
@@ -996,11 +1096,12 @@
      "url": "https://vpp.services/new-england/connecticut"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "Performance rates ($325/$275/$175) and the 10-year term were seen in summaries of the energystoragect.com program-changes page and the CT Green Bank release, with consistent results across three searches. Event counts and windows come from search summaries of the 2026 program manual. max_events_per_year = 60 summer + 10 winter, and typical = about 50 summer + 5 winter. The size cap wording, enrollment-incentive unit, seasonal split, notice and the export requirement were not verified. Event-day modeling assumes 3 h summer events at 4–7pm within the 12–9pm window (winter events are few and not modeled against demand).",
    "panel_caution": "The researchers could not confirm that NEW non-export C&I batteries qualify under Construct 5 (a 2025 review admitted existing non-export systems interconnected before 2026). Confirm eligibility with Energy Storage Solutions before relying on this payment, since it is usually the largest value in CT.",
-   "requires_confirmation": "Eligibility of new non-export C&I batteries under Construct 5 is unverified."
+   "requires_confirmation": "Since 2026-04-01 new C&I batteries need export approval to enroll, unless the utility grants an exemption where site base load exceeds the battery’s maximum dispatch.",
+   "confirmation_waived_if_export": true
   },
   {
    "id": "ct-ess-ci-legacy-upfront",
@@ -1312,10 +1413,19 @@
     {
      "title": "ISO-NE press release - FCA 18 initial results (Feb 9, 2024)",
      "url": "https://www.iso-ne.com/static-assets/documents/100008/20240209_pr_fca18_initial_results.pdf"
+    },
+    {
+     "title": "ISO Newswire - FCA closes with adequate resources for 2027/2028 (2024-02-09)",
+     "url": "https://isonewswire.com/2024/02/09/new-englands-forward-capacity-auction-closes-with-adequate-power-system-resources-for-2027-2028/"
+    },
+    {
+     "title": "ISO Newswire - ISO-NE files finalized capacity auction results (2024-02-21)",
+     "url": "https://isonewswire.com/2024/02/21/iso-ne-files-finalized-capacity-auction-results/"
     }
    ],
    "confidence": "high",
-   "notes": "All zones. About 38% above FCA 17. About $42.96/kW-yr. Tags set at the summer 2026 peak are billed in this period."
+   "notes": "All zones. About 38% above FCA 17. About $42.96/kW-yr. Tags set at the summer 2026 peak are billed in this period.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "isone-capacity-2028-29",
@@ -1623,6 +1733,10 @@
   "Status of the 2026 CT State Fire Prevention Code after the LRRC rejection (Apr 28, 2026). Check the CT DAS code adoption page.",
   "CT Green Bank C-PACE (financing for storage, term up to about 20-25 yrs, rate) was NOT researched because the shared web-search budget ran out. No program entry was created to avoid unsourced values. Check ctgreenbank.com/c-pace.",
   "Energize CT C&I Demand Response 2026 $/kW rates and whether ESS-enrolled batteries are excluded. Check energizect.com and the EDC C&I DR program documents.",
-  "Default-supply threshold (Standard Service vs Last Resort Service, believed to be 500 kW) and LRS pricing for 2026. Check the Eversource and UI supply-rate pages."
+  "Default-supply threshold (Standard Service vs Last Resort Service, believed to be 500 kW) and LRS pricing for 2026. Check the Eversource and UI supply-rate pages.",
+  "CT Eversource Rate 56/58: distribution demand is a 100% 12-month all-hours kVA ratchet (not on-peak). The model's 'tou_window' treatment overstates distribution savings; does the engine support basis='ratchet' with pct=1.0?",
+  "CT Rate 56 shows an unidentified $1.85/kVA line and Rate 58 a $2.19/kVA line in the May-2026 summary; also Rate 56 sheet revisions effective 2026-07-01 and 2026-10-01 (Motion Rulings 5 and 7) may have changed values after May 1.",
+  "UI GST/LPT $/kW values may come from UI's January 2025 rate schedule; confirm 2026 transmission rates (reset each January) and the LPT distribution-demand definition (on-peak vs monthly max).",
+  "CT ESS Construct 5: new non-export C&I systems need a discretionary PA exemption (site base load > BESS max dispatch). Should the screener flag this as 'conditional' rather than eligible/ineligible?"
  ]
 }

@@ -484,10 +484,14 @@
     {
      "title": "pv magazine USA (2025-02-19): Massachusetts allows increased demand charges to drive energy storage (NGrid G-3 optional transmission CP demand, D.P.U. 23-150)",
      "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage/"
+    },
+    {
+     "title": "pv magazine USA: Massachusetts allows increased demand charges to drive energy storage (D.P.U. 23-150)",
+     "url": "https://pv-magazine-usa.com/2025/02/19/massachusetts-allows-increased-demand-charges-to-drive-energy-storage"
     }
    ],
    "confidence": "high",
-   "verification_notes": "Distribution demand $10.48/kW, $350 customer charge and peak/off-peak distribution kWh rates seen in multiple search summaries citing NGrid tariff/summary PDFs (high). Peak-hours and demand-determination text from M.D.P.U. 1591 summary (high). Optional CP transmission $21.91/kW seen twice; $23.82 seen once (medium). Default (non-elected) G-3 transmission charge level not captured. No ratchet found in search text (verify)."
+   "verification_notes": "Distribution demand $10.48/kW, $350 customer charge and peak/off-peak distribution kWh rates seen in multiple search summaries citing NGrid tariff/summary PDFs (high). Peak-hours and demand-determination text from M.D.P.U. 1591 summary (high). Optional CP transmission $21.91/kW seen twice; $23.82 seen once (medium). Default (non-elected) G-3 transmission is billed per kWh, so a battery does not reduce it; the kW-based option allowed by D.P.U. 23-150 is modeled as an optional election (upside). No ratchet found in search text (verify)."
   },
   {
    "id": "eversource-ma-g1",
@@ -865,10 +869,18 @@
     {
      "title": "SEA (Sustainable Energy Advantage) - MA ConnectedSolutions Changes: What They Mean for Project Revenue",
      "url": "https://www.seadvantage.com/blog-post/cpmo-ma-connectedsolutions-changes/"
+    },
+    {
+     "title": "National Grid - MA Daily Dispatch Summer flyer",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-madailydispatchflyer.pdf"
+    },
+    {
+     "title": "Cape Light Compact - Commercial ConnectedSolutions",
+     "url": "https://www.capelightcompact.org/business/commercial-connectedsolutions/"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "$200/kW-summer, 30-60 events and 5-year lock confirmed on NGrid pages/materials via search summaries; 150% export cap from SEA blog (secondary). typical events not published (stated range 30-60). Event window from 2023 Mass Save materials - may have changed for 2025-2027. Event-day modeling assumes 3 h events at 4–7pm within the 2–7pm window."
   },
   {
@@ -950,10 +962,14 @@
     {
      "title": "Mass Save Commercial ConnectedSolutions page",
      "url": "https://www.masssave.com/business/rebates-offers-services/commercialconnectedsolutions"
+    },
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "Rate/event counts from NGrid Targeted Dispatch page summary; window conflict noted."
   },
   {
@@ -1023,10 +1039,14 @@
     {
      "title": "National Grid MA Daily Dispatch page",
      "url": "https://www.nationalgridus.com/MA-Business/Energy-Saving-Programs/Daily-Dispatch"
+    },
+    {
+     "title": "Program Materials for ConnectedSolutions for C&I Customers (National Grid)",
+     "url": "https://www.nationalgridus.com/media/pdfs/bus-ways-to-save/connectedsolutions-ciprogrammaterials.pdf"
     }
    ],
-   "last_verified": "2026-10-01",
-   "confidence": "medium",
+   "last_verified": "2026-10-02",
+   "confidence": "high",
    "verification_notes": "$25/kW-winter, 5 events, 3 h from NGrid page summaries; winter window not captured."
   },
   {
@@ -1484,10 +1504,19 @@
     {
      "title": "ISO-NE filing to further delay FCA 19 (2024-04-05)",
      "url": "https://www.iso-ne.com/static-assets/documents/100010/rev_to_further_delay_19th_fca.pdf"
+    },
+    {
+     "title": "ISO Newswire - FCA closes with adequate resources for 2027/2028 (2024-02-09)",
+     "url": "https://isonewswire.com/2024/02/09/new-englands-forward-capacity-auction-closes-with-adequate-power-system-resources-for-2027-2028/"
+    },
+    {
+     "title": "ISO Newswire - ISO-NE files finalized capacity auction results (2024-02-21)",
+     "url": "https://isonewswire.com/2024/02/21/iso-ne-files-finalized-capacity-auction-results/"
     }
    ],
    "confidence": "high",
-   "notes": "~38% above FCA 17. = $42.96/kW-yr."
+   "notes": "~38% above FCA 17. = $42.96/kW-yr.",
+   "last_verified": "2026-10-02"
   },
   {
    "id": "isone-capacity-2028-29",
@@ -1917,6 +1946,7 @@
   "ISO-NE capacity-tag mechanics: tag reset date (Jan 1 vs Jun 1) used by NGrid/Eversource and ISO-NE CLO scaling factor (CSO / sum of peak contributions) to gross up $/kW-tag.",
   "Whether 527 CMR 1.00 2024 edition (likely referencing NFPA 855-2023) took effect in 2026 - Mass.gov DFS Board of Fire Prevention Regulations.",
   "MA DG interconnection application fees and timelines by track (MDPU 1579 Exhibit/fee schedule) and post-D.P.U. 25-29 storage definitions.",
-  "ADCR / DER aggregation dual-participation rules with ConnectedSolutions."
+  "ADCR / DER aggregation dual-participation rules with ConnectedSolutions.",
+  "MA ConnectedSolutions Daily Dispatch window: National Grid says 2-7pm; Cape Light Compact says 3-8pm - window may differ by PA."
  ]
 }
