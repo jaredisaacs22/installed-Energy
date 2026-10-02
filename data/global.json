@@ -1,0 +1,1527 @@
+{
+ "researched_on": "2026-10-01",
+ "summary": "Cross-cutting codes, standards and federal tax rules that shape BTM C&I LFP storage sizing in MA, CT, NYC, IL, TX and CA. Fire code (IFC 2021/2024 Section 1207, NFPA 855-2023) is the dominant sizing constraint: all four SKUs exceed the 50 kWh prescriptive unit limit and rely on UL 9540A/large-scale fire test acceptance, and the 600 kWh Li-ion MAQ allows only one 418 or 600 kWh unit (or 3-4 smaller units) per group near exposures without an HMA + LSFT; outdoor pads need 10 ft from lot lines/buildings/egress (3 ft with barriers/testing). Electrically, 200 kW units at 208 V rarely fit the NEC 705.12 120% rule, so 480 V service, supply-side taps or listed PCS current limiting are typical, and charging load must fit service headroom (125% continuous, NEC 220.87). Non-export interconnection (32R/32F relays or UL 1741 CRD PCS) caps useful discharge at site minimum load, especially on secondary networks. Federally, OBBBA preserved the 48E storage ITC at 30% (PWA or <1 MW AC) through construction start in 2033 (+10 pp adders possible), but FEOC material-assistance thresholds (55% in 2026 rising to 75%) put China-sourced LFP cabinets' ITC at risk; 100% bonus depreciation is restored.",
+ "programs": [
+  {
+   "id": "fed-48e-storage-itc",
+   "name": "Section 48E Clean Electricity Investment Credit - energy storage technology (post-OBBBA)",
+   "state": "FEDERAL",
+   "utility_ids": [],
+   "administrator": "U.S. Treasury / IRS",
+   "category": "tax",
+   "status": "open",
+   "status_notes": "OBBBA (P.L. 119-21, signed 2025-07-04) left storage on the full 48E schedule: full credit for construction beginning by 2033-12-31; 75% for BOC in 2034; 50% for BOC in 2035; 0% for BOC 2036+. Wind/solar were cut back; storage was not. Beginning of construction for storage still via physical work test or 5% safe harbor (Notice 2025-42 limits applied to wind/solar only and that Notice was vacated by D.D.C. on 2026-06-06). Prohibited-foreign-entity (FEOC) material-assistance rules apply to storage beginning construction after 2025-12-31.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "any taxpayer"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": 5,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Electrical energy storage technology >=5 kWh (standalone OK). Must satisfy PWA for the 30% rate unless max net output <1 MW AC (One Megawatt Exception; nameplate AC; aggregated across facilities with integrated operations). Must meet MACR thresholds (no material assistance from prohibited foreign entities) for BOC after 2025; taxpayer cannot be a specified foreign entity / foreign-influenced entity."
+   },
+   "valuation": {
+    "method": "pct_of_cost",
+    "rate": 0.3,
+    "unit": "fraction of eligible basis",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "eligible cost basis of energy storage property",
+    "duration_basis_hr": null,
+    "cap": "None, but depreciable basis reduced by 50% of credit (IRC 50(c)(3))",
+    "tiers": [
+     {
+      "label": "Base rate without PWA (>=1 MW AC and PWA not met)",
+      "rate": 0.06,
+      "conditions": "Rarely relevant for BTM C&I"
+     },
+     {
+      "label": "Increased rate",
+      "rate": 0.3,
+      "conditions": "PWA met OR max net output <1 MW AC (aggregate if integrated operations)"
+     },
+     {
+      "label": "Domestic content bonus",
+      "rate": 0.1,
+      "conditions": "+10 pp (or +2 pp if base 6%); 100% US steel/iron for structural components + manufactured-products adjusted percentage (50% BOC 2026, 55% BOC after 2026 per OBBBA alignment)"
+     },
+     {
+      "label": "Energy community bonus",
+      "rate": 0.1,
+      "conditions": "+10 pp (or +2 pp if base 6%) if sited in a statistical area/brownfield/coal-closure energy community"
+     },
+     {
+      "label": "BOC 2034 phase-down",
+      "rate": 0.75,
+      "conditions": "multiplier on credit for construction beginning in 2034"
+     },
+     {
+      "label": "BOC 2035 phase-down",
+      "rate": 0.5,
+      "conditions": "multiplier on credit for construction beginning in 2035"
+     },
+     {
+      "label": "BOC 2036+",
+      "rate": 0.0,
+      "conditions": "no credit"
+     }
+    ],
+    "term_years": null,
+    "notes": "Model: ITC = 0.30 x eligible basis (+0.10 domestic content, +0.10 energy community where verified). Depreciable basis = cost - 0.5 x ITC. Transferable under IRC 6418 (cash at a discount); 5-yr recapture period. Low-income-community bonus (48E(h)) allocations are for solar/wind and generally not available to standalone storage (verify).",
+    "pwa_threshold_kw": 1000,
+    "rate_without_pwa": 0.06
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "N/A - no grid-charging restriction for 48E storage (unlike pre-IRA solar-charging rule)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "state upfront incentives (may reduce basis if taxable/rebate)",
+     "DR/capacity programs"
+    ],
+    "conflicts_with": [],
+    "notes": "State rebates/grants can reduce eligible basis depending on structure; get tax advice."
+   },
+   "vpp_relevance": "Per-site BTM projects are small; aggregation into a VPP does not by itself create 'integrated operations' for the 1 MW test, but multiple cabinets at one site do aggregate.",
+   "sources": [
+    {
+     "title": "Kirkland & Ellis - OBBBA changes to green energy tax credits (Aug 2025)",
+     "url": "https://www.kirkland.com/publications/kirkland-alert/2025/08/one-big-beautiful-bill-act-brings-big-changes-to-green-energy-tax-credits"
+    },
+    {
+     "title": "Energy-Storage.News - OBBBA changes and clarity for US storage",
+     "url": "https://www.energy-storage.news/the-one-big-beautiful-bill-act-brought-changes-some-clarity-to-us-energy-storage-development/"
+    },
+    {
+     "title": "pv magazine USA - What the budget bill means for storage ITC eligibility",
+     "url": "https://pv-magazine-usa.com/2025/07/10/what-the-budget-bill-means-for-energy-storage-tax-credit-eligibility/"
+    },
+    {
+     "title": "Eide Bailly - OBBB and Section 48 & 48E energy credits",
+     "url": "https://www.eidebailly.com/insights/alerts/2025/obbb-energy-credits"
+    },
+    {
+     "title": "Federal Register - Final 45Y/48E regulations (Jan 15, 2025)",
+     "url": "https://www.federalregister.gov/documents/2025/01/15/2025-00196/section-45y-clean-electricity-production-credit-and-section-48e-clean-electricity-investment-credit"
+    },
+    {
+     "title": "eCFR - 26 CFR 1.48E-3 prevailing wage & apprenticeship (One Megawatt Exception)",
+     "url": "https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/subject-group-ECFRe427f958a26c8f4/section-1.48E-3"
+    },
+    {
+     "title": "Mayer Brown - Treasury final regs on tech-neutral credits",
+     "url": "https://www.mayerbrown.com/en/insights/publications/2025/02/treasury-issues-final-regulations-on-clean-energy-projects"
+    },
+    {
+     "title": "Grant Thornton - Energy incentives under OBBBA",
+     "url": "https://www.grantthornton.com/insights/alerts/tax/2025/insights/energy-incentives-under-obbba-what-you-need-to-know"
+    },
+    {
+     "title": "Foley Hoag - Court vacates IRS Notice 2025-42 (June 2026)",
+     "url": "https://foleyhoag.com/news-and-insights/publications/alerts-and-updates/2026/june/federal-court-vacates-irs-notice-2025-42-restoring-five-percent-safe-harbor-for-beginning-of-const/"
+    },
+    {
+     "title": "K&L Gates - IRS Notice 2025-42 beginning of construction",
+     "url": "https://www.klgates.com/IRS-Notice-2025-42-What-Renewable-Developers-Need-to-Know-on-Beginning-of-Construction-Rules-8-18-2025"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "high",
+   "verification_notes": "Phase-down schedule (2033/2034/2035/2036) and 6%/30% structure corroborated by multiple law-firm/trade sources. Domestic-content manufactured-product % for storage BOC 2026 (50%) and after 2026 (55%) from summaries focused on 48E generally (medium). Energy community bonus amounts standard IRA (+10 pp). 50% basis reduction is IRC 50(c)(3) standard (not changed by OBBBA).",
+   "feoc_applies": true
+  },
+  {
+   "id": "fed-feoc-macr-storage",
+   "name": "Prohibited Foreign Entity (FEOC) material-assistance cost ratio (MACR) - energy storage",
+   "state": "FEDERAL",
+   "utility_ids": [],
+   "administrator": "U.S. Treasury / IRS",
+   "category": "tax",
+   "status": "open",
+   "status_notes": "Applies to 45Y/48E facilities and energy storage technology beginning construction after 2025-12-31. Notice 2026-15 (released 2026-02-12) gives interim MACR guidance and three interim safe harbors (use of domestic-content tables and supplier certifications) usable until 60 days after forthcoming safe-harbor tables are published. Proposed regs pending.",
+   "eligibility": {
+    "customer_classes": [
+     "any taxpayer"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "MACR = (total direct costs of manufactured products/components - PFE-sourced direct costs) / total direct costs; must be >= threshold for BOC year."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "MACR threshold (fraction)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "BOC 2026",
+      "rate": 0.55,
+      "conditions": "storage MACR >= 55%"
+     },
+     {
+      "label": "BOC 2027",
+      "rate": 0.6,
+      "conditions": "storage MACR >= 60%"
+     },
+     {
+      "label": "BOC 2028",
+      "rate": 0.65,
+      "conditions": "storage MACR >= 65%"
+     },
+     {
+      "label": "BOC 2029",
+      "rate": 0.7,
+      "conditions": "storage MACR >= 70%"
+     },
+     {
+      "label": "BOC 2030+",
+      "rate": 0.75,
+      "conditions": "storage MACR >= 75%"
+     }
+    ],
+    "term_years": null,
+    "notes": "Failing MACR = loss of the entire 48E credit (all-or-nothing). Chinese-made LFP cells/modules/PCS are typically PFE-sourced; with cells ~35-45% of system cost (per vendor cost breakdowns) a China-cell cabinet is at high risk of failing 55%+ thresholds. Obtain supplier MACR certifications per Notice 2026-15 before procurement."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": "Gate on fed-48e-storage-itc."
+   },
+   "vpp_relevance": "Supply-chain decision applies fleet-wide; a non-compliant SKU removes ITC from every site.",
+   "sources": [
+    {
+     "title": "IRS - Treasury/IRS guidance on material assistance from prohibited foreign entities (Notice 2026-15)",
+     "url": "https://www.irs.gov/newsroom/treasury-irs-provide-guidance-for-certain-energy-tax-credits-regarding-material-assistance-provided-by-prohibited-foreign-entities-under-the-one-big-beautiful-bill"
+    },
+    {
+     "title": "Alvarez & Marsal - IRS Notice 2026-15 first PFE guidance",
+     "url": "https://www.alvarezandmarsal.com/thought-leadership/irs-issues-notice-2026-15-first-guidance-on-prohibited-foreign-entity-rules-for-energy-tax-credits"
+    },
+    {
+     "title": "Carina - MACR calculation for BESS",
+     "url": "https://carina.energy/macr-calculation-bess/"
+    },
+    {
+     "title": "EticaAG - Treasury FEOC guidance impact on BESS (Feb 2026)",
+     "url": "https://eticaag.com/treasurys-updated-feoc-and-its-impact-on-bess-feb-2026/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Threshold schedule from search summaries of Notice 2026-15 commentary (A&M/Carina/EticaAG) - consistent across sources; statute text not opened. Effective-date for specified foreign entity/foreign-influenced entity taxpayer restrictions not re-verified here."
+  },
+  {
+   "id": "fed-depreciation-storage",
+   "name": "Depreciation for BESS: 5-yr MACRS (48E storage) + 100% bonus (OBBBA)",
+   "state": "FEDERAL",
+   "utility_ids": [],
+   "administrator": "U.S. Treasury / IRS",
+   "category": "tax",
+   "status": "open",
+   "status_notes": "OBBBA permanently restored 100% bonus depreciation for property acquired after 2025-01-19. OBBBA removed the 5-year MACRS designation (168(e)(3)(B)(vi)) for section 48 energy property beginning construction after 2024, but per multiple practitioner summaries retained 5-year treatment for 48E qualified property and energy storage technology.",
+   "eligibility": {
+    "customer_classes": [
+     "taxable owners"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Depreciable basis = cost - 50% of ITC claimed."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": 1.0,
+    "unit": "bonus depreciation fraction (year 1)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "MACRS class",
+      "rate": 5,
+      "conditions": "5-year MACRS for 48E energy storage technology (medium confidence)"
+     },
+     {
+      "label": "Bonus depreciation",
+      "rate": 1.0,
+      "conditions": "100% for property acquired and placed in service after 2025-01-19 (permanent)"
+     },
+     {
+      "label": "Basis reduction",
+      "rate": 0.5,
+      "conditions": "reduce depreciable basis by 50% x ITC"
+     }
+    ],
+    "term_years": 5,
+    "notes": "Example: $1.0M cost, 30% ITC -> depreciable basis $850k; with 100% bonus, $850k deductible in year 1 (subject to owner tax capacity, passive-loss and state conformity rules)."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [
+     "fed-48e-storage-itc"
+    ],
+    "conflicts_with": [],
+    "notes": "State bonus-depreciation conformity varies (e.g., CA does not conform)."
+   },
+   "vpp_relevance": "N/A",
+   "sources": [
+    {
+     "title": "Eide Bailly - OBBB and Section 48 & 48E energy credits",
+     "url": "https://www.eidebailly.com/insights/alerts/2025/obbb-energy-credits"
+    },
+    {
+     "title": "WSGR - OBBB tax provisions impacting energy sector",
+     "url": "https://www.wsgr.com/en/insights/the-one-big-beautiful-bill-tax-provisions-impacting-the-energy-and-climate-solutions-sector-0725.html"
+    },
+    {
+     "title": "Kutak Rock - OBBBA consequences for renewable energy credits",
+     "url": "https://www.kutakrock.com/newspublications/publications/2025/july/obbba-renewable-energy-credits"
+    },
+    {
+     "title": "BDO - OBBBA expands 100% depreciation expensing",
+     "url": "https://www.bdo.com/insights/tax/one-big-beautiful-bill-act-expands-100-depreciation-expensing-opportunities"
+    },
+    {
+     "title": "EticaAG - MACRS & bonus depreciation for BESS",
+     "url": "https://eticaag.com/maximizing-tax-benefits-macrs-bonus-depreciation-bess/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "5-yr retention for 48E storage stated by Eide Bailly and other summaries; one other summary describes removal for section 48 storage only. Confirm with tax counsel. 100% bonus corroborated (BDO)."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "fed-ess-threshold-liion-20kwh",
+   "topic": "fire_code",
+   "rule_type": "threshold_kwh",
+   "title": "Li-ion ESS regulated at >=20 kWh (IFC 2021/2024 Table 1207.1.1; NFPA 855-2023)",
+   "rule": "IFC Section 1207 and NFPA 855 apply to lithium-ion ESS with aggregate stored energy at or above 20 kWh. Below that, ESS chapter rules (spacing, MAQ, HMA, detection) do not apply.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "min",
+    "scope": "per site (aggregate)"
+   },
+   "impact_on_sizing": "Every SKU (150-600 kWh) is a fully regulated ESS. No 'small system' path exists for any product.",
+   "sku_impact": {
+    "30kW/150kWh": "Regulated",
+    "65kW/200kWh": "Regulated",
+    "200kW/418kWh": "Regulated",
+    "200kW/600kWh": "Regulated"
+   },
+   "applies_to": "All jurisdictions adopting IFC 2018+ or NFPA 855 (MA, CT, NYC, IL, TX, CA all base fire codes on IFC or NFPA 1/855; local amendments vary - NYC FC 608 and CA CFC have their own amendments)",
+   "sources": [
+    {
+     "title": "ICC - 2021 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2021P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "Mayfield - IFC Section 1207 ESS requirements",
+     "url": "https://courses.mayfield.energy/blog/ifc-1207-energy-storage-system-requirements"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    },
+    {
+     "title": "BESS-SDK - NFPA 855 2020 and 2023 code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-permit-threshold-20kwh",
+   "topic": "permitting",
+   "rule_type": "permit_threshold_kwh",
+   "title": "Fire-code construction/operational permit required for ESS above Table 1207.1.1 thresholds",
+   "rule": "IFC requires construction and operational permits for stationary ESS regulated by Section 1207 (i.e., Li-ion >=20 kWh), in addition to the electrical/building permit. Expect plan review of UL 9540 listing, UL 9540A report, HMA (if triggered), emergency response plan and commissioning plan.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "All SKUs need a fire permit; the permit package (9540A, HMA, ERP) is the long pole on schedule, not the electrical permit.",
+   "applies_to": "IFC-adopting jurisdictions; local amendments (e.g., NYC FDNY Certificate of Approval, CA CFC) may add steps",
+   "sources": [
+    {
+     "title": "ICC - 2024 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2024P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "City of Redmond - Fire Installation Permit Application - ESS",
+     "url": "https://www.redmond.gov/DocumentCenter/View/38052/Energy-Storage-Systems-Permit-Application-62025_Fillable?bidId="
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-ess-unit-max-50kwh",
+   "topic": "fire_code",
+   "rule_type": "unit_max_kwh",
+   "title": "Electrochemical ESS units/groups limited to 50 kWh unless approved via large-scale fire testing (IFC 1207.5.1; NFPA 855-2023)",
+   "rule": "Electrochemical ESS shall be segregated into groups not exceeding 50 kWh, each group separated >=3 ft from other groups and walls. Where approved by the fire code official, larger capacities or smaller separations are allowed based on large-scale fire testing (IFC 2021 1207.1.5; UL 9540A report). Applies indoors and to outdoor installations near exposures; not to remote outdoor installations (>100 ft from exposures).",
+   "threshold": {
+    "metric": "kWh",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per unit or group (without LSFT approval)"
+   },
+   "impact_on_sizing": "ALL four SKUs exceed 50 kWh per cabinet, so every installation depends on the AHJ accepting the vendor's UL 9540A (cell/module/unit; Ed. 6 adds large-scale fire test) report as justification. Without an acceptable 9540A/LSFT report the products are not prescriptively code-compliant anywhere that enforces this section.",
+   "sku_impact": {
+    "30kW/150kWh": "3x over 50 kWh - needs 9540A-based approval",
+    "65kW/200kWh": "4x over - needs 9540A-based approval",
+    "200kW/418kWh": "8.4x over - needs 9540A-based approval",
+    "200kW/600kWh": "12x over - needs 9540A/LSFT approval"
+   },
+   "applies_to": "IFC 2021/2024 and NFPA 855-2023 jurisdictions",
+   "sources": [
+    {
+     "title": "UpCodes - Virginia SFPC 2021 (IFC 2021) Chapter 12",
+     "url": "https://up.codes/viewer/virginia/ifc-2021/chapter/12/energy-systems"
+    },
+    {
+     "title": "Mayfield - IFC Section 1207 ESS requirements",
+     "url": "https://courses.mayfield.energy/blog/ifc-1207-energy-storage-system-requirements"
+    },
+    {
+     "title": "Mayfield - C&I BESS Outdoor Location per IFC 1207",
+     "url": "https://www.mayfield.energy/technical-articles/ci-bess-outdoor-location-per-ifc-1207/"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    },
+    {
+     "title": "Mayfield - Code Corner: NFPA 855 ESS Unit Spacing Limitations",
+     "url": "https://www.mayfield.energy/technical-articles/code-corner-nfpa-855-ess-unit-spacing-limitations/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-unit-spacing-3ft",
+   "topic": "fire_code",
+   "rule_type": "unit_spacing_ft",
+   "title": "3 ft separation between ESS units/groups and from walls (reducible with 9540A data)",
+   "rule": "ESS units/groups must be separated by a minimum of 3 ft (914 mm) from each other and from walls, unless smaller distances are documented adequate by UL 9540A/large-scale fire and explosion testing and approved.",
+   "threshold": {
+    "metric": "ft",
+    "value": 3,
+    "comparison": "min",
+    "scope": "between units/groups"
+   },
+   "impact_on_sizing": "Stacking N cabinets needs ~3 ft between each plus front/rear service clearances (NEC 110.26 working space in front of doors). Many vendor 9540A reports justify side-by-side or 6-12 in spacing - get the vendor's tested spacing in writing; it drives pad footprint.",
+   "applies_to": "IFC 2021/2024, NFPA 855-2023",
+   "sources": [
+    {
+     "title": "UL - Understanding UL 9540A, NFPA 855 and large-scale fire testing",
+     "url": "https://www.ul.com/thecodeauthority/knowledge/understanding-UL-9540A-NFPA-855"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    },
+    {
+     "title": "Mayfield - Code Corner: NFPA 855 ESS Unit Spacing Limitations",
+     "url": "https://www.mayfield.energy/technical-articles/code-corner-nfpa-855-ess-unit-spacing-limitations/"
+    },
+    {
+     "title": "UpCodes - Virginia SFPC 2021 (IFC 2021) Chapter 12",
+     "url": "https://up.codes/viewer/virginia/ifc-2021/chapter/12/energy-systems"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-maq-600kwh",
+   "topic": "fire_code",
+   "rule_type": "indoor_max_kwh",
+   "title": "Li-ion maximum allowable quantity 600 kWh per fire area (IFC 1207.5.2 / Table 1207.5; NFPA 855-2023)",
+   "rule": "Rooms/areas (and, per Mayfield's reading of IFC Table 1207.8, outdoor installations near exposures) containing Li-ion ESS shall not exceed 600 kWh aggregate. Exceeding it requires fire code official approval based on a Hazard Mitigation Analysis (1207.1.6) and large-scale fire testing (1207.1.7). Not applicable to dedicated-use buildings or remote outdoor installations.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area / outdoor group near exposures"
+   },
+   "impact_on_sizing": "Units per prescriptive group: 30/150 -> 4 units (600 kWh); 65/200 -> 3 units (600); 200/418 -> 1 unit (2 = 836 kWh exceeds); 200/600 -> 1 unit (exactly at limit). Larger clusters need HMA + LSFT approval, or split into separate groups separated per AHJ, or a remote outdoor location (>100 ft).",
+   "sku_impact": {
+    "30kW/150kWh": "max 4 per group (600 kWh)",
+    "65kW/200kWh": "max 3 per group (600 kWh)",
+    "200kW/418kWh": "max 1 per group; 2+ needs HMA+LSFT",
+    "200kW/600kWh": "max 1 per group (at limit); 2+ needs HMA+LSFT"
+   },
+   "applies_to": "IFC 2021/2024 and NFPA 855-2023 jurisdictions. NFPA 855-2026 reportedly drops the separate max-stored-energy cap in favor of default HMA (low-confidence secondary source) - verify against adopted edition.",
+   "sources": [
+    {
+     "title": "Mayfield - BESS Maximum Allowable Quantities at the C&I scale",
+     "url": "https://www.mayfield.energy/technical-articles/bess-maximum-allowable-quantities-at-the-ci-scale/"
+    },
+    {
+     "title": "Mayfield - C&I BESS Outdoor Location per IFC 1207",
+     "url": "https://www.mayfield.energy/technical-articles/ci-bess-outdoor-location-per-ifc-1207/"
+    },
+    {
+     "title": "ICC - 2021 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2021P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    },
+    {
+     "title": "BESS-SDK - NFPA 855 2020 and 2023 code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-outdoor-setback-10ft",
+   "topic": "fire_code",
+   "rule_type": "outdoor_setback_ft",
+   "title": "Outdoor ESS 10 ft from lot lines, buildings, public ways, combustibles (IFC 1207.8.3); 3 ft with exceptions",
+   "rule": "Outdoor ESS near exposures must be >=10 ft from lot lines, public ways, buildings, stored combustibles, hazardous materials and other exposures. Exceptions reduce building clearance to 3 ft: (1) 1-hour free-standing exterior fire barrier extending 5 ft above and 5 ft beyond the ESS; other exceptions incl. approved large-scale fire testing (fire code official may approve smaller distances/larger capacities).",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "ESS to lot line/building/exposure"
+   },
+   "impact_on_sizing": "Small retail parcels and zero-lot-line urban sites often cannot fit 10 ft clearance; budget for a 1-hr barrier wall or rely on the vendor LSFT report. Pad location is frequently the binding constraint, not electrical capacity.",
+   "applies_to": "IFC 2021/2024 jurisdictions; NFPA 855 has similar outdoor provisions",
+   "sources": [
+    {
+     "title": "Mayfield - C&I BESS Outdoor Location per IFC 1207",
+     "url": "https://www.mayfield.energy/technical-articles/ci-bess-outdoor-location-per-ifc-1207/"
+    },
+    {
+     "title": "Mayfield - Pad-Mounted BESS Setbacks Under the IFC",
+     "url": "https://courses.mayfield.energy/blog/pad-mounted-bess-setbacks-international-fire-code"
+    },
+    {
+     "title": "UpCodes - IFC 2024 Chapter 12 (GSA)",
+     "url": "https://up.codes/viewer/general-services-administration/ifc-2024/chapter/12/energy-systems"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-egress-10ft",
+   "topic": "fire_code",
+   "rule_type": "outdoor_setback_ft",
+   "title": "Outdoor/garage ESS >=10 ft from means of egress (IFC 2024 1207.5.8)",
+   "rule": "ESS outdoors and in open parking garages must be separated from any means of egress by a distance set by the fire code official, but not less than 10 ft.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "ESS to means of egress"
+   },
+   "impact_on_sizing": "Keep pads away from exit doors, exit discharge paths and egress stairs; also keep away from HVAC/air intakes and operable openings (practice, not a fixed code number).",
+   "applies_to": "Jurisdictions on IFC 2024 (or with equivalent amendments)",
+   "sources": [
+    {
+     "title": "Mayfield - 2024 IFC 1207.5.8 Means of Egress Separation for ESS",
+     "url": "https://courses.mayfield.energy/blog/ifc-1207-5-8-means-of-egress-separation-ess"
+    },
+    {
+     "title": "UpCodes - IFC 2024 Chapter 12 (GSA)",
+     "url": "https://up.codes/viewer/general-services-administration/ifc-2024/chapter/12/energy-systems"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-remote-outdoor-100ft",
+   "topic": "fire_code",
+   "rule_type": "remote_outdoor_ft",
+   "title": "Remote outdoor installation = >100 ft from buildings, lot lines, public ways, exposures (IFC 1207.8.1)",
+   "rule": "ESS located more than 100 ft from buildings, lot lines, public ways, stored combustibles, hazardous materials, high-piled stock and other exposure hazards are 'remote' and are exempt from size/separation and MAQ limits.",
+   "threshold": {
+    "metric": "ft",
+    "value": 100,
+    "comparison": "min",
+    "scope": "ESS to all exposures"
+   },
+   "impact_on_sizing": "Only large-campus C&I sites (industrial yards, big-box parking fields) can reach 100 ft; there, multiple 200/600 units can be clustered without the 600 kWh MAQ - at the cost of long AC cable runs (voltage drop, trenching).",
+   "applies_to": "IFC 2021/2024 jurisdictions",
+   "sources": [
+    {
+     "title": "UpCodes - IFC 2024 Chapter 12 (GSA)",
+     "url": "https://up.codes/viewer/general-services-administration/ifc-2024/chapter/12/energy-systems"
+    },
+    {
+     "title": "Mayfield - BESS Maximum Allowable Quantities at the C&I scale",
+     "url": "https://www.mayfield.energy/technical-articles/bess-maximum-allowable-quantities-at-the-ci-scale/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ess-rooftop",
+   "topic": "fire_code",
+   "rule_type": "rooftop_rule",
+   "title": "Rooftop ESS: 10 ft from exposures and from fire-service access point; 5 ft service walkways; stair access (IFC 1207.9)",
+   "rule": "Rooftop (and open garage) ESS must be >=10 ft from exposures; rooftop systems must be >=10 ft from the rooftop fire service access point, have >=5 ft wide service walkways from roof access to the system, and stair access (interior bulkhead or exterior stair). Electrochemical ESS also have floor-elevation limits (not more than 75 ft above fire department vehicle access / 30 ft below exit discharge) - verify in adopted code.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "rooftop ESS to exposures/fire access point"
+   },
+   "impact_on_sizing": "Rooftop placement of 418-600 kWh outdoor cabinets is rarely practical: structural load, crane lift, 10 ft clearances and stair-access requirements. Treat rooftop as exception-only (NYC sites may have no ground space - FDNY has its own rooftop rules).",
+   "applies_to": "IFC 2021/2024 jurisdictions",
+   "sources": [
+    {
+     "title": "ICC - 2021 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2021P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "ICC - 2024 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2024P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "Virginia 13VAC5-52-240 IFC Chapter 12 amendments",
+     "url": "https://law.lis.virginia.gov/admincode/title13/agency5/chapter52/section240/"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-ess-open-garage",
+   "topic": "fire_code",
+   "rule_type": "garage_rule",
+   "title": "Open parking garage ESS: 10 ft from exposures and egress; vehicle impact protection (IFC 1207.9)",
+   "rule": "ESS in open parking garages follow the special-installation rules: >=10 ft separation from exposures and >=10 ft from means of egress; impact protection where subject to vehicle damage. Enclosed garages are treated as indoor installations (600 kWh MAQ, sprinklers, detection, explosion control).",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "garage ESS to exposures/egress"
+   },
+   "impact_on_sizing": "Retail sites with structured parking can host cabinets on open decks only with bollards, 10 ft clearances and usually 9540A-justified spacing; expect AHJ scrutiny and insurer pushback.",
+   "applies_to": "IFC 2021/2024 jurisdictions",
+   "sources": [
+    {
+     "title": "ICC - 2024 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2024P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "Mayfield - 2024 IFC 1207.5.8 Means of Egress Separation for ESS",
+     "url": "https://courses.mayfield.energy/blog/ifc-1207-5-8-means-of-egress-separation-ess"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-ul9540-listing",
+   "topic": "fire_code",
+   "rule_type": "text",
+   "title": "ESS must be listed to UL 9540 (3rd ed. 2023); UL 9540A test report required for large-scale-fire-test based approvals",
+   "rule": "IFC 1207 / NFPA 855 / NEC 706.5 require ESS listed to UL 9540. UL 9540 3rd edition (published 2023-06-28, effective Sept 2024) aligned capacity/separation limits with NFPA 855 and added explosion control, external warning communication, noise and liquid-coolant requirements. UL 9540A is a test method (not a listing) whose report is used to justify units >50 kWh, reduced spacing and exceeding MAQ. UL 9540A 6th edition (published 2026-03-13; effective 2027-01-01) integrates a large-scale fire test as the 4th level and drops the unit-level test for non-residential BESS.",
+   "threshold": null,
+   "impact_on_sizing": "Procurement gate: require UL 9540 (3rd ed.) listing of the complete cabinet incl. PCS, plus 9540A report (and ideally LSFT per NFPA 855-2026 Annex G.11 / UL 9540A Ed. 6). Products tested to older editions may face AHJ questions after 2027-01-01.",
+   "applies_to": "All target markets",
+   "sources": [
+    {
+     "title": "ULSE - Third Edition of UL 9540 published",
+     "url": "https://ulse.org/insight/news-ulse-publishes-third-edition-ul-9540-energy-storage-systems-and-equipment/"
+    },
+    {
+     "title": "Mayfield - The 6th Edition of UL 9540A is Here",
+     "url": "https://www.mayfield.energy/technical-articles/the-6th-edition-of-ul-9540a-is-here/"
+    },
+    {
+     "title": "Energy-Storage.News - UL9540A shift to system-level testing",
+     "url": "https://www.energy-storage.news/ul9540a-shift-to-system-level-testing-defines-new-edition-of-key-bess-safety-standard/"
+    },
+    {
+     "title": "UL - Understanding UL 9540A, NFPA 855 and large-scale fire testing",
+     "url": "https://www.ul.com/thecodeauthority/knowledge/understanding-UL-9540A-NFPA-855"
+    },
+    {
+     "title": "Mayfield - UL 9540 and 9540A Explained",
+     "url": "https://www.mayfield.energy/technical-articles/ul-9540-and-9540a-explained/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-nfpa855-2026-status",
+   "topic": "fire_code",
+   "rule_type": "text",
+   "title": "NFPA 855-2026 edition published; adoption lagging; HMA becomes default",
+   "rule": "NFPA 855 2026 edition is published (on sale at NFPA/ICC). Key changes: HMA becomes default for most BESS (previously only when thresholds exceeded); large-scale fire testing emphasized (Annex G.11); technologies listed individually with own thresholds; updated Qualified Person definition; EPSS/SEPSS section. Secondary sources report removal of the separate max-stored-energy cap (unverified). Most states still enforce IFC 2021/2024 + NFPA 855-2020/2023 until they adopt.",
+   "threshold": null,
+   "impact_on_sizing": "Where 2026 is adopted, expect an HMA even for a single cabinet; budget ~engineering cost and time per site. The 600 kWh cap may be replaced by HMA/LSFT-driven limits.",
+   "applies_to": "Jurisdictions adopting NFPA 855-2026 (check state fire code adoption: MA 527 CMR 1 (NFPA 1), CT State Fire Safety Code, NYC FC, IL OSFM, TX local, CA CFC)",
+   "sources": [
+    {
+     "title": "Energy-Storage.News - NFPA 855 2026 edition updates",
+     "url": "https://www.energy-storage.news/nfpa-855-2026-edition-updates-and-what-they-mean-for-energy-storage-projects/"
+    },
+    {
+     "title": "Exponent - NFPA 855 expands safety guidelines",
+     "url": "https://www.exponent.com/article/expanded-safety-guidelines-battery-energy-storage-systems"
+    },
+    {
+     "title": "ICC Store - NFPA 855-2026",
+     "url": "https://shop.iccsafe.org/nfpa-855-2026-standard-for-the-installation-of-stationary-energy-storage-systems.html"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-ul1741sb-ieee1547",
+   "topic": "interconnection",
+   "rule_type": "text",
+   "title": "Inverter/PCS certification: UL 1741 SB (IEEE 1547-2018 / IEEE 1547.1-2020) grid support",
+   "rule": "Utilities in target states require inverter-based DER, including storage, to be certified UL 1741 SB (3rd ed., Sept 2021) as Grid Support Utility Interactive, demonstrating IEEE 1547-2018 conformance per IEEE 1547.1-2020, with settings per the utility/state Source Requirements Document (e.g., MA TSRG SRD, ISO-NE SRD). CA Rule 21 and NY SIR require UL 1741 SB for new projects.",
+   "threshold": null,
+   "impact_on_sizing": "No sizing cap, but verify each SKU's PCS has UL 1741 SB certificate and can load the state SRD settings profile; non-SB legacy inverters (UL 1741 SA) will be rejected.",
+   "applies_to": "MA, CT, NY, IL, CA (TX/ERCOT distribution utilities increasingly require IEEE 1547-2018 - verify per utility)",
+   "sources": [
+    {
+     "title": "Mass.gov TSRG - IEEE 1547-2018 Source Requirements Document",
+     "url": "https://www.mass.gov/doc/tsrg-inverter-source-requirements-document/download"
+    },
+    {
+     "title": "CPS Technical Bulletin - IEEE 1547-2018 and UL 1741 SB (Feb 2023)",
+     "url": "https://www.chintpowersystems.com/wp-content/uploads/2023/02/CPS-Technical-Bulletin-IEEE1547-2018-and-UL-1741-SB-Feb-22-2023.pdf"
+    },
+    {
+     "title": "Mass.gov - ISO-NE Source Requirement Document",
+     "url": "https://www.mass.gov/doc/tsrg-special-meeting-attachment-iso-ne-source-requirement-document-final/download"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-ul1741-crd-pcs",
+   "topic": "interconnection",
+   "rule_type": "text",
+   "title": "Export control via UL 1741 CRD for Power Control Systems (PCS); OLRT <=30 s typical, some utilities require <=2 s",
+   "rule": "A PCS certified to the UL 1741 Certification Requirement Decision (CRD) for PCS (being transitioned to UL 3141) can limit export (modes: unrestricted, export-only, import-only, no-exchange). IREC/BATRIES model rules: certified PCS with maximum open-loop response time <=30 s to limit inadvertent export; some utility rules (e.g., CA Rule 21 limited-export) specify OLRT <=2 s. PCS export/import settings are recognized in screens to treat the DER at its controlled export rather than nameplate.",
+   "threshold": {
+    "metric": "other",
+    "value": 30,
+    "comparison": "max",
+    "scope": "PCS open-loop response time, seconds (model default; some utilities 2 s)"
+   },
+   "impact_on_sizing": "Lets a site with large BESS kW pass hosting-capacity screens as non-export. Confirm the PCS listing covers the vendor's site controller + meter CT combination, and the import-only mode (to prove charging only from grid where needed).",
+   "applies_to": "All target markets (utility-specific acceptance)",
+   "sources": [
+    {
+     "title": "BATRIES Toolkit - Power Control Systems and the UL CRD",
+     "url": "https://energystorageinterconnection.org/iii-requirements-for-limited-and-non-export-controls/d-power-control-systems-and-the-ul-crd/"
+    },
+    {
+     "title": "BATRIES Toolkit Ch. III - Requirements for Limited- and Non-Export Controls (PDF)",
+     "url": "https://energystorageinterconnection.org/wp-content/uploads/2022/03/BATRIES-TOOLKIT-Chapter-III.pdf"
+    },
+    {
+     "title": "EPRI technical brief - power control systems / export limiting",
+     "url": "https://restservice.epri.com/publicdownload/000000003002031062/0/Product"
+    },
+    {
+     "title": "IREC Model Interconnection Procedures 2023",
+     "url": "https://irecusa.org/wp-content/uploads/2023/08/IREC-Model-Interconnection-Procedures-2023-FINAL-8.23.23.pdf"
+    },
+    {
+     "title": "Mayfield - UL 3141 and Power Control Systems Explained",
+     "url": "https://www.mayfield.energy/technical-articles/ul-3141-and-power-control-systems-explained/"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-nonexport-32r-reverse-power",
+   "topic": "interconnection",
+   "rule_type": "text",
+   "title": "Non-export via reverse power relay (ANSI 32R): default 0.1% of service transformer rating, <=2.0 s",
+   "rule": "Model (IREC/BATRIES) non-export option: utility-grade reverse-power relay (32R) at the PCC set to 0.1% (export) of the service transformer nameplate with max 2.0 s time delay. Utility-specific settings vary.",
+   "threshold": {
+    "metric": "other",
+    "value": 0.001,
+    "comparison": "max",
+    "scope": "export pickup as fraction of service transformer kVA; delay <=2.0 s"
+   },
+   "impact_on_sizing": "Relay trip disconnects the BESS: design the EMS to hold a small import margin so the relay never trips (nuisance trips = lost demand-charge savings).",
+   "applies_to": "Utility-specific; common in NY SIR, MA/CT interconnection practice",
+   "sources": [
+    {
+     "title": "BATRIES Toolkit Ch. III - Requirements for Limited- and Non-Export Controls (PDF)",
+     "url": "https://energystorageinterconnection.org/wp-content/uploads/2022/03/BATRIES-TOOLKIT-Chapter-III.pdf"
+    },
+    {
+     "title": "IREC Model Interconnection Procedures 2023",
+     "url": "https://irecusa.org/wp-content/uploads/2023/08/IREC-Model-Interconnection-Procedures-2023-FINAL-8.23.23.pdf"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-nonexport-32f-min-import",
+   "topic": "interconnection",
+   "rule_type": "text",
+   "title": "Minimum import relay (ANSI 32F/under-power): default 5% of DER nameplate import, <=2.0 s",
+   "rule": "Model minimum-import protective function: utility-grade relay set to 5% (import) of the DER's total nameplate rating with max 2.0 s delay. Network-grid utilities often require minimum import relays at higher margins.",
+   "threshold": {
+    "metric": "other",
+    "value": 0.05,
+    "comparison": "min",
+    "scope": "required import as fraction of DER nameplate kW; delay <=2.0 s"
+   },
+   "impact_on_sizing": "Usable discharge kW = site load - min import margin. At low-load hours (nights, weekends) a 200 kW unit may only be able to discharge a fraction of rated power. Size kW to the site's minimum load during the target window, not the peak.",
+   "applies_to": "Utility-specific; mandatory on secondary networks",
+   "sources": [
+    {
+     "title": "BATRIES Toolkit Ch. III - Requirements for Limited- and Non-Export Controls (PDF)",
+     "url": "https://energystorageinterconnection.org/wp-content/uploads/2022/03/BATRIES-TOOLKIT-Chapter-III.pdf"
+    },
+    {
+     "title": "IREC Model Interconnection Procedures 2023",
+     "url": "https://irecusa.org/wp-content/uploads/2023/08/IREC-Model-Interconnection-Procedures-2023-FINAL-8.23.23.pdf"
+    },
+    {
+     "title": "Sandia SAND2020-11209 - Secondary Networks and DER",
+     "url": "https://www.osti.gov/servlets/purl/1738874/"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-network-protector",
+   "topic": "network_grid",
+   "rule_type": "text",
+   "title": "Secondary (spot/area) networks: DER must never cause export into the network; protectors' 32 function trips on reverse flow",
+   "rule": "Network protectors open on reverse power flow from the low-voltage bus. Utilities (e.g., Con Edison) require that DER on grid/spot networks never activate network protector reverse-power elements, i.e., an effective requirement of no export from the secondary network to primary, typically enforced with minimum import relays and import margins. Some utilities cap DER as a % of minimum network load.",
+   "threshold": null,
+   "impact_on_sizing": "Downtown Boston, Manhattan/NYC, Chicago Loop, downtown CA cities: battery must be strictly non-export with min-import margin; discharge kW capped by the site's (and sometimes the network's) minimum load. Study timelines are longer and protection upgrades possible.",
+   "applies_to": "Network-served sites (Con Edison, Eversource Boston, ComEd Loop, PG&E SF/Oakland, SCE/others)",
+   "sources": [
+    {
+     "title": "Sandia SAND2020-11209 - Secondary Networks and DER",
+     "url": "https://www.osti.gov/servlets/purl/1738874/"
+    },
+    {
+     "title": "Con Edison Energy Storage System Guide v4 (July 2022)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-guide.pdf?la=en"
+    },
+    {
+     "title": "PG&E - Secondary Networks interconnection",
+     "url": "https://www.pge.com/en/about/doing-business-with-pge/interconnections/secondary-networks.html"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-nec-705-12-120pct",
+   "topic": "electrical",
+   "rule_type": "text",
+   "title": "NEC 2023 705.12(B)(2) load-side busbar '120% rule'",
+   "rule": "Load-side connection, backfed breaker at the opposite end from the main: 1.25 x (sum of inverter rated output currents) + (rating of OCPD protecting the busbar) <= 1.20 x busbar rating. (Was 705.12(B)(3)(2) in NEC 2020.) Other 705.12(B) options: 100% rule (sum of 125% source current + main OCPD <= busbar), center-fed, feeder-tap rules, or PCS-limited current (705.13).",
+   "formula": "1.25 * sum(I_inv_rated) + I_main_OCPD <= 1.20 * I_busbar ; I_inv = P_kVA*1000/(sqrt(3)*V_LL)",
+   "threshold": {
+    "metric": "amps",
+    "value": null,
+    "comparison": "max",
+    "scope": "per busbar"
+   },
+   "impact_on_sizing": "Per-unit inverter current (kW/(sqrt3*V), 125% in parentheses): 30 kW @208V 83.3 A (104.1 A), @480V 36.1 A (45.1 A); 65 kW @208V 180.4 A (225.5 A), @480V 78.2 A (97.7 A); 200 kW @208V 555.1 A (693.9 A), @480V 240.6 A (300.7 A). Example: 2000 A switchboard with 2000 A main allows 0.2*2000 = 400 A of 125% current = 320 A inverter = ~266 kW at 480 V (~115 kW at 208 V). 200 kW units at 208 V almost never fit load-side - use 480 V service, supply-side tap, or PCS. Use the PCS nameplate max continuous current (kVA-based), not kW.",
+   "applies_to": "All target states (NEC 2020/2023 adopted variously; CA CEC 2022 = NEC 2020 basis)",
+   "sources": [
+    {
+     "title": "Mayfield - Code Corner: 2020 NEC 705.12(B)(3)(1) and (2)",
+     "url": "https://www.mayfield.energy/technical-articles/code-corner-2020-nec-705-12b31-and-2/"
+    },
+    {
+     "title": "GreenLancer - 120% rule NEC 705.12",
+     "url": "https://www.greenlancer.com/post/120-rule-for-solar"
+    },
+    {
+     "title": "Solar Design Lab - NEC 705.12 120% rule (2026)",
+     "url": "https://solardesignlab.com/solar-120-percent-rule-nec-705-12/"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-nec-705-11-supply-side",
+   "topic": "electrical",
+   "rule_type": "text",
+   "title": "NEC 705.11 supply-side (line-side) connection",
+   "rule": "Connection between the utility meter and the service disconnect. The sum of power-source continuous current output ratings on a service (other than those controlled per 705.13) shall not exceed the ampacity of the service conductors; tap conductors sized for 125% of source output, with disconnect/OCPD per 705.11 and 230.82. Utility approval of the tap location (CT cabinet, meter socket, switchgear) is often required.",
+   "threshold": {
+    "metric": "amps",
+    "value": null,
+    "comparison": "max",
+    "scope": "sum of source outputs <= service conductor ampacity"
+   },
+   "impact_on_sizing": "Main path for 200 kW units when switchboard busbars fail the 120% rule. Caps aggregate BESS output at the service conductor ampacity (e.g., 1600 A service ~1,330 kW @480 V). Tapping utility-owned or sealed sections may need utility outage and approval.",
+   "applies_to": "All target states",
+   "sources": [
+    {
+     "title": "ExpertCE - NEC Article 705 explained",
+     "url": "https://expertce.com/learn-articles/nec-article-705-interconnection-explained/"
+    },
+    {
+     "title": "SEAC - Power Control Systems and the NEC",
+     "url": "https://sustainableenergyaction.org/resources/get-to-know-power-control-systems-through-the-national-electrical-code/"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-nec-705-13-pcs",
+   "topic": "electrical",
+   "rule_type": "text",
+   "title": "NEC 705.13 PCS/EMS current limiting to busbar/conductor ampacity",
+   "rule": "A listed PCS (2023 NEC frames it as an EMS per 750.30, with PCS as a type of EMS; 2026 NEC 705.13 again titled Power Control Systems) may limit current/loading on busbars and conductors. The sum of PCS-controlled currents plus monitored currents from other sources shall not exceed busbar/conductor ampacity; where connected to an OCPD protecting unmonitored busbar/conductor, the PCS setting must be within that OCPD rating. PCS settings (not nameplate) can be used in 705.12 calculations.",
+   "threshold": null,
+   "impact_on_sizing": "Allows several cabinets on a busbar that fails the 120% rule by capping discharge current; also allows limiting charging import to protect service headroom. Requires PCS listing (UL 1741 CRD PCS / UL 3141) and AHJ acceptance.",
+   "applies_to": "All target states (NEC 2020+)",
+   "sources": [
+    {
+     "title": "SEAC - Power Control Systems and the NEC",
+     "url": "https://sustainableenergyaction.org/resources/get-to-know-power-control-systems-through-the-national-electrical-code/"
+    },
+    {
+     "title": "Mayfield - UL 3141 and Power Control Systems Explained",
+     "url": "https://www.mayfield.energy/technical-articles/ul-3141-and-power-control-systems-explained/"
+    },
+    {
+     "title": "Mayfield - Power Control Systems under 705.13 of the 2026 NEC",
+     "url": "https://courses.mayfield.energy/blog/understanding-power-control-systems-under-section-705-13-of-the-2026-nec"
+    },
+    {
+     "title": "City of Phoenix - Power Control Systems interpretation",
+     "url": "https://www.phoenix.gov/content/dam/phoenix/pddsite/documents/trt/external/dsd_trt_pdf_00238.pdf"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-nec-706-key",
+   "topic": "electrical",
+   "rule_type": "text",
+   "title": "NEC 2023 Article 706 key items (ESS >1 kWh)",
+   "rule": "706 applies to ESS >1 kWh. Key items: ESS must be listed (UL 9540); 706.7 commissioning at installation and maintenance with written records for other than 1-2 family dwellings; 706.15 disconnecting means - readily accessible, within the ESS or within sight and within 10 ft, or lockable open where not within sight (with remote-control/notification provisions); circuit conductors and OCPD sized from the ESS maximum rated (charge/discharge) current at 125% (continuous); labeling/marking; Art. 480 for batteries; NEC 110.26 working space at PCS/disconnect.",
+   "threshold": null,
+   "impact_on_sizing": "Each cabinet needs its own (or a grouped) accessible disconnect near the unit; commissioning documentation is now a code item (ties to M&V/program commissioning).",
+   "applies_to": "All target states",
+   "sources": [
+    {
+     "title": "Mike Holt - Energy Storage Systems, based on the 2023 NEC",
+     "url": "https://www.mikeholt.com/newsletters.php?action=display&letterID=2756"
+    },
+    {
+     "title": "EC&M - Top Changes in the 2023 NEC for ESS",
+     "url": "https://www.ecmweb.com/national-electrical-code/article/21281761/top-changes-in-the-2023-nec-for-energy-storage-systems"
+    },
+    {
+     "title": "Mayfield - 2023 NEC Updates for Energy Storage Systems",
+     "url": "https://www.mayfield.energy/technical-articles/2023-nec-updates-for-energy-storage-systems/"
+    },
+    {
+     "title": "Mayfield - NEC 706.15(B) ESS Disconnect Location and Control",
+     "url": "https://courses.mayfield.energy/blog/nec-706-15b-ess-disconnect-location-control"
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "fed-service-capacity-charging",
+   "topic": "utility_upgrade",
+   "rule_type": "text",
+   "title": "Service capacity for charging: 125% continuous (80% loading) and NEC 220.87 existing-load method",
+   "rule": "BESS charging is a continuous load: OCPDs/conductors sized at 125% of max rated charge current (i.e., standard breakers loaded <=80%). For existing services, NEC 220.87 allows using 12 months of recorded maximum demand (or a 30-day recording in some cases): 1.25 x max recorded demand + new load must not exceed service rating. EMS/PCS-limited charging can be counted at its setpoint (NEC 2023 EMS provisions, e.g., 220.70/750.30 - verify adopted edition).",
+   "formula": "charge_headroom_kW = (service_amps * sqrt(3) * V_LL / 1000) - 1.25 * peak_12mo_kW ; allowed BESS charge kW <= headroom (or PCS-limited)",
+   "threshold": {
+    "metric": "other",
+    "value": 0.8,
+    "comparison": "max",
+    "scope": "continuous loading fraction of standard (non-100%-rated) OCPD"
+   },
+   "impact_on_sizing": "Charging a 200 kW unit adds ~240 A at 480 V (~555 A at 208 V). Small 208 V retail services (400-800 A) often cannot absorb 200 kW of charging without a PCS charge cap; this, not fire code, can cap kW. Utilities may treat new charging kW as added load (load letter / service upgrade study) and may require import limits.",
+   "applies_to": "All target states",
+   "sources": [
+    {
+     "title": "UpCodes - NEC 220.87 Determining Existing Loads",
+     "url": "https://up.codes/s/determining-existing-loads"
+    },
+    {
+     "title": "Electrical Contractor - Determining and calculating existing loads",
+     "url": "https://www.ecmag.com/magazine/articles/article-detail/codes-standards-no-more-guesswork-determining-and-calculating-existing-loads"
+    },
+    {
+     "title": "Dranetz - NEC 220.87 application note",
+     "url": "https://www.dranetz.com/wp-content/uploads/2021/06/DranXperT-NEC-220.87-Application-Note-R06-1.pdf"
+    },
+    {
+     "title": "Mike Holt - Energy Storage Systems, based on the 2023 NEC",
+     "url": "https://www.mikeholt.com/newsletters.php?action=display&letterID=2756"
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "fed-ess-outdoor-group-600kwh",
+   "topic": "fire_code",
+   "rule_type": "outdoor_group_max_kwh",
+   "title": "Outdoor groups above 600 kWh (IFC Table 1207.8 reading)",
+   "rule": "Rooms/areas (and, per Mayfield's reading of IFC Table 1207.8, outdoor installations near exposures) containing Li-ion ESS shall not exceed 600 kWh aggregate. Exceeding it requires fire code official approval based on a Hazard Mitigation Analysis (1207.1.6) and large-scale fire testing (1207.1.7). Not applicable to dedicated-use buildings or remote outdoor installations.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area / outdoor group near exposures"
+   },
+   "impact_on_sizing": "Units per prescriptive group: 30/150 -> 4 units (600 kWh); 65/200 -> 3 units (600); 200/418 -> 1 unit (2 = 836 kWh exceeds); 200/600 -> 1 unit (exactly at limit). Larger clusters need HMA + LSFT approval, or split into separate groups separated per AHJ, or a remote outdoor location (>100 ft).",
+   "sku_impact": {
+    "30kW/150kWh": "max 4 per group (600 kWh)",
+    "65kW/200kWh": "max 3 per group (600 kWh)",
+    "200kW/418kWh": "max 1 per group; 2+ needs HMA+LSFT",
+    "200kW/600kWh": "max 1 per group (at limit); 2+ needs HMA+LSFT"
+   },
+   "applies_to": "IFC 2021/2024 and NFPA 855-2023 jurisdictions. NFPA 855-2026 reportedly drops the separate max-stored-energy cap in favor of default HMA (low-confidence secondary source) - verify against adopted edition.",
+   "sources": [
+    {
+     "title": "Mayfield - BESS Maximum Allowable Quantities at the C&I scale",
+     "url": "https://www.mayfield.energy/technical-articles/bess-maximum-allowable-quantities-at-the-ci-scale/"
+    },
+    {
+     "title": "Mayfield - C&I BESS Outdoor Location per IFC 1207",
+     "url": "https://www.mayfield.energy/technical-articles/ci-bess-outdoor-location-per-ifc-1207/"
+    },
+    {
+     "title": "ICC - 2021 IFC Chapter 12 Energy Systems",
+     "url": "https://codes.iccsafe.org/content/IFC2021P1/chapter-12-energy-systems"
+    },
+    {
+     "title": "Sunlith - NFPA 855 complete guide",
+     "url": "https://sunlithenergy.com/nfpa-855-guide/"
+    },
+    {
+     "title": "BESS-SDK - NFPA 855 2020 and 2023 code updates",
+     "url": "https://bess-sdk.com/resources/whitepapers/nfpa-855-code-updates-for-2023/"
+    }
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "perf-rte-ac",
+   "label": "Round-trip efficiency (AC-AC), Li-ion BESS - NREL ATB 2024 assumption",
+   "value": 0.85,
+   "unit": "fraction",
+   "period": "ATB 2024 (2023 base year)",
+   "sources": [
+    {
+     "title": "NREL ATB 2024 - Utility-Scale Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/utility-scale_battery_storage"
+    },
+    {
+     "title": "NREL ATB 2024 - Commercial Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/commercial_battery_storage"
+    }
+   ],
+   "confidence": "high",
+   "notes": "ATB 2023 and 2024 assume 85% RTE. Vendor LFP C&I cabinets claim ~88% AC-AC before auxiliaries (low-confidence vendor blog); use 0.85 as default including PCS losses, then subtract aux load separately if vendor RTE excludes it."
+  },
+  {
+   "id": "perf-aux-load",
+   "label": "Auxiliary/HVAC load, outdoor LFP cabinet (fraction of rated kW, average)",
+   "value": null,
+   "range_low": 0.005,
+   "range_high": 0.02,
+   "unit": "fraction of rated kW (continuous average)",
+   "period": "2025-2026",
+   "sources": [
+    {
+     "title": "Solartodo - LFP BESS guide (RTE/aux targets)",
+     "url": "https://solartodo.com/knowledge/complete-guide-to-lfp-battery-energy-storage-systems-for-renewable-integration-from-passive-thermal"
+    },
+    {
+     "title": "PVB - BESS auxiliary power consumption (HVAC/cooling)",
+     "url": "https://www.pvb.com/blog/bess-auxiliary-power-consumption-hvac-cooling-and-hidden-ci-storage-costs/"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Secondary sources cite 0.5-1.5% aux loads and <1-2% of rated power on average; strongly climate dependent (TX/CA summer cooling, MA/CT/IL winter heating). Null by design - obtain vendor aux kW curves vs ambient. Aux load is behind the customer meter and can add to the customer's demand if not netted."
+  },
+  {
+   "id": "perf-usable-dod",
+   "label": "Usable depth of discharge (modeling convention)",
+   "value": 0.8,
+   "unit": "fraction of nameplate DC energy",
+   "period": "PNNL LCOS v2024",
+   "sources": [
+    {
+     "title": "PNNL - ESGC LCOS Workbook v2024 documentation",
+     "url": "https://www.pnnl.gov/sites/default/files/media/file/ESGC_LCOS_Workbook_v2024_Documentation.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "PNNL LCOS workbook assumes 80% average DoD at BOL (60% after first augmentation in its convention). Many C&I cabinet spec sheets state 'usable' kWh at 90-95% DoD - if the SKU kWh (150/200/418/600) is already usable AC energy, set this to 1.0. Confirm per SKU."
+  },
+  {
+   "id": "perf-degradation-pct-yr",
+   "label": "Capacity degradation, LFP stationary, ~1 cycle/day",
+   "value": 0.02,
+   "range_low": 0.005,
+   "range_high": 0.03,
+   "unit": "fraction of BOL capacity per year (linear approximation)",
+   "period": "2024-2026 field/industry data",
+   "sources": [
+    {
+     "title": "Energy-Storage.News - The degradation of LFP cells in BESS",
+     "url": "https://www.energy-storage.news/the-degradation-of-lfp-cells-in-bess/"
+    },
+    {
+     "title": "NREL ATB 2024 - Commercial Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/commercial_battery_storage"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Grid-scale LFP commonly expected to lose 20-30% over first decade (=2-3%/yr); one field study of a utility BESS showed ~1.37%/yr; a study of 37 commercial sites reported <0.5%/yr 2022-24. 0.02 is the low end of the decade expectation and consistent with typical warranties (~70% SOH at ~6000-8000 cycles). NREL ATB instead bundles augmentation into FOM to hold rated capacity for 15 yr."
+  },
+  {
+   "id": "perf-availability",
+   "label": "BESS availability (annual)",
+   "value": 0.97,
+   "range_low": 0.95,
+   "range_high": 0.98,
+   "unit": "fraction of hours",
+   "period": "2026 guarantee norms",
+   "sources": [
+    {
+     "title": "Energy-Storage.News - Availability: why this BESS metric matters",
+     "url": "https://www.energy-storage.news/availability-why-this-bess-performance-metric-matters-so-much-and-how-to-calculate-it/"
+    },
+    {
+     "title": "Foton Energy - BESS performance guarantees 2026",
+     "url": "https://blog.fotonenergy.com/post/bess-performance-guarantees-2026-grid-scale-guide"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Guarantees typically 97-98% in 2026 (utility-scale-oriented sources). For demand-charge modeling, availability matters more than RTE: one outage during a monthly peak loses that month's savings (or a ratchet year)."
+  },
+  {
+   "id": "perf-calendar-life-yr",
+   "label": "Economic life assumed with augmentation",
+   "value": 15,
+   "unit": "years",
+   "period": "ATB 2024",
+   "sources": [
+    {
+     "title": "NREL ATB 2024 - Commercial Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/commercial_battery_storage"
+    },
+    {
+     "title": "NREL ATB 2024 - Utility-Scale Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/utility-scale_battery_storage"
+    }
+   ],
+   "confidence": "high",
+   "notes": "ATB assumes 15-yr life with augmentation funded from FOM and ~1 cycle/day."
+  },
+  {
+   "id": "cost-om-pct-capex-yr",
+   "label": "Fixed O&M incl. augmentation, commercial BESS (NREL ATB 2024)",
+   "value": 0.025,
+   "unit": "fraction of capital cost per year",
+   "period": "ATB 2024",
+   "sources": [
+    {
+     "title": "NREL ATB 2024 - Commercial Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/commercial_battery_storage"
+    }
+   ],
+   "confidence": "high",
+   "notes": "ATB: FOM = 2.5% of capital cost ($/kW) per year, includes augmentation to maintain rated capacity over 15 years."
+  },
+  {
+   "id": "cost-om-usd-per-kw-yr",
+   "label": "Fixed O&M $/kW-yr (derive from capex)",
+   "value": null,
+   "unit": "$/kW-yr",
+   "period": "2026",
+   "sources": [
+    {
+     "title": "NREL ATB 2024 - Commercial Battery Storage",
+     "url": "https://atb.nrel.gov/electricity/2024/commercial_battery_storage"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Compute as 0.025 x installed capex per kW. Example arithmetic only: 200 kW/600 kWh at an assumed $450/kWh = $1,350/kW -> ~$34/kW-yr. Replace with vendor LTSA quote (often priced per kWh-yr plus monitoring/EMS SaaS)."
+  },
+  {
+   "id": "cost-ci-bess-installed-2026-usd-per-kwh",
+   "label": "C&I BESS installed cost 2026 (turnkey, outdoor cabinet, BTM)",
+   "value": null,
+   "range_low": 280,
+   "range_high": 1000,
+   "unit": "$/kWh",
+   "period": "2026",
+   "sources": [
+    {
+     "title": "Kunetic - Commercial battery storage cost guide 2026",
+     "url": "https://kunetictech.com/blog/commercial-battery-storage-cost-guide-2026/"
+    },
+    {
+     "title": "Sunway - Commercial battery storage cost 2026",
+     "url": "https://www.sunwaypv.com/blog/how-much-does-commercial-battery-storage-cost/"
+    },
+    {
+     "title": "NREL - U.S. Solar PV System and Energy Storage Cost Benchmarks (Q1 2022, fy23osti/87303)",
+     "url": "https://docs.nrel.gov/docs/fy23osti/87303.pdf"
+    },
+    {
+     "title": "NREL data - Q1-2024 Solar Cost Benchmarks",
+     "url": "https://data.nrel.gov/submissions/307"
+    },
+    {
+     "title": "Wood Mackenzie - 2025 US energy storage installations record",
+     "url": "https://www.woodmac.com/press-releases/2025-u.s.-energy-storage-installations-set-new-record-surpass-2024-by-52"
+    }
+   ],
+   "confidence": "low",
+   "notes": "No primary 2026 C&I $/kWh found (Wood Mackenzie C&I pricing is paywalled). Secondary 2026 guides: typical C&I $280-580/kWh installed; small systems 50-500 kWh $500-1,000/kWh. NREL benchmark (standalone storage, battery $209/kWh): $380/kWh (4-h) to $895/kWh (0.5-h) - segment/vintage of that figure not confirmed. Wood Mackenzie reports utility-scale system pricing up ~23% Q4'24->Q4'25 (tariffs/FEOC). Expect $/kWh to rise as duration falls (200/418 > 200/600 > 30/150) and with tariff/FEOC-compliant cells. Use vendor quotes."
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Charging-induced peaks",
+   "severity": "critical",
+   "note": "The most common way a BTM battery loses money is recharging into a new monthly peak (or a TOU on-peak demand window) right after shaving one. The dispatch model must enforce a site import ceiling during recharge (PCS import limit) and schedule charging in off-peak hours; a 200 kW unit recharging at full power adds 200 kW of demand.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Ratchets and availability",
+   "severity": "critical",
+   "note": "On tariffs with demand ratchets (e.g., 80% of max over 11 months), one missed peak during a BMS fault, comms loss or maintenance sets the billing demand for a year. Model availability as a probability of losing a whole month's (or ratchet-year's) savings, not as a 3% energy haircut.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Duration vs event length",
+   "severity": "caution",
+   "note": "Deliverable kW for a program = min(rated kW, usable kWh / event hours). The 200/418 (2.1 h) cannot hold 200 kW for 3-h ConnectedSolutions or 4-h capacity events (~139 kW for 3 h, ~104 kW for 4 h before losses/DoD); the 30/150 (5 h) is energy-rich but kW-poor. Pick SKUs by the binding event duration in each market.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Minimum load caps non-export discharge",
+   "severity": "caution",
+   "note": "Non-export (32R/32F or PCS) means discharge kW <= site load minus import margin at that moment. Sites with peaky loads (HVAC-driven retail) can fully use 200 kW at peak but not at night; network-grid sites need larger margins. Use interval data minimum load in each dispatch window to cap the useful kW.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "208 V services and the 120% rule",
+   "severity": "caution",
+   "note": "A 200 kW PCS at 208 V outputs ~555 A (~694 A at 125%), which almost never fits a load-side breaker; at 480 V it is ~241 A (~301 A). Screen each site's service voltage and switchboard ampacity first; 208 V sites usually need a step-up transformer, supply-side tap or PCS-limited output, all of which add cost.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Metering, telemetry and M&V",
+   "severity": "caution",
+   "note": "Programs and VPP aggregation need revenue-grade interval metering (often a dedicated storage meter plus the utility billing meter), 1-15 min telemetry, and secure always-on comms. Budget cellular gateways, CT/PT upgrades and a utility meter change; lost telemetry during an event typically counts as non-performance.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "UL 9540A / LSFT is the real permit gate",
+   "severity": "critical",
+   "note": "Because every SKU exceeds the 50 kWh unit limit and the 418/600 kWh units hit the 600 kWh group cap alone, permitting depends on the vendor's UL 9540A (and increasingly large-scale fire test per NFPA 855-2026 Annex G.11 / UL 9540A Ed. 6, effective 2027-01-01) data. Get the full test report (not a summary letter) and tested spacing before signing site leases.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "FEOC supply chain",
+   "severity": "critical",
+   "note": "For construction beginning in 2026+, the storage MACR must be >=55% (rising to 75% by 2030) or the entire ITC is lost. Most low-cost LFP cabinets use Chinese cells/PCS; require supplier MACR certifications under Notice 2026-15 and price non-compliance risk into the model.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "1 MW PWA aggregation trap",
+   "severity": "caution",
+   "note": "The <1 MW AC prevailing-wage exemption uses aggregate nameplate of facilities with integrated operations; five 200 kW cabinets at one site = 1.0 MW and lose the exemption (6% base without PWA). Cap per-site AC nameplate at <1,000 kW (e.g., four 200 kW + one 65 kW = 865 kW) or plan for PWA compliance.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Insurance and lender requirements",
+   "severity": "caution",
+   "note": "Property insurers and host landlords increasingly require UL 9540 listing, 9540A/LSFT reports, NFPA 855 compliance, separation from the host building and remote monitoring; some impose larger setbacks than code. Confirm the host's carrier accepts the installation before design freeze.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Flood and elevation",
+   "severity": "caution",
+   "note": "Coastal/urban sites (NYC, Boston, CT shoreline, Chicago basements) must place cabinets and PCS above the design flood elevation; outdoor pads may need raised platforms, which change structural design, access and fire-department reach.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Setbacks from egress, openings and air intakes",
+   "severity": "caution",
+   "note": "Beyond the code 10 ft from egress/lot lines/buildings, keep cabinets away from rooftop/wall HVAC intakes, operable windows and doors to avoid off-gas ingestion; AHJs often add these conditions during plan review.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Rigging, pad weight and access",
+   "severity": "info",
+   "note": "418-600 kWh outdoor cabinets are multi-ton units needing crane access, engineered pads, bollards and fire-apparatus access; rooftop placement requires structural review and is rarely economic. Get vendor shipping weights and lift points early - they decide feasibility at tight urban sites.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Noise",
+   "severity": "info",
+   "note": "HVAC/liquid-cooling fans run during charge/discharge and hot weather (including at night when charging). Check local property-line noise limits (e.g., state/municipal noise rules) for sites adjacent to residences; UL 9540 3rd ed. added noise-related requirements but local ordinances govern.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Aux loads and warranty limits",
+   "severity": "caution",
+   "note": "Auxiliary HVAC/heating loads are typically fed behind the customer meter and erode savings (and can add to demand); model them explicitly by climate. Warranties usually cap annual throughput/cycles, average SOC, C-rate and temperature - stacking daily arbitrage with DR and demand management can breach them; model a throughput budget.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "NFPA 855-2026: exact retained thresholds (20 kWh Li-ion, 50 kWh unit, 600 kWh area) vs. reported removal of the max-stored-energy cap - verify from the standard text; also which target states/AHJs have adopted 2026 (check MA 527 CMR 1, CT SFSC, NYC FC, IL OSFM, CA CFC 2025).",
+  "IFC elevation limit for electrochemical ESS (75 ft above fire department vehicle access / 30 ft below exit discharge) recalled from code structure but not confirmed in a search summary - verify in IFC 2021/2024 1207.5.3.",
+  "Whether the IFC 50 kWh unit limit and 600 kWh MAQ apply to outdoor walk-in vs. non-walk-in cabinets 'near exposures' is AHJ-interpreted; confirm with each AHJ and the vendor's 9540A report.",
+  "5-year MACRS retention for 48E energy storage after OBBBA: practitioner summaries conflict in wording - confirm with tax counsel/statute text (P.L. 119-21).",
+  "FEOC: confirm Notice 2026-15 safe-harbor tables status and specified-foreign-entity/foreign-influenced-entity effective dates for taxpayers.",
+  "Domestic content manufactured-products % for storage beginning construction in 2026 (50%) and after 2026 (55%) taken from 48E-general summaries - verify for energy storage technology.",
+  "C&I installed cost $/kWh for 2026 not available from a primary source (Wood Mackenzie C&I pricing paywalled; NREL Q1-2025 benchmark spreadsheet not opened) - use vendor quotes.",
+  "Aux load, degradation and availability values are low-confidence industry ranges - replace with per-SKU vendor data (aux kW vs ambient curve, warranty SOH curve, availability guarantee).",
+  "Utility-specific non-export settings (32R/32F pickup, delays, PCS OLRT 2 s vs 30 s, inadvertent export magnitude limits) vary - pull each utility's interconnection handbook (covered in state files).",
+  "NEC 2023 220.70/750.30 EMS load-calculation credit for PCS-limited charging - confirm section numbers and local adoption (MA 527 CMR 12 = NEC 2023 w/ amendments; NYC Electrical Code; CA CEC 2022 = NEC 2020)."
+ ],
+ "assumptions": [
+  {
+   "key": "usable_fraction",
+   "value": 0.9,
+   "label": "Usable AC energy fraction",
+   "description": "AC energy deliverable per kWh of product nameplate (depth of discharge × discharge losses). Set to 1.0 if the SKU kWh is already usable AC energy; PNNL’s LCOS convention uses 0.80.",
+   "source": "Panel (BESS engineer); PNNL LCOS; vendor spec sheets"
+  },
+  {
+   "key": "rte_ac",
+   "value": 0.85,
+   "label": "Round-trip efficiency (AC)",
+   "description": "Including PCS losses; subtract auxiliary HVAC load separately if the vendor RTE excludes it.",
+   "source": "NREL ATB 2023/2024"
+  },
+  {
+   "key": "shave_capture",
+   "value": 0.8,
+   "label": "Demand-shave capture factor",
+   "description": "Share of the theoretical design-day demand reduction realized in practice (forecast misses, outages).",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "dr_performance",
+   "value": 0.9,
+   "label": "DR performance factor",
+   "description": "Average credited kW ÷ deliverable kW across events.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "default_dr_event_hours",
+   "value": 3,
+   "label": "Default DR event hours",
+   "description": "Used when a program’s event duration is unknown; flagged on the stream.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "cp_hit_rate",
+   "value": 0.8,
+   "label": "Peak-tag hit rate",
+   "description": "Share of system coincident-peak hours the battery catches.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "cp_dispatch_hours",
+   "value": 3,
+   "label": "Peak-tag dispatch hours",
+   "description": "Hours the battery holds output around a forecast system peak.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "event_load_fraction",
+   "value": 0.85,
+   "label": "Site load during events (fraction of peak)",
+   "description": "Non-export cap on discharge during events.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "arbitrage_capture",
+   "value": 0.85,
+   "label": "TOU arbitrage capture",
+   "description": "Share of theoretical daily TOU spread captured.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "shave_days_per_year",
+   "value": 250,
+   "label": "Demand-management cycling days",
+   "description": "Days per year the battery cycles for demand management (round-trip loss costing).",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "include_cp",
+   "value": true,
+   "label": "Count peak-tag savings",
+   "description": "Capacity/transmission tag reductions (ICAP, PLC, NSPL, 4CP).",
+   "source": ""
+  },
+  {
+   "key": "incentives_reduce_itc_basis",
+   "value": true,
+   "label": "Rebates reduce ITC basis",
+   "description": "Conservative: subtract upfront rebates before applying the ITC. Confirm with tax counsel.",
+   "source": ""
+  },
+  {
+   "key": "om_pct_capex",
+   "value": 2.5,
+   "label": "O&M (% of capex per year)",
+   "description": "Fixed O&M incl. augmentation.",
+   "source": "NREL ATB (2.5% of capital cost per year)"
+  },
+  {
+   "key": "om_usd_per_kw_yr",
+   "value": 0,
+   "label": "Additional O&M ($/kW-yr)",
+   "description": "E.g. EMS/monitoring SaaS or an LTSA quote.",
+   "source": ""
+  },
+  {
+   "key": "degradation_pct_yr",
+   "value": 2.0,
+   "label": "Value degradation (%/yr)",
+   "description": "Applied to all annual value streams.",
+   "source": "Panel (BESS engineer): LFP 2–3%/yr typical"
+  },
+  {
+   "key": "escalation_pct_yr",
+   "value": 2.0,
+   "label": "Tariff escalation (%/yr)",
+   "description": "Applied to bill-based savings only (not fixed program rates).",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "discount_rate_pct",
+   "value": 8,
+   "label": "Discount rate (%)",
+   "description": "For NPV.",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "analysis_years",
+   "value": 10,
+   "label": "Analysis horizon (years)",
+   "description": "NPV/IRR horizon.",
+   "source": ""
+  },
+  {
+   "key": "aggregator_customer_share",
+   "value": 0.7,
+   "label": "Customer share after aggregator",
+   "description": "Share of aggregator/CSP program revenue kept by the site owner (programs that require an aggregator).",
+   "source": "Analyst assumption (typical CSP splits vary 60–80%)"
+  },
+  {
+   "key": "post_term_value_factor",
+   "value": 0.5,
+   "label": "Value after program term",
+   "description": "Multiplier on a program’s value after its rate-lock term ends (rate uncertain).",
+   "source": "Analyst assumption"
+  },
+  {
+   "key": "itc_feoc_confirmed",
+   "value": false,
+   "label": "ITC: products FEOC/MACR-compliant",
+   "description": "Set true once your battery supply chain is confirmed to meet the prohibited-foreign-entity material-assistance rules; until then the ITC counts in the upside case only.",
+   "source": "IRC §48E as amended July 2025 (panel research)"
+  },
+  {
+   "key": "itc_pwa_confirmed",
+   "value": true,
+   "label": "ITC: prevailing wage & apprenticeship met",
+   "description": "Projects ≥ 1 MW AC need PWA for the 30% rate (otherwise 6%).",
+   "source": "IRC §48E"
+  }
+ ]
+}

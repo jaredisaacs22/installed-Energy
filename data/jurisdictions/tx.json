@@ -1,0 +1,2310 @@
+{
+ "code": "TX",
+ "name": "Texas (ERCOT)",
+ "researched_on": "2026-10-01",
+ "summary": "In ERCOT's competitive TDU areas the dominant BTM C&I storage value is transmission cost avoidance via 4CP for IDR customers: roughly $6.0-6.3 per 4CP-kW-month (Oncor $6.05, CenterPoint $6.27/kVA, AEP Texas ~$6.02) or ~$72-75/kW-yr, earned by discharging during ERCOT's four June-September monthly 15-minute peaks and billed in the following year. Distribution demand charges ($4.89/kVA CenterPoint to $7.95/kW Oncor base, with 80%/11-month ratchets) add ~$59-95/kW-yr if the battery reliably shaves every month's NCP without creating charging peaks. Adders are modest: TDU load-management SOPs at ~$20-40/kW-season (min 50-100 kW), ERCOT ERS (budget-capped at $75M/yr), and the ADER pilot (cap raised to 500 MW, third-party QSE model in Phase 3) for energy/Non-Spin/ECRS, whose prices fell after RTC+B went live (Dec 2025). The biggest risks are (1) SB 6 transmission cost reform - PUCT must replace or modify 4CP by 12/31/2026, with the draft favoring more peaks, longer intervals and nonbypassable recovery; (2) REP contract structure (TDU pass-through vs bundled fixed); and (3) Gulf Coast flood/hurricane siting and IFC 1207 limits (50 kWh/unit indoors, 600 kWh/fire area).",
+ "default_energy_price_usd_per_kwh": 0.09,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "oncor",
+   "name": "Oncor Electric Delivery Company LLC",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_NORTH (most of DFW/North-Central TX); portions in LZ_WEST",
+   "retail_choice": true,
+   "default_supply_notes": "Competitive retail area: no utility default service. C&I customers buy from REPs (fixed all-in, fixed energy + TDU pass-through, or index/block-and-index). POLR exists only as a backstop. TDU (Oncor) charges are billed to the REP and usually passed through at cost on C&I contracts - verify contract language.",
+   "network_grid_notes": "Downtown Dallas and Fort Worth cores are served by secondary networks (general industry knowledge, not verified this session); network-secondary interconnections fail the radial no-study screen and are studied case-by-case, and exporting storage is generally not accepted on spot networks.",
+   "interconnection": {
+    "rule_name": "16 TAC §25.211 (Interconnection of On-Site Distributed Generation) and §25.212 (Technical Requirements); TDU DG interconnection application/agreement",
+    "tracks": [
+     {
+      "name": "Pre-certified DG on radial feeder - no pre-interconnection study fee",
+      "max_kw": 500,
+      "conditions": "Pre-certified units up to 500 kW that export no more than 15% of total load on a single radial feeder and contribute no more than 25% of max potential short-circuit current on that feeder: utility may not charge a pre-interconnection study fee.",
+      "typical_timeline": null,
+      "application_fee": "No study fee for this track; other application fees per TDU tariff not verified"
+     },
+     {
+      "name": "All other DG under 25.211 (non-pre-certified, >500 kW, network secondary, or exceeding export/short-circuit screens)",
+      "max_kw": 10000,
+      "conditions": "Study fees may apply; network-secondary interconnections are studied case-by-case. 25.211 scope is on-site DG up to 10 MW at distribution voltage.",
+      "typical_timeline": null,
+      "application_fee": "Per TDU tariff / study cost; not verified"
+     }
+    ],
+    "non_export_path": "Non-exporting BTM storage is still DG under 25.211 and requires a TDU interconnection application/agreement. Non-export is typically demonstrated by reverse-power/minimum-import relaying or certified PCS export controls; non-export avoids ERCOT registration (SODG registration is required only for >1 MW to 10 MW DG capable of net export). Specific TDU acceptance of UL 1741 CRD/PCS export limiting not verified.",
+    "storage_specific_notes": "PUCT Project 54233 (rewrite of 25.211/25.212 for DERs; staff discussion draft splits <=250 kW and >250 kW processes) was still pending as of the last filings seen (Aug 2025 comments; no adoption found). Oncor processes DG via its DG interconnection application; Oncor-specific timelines/fees not verified.",
+    "sources": [
+     {
+      "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+      "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+     },
+     {
+      "title": "PUCT Project 54233 - DER technical requirements & interconnection (comments filed 2025-08-08)",
+      "url": "https://interchange.puc.texas.gov/Documents/54233_127_1528831.PDF"
+     },
+     {
+      "title": "ERCOT - Distributed Generation registration",
+      "url": "https://www.ercot.com/services/rq/re/dgresource"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "Oncor Tariff for Retail Delivery Service (Rev. 22, eff. 2026-06-01)",
+     "url": "https://www.oncor.com/content/dam/oncorwww/documents/about-us/regulatory/tariff-and-rate-schedules/Tariff%20for%20Retail%20Delivery%20Service.pdf.coredownload.pdf"
+    },
+    {
+     "title": "PUCT TDU Rate Report - Oncor (ftp.puc.texas.gov)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    },
+    {
+     "title": "Oncor - Delivery Charges 101",
+     "url": "https://www.oncor.com/content/oncorwww/us/en/home/about-us/regulatory/delivery-charges-101.html"
+    }
+   ]
+  },
+  {
+   "id": "centerpoint-houston",
+   "name": "CenterPoint Energy Houston Electric, LLC",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_HOUSTON",
+   "retail_choice": true,
+   "default_supply_notes": "Competitive retail area; REP contracts. CenterPoint bills delivery demand in kVA (not kW) for Secondary >10 kVA, so power factor affects billing determinants.",
+   "network_grid_notes": "Downtown Houston (and Texas Medical Center area) served by underground secondary networks (general industry knowledge, not verified); network locations require case-by-case study and typically non-export.",
+   "interconnection": {
+    "rule_name": "16 TAC §25.211 (Interconnection of On-Site Distributed Generation) and §25.212 (Technical Requirements); TDU DG interconnection application/agreement",
+    "tracks": [
+     {
+      "name": "Pre-certified DG on radial feeder - no pre-interconnection study fee",
+      "max_kw": 500,
+      "conditions": "Pre-certified units up to 500 kW that export no more than 15% of total load on a single radial feeder and contribute no more than 25% of max potential short-circuit current on that feeder: utility may not charge a pre-interconnection study fee.",
+      "typical_timeline": null,
+      "application_fee": "No study fee for this track; other application fees per TDU tariff not verified"
+     },
+     {
+      "name": "All other DG under 25.211 (non-pre-certified, >500 kW, network secondary, or exceeding export/short-circuit screens)",
+      "max_kw": 10000,
+      "conditions": "Study fees may apply; network-secondary interconnections are studied case-by-case. 25.211 scope is on-site DG up to 10 MW at distribution voltage.",
+      "typical_timeline": null,
+      "application_fee": "Per TDU tariff / study cost; not verified"
+     }
+    ],
+    "non_export_path": "Non-exporting BTM storage is still DG under 25.211 and requires a TDU interconnection application/agreement. Non-export is typically demonstrated by reverse-power/minimum-import relaying or certified PCS export controls; non-export avoids ERCOT registration (SODG registration is required only for >1 MW to 10 MW DG capable of net export). Specific TDU acceptance of UL 1741 CRD/PCS export limiting not verified.",
+    "storage_specific_notes": "PUCT Project 54233 (rewrite of 25.211/25.212 for DERs; staff discussion draft splits <=250 kW and >250 kW processes) was still pending as of the last filings seen (Aug 2025 comments; no adoption found). CenterPoint DG interconnection under 25.211; CNP-specific timelines/fees not verified. Gulf-coast flood/hurricane siting constraints apply (see site_constraints).",
+    "sources": [
+     {
+      "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+      "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+     },
+     {
+      "title": "PUCT Project 54233 - DER technical requirements & interconnection (comments filed 2025-08-08)",
+      "url": "https://interchange.puc.texas.gov/Documents/54233_127_1528831.PDF"
+     },
+     {
+      "title": "ERCOT - Distributed Generation registration",
+      "url": "https://www.ercot.com/services/rq/re/dgresource"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    },
+    {
+     "title": "CenterPoint Houston Electric Rates & Tariffs",
+     "url": "https://www.centerpointenergy.com/en-us/our-services/rates-tariffs/houston-electric"
+    }
+   ]
+  },
+  {
+   "id": "aep-texas-central",
+   "name": "AEP Texas Inc. - Central Division (former AEP Texas Central Co.)",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_SOUTH (Corpus Christi, Rio Grande Valley, Victoria, Laredo)",
+   "retail_choice": true,
+   "default_supply_notes": "Competitive retail area; REP contracts. AEP Texas tariff revised eff. 2026-04-30 following its base-rate case.",
+   "network_grid_notes": "Limited downtown network (e.g., Corpus Christi CBD) - not verified.",
+   "interconnection": {
+    "rule_name": "16 TAC §25.211 (Interconnection of On-Site Distributed Generation) and §25.212 (Technical Requirements); TDU DG interconnection application/agreement",
+    "tracks": [
+     {
+      "name": "Pre-certified DG on radial feeder - no pre-interconnection study fee",
+      "max_kw": 500,
+      "conditions": "Pre-certified units up to 500 kW that export no more than 15% of total load on a single radial feeder and contribute no more than 25% of max potential short-circuit current on that feeder: utility may not charge a pre-interconnection study fee.",
+      "typical_timeline": null,
+      "application_fee": "No study fee for this track; other application fees per TDU tariff not verified"
+     },
+     {
+      "name": "All other DG under 25.211 (non-pre-certified, >500 kW, network secondary, or exceeding export/short-circuit screens)",
+      "max_kw": 10000,
+      "conditions": "Study fees may apply; network-secondary interconnections are studied case-by-case. 25.211 scope is on-site DG up to 10 MW at distribution voltage.",
+      "typical_timeline": null,
+      "application_fee": "Per TDU tariff / study cost; not verified"
+     }
+    ],
+    "non_export_path": "Non-exporting BTM storage is still DG under 25.211 and requires a TDU interconnection application/agreement. Non-export is typically demonstrated by reverse-power/minimum-import relaying or certified PCS export controls; non-export avoids ERCOT registration (SODG registration is required only for >1 MW to 10 MW DG capable of net export). Specific TDU acceptance of UL 1741 CRD/PCS export limiting not verified.",
+    "storage_specific_notes": "PUCT Project 54233 (rewrite of 25.211/25.212 for DERs; staff discussion draft splits <=250 kW and >250 kW processes) was still pending as of the last filings seen (Aug 2025 comments; no adoption found). Coastal Bend / Valley sites are hurricane-exposed.",
+    "sources": [
+     {
+      "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+      "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+     },
+     {
+      "title": "PUCT Project 54233 - DER technical requirements & interconnection (comments filed 2025-08-08)",
+      "url": "https://interchange.puc.texas.gov/Documents/54233_127_1528831.PDF"
+     },
+     {
+      "title": "ERCOT - Distributed Generation registration",
+      "url": "https://www.ercot.com/services/rq/re/dgresource"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "AEP Texas Tariff for Retail Delivery Service (eff. 2026-04-30)",
+     "url": "https://www.aeptexas.com/lib/docs/ratesandtariffs/Texas/AEP_TEXAS_TARIFF_Eff_April-30-2026.pdf"
+    },
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    }
+   ]
+  },
+  {
+   "id": "aep-texas-north",
+   "name": "AEP Texas Inc. - North Division (former AEP Texas North Co.)",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_WEST (Abilene, San Angelo, Vernon)",
+   "retail_choice": true,
+   "default_supply_notes": "Competitive retail area; REP contracts. Same AEP Texas tariff book (eff. 2026-04-30) with division-specific rates.",
+   "network_grid_notes": "Little/no secondary network; mostly radial.",
+   "interconnection": {
+    "rule_name": "16 TAC §25.211 (Interconnection of On-Site Distributed Generation) and §25.212 (Technical Requirements); TDU DG interconnection application/agreement",
+    "tracks": [
+     {
+      "name": "Pre-certified DG on radial feeder - no pre-interconnection study fee",
+      "max_kw": 500,
+      "conditions": "Pre-certified units up to 500 kW that export no more than 15% of total load on a single radial feeder and contribute no more than 25% of max potential short-circuit current on that feeder: utility may not charge a pre-interconnection study fee.",
+      "typical_timeline": null,
+      "application_fee": "No study fee for this track; other application fees per TDU tariff not verified"
+     },
+     {
+      "name": "All other DG under 25.211 (non-pre-certified, >500 kW, network secondary, or exceeding export/short-circuit screens)",
+      "max_kw": 10000,
+      "conditions": "Study fees may apply; network-secondary interconnections are studied case-by-case. 25.211 scope is on-site DG up to 10 MW at distribution voltage.",
+      "typical_timeline": null,
+      "application_fee": "Per TDU tariff / study cost; not verified"
+     }
+    ],
+    "non_export_path": "Non-exporting BTM storage is still DG under 25.211 and requires a TDU interconnection application/agreement. Non-export is typically demonstrated by reverse-power/minimum-import relaying or certified PCS export controls; non-export avoids ERCOT registration (SODG registration is required only for >1 MW to 10 MW DG capable of net export). Specific TDU acceptance of UL 1741 CRD/PCS export limiting not verified.",
+    "storage_specific_notes": "PUCT Project 54233 (rewrite of 25.211/25.212 for DERs; staff discussion draft splits <=250 kW and >250 kW processes) was still pending as of the last filings seen (Aug 2025 comments; no adoption found). West Texas sites may see high solar/wind penetration on feeders - hosting-capacity screens may bind for exporting projects.",
+    "sources": [
+     {
+      "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+      "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+     },
+     {
+      "title": "PUCT Project 54233 - DER technical requirements & interconnection (comments filed 2025-08-08)",
+      "url": "https://interchange.puc.texas.gov/Documents/54233_127_1528831.PDF"
+     },
+     {
+      "title": "ERCOT - Distributed Generation registration",
+      "url": "https://www.ercot.com/services/rq/re/dgresource"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "AEP Texas Tariff for Retail Delivery Service (eff. 2026-04-30)",
+     "url": "https://www.aeptexas.com/lib/docs/ratesandtariffs/Texas/AEP_TEXAS_TARIFF_Eff_April-30-2026.pdf"
+    },
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    }
+   ]
+  },
+  {
+   "id": "tnmp",
+   "name": "Texas-New Mexico Power Company (TNMP)",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "Mixed: LZ_NORTH (North-Central TX), LZ_HOUSTON (Texas City/League City/Gulf Coast), LZ_WEST (Pecos/Far West)",
+   "retail_choice": true,
+   "default_supply_notes": "Competitive retail area; REP contracts. TNMP's demand class threshold is Secondary >5 kW (not 10 kW).",
+   "network_grid_notes": "Predominantly radial suburban/rural.",
+   "interconnection": {
+    "rule_name": "16 TAC §25.211 (Interconnection of On-Site Distributed Generation) and §25.212 (Technical Requirements); TDU DG interconnection application/agreement",
+    "tracks": [
+     {
+      "name": "Pre-certified DG on radial feeder - no pre-interconnection study fee",
+      "max_kw": 500,
+      "conditions": "Pre-certified units up to 500 kW that export no more than 15% of total load on a single radial feeder and contribute no more than 25% of max potential short-circuit current on that feeder: utility may not charge a pre-interconnection study fee.",
+      "typical_timeline": null,
+      "application_fee": "No study fee for this track; other application fees per TDU tariff not verified"
+     },
+     {
+      "name": "All other DG under 25.211 (non-pre-certified, >500 kW, network secondary, or exceeding export/short-circuit screens)",
+      "max_kw": 10000,
+      "conditions": "Study fees may apply; network-secondary interconnections are studied case-by-case. 25.211 scope is on-site DG up to 10 MW at distribution voltage.",
+      "typical_timeline": null,
+      "application_fee": "Per TDU tariff / study cost; not verified"
+     }
+    ],
+    "non_export_path": "Non-exporting BTM storage is still DG under 25.211 and requires a TDU interconnection application/agreement. Non-export is typically demonstrated by reverse-power/minimum-import relaying or certified PCS export controls; non-export avoids ERCOT registration (SODG registration is required only for >1 MW to 10 MW DG capable of net export). Specific TDU acceptance of UL 1741 CRD/PCS export limiting not verified.",
+    "storage_specific_notes": "PUCT Project 54233 (rewrite of 25.211/25.212 for DERs; staff discussion draft splits <=250 kW and >250 kW processes) was still pending as of the last filings seen (Aug 2025 comments; no adoption found). Gulf Coast TNMP territory is hurricane/flood exposed.",
+    "sources": [
+     {
+      "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+      "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+     },
+     {
+      "title": "PUCT Project 54233 - DER technical requirements & interconnection (comments filed 2025-08-08)",
+      "url": "https://interchange.puc.texas.gov/Documents/54233_127_1528831.PDF"
+     },
+     {
+      "title": "ERCOT - Distributed Generation registration",
+      "url": "https://www.ercot.com/services/rq/re/dgresource"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    },
+    {
+     "title": "TNMP Rates",
+     "url": "https://www.tnmp.com/customers/rates"
+    }
+   ]
+  },
+  {
+   "id": "austin-energy",
+   "name": "Austin Energy (municipal)",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_AEN",
+   "retail_choice": false,
+   "default_supply_notes": "Municipal utility, not opted into retail choice; bundled city-council-set tariffs (not researched in detail here). No REP/4CP pass-through structure; ERCOT 4CP is not passed through as a TDU 4CP charge.",
+   "network_grid_notes": "Downtown Austin network (not verified). Austin adopted 2024 IFC eff. 2025-07-10.",
+   "interconnection": {
+    "rule_name": "Austin Energy DG interconnection guidelines (municipal; 25.211 not binding on munis)",
+    "tracks": [],
+    "non_export_path": "Not researched (out of scope - one-line entry).",
+    "storage_specific_notes": "Not researched.",
+    "sources": [
+     {
+      "title": "Austin Energy - Power Partner Battery Pilot launch (2026)",
+      "url": "https://austinenergy.com/about/news/news-releases/2026/Austin-Energy-launches-innovative-Power-Partner-Battery-Pilot-program"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "Austin Energy - Power Partner Battery Pilot launch (2026)",
+     "url": "https://austinenergy.com/about/news/news-releases/2026/Austin-Energy-launches-innovative-Power-Partner-Battery-Pilot-program"
+    },
+    {
+     "title": "Austin Monitor - Incentives for customer-owned batteries in Austin Energy pipeline (2025-02)",
+     "url": "https://austinmonitor.com/stories/2025/02/incentives-for-customer-owned-batteries-among-new-programs-in-austin-energys-pipeline/"
+    }
+   ]
+  },
+  {
+   "id": "cps-energy",
+   "name": "CPS Energy (municipal, San Antonio)",
+   "state": "TX",
+   "iso": "ERCOT",
+   "load_zone": "LZ_CPS",
+   "retail_choice": false,
+   "default_supply_notes": "Municipal utility, not opted into retail choice; bundled tariffs (not researched in detail).",
+   "network_grid_notes": "Downtown San Antonio network (not verified).",
+   "interconnection": {
+    "rule_name": "CPS Energy DG interconnection requirements (municipal)",
+    "tracks": [],
+    "non_export_path": "Not researched (out of scope - one-line entry).",
+    "storage_specific_notes": "CPS has a 500 MW utility-scale storage RFP (front-of-meter, not a BTM incentive).",
+    "sources": [
+     {
+      "title": "San Antonio Report - CPS Energy winter demand response program",
+      "url": "https://sanantonioreport.org/cps-energy-winter-demand-response-program-explainer/"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "San Antonio Report - CPS Energy winter demand response program",
+     "url": "https://sanantonioreport.org/cps-energy-winter-demand-response-program-explainer/"
+    },
+    {
+     "title": "Piclo - CPS Energy Commercial Demand Response",
+     "url": "https://www.piclo.com/opportunities/cps-energy-commercial-demand-response"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "oncor-sec-gt10kw",
+   "utility_id": "oncor",
+   "name": "Secondary Service Greater Than 10 kW",
+   "customer_class": "C&I secondary",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "Non-residential secondary-voltage service with NCP >10 kW. IDR-metered (mandatory >700 kW twice in 12 months) customers are billed transmission on 4CP kW; non-IDR billed on NCP kW."
+   },
+   "effective_date": "2026-08-01",
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 7.946081,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (15-min NCP)",
+     "notes": "Billed on Billing kW = max(current-month NCP kW, 80% of highest NCP kW in preceding 11 months). Excludes riders (DCRF etc. may be embedded or separate - not confirmed)."
+    },
+    {
+     "label": "Transmission System Charge (IDR, per 4CP kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 6.050798,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP intervals (Jun-Sep prior year)",
+     "notes": "As reported in PUCT Oncor Rate Report. Not confirmed whether a separate Rider TCRF $/4CP-kW is additive; if so, true 4CP value is higher."
+    },
+    {
+     "label": "Rider IS (interim surcharge)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 0.997891,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Reported for >10 kW at Aug 2026 on a per-billing-kW basis by a secondary source; temporary rider - low confidence."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": {
+    "pct": 0.8,
+    "lookback_months": 11,
+    "applies_to": "Distribution System Charge (Billing kW)"
+   },
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": 72.61,
+     "derivation": "Oncor Transmission System Charge $6.050798/4CP-kW-month x 12 months = $72.61/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
+     "min_site_peak_kw": 700,
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Value of reducing NCP/ratcheted billing kW: $7.946081 x 12 = $95.35/kW-yr if the battery lowers billing kW in all 12 months (requires cutting the annual NCP that sets the ratchet, AND each month's NCP). If only the annual peak is cut by 1 kW and the ratchet binds in shoulder months, those months save 0.8 kW x rate. Adding Rider IS ($0.997891 x 12 = $11.97/kW-yr) gives ~$107.33/kW-yr upper bound while the rider is in effect. Battery CHARGING counts toward NCP - charging must be capped below the target peak. Oncor may also apply a power-factor adjustment to billing kW (not verified).",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - Oncor (ftp.puc.texas.gov)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    },
+    {
+     "title": "Oncor Tariff for Retail Delivery Service (Rev. 22, eff. 2026-06-01)",
+     "url": "https://www.oncor.com/content/dam/oncorwww/documents/about-us/regulatory/tariff-and-rate-schedules/Tariff%20for%20Retail%20Delivery%20Service.pdf.coredownload.pdf"
+    },
+    {
+     "title": "Oncor - IDR Versus Non-IDR Profiled Premises",
+     "url": "https://www.oncor.com/content/dam/oncorwww/documents/partners/rep/reference-materials/IDR%20Versus%20Non-IDR%20Profiled%20Premises.pdf.coredownload.pdf"
+    },
+    {
+     "title": "VIP Energy Service - Oncor delivery charges Aug 2026 (Rider IS) [secondary]",
+     "url": "https://vipenergyservice.com/texas/oncor-delivery-charge-august-2026-rider-is-bill-explained/"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Distribution ($7.946081/billing kW) and transmission ($6.050798/4CP kW) seen in search summaries of the PUCT Oncor Rate Report (stated effective Aug 1, 2026); 80%/11-month ratchet and 4CP definition from Oncor tariff summary (Rev 22, eff 2026-06-01); 700 kW IDR threshold from Oncor REP reference. Not opened directly (WebFetch blocked). Oncor base-rate case (Docket 58306) outcome/timing not verified."
+  },
+  {
+   "id": "oncor-pri-gt10kw",
+   "utility_id": "oncor",
+   "name": "Primary Service Greater Than 10 kW",
+   "customer_class": "C&I primary",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "Primary-voltage service (distribution line or substation sub-classes)."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified. A search summary quoted $0.570589/kW for 'Primary >10 kW Distribution Line' but context suggests a rider, not the base charge - not used."
+    },
+    {
+     "label": "Transmission (4CP)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP",
+     "notes": "Not verified; expected to be similar order of magnitude to secondary."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": null,
+     "derivation": "Rate not verified; value null.",
+     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "min_site_peak_kw": 700,
+     "passthrough": "delivery"
+    }
+   ],
+   "storage_notes": "Placeholder - confirm rates in Oncor tariff/PUCT rate report before modeling. TCRF allocation factor for Primary >10 kW Distribution Line reported as 6.9358% in an Aug-2026 filing (rates eff. ~2026-10).",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - Oncor (ftp.puc.texas.gov)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    },
+    {
+     "title": "PUCT filing, Docket 59249 item 105 (filed 2026-08-20)",
+     "url": "https://interchange.puc.texas.gov/Documents/59249_105_1676040.PDF"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Rates not verified this session."
+  },
+  {
+   "id": "cnp-sec-gt10kva",
+   "utility_id": "centerpoint-houston",
+   "name": "Secondary Service Greater Than 10 kVA",
+   "customer_class": "C&I secondary",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "Secondary service with demand >10 kVA. Billing determinants are in kVA. IDR customers billed TCRF on 4CP kVA."
+   },
+   "effective_date": "2026-07-01",
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 4.893378,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (15-min NCP kVA)",
+     "notes": "Per billing kVA (not kW). Base rate only - DCRF and other riders not captured. Ratchet terms not verified."
+    },
+    {
+     "label": "Transmission System Charge (base)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 0.0,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "-",
+     "notes": "$0 per NCP kVA and per 4CP kVA in base rates; transmission recovered entirely through Rider TCRF."
+    },
+    {
+     "label": "Rider TCRF (IDR, per 4CP kVA)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 6.2725,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP intervals (Jun-Sep prior year)",
+     "notes": "$6.272500/4CP kVA as of 2026-07-01 (prior value $6.177655). TCRFs are updated semi-annually."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). CenterPoint bills in kVA: per-kW value is approx. $75.27 x site power factor unless the inverter also supplies reactive power at the 4CP interval.",
+     "est_value_usd_per_kw_year": 75.27,
+     "derivation": "CenterPoint Rider TCRF $6.2725/4CP-kW-month x 12 months = $75.27/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
+     "min_site_peak_kw": 700,
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Value of reducing billed kVA: distribution $4.893378 x 12 = $58.72/kVA-yr (base only, if reduced in all 12 months). Because billing is kVA, a battery discharging at unity PF reduces kVA by roughly kW x PF; using the inverter's reactive capability (if allowed by the interconnection agreement) can capture more. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    },
+    {
+     "title": "CenterPoint Houston Electric Rates & Tariffs",
+     "url": "https://www.centerpointenergy.com/en-us/our-services/rates-tariffs/houston-electric"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Distribution, base transmission ($0) and TCRF ($6.272500 as of 2026-07-01; earlier $6.177655) from search summaries of the PUCT CenterPoint Rate Report dated 07/1/2026. Ratchet, DCRF and primary rates not verified."
+  },
+  {
+   "id": "cnp-pri",
+   "utility_id": "centerpoint-houston",
+   "name": "Primary Service",
+   "customer_class": "C&I primary",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Primary-voltage delivery."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified."
+    },
+    {
+     "label": "Rider TCRF (4CP kVA)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP",
+     "notes": "Not verified."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": null,
+     "derivation": "Rate not verified; value null.",
+     "passthrough_notes": "TDU transmission charges are billed to the REP. Savings reach the customer only if the REP contract passes TDU charges through at cost (common for C&I 'TDSP pass-through' contracts) rather than bundling them in a fixed all-in price. RISK: PUCT must amend the 4CP transmission cost allocation methodology by 2026-12-31 under SB 6 (Project 58484); a March 2026 PUCT draft report recommended more coincident peaks, longer measurement intervals and a nonbypassable portion - could materially reduce this value from 2027/2028. 4CP billing applies to IDR-metered customers (>700 kW); smaller sites pay transmission on billing kW instead (not modeled).",
+     "min_site_peak_kw": 700,
+     "passthrough": "delivery"
+    }
+   ],
+   "storage_notes": "Placeholder - confirm in CenterPoint Rate Report.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Rates not verified this session."
+  },
+  {
+   "id": "aep-tcc-sec-gt10kw",
+   "utility_id": "aep-texas-central",
+   "name": "Secondary Service Greater Than 10 kW (Central Division)",
+   "customer_class": "C&I secondary",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "Secondary >10 kW; rate report distinguishes 4CP (IDR) and NCP sub-classes."
+   },
+   "effective_date": "2026-03-20",
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified (new base rates eff. 2026-04-30 after rate case)."
+    },
+    {
+     "label": "Rider TCRF (4CP IDR)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 6.016059,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP intervals",
+     "notes": "Feb-2026 filing; eff. 2026-03-20, subject to refund; same value reported for Central and North. Another 2026 filing showed $6.246357/avg 4CP kW (alternate value -> $74.96/kW-yr). May have been reset with 2026-04-30 base rates."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": 72.19,
+     "derivation": "AEP Texas Rider TCRF $6.016059/4CP-kW-month x 12 months = $72.19/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
+     "min_site_peak_kw": 700,
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Secondary aggregator listed an all-in Secondary >10 kW demand rate of $12.552727/kW (eff. 2026-03-01, likely NCP-billed non-IDR all-in) - context only. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
+   "sources": [
+    {
+     "title": "PUCT filing, Project 58511 item 35 (filed 2026-02-20) - AEP Texas TCRF",
+     "url": "https://interchange.puc.texas.gov/Documents/58511_35_1590031.PDF"
+    },
+    {
+     "title": "PUCT filing, Docket 58315 item 146 (filed 2026-05-06)",
+     "url": "https://interchange.puc.texas.gov/Documents/58315_146_1639093.PDF"
+    },
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    },
+    {
+     "title": "AEP Texas Tariff for Retail Delivery Service (eff. 2026-04-30)",
+     "url": "https://www.aeptexas.com/lib/docs/ratesandtariffs/Texas/AEP_TEXAS_TARIFF_Eff_April-30-2026.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "TCRF from search summaries of PUCT filings (two differing values: $6.016059 and $6.246357). Distribution charge and ratchet not verified."
+  },
+  {
+   "id": "aep-tnc-sec-gt10kw",
+   "utility_id": "aep-texas-north",
+   "name": "Secondary Service Greater Than 10 kW (North Division)",
+   "customer_class": "C&I secondary",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "Secondary >10 kW."
+   },
+   "effective_date": "2026-03-20",
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified."
+    },
+    {
+     "label": "Rider TCRF (4CP IDR)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 6.016059,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP intervals",
+     "notes": "Same as Central per Feb-2026 filing; subject to refund."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": 72.19,
+     "derivation": "AEP Texas Rider TCRF $6.016059/4CP-kW-month x 12 months = $72.19/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
+     "min_site_peak_kw": 700,
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Secondary aggregator all-in Secondary >10 kW demand rate $12.301273/kW (eff. 2026-03-01) - context only. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
+   "sources": [
+    {
+     "title": "PUCT filing, Project 58511 item 35 (filed 2026-02-20) - AEP Texas TCRF",
+     "url": "https://interchange.puc.texas.gov/Documents/58511_35_1590031.PDF"
+    },
+    {
+     "title": "PUCT TDU Rate Report - AEP Texas Central/North (Project 58511)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/AEP_Rate_Report.pdf"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "As for Central Division."
+  },
+  {
+   "id": "tnmp-sec-gt5kw",
+   "utility_id": "tnmp",
+   "name": "Secondary Service Greater Than 5 kW",
+   "customer_class": "C&I secondary",
+   "applicability": {
+    "min_kw": 5,
+    "max_kw": null,
+    "text": "TNMP secondary demand class (>5 kW). IDR customers billed transmission on 4CP kW."
+   },
+   "effective_date": "2025-09-01",
+   "demand_charges": [
+    {
+     "label": "Distribution System Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 5.373649,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Per billing kW (Sept-2025 PUCT monthly report; stale)."
+    },
+    {
+     "label": "Transmission (IDR, per 4CP kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 3.600749,
+     "basis": "coincident",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "ERCOT 4CP intervals",
+     "notes": "Sept-2025 value; whether TCRF is additive not confirmed. Looks low vs. other TDUs - verify."
+    },
+    {
+     "label": "Transmission (non-IDR, billed on NCP/billing kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [],
+     "max_site_peak_kw": 700,
+     "notes": "Sites without IDR metering (≤ 700 kW) pay transmission on billing demand instead of 4CP. Rate not captured; enter from the bill or TDU tariff."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "4cp",
+     "how_set": "Average of the customer's 15-minute demand coincident with ERCOT's monthly 15-minute system peak in June, July, August and September of the PREVIOUS calendar year; billed every month of the following year (IDR-metered customers; IDR is mandatory above 700 kW). ",
+     "est_value_usd_per_kw_year": 43.21,
+     "derivation": "TNMP transmission $3.600749/4CP-kW-month x 12 months = $43.21/kW-yr of 4CP reduction (realized in the calendar year after the summer in which the 4CP is reduced; requires being discharged in all four monthly ERCOT peak intervals).",
+     "passthrough_notes": "REP-dependent: most C&I contracts pass TDU charges through at cost, but fixed all-in products bundle them. 4CP billing applies to IDR-metered customers (>700 kW).",
+     "min_site_peak_kw": 700,
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Distribution value $5.373649 x 12 = $64.48/kW-yr if billed kW reduced every month. Secondary aggregator all-in Secondary demand rate $14.870218/kW (eff. 2026-03-01) suggests riders add materially - verify. Ratchet not confirmed in this session; Texas TDU secondary >10 kW tariffs commonly use 80% of highest NCP in prior 11 months - confirm in tariff before modeling.",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - TNMP",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/TNMP_Rate_Report.pdf"
+    },
+    {
+     "title": "TNMP Rates",
+     "url": "https://www.tnmp.com/customers/rates"
+    },
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Values are from a Sept-2025 report seen via search summary; 2026 values not found."
+  }
+ ],
+ "programs": [
+  {
+   "id": "tx-oncor-clm-sop-2026",
+   "name": "Oncor Commercial Load Management Standard Offer Program (CLM SOP) 2026",
+   "state": "TX",
+   "utility_ids": [
+    "oncor"
+   ],
+   "administrator": "Oncor (EECRF-funded EE program; participation via Project Sponsors)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Annual program; 2026 commercial kickoff held 2026-01-15. Summer season essentially complete by 2026-10-01 - next enrollment for PY2027 (typically Q1).",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Project (may aggregate sites) must deliver >=100 kW demand savings during on-peak periods. Participation through a Project Sponsor. Battery eligibility not confirmed for 2026; customers in ERCOT ERS/Load Resource for same load are typically excluded (verify)."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 30,
+    "unit": "$/kW-season",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "verified average kW curtailed across events vs baseline",
+    "duration_basis_hr": null,
+    "cap": "Program budget",
+    "tiers": [],
+    "term_years": 1,
+    "notes": "LOW CONFIDENCE: $30/kW reflects recent program years per search summary, not a confirmed 2026 value. Events called during or in anticipation of ERCOT EEA2 or for Oncor grid stability, plus test events."
+   },
+   "dispatch": {
+    "season": "Summer (approx. Jun-Sep)",
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Baseline from IDR interval data"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management",
+     "NCP demand reduction"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "Events often coincide with 4CP-risk days, so dispatch is complementary to 4CP strategy. Conflicts as researched: tx-ercot-ers (same load, likely)"
+   },
+   "vpp_relevance": "Project Sponsor model lets a developer aggregate multiple sites to reach 100 kW.",
+   "sources": [
+    {
+     "title": "Oncor 2026 Commercial Kickoff Presentation (2026-01-15)",
+     "url": "https://www.oncor.com/content/dam/oncorwww/eepm/documents/commercial-resources/2026/2026_COMM_KICKOFF_01_15_2026_FINAL.pdf.coredownload.pdf"
+    },
+    {
+     "title": "Oncor CLM SOP 2025 Program Manual",
+     "url": "https://www.oncor.com/content/dam/oncorwww/eepm/documents/commercial-resources/2025/PY2025%20Summer%20Comm.%20Load%20Mgmt%20Program%20Manual%20-%203-28-25.pdf.coredownload.pdf"
+    },
+    {
+     "title": "Oncor - Load Management (Take A Load Off Texas)",
+     "url": "https://www.oncor.com/content/oncorwww/talot/en/home/get-started/business/load-management.html"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Min 100 kW confirmed via Oncor manual summary; 2026 $/kW, window and event caps not verified.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
+  },
+  {
+   "id": "tx-cnp-clm-2026",
+   "name": "CenterPoint Commercial Load Management Program 2026",
+   "state": "TX",
+   "utility_ids": [
+    "centerpoint-houston"
+   ],
+   "administrator": "CenterPoint Energy Houston Electric",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Annual program; summer 2026 season ending. Contact loadmanagement@centerpointenergy.com.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 50,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Must shed >=50 kW within 30 minutes of notification. Battery eligibility not confirmed."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 40,
+    "unit": "$/kW-season",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "average verified kW reduction across all program events",
+    "duration_basis_hr": null,
+    "cap": "'Up to' $40/kW; program budget",
+    "tiers": [],
+    "term_years": 1,
+    "notes": "Payment on average load reduction across all events (test + unscheduled)."
+   },
+   "dispatch": {
+    "season": "Jun 1 - Sep 30 (one source also cites a Jun 1 - Nov 30 summer availability period)",
+    "window": "1-7 pm weekdays, excl. federal holidays",
+    "event_duration_hr": null,
+    "max_events_per_year": 6,
+    "typical_events_per_year": null,
+    "notice": "30 minutes",
+    "baseline_or_mv": "Interval-data baseline"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management",
+     "NCP demand reduction"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "2 test events + up to 4 unscheduled (ERCOT EEA2 or CNP system emergency) -> max 6. Conflicts as researched: tx-ercot-ers (same load, likely)"
+   },
+   "vpp_relevance": "Low minimum (50 kW) fits a single 65 kW or 200 kW unit; aggregation via sponsor possible.",
+   "sources": [
+    {
+     "title": "CenterPoint Energy - Load Management",
+     "url": "https://www.centerpointenergy.com/en-us/SaveEnergyandMoney/Pages/Load-Management-.aspx?sa=ho&au=bus"
+    },
+    {
+     "title": "Katy EDC - CenterPoint Commercial Load Management Program [secondary]",
+     "url": "https://www.katyedc.org/business-retention-and-expansion/incentives/p/item/1581/centerpoint-energys-commercial-load-management-program"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "From search summaries of CNP and Katy EDC pages; event duration not found.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
+  },
+  {
+   "id": "tx-aep-lm-sop-2026",
+   "name": "AEP Texas Load Management Standard Offer Program (Summer & Winter) 2025-2026",
+   "state": "TX",
+   "utility_ids": [
+    "aep-texas-central",
+    "aep-texas-north"
+   ],
+   "administrator": "AEP Texas",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "2025-2026 SOP agreement posted; summer and winter seasons.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Search summary: participating nonresidential customers need peak demand >=500 kW (some AEP materials) and must curtail >=100 kW per contracted site. Verify for 2026."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 35,
+    "unit": "$/kW-season",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "kW interrupted (verified)",
+    "duration_basis_hr": null,
+    "cap": "Program budget",
+    "tiers": [
+     {
+      "label": "Option A",
+      "rate": 35,
+      "conditions": "Capacity interruption incentive"
+     },
+     {
+      "label": "Option B",
+      "rate": 25,
+      "conditions": "Capacity interruption incentive"
+     },
+     {
+      "label": "Option C",
+      "rate": 20,
+      "conditions": "Capacity interruption incentive"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Option definitions (notice/event limits) not verified."
+   },
+   "dispatch": {
+    "season": "Summer and winter",
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Interval-data baseline"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "Conflicts as researched: tx-ercot-ers (same load, likely)"
+   },
+   "vpp_relevance": "Project-sponsor model supports aggregation.",
+   "sources": [
+    {
+     "title": "AEP Texas Load Management SOP Agreement 2025-2026",
+     "url": "https://aeptxsaves.com/wp-content/uploads/2025-2026-LM-SOP-Agreement.pdf"
+    },
+    {
+     "title": "AEP Texas Summer and Winter LM SOP Manual 2024-2025",
+     "url": "https://aeptxsaves.com/wp-content/uploads/2024_-2025_-AEP_Texas_-LM-Manual.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Option A/B/C rates from search summary of AEP LM SOP documents; eligibility thresholds partly conflicting.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
+  },
+  {
+   "id": "tx-tnmp-clm-2026",
+   "name": "TNMP Commercial Load Management Program 2026",
+   "state": "TX",
+   "utility_ids": [
+    "tnmp"
+   ],
+   "administrator": "TNMP",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Annual program.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "TNMP prefers >=100 kW per site but may accept smaller sites to meet targets."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 40,
+    "unit": "$/kW-season",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "average demand reduction delivered",
+    "duration_basis_hr": null,
+    "cap": "Program budget",
+    "tiers": [],
+    "term_years": 1,
+    "notes": ""
+   },
+   "dispatch": {
+    "season": "Summer",
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Interval-data baseline"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "Conflicts as researched: tx-ercot-ers (same load, likely)"
+   },
+   "vpp_relevance": "Smaller-site flexibility helps aggregations.",
+   "sources": [
+    {
+     "title": "TNMP Energy Efficiency - Commercial Load Management",
+     "url": "https://tnmp.com/energy-efficiency/commercial/load-management"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Rate and min kW from search summary of TNMP page; season/window not verified.",
+   "requires_confirmation": "Research could not confirm that batteries qualify as curtailable load in this TDU program; confirm with the program sponsor."
+  },
+  {
+   "id": "tx-ercot-ers",
+   "name": "ERCOT Emergency Response Service (ERS)",
+   "state": "TX",
+   "utility_ids": [],
+   "administrator": "ERCOT (procured via QSEs; PUCT rule 16 TAC 25.507)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Procured by RFP for four Standard Contract Terms: Dec-Mar, Apr-May, Jun-Sep, Oct-Nov. Expenditure cap $75M per 12 months (+ up to $25M for renewals after exhaustion). 2024 program-year spend $72,741,500.19.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Offered through a QSE; sites <100 kW can be aggregated. Service types: Weather-Sensitive and Non-Weather-Sensitive ERS-10 and ERS-30 (10- or 30-minute response). Interval metering and baseline eligibility required."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": null,
+    "unit": "$/kW-yr",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "committed MW per ERS Time Period, performance-adjusted",
+    "duration_basis_hr": null,
+    "cap": "ERCOT $75M/yr program cap",
+    "tiers": [],
+    "term_years": null,
+    "notes": "Pay-as-cleared per ERS Time Period: highest accepted offer sets the clearing price ($/MW-h of availability) for all cleared resources in that time period. 2026 clearing prices are posted on ERCOT MIS (not reachable) - $/kW-yr left null. QSE typically keeps a share."
+   },
+   "dispatch": {
+    "season": "Year-round by contract term",
+    "window": "Bid by ERS Time Period",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "10 or 30 minutes",
+    "baseline_or_mv": "ERCOT baseline methodologies (weather-sensitive regression or default baselines)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management (ERS deployments are rare)"
+    ],
+    "conflicts_with": [],
+    "notes": "Battery must hold reserve SOC for the full obligation during committed hours, competing with arbitrage/4CP. Conflicts as researched: Load Resource AS for same MW; TDU CLM SOP for same load (likely)"
+   },
+   "vpp_relevance": "Natural first wholesale product for a C&I fleet via a QSE partner; aggregation allowed.",
+   "sources": [
+    {
+     "title": "ERCOT - Emergency Response Service",
+     "url": "https://www.ercot.com/services/programs/load/eils"
+    },
+    {
+     "title": "ERCOT Market Notice M-A040226-01 RFP for ERS",
+     "url": "https://www.ercot.com/services/comm/mkt_notices/M-A040226-01"
+    },
+    {
+     "title": "16 TAC 25.507 ERCOT Emergency Response Service",
+     "url": "https://www.puc.texas.gov/agency/rulesnlaws/subrules/electric/25.507/"
+    },
+    {
+     "title": "PUCT filing Project 55999 item 114 (2025-04-10) - ERS 2024 expenditure",
+     "url": "https://interchange.puc.texas.gov/Documents/55999_114_1488494.PDF"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Structure, cap and 2024 spend verified via search summaries of ERCOT/PUCT pages; 2026 prices and MW not found."
+  },
+  {
+   "id": "tx-ercot-ader-pilot",
+   "name": "ERCOT Aggregate Distributed Energy Resource (ADER) Pilot - Phase 3",
+   "state": "TX",
+   "utility_ids": [],
+   "administrator": "ERCOT (pilot under PUCT Project 53911)",
+   "category": "wholesale_market",
+   "status": "pilot",
+   "status_notes": "Market Notice M-A030226-01 (Mar 2026) raised Registered Capacity Limit to 500 MW and per-QSE limit from 50% to 90%. Phase 3 adds a Non-Controllable Load Resource (NCLR) model letting non-LSE (third-party) QSEs aggregate.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "Residential"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "ADER = multiple distribution-connected premises dispatched in aggregate (single load zone). Minimum aggregation reported as 100 kW; NCLR model aggregates premises >100 kW with real-time 2-second telemetry from QSE. Original model requires the ADER QSE to be the LSE's (REP's) QSE - REP cooperation needed. TDU registration/coordination required."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kW-yr",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "MW offered/awarded",
+    "duration_basis_hr": null,
+    "cap": "500 MW pilot cap",
+    "tiers": [],
+    "term_years": null,
+    "notes": "Revenue = ERCOT energy (LMP) + Non-Spin and ECRS (+ RRS where qualified) at market clearing prices. Context: front-of-meter ERCOT BESS full-stack revenue TTM through Mar 2026 was $2.37/kW-month (~$28/kW-yr) per Modo; BTM aggregations should expect a fraction after QSE fees and baseline/telemetry costs."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Market-based",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Real-time (SCED) / AS deployment",
+    "baseline_or_mv": "Telemetry and ERCOT settlement metering"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management",
+     "NCP reduction (if dispatch coordinated)"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "Reported pilot capability: 15.5 MW energy, 8.6 MW Non-Spin, 8.8 MW ECRS (small vs 500 MW cap). Conflicts as researched: tx-ercot-ers same MW"
+   },
+   "vpp_relevance": "Primary pathway for a Texas multi-site BTM VPP to earn wholesale energy/AS revenue; Phase 3 third-party QSE model reduces REP gatekeeping.",
+   "sources": [
+    {
+     "title": "ERCOT - Aggregate Distributed Energy Resource (ADER) Pilot Project",
+     "url": "https://www.ercot.com/mktrules/pilots/ader"
+    },
+    {
+     "title": "ERCOT Market Notice M-A030226-01 Updates to ADER Pilot Participation Limits",
+     "url": "https://www.ercot.com/services/comm/mkt_notices/M-A030226-01"
+    },
+    {
+     "title": "ERCOT Board Item 4.3 - ADER Pilot Project Phase 3 (June 2025)",
+     "url": "https://www.ercot.com/files/docs/2025/06/16/4.3-Aggregate-Distributed-Energy-Resource-ADER-Pilot-Project-Phase-3.pdf"
+    },
+    {
+     "title": "EnergyChoiceMatters - ERCOT recommends non-LSE QSEs in ADER pilot (2025-06-20)",
+     "url": "http://www.energychoicematters.com/stories/20250620e.html"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Cap/QSE-limit from ERCOT market notice title + summary; Phase 3 NCLR details from Board item; minimum aggregation from secondary summary."
+  },
+  {
+   "id": "tx-ercot-load-resource-as",
+   "name": "ERCOT Load Resources in RRS / ECRS / Non-Spin (post RTC+B)",
+   "state": "TX",
+   "utility_ids": [],
+   "administrator": "ERCOT via QSE",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "RTC+B (real-time co-optimization + single-model batteries) went live 2025-12-05. AS now co-optimized in real time; DA and RT AS prices both settle.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Non-Controllable Load Resources (under-frequency relay) for RRS/ECRS/Non-Spin; Controllable Load Resources can provide Reg/RRS/ECRS/Non-Spin. Requires QSE, telemetry, metering. Min size 100 kW not re-verified this session."
+   },
+   "valuation": {
+    "method": "per_mwh",
+    "rate": null,
+    "unit": "$/MW-h of AS capacity",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "MW awarded per hour",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Price context: DA Non-Spin averaged $3.8/MW-h in last 3 weeks of Dec 2025 (vs $2.2 in prior 3 months); RT AS clearing prices near zero (~$0.5/MW-h). Illustrative only: $3.8/MW-h x 8,760 h = $33.3/kW-yr if sustained all year (it was not; AS prices have been declining as BESS fleet grows)."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Hourly awards",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Seconds (RRS UFR) to 10-30 min (ECRS/Non-Spin)",
+    "baseline_or_mv": "Telemetry"
+   },
+   "stacking": {
+    "compatible_with": [
+     "4CP management outside award hours"
+    ],
+    "conflicts_with": [
+     "tx-ercot-ers"
+    ],
+    "notes": "Post-RTC+B state-of-charge duration requirements for AS make 2-3 h BTM products adequate for Non-Spin/ECRS. Conflicts as researched: tx-ercot-ers same MW"
+   },
+   "vpp_relevance": "Accessible via ADER or individual Load Resource registration for larger sites.",
+   "sources": [
+    {
+     "title": "Modo Energy - ERCOT December 2025: first month of RTC+B",
+     "url": "https://modoenergy.com/research/en/ercot-december-benchmark-rtcb-ancillary-service-dart-trading"
+    },
+    {
+     "title": "Grid Status - RTC+B, 60 days later in ERCOT",
+     "url": "https://blog.gridstatus.io/rtc-b-60-days-later-in-ercot/"
+    },
+    {
+     "title": "ERCOT - Real-Time Co-optimization + Batteries education",
+     "url": "https://www.ercot.com/files/docs/2025/07/09/Real-Time-Co-Optimization-Overview.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Prices from Modo Energy (reputable secondary)."
+  },
+  {
+   "id": "tx-backup-power-package",
+   "name": "Texas Backup Power Package (TBPP) Program - Texas Energy Fund",
+   "state": "TX",
+   "utility_ids": [],
+   "administrator": "PUCT",
+   "category": "resilience",
+   "status": "pending_launch",
+   "status_notes": "PUCT adopted the TBPP rule on 2026-05-07; $1.8B allocation; application schedule not announced as of sources seen.",
+   "eligibility": {
+    "customer_classes": [
+     "Critical facilities (hospitals, assisted living, police/fire, emergency comms, cooling/heating centers, shelters, water/wastewater, other community-service sites)"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 48,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": true,
+    "requires_ul9540": null,
+    "other": "Standalone behind-the-meter backup package combining natural gas or propane generation, battery storage and solar; must run >=48 continuous hours without refueling. Battery-only systems do not qualify. Statutory limits on grid/market use of the package not verified."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": 500,
+    "unit": "$/kW",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "package capacity (kW)",
+    "duration_basis_hr": 48,
+    "cap": "Grant up to $500/kW plus forgivable/low-cost loans for balance",
+    "tiers": [],
+    "term_years": null,
+    "notes": ""
+   },
+   "dispatch": {
+    "season": null,
+    "window": "Outages/emergencies",
+    "event_duration_hr": 48,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": "Conflicts as researched: Possibly wholesale/DR participation - verify statute/rule"
+   },
+   "vpp_relevance": "Limited; resilience-focused.",
+   "sources": [
+    {
+     "title": "PUCT news release - PUCT Adopts Rule for Texas Backup Power Package Program (2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/agency/resources/pubs/news/2026/PUCT-Adopts-Rule-for-Texas-Backup-Power-Package-Program.pdf"
+    },
+    {
+     "title": "Odessa American - PUCT adopts rule for TBPP",
+     "url": "https://www.oaoa.com/local-news/government/puct-adopts-rule-for-texas-backup-power-package-program/"
+    },
+    {
+     "title": "Strategic Partnerships - Texas Backup Power Program 2026 update",
+     "url": "https://www.spartnerships.com/texas-backup-power-program-2026-update/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Rule adoption date and $500/kW from PUCT news release title + secondary summaries. Not modeled: requires a gas/propane + solar + storage package with 48 h autonomy; battery-only systems do not qualify."
+  },
+  {
+   "id": "tx-austin-energy-storage-dr",
+   "name": "Austin Energy battery/DR programs (one-line)",
+   "state": "TX",
+   "utility_ids": [
+    "austin-energy"
+   ],
+   "administrator": "Austin Energy",
+   "category": "demand_response",
+   "status": "pilot",
+   "status_notes": "Power Partner Battery Pilot (2026) is residential: $500 upfront, up to 1,500 systems, ~$300+/yr avg for dispatch. Commercial customer-owned battery/VPP offerings were in planning (2025-2027); C&I storage incentive rates not found.",
+   "eligibility": {
+    "customer_classes": [
+     "Residential (pilot)",
+     "C&I (planned)"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "No verified C&I $/kW."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Watch for commercial VPP launch.",
+   "sources": [
+    {
+     "title": "Austin Energy - Power Partner Battery Pilot launch (2026)",
+     "url": "https://austinenergy.com/about/news/news-releases/2026/Austin-Energy-launches-innovative-Power-Partner-Battery-Pilot-program"
+    },
+    {
+     "title": "Austin Monitor - Incentives for customer-owned batteries in Austin Energy pipeline (2025-02)",
+     "url": "https://austinmonitor.com/stories/2025/02/incentives-for-customer-owned-batteries-among-new-programs-in-austin-energys-pipeline/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "C&I details not found."
+  },
+  {
+   "id": "tx-cps-commercial-dr",
+   "name": "CPS Energy Commercial Demand Response (one-line)",
+   "state": "TX",
+   "utility_ids": [
+    "cps-energy"
+   ],
+   "administrator": "CPS Energy",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Winter C&I DR: $45/kW for 30-minute response, $40/kW for 60-minute response; up to 40 hours across up to 10 requests. Summer C&I DR terms not verified. No BTM storage-specific incentive found.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 45,
+    "unit": "$/kW-season (winter)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": 40,
+    "kw_basis": "verified kW reduction",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "30-min response",
+      "rate": 45,
+      "conditions": "winter"
+     },
+     {
+      "label": "60-min response",
+      "rate": 40,
+      "conditions": "winter"
+     }
+    ],
+    "term_years": 1,
+    "notes": "40 h across up to 10 requests implies ~4 h average per request (derived, not a stated event length)."
+   },
+   "dispatch": {
+    "season": "Winter",
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": 10,
+    "typical_events_per_year": null,
+    "notice": "30 or 60 minutes",
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Municipal program; aggregation terms unknown.",
+   "sources": [
+    {
+     "title": "San Antonio Report - CPS Energy winter demand response program",
+     "url": "https://sanantonioreport.org/cps-energy-winter-demand-response-program-explainer/"
+    },
+    {
+     "title": "Piclo - CPS Energy Commercial Demand Response",
+     "url": "https://www.piclo.com/opportunities/cps-energy-commercial-demand-response"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "News-source summary; program year not confirmed."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "ercot-oncor-4cp-value-2026",
+   "label": "Oncor Secondary >10 kW IDR transmission charge annualized",
+   "value": 72.61,
+   "unit": "$/kW-yr",
+   "period": "2026 (eff. 2026-08-01)",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - Oncor (ftp.puc.texas.gov)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/Oncor_Rate_Report.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "$6.050798 x 12."
+  },
+  {
+   "id": "ercot-cnp-4cp-value-2026",
+   "label": "CenterPoint Secondary >10 kVA IDR TCRF annualized",
+   "value": 75.27,
+   "unit": "$/kVA-yr",
+   "period": "2026-07-01 onward",
+   "sources": [
+    {
+     "title": "PUCT TDU Rate Report - CenterPoint Energy Houston Electric (07/1/2026)",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/industry/electric/rates/tdr/tdu/CenterPoint_Rate_Report.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "$6.2725 x 12."
+  },
+  {
+   "id": "ercot-aep-4cp-value-2026",
+   "label": "AEP Texas Secondary >10 kW TCRF annualized",
+   "value": 72.19,
+   "unit": "$/kW-yr",
+   "period": "eff. 2026-03-20 (subject to refund)",
+   "sources": [
+    {
+     "title": "PUCT filing, Project 58511 item 35 (filed 2026-02-20) - AEP Texas TCRF",
+     "url": "https://interchange.puc.texas.gov/Documents/58511_35_1590031.PDF"
+    }
+   ],
+   "confidence": "low",
+   "notes": "$6.016059 x 12; alternate $6.246357 x 12 = $74.96."
+  },
+  {
+   "id": "ercot-dam-nonspin-dec2025",
+   "label": "ERCOT DA Non-Spin average, last 3 weeks of Dec 2025 (first month of RTC+B)",
+   "value": 3.8,
+   "unit": "$/MW-h",
+   "period": "2025-12",
+   "sources": [
+    {
+     "title": "Modo Energy - ERCOT December 2025: first month of RTC+B",
+     "url": "https://modoenergy.com/research/en/ercot-december-benchmark-rtcb-ancillary-service-dart-trading"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Prior 3 months averaged $2.2/MW-h; RT AS ~ $0.5/MW-h."
+  },
+  {
+   "id": "ercot-bess-rev-ttm-mar2026",
+   "label": "ERCOT FTM BESS revenue benchmark, trailing 12 months to Mar 2026",
+   "value": 2.37,
+   "unit": "$/kW-month",
+   "period": "2025-04 to 2026-03",
+   "sources": [
+    {
+     "title": "Modo Energy - ME BESS ERCOT May 2026",
+     "url": "https://modoenergy.com/research/en/ercot-bess-benchmark-may-2026-revenues-below-12-month-average"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Feb 2026 low $1.28/kW-month; Apr 2026 $3.12/kW-month (Modo). Upper bound context for wholesale value of a BTM fleet."
+  },
+  {
+   "id": "ercot-tb1-spread-jun2026",
+   "label": "ERCOT DA TB1 spread average, June 2026",
+   "value": 28,
+   "unit": "$/MWh",
+   "period": "2026-06",
+   "sources": [
+    {
+     "title": "Modo Energy - ERCOT June 2026 benchmark",
+     "url": "https://modoenergy.com/research/en/ercot-june-2026-benchmark-spreads-fall-50-battery-bess-revenues-cycling"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Down 50% y/y; RT TB1 $37/MWh. May 2026: RT TB1 $40, DA TB1 $41/MWh."
+  },
+  {
+   "id": "ercot-ers-cap",
+   "label": "ERCOT ERS expenditure cap (12 months)",
+   "value": 75000000,
+   "unit": "$",
+   "period": "rolling",
+   "sources": [
+    {
+     "title": "16 TAC 25.507 ERCOT Emergency Response Service",
+     "url": "https://www.puc.texas.gov/agency/rulesnlaws/subrules/electric/25.507/"
+    },
+    {
+     "title": "PUCT filing Project 55999 item 114 (2025-04-10) - ERS 2024 expenditure",
+     "url": "https://interchange.puc.texas.gov/Documents/55999_114_1488494.PDF"
+    }
+   ],
+   "confidence": "high",
+   "notes": "+ up to $25M for renewals; 2024 spend $72,741,500.19."
+  },
+  {
+   "id": "tx-tdu-secondary-allin-demand-mar2026",
+   "label": "All-in secondary >10 kW TDU demand rates (Oncor/CNP/AEP-C/AEP-N/TNMP)",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "eff. 2026-03-01",
+   "sources": [
+    {
+     "title": "ElectricityPlans - Texas TDU Commercial Delivery Rates [secondary]",
+     "url": "https://electricityplans.com/texas/tdu-commercial-delivery-rates/"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Secondary site lists: Oncor 11.272871; CenterPoint 10.103698; AEP Central 12.552727; AEP North 12.301273; TNMP 14.870218 ($/kW). Basis (NCP vs 4CP, kW vs kVA) unclear - context only."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "tx-25211-precert-500kw",
+   "topic": "interconnection",
+   "title": "PUCT 25.211 no-study-fee screen for pre-certified DG <=500 kW (radial)",
+   "rule": "Utility may not charge a pre-interconnection study fee for pre-certified DG up to 500 kW exporting <=15% of feeder total load and contributing <=25% of max short-circuit current on a radial feeder.",
+   "threshold": {
+    "metric": "kW",
+    "value": 500,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Keep a site's inverter nameplate <=500 kW with pre-certified (UL 1741 listed) equipment to stay on the cheapest/fastest path: e.g., up to 2 x 200 kW units + 1 x 65 kW (465 kW).",
+   "applies_to": "Oncor, CenterPoint, AEP Texas, TNMP (PUCT-regulated); not munis",
+   "sources": [
+    {
+     "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-25211-scope-10mw",
+   "topic": "interconnection",
+   "title": "25.211 covers on-site DG up to 10 MW at distribution voltage",
+   "rule": "Larger DG falls outside the DG rule and ERCOT generation-resource processes apply.",
+   "threshold": {
+    "metric": "kW",
+    "value": 10000,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Not binding for C&I BTM sizes.",
+   "applies_to": "PUCT-regulated TDUs",
+   "sources": [
+    {
+     "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-network-secondary",
+   "topic": "network_grid",
+   "title": "Network-secondary locations fail radial screens",
+   "rule": "Network-served sites (downtown Dallas/Fort Worth/Houston/Austin/San Antonio cores) do not qualify for the radial no-study screen and are studied case-by-case; non-export with fast reverse-power protection is normally required.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Assume strictly non-export, possibly a min-import setpoint; expect study cost/time.",
+   "applies_to": "Urban network areas",
+   "sources": [
+    {
+     "title": "16 TAC 25.211 Interconnection of On-Site Distributed Generation",
+     "url": "https://ftp.puc.texas.gov/public/puct-info/agency/rulesnlaws/subrules/electric/25.211/25.211.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-ercot-sodg-1mw",
+   "topic": "interconnection",
+   "title": "ERCOT registration: SODG required for >1 MW to 10 MW exporting DG",
+   "rule": "DG >1 MW and up to 10 MW capable of net export to distribution (<=60 kV) must register as a Settlement Only Distribution Generator (SODG) unless it registers as a DGR; DG <=1 MW may optionally register as SODG; >10 MW must register as a Generation Resource (DGR). Non-exporting BTM storage need not register.",
+   "threshold": {
+    "metric": "kW",
+    "value": 1000,
+    "comparison": "max",
+    "scope": "per site (export-capable nameplate)"
+   },
+   "impact_on_sizing": "Keep export-capable sites <=1 MW or non-export to avoid ERCOT registration; to earn wholesale revenue from smaller sites use ADER/Load Resource via a QSE.",
+   "applies_to": "ERCOT region",
+   "sources": [
+    {
+     "title": "ERCOT - Distributed Generation registration",
+     "url": "https://www.ercot.com/services/rq/re/dgresource"
+    },
+    {
+     "title": "ERCOT - Resource Entities",
+     "url": "https://www.ercot.com/services/rq/re"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-ifc2021-1207-unit-50kwh",
+   "topic": "fire_code",
+   "title": "IFC 2021 §1207: ESS unit max 50 kWh indoors (3 ft spacing) unless large-scale fire testing",
+   "rule": "Indoor ESS units limited to 50 kWh each and separated by 3 ft unless approved based on UL 9540A large-scale fire testing. Lithium-ion ESS >20 kWh triggers §1207.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "All four products (150/200/418/600 kWh) exceed 50 kWh per unit -> indoor placement needs UL 9540A-based approval; plan outdoor pads.",
+   "applies_to": "Dallas (2021 IFC eff. 2023-02-10), Fort Worth (2021 IFC eff. 2022-04-01), Houston & San Antonio (2021 IFC w/ local amendments); Austin on 2024 IFC (eff. 2025-07-10)",
+   "sources": [
+    {
+     "title": "2021 International Fire Code (UpCodes)",
+     "url": "https://up.codes/code/international-fire-code-ifc-2021"
+    },
+    {
+     "title": "Zion - Texas Fire Code Explained (2026) [secondary]",
+     "url": "https://zion.us/resources/texas-fire-code/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "unit_max_kwh"
+  },
+  {
+   "id": "tx-ifc-1207-aggregate-600kwh",
+   "topic": "fire_code",
+   "title": "IFC §1207 max aggregate lithium-ion ESS 600 kWh per fire area (indoor)",
+   "rule": "Table 1207.5 caps aggregate lithium-ion ESS at 600 kWh in a fire area unless approved via large-scale fire testing / hazard mitigation analysis.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Indoor rooms limited to e.g. one 600 kWh unit or one 418 kWh + one 150 kWh; larger stacks go outdoors or in dedicated ESS enclosures.",
+   "applies_to": "Same jurisdictions as above (verify local amendments)",
+   "sources": [
+    {
+     "title": "2021 International Fire Code (UpCodes)",
+     "url": "https://up.codes/code/international-fire-code-ifc-2021"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "indoor_max_kwh"
+  },
+  {
+   "id": "tx-ifc-outdoor-10ft",
+   "topic": "fire_code",
+   "title": "IFC §1207 outdoor separation ~10 ft from buildings/lot lines/egress (reducible with LSFT)",
+   "rule": "Outdoor ESS near exposures: separate ~10 ft from lot lines, public ways, buildings, combustibles and egress, unless reduced based on large-scale fire testing; remote outdoor locations defined as >=100 ft from exposures.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Parking-lot/pad space and setbacks often cap the number of outdoor cabinets at constrained retail sites.",
+   "applies_to": "IFC 2021/2024 jurisdictions",
+   "sources": [
+    {
+     "title": "2021 International Fire Code (UpCodes)",
+     "url": "https://up.codes/code/international-fire-code-ifc-2021"
+    },
+    {
+     "title": "Austin Fire Department - 2024 IFC adoption",
+     "url": "https://services.austintexas.gov/edims/document.cfm?id=432220"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "outdoor_setback_ft"
+  },
+  {
+   "id": "tx-austin-ifc2024",
+   "topic": "fire_code",
+   "title": "Austin adopted 2024 IFC with local amendments (eff. 2025-07-10)",
+   "rule": "2024 IFC ESS provisions (Section 1207) apply in Austin; local amendments not reviewed.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Expect UL 9540 listing and UL 9540A data to be required for permitting.",
+   "applies_to": "City of Austin",
+   "sources": [
+    {
+     "title": "Austin Fire Department - 2024 IFC adoption",
+     "url": "https://services.austintexas.gov/edims/document.cfm?id=432220"
+    },
+    {
+     "title": "City of Austin - Fire Building Code resources",
+     "url": "https://www.austintexas.gov/department/fire-building-code"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-gulf-flood-wind",
+   "topic": "permitting",
+   "title": "Gulf Coast flood & hurricane siting (Houston/CNP, AEP Central coast, TNMP Gulf Coast)",
+   "rule": "Floodplain rules (e.g., City of Houston Chapter 19 post-Harvey) and coastal wind-load design apply to outdoor ESS pads; exact elevation/wind requirements not verified this session.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "May force elevated pads/rooftop placement, reducing feasible kWh; insurance may require flood-zone avoidance.",
+   "applies_to": "centerpoint-houston, aep-texas-central (coastal), tnmp (Gulf Coast)",
+   "sources": [
+    {
+     "title": "CenterPoint Houston Electric Rates & Tariffs",
+     "url": "https://www.centerpointenergy.com/en-us/our-services/rates-tariffs/houston-electric"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-ader-min-agg",
+   "topic": "program_rule",
+   "title": "ADER aggregation / ERS minimum 100 kW",
+   "rule": "ERS resources and ADER aggregations need >=100 kW (aggregations of smaller sites allowed via QSE).",
+   "threshold": {
+    "metric": "kW",
+    "value": 100,
+    "comparison": "min",
+    "scope": "per aggregation"
+   },
+   "impact_on_sizing": "Single 30 kW/65 kW sites must be aggregated.",
+   "applies_to": "ERCOT",
+   "sources": [
+    {
+     "title": "ERCOT - Aggregate Distributed Energy Resource (ADER) Pilot Project",
+     "url": "https://www.ercot.com/mktrules/pilots/ader"
+    },
+    {
+     "title": "ERCOT - Emergency Response Service",
+     "url": "https://www.ercot.com/services/programs/load/eils"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "tx-idr-700kw",
+   "topic": "program_rule",
+   "title": "IDR meter (and 4CP billing) mandatory above 700 kW",
+   "rule": "IDR required for premises exceeding 700 kW at least twice in 12 months; IDR customers are billed transmission on 4CP; non-IDR on NCP.",
+   "threshold": {
+    "metric": "kW",
+    "value": 700,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Sites below 700 kW without IDR earn transmission savings on NCP rather than 4CP - changes optimal dispatch (peak shaving every month vs 4 summer intervals).",
+   "applies_to": "Oncor (confirmed); standard across ERCOT TDUs (assumed)",
+   "sources": [
+    {
+     "title": "Oncor - IDR Versus Non-IDR Profiled Premises",
+     "url": "https://www.oncor.com/content/dam/oncorwww/documents/partners/rep/reference-materials/IDR%20Versus%20Non-IDR%20Profiled%20Premises.pdf.coredownload.pdf"
+    },
+    {
+     "title": "Oncor Tariff for Retail Delivery Service (Rev. 22, eff. 2026-06-01)",
+     "url": "https://www.oncor.com/content/dam/oncorwww/documents/about-us/regulatory/tariff-and-rate-schedules/Tariff%20for%20Retail%20Delivery%20Service.pdf.coredownload.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "TDU large-customer manager (Oncor)",
+   "topic": "4CP is billed a year later and is all-or-nothing per interval",
+   "severity": "caution",
+   "note": "The 4CP determinant is the average of your 15-min load at ERCOT's June-September monthly peaks of the PRIOR year, billed in all 12 months of the next year (~$6.05/kW-month on Oncor secondary IDR, ~$72.6/kW-yr). Miss one of the four intervals and you lose a quarter of the value for a full year - customers need a peak-alert service and to hold SOC on every candidate afternoon.",
+   "persona_id": "oncor"
+  },
+  {
+   "persona": "TDU large-customer manager (Oncor)",
+   "topic": "Ratchet and interconnection paperwork",
+   "severity": "caution",
+   "note": "Distribution billing kW is the higher of current NCP or 80% of the prior 11 months' max, so a single summer spike (or an uncapped charging event) haunts the bill for 11 months. Non-export storage still needs an Oncor DG interconnection application under 25.211 - customers who skip it risk disconnection notices.",
+   "persona_id": "oncor"
+  },
+  {
+   "persona": "TDU large-customer manager (CenterPoint)",
+   "topic": "kVA billing and TCRF volatility",
+   "severity": "info",
+   "note": "CenterPoint bills Secondary >10 kVA on kVA, with $0 base transmission and all transmission in Rider TCRF ($6.2725/4CP kVA from 7/1/2026), which resets twice a year. Model savings in kVA and use the inverter's reactive capability where the interconnection agreement allows.",
+   "persona_id": "centerpoint"
+  },
+  {
+   "persona": "TDU large-customer manager (CenterPoint)",
+   "topic": "Load management is cheap capacity, but small",
+   "severity": "info",
+   "note": "CLM pays up to $40/kW with a 50 kW minimum and 30-minute notice (Jun-Sep, weekdays 1-7 pm, 2 tests + up to 4 events). It's a nice adder that aligns with 4CP days, but budgets are limited and battery eligibility/baselines should be confirmed with the program before counting it in the pro forma.",
+   "persona_id": "centerpoint"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Pass-through decides who keeps 4CP and demand savings",
+   "severity": "critical",
+   "note": "4CP and NCP savings only reach the customer if the REP contract passes TDU charges through at cost; on bundled fixed all-in contracts the REP pockets them until renewal. Check every site's contract for 'TDSP pass-through' language before including transmission savings, and expect REPs to offer 4CP-sharing products.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Index vs fixed and ADER economics",
+   "severity": "caution",
+   "note": "Energy arbitrage and price-spike avoidance only pay customers on index/block-and-index products; on fixed-price contracts the value sits with the REP/QSE. ADER Phase 3 (500 MW cap, third-party QSE model) opens wholesale revenue, but FTM batteries only earned ~$2.4/kW-month TTM through Mar 2026 and RT AS prices are near zero after RTC+B - after QSE fees and telemetry costs, wholesale is a modest adder vs 4CP.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "SB 6 4CP reform risk",
+   "severity": "critical",
+   "note": "PUCT must rewrite transmission cost recovery by 12/31/2026 (Project 58484); the draft report favors more coincident peaks, longer intervals and a nonbypassable share. Underwrite 4CP savings only through 2027 at most and stress-test a 12CP/nonbypassable case that could cut the stream by half or more.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Ratchets punish availability failures and charging peaks",
+   "severity": "critical",
+   "note": "With an 80%/11-month ratchet and any-hour 15-min NCP, the battery must be available on the annual peak day and must never create a new peak while recharging - enforce a site-load-aware charge ceiling and keep 10-20% SOC reserve. A single BMS fault on the peak day can wipe out most of the year's distribution savings.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Hurricane/flood design on the Gulf Coast",
+   "severity": "critical",
+   "note": "In CenterPoint, coastal AEP Central and TNMP Gulf territory, site pads above local floodplain elevation requirements, anchor for coastal wind loads, and plan for water ingress and post-storm de-energized inspection. Islanding for resilience needs a transfer switch/microgrid controller and TDU approval - a grid-following BTM battery will not back up the site after a hurricane by default.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "4CP window vs product duration",
+   "severity": "info",
+   "note": "ERCOT's monthly peak interval is uncertain within a multi-hour late-afternoon/evening window, so 2-hour products (200 kW/418 kWh) may need to discharge at partial power across a wider window; the 3-5 h products (200/600, 30/150) are better suited to 4CP coverage.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "Oncor: confirm whether a separate Rider TCRF $/4CP-kW is billed in addition to the $6.050798/4CP-kW Transmission System Charge, and the status of Oncor's base-rate case (Docket 58306) and Rider IS - check the PUCT Oncor Rate Report and Oncor tariff Section 6.1.1.",
+  "CenterPoint, AEP Texas and TNMP: confirm the demand ratchet terms (pct/lookback) and any low-load-factor ratchet exemptions in each Secondary >10 kW (TNMP >5 kW) tariff.",
+  "AEP Texas: distribution system charge $/kW and post-2026-04-30 TCRF values (two differing 2026 values seen: $6.016059 vs $6.246357).",
+  "TNMP: 2026 distribution and transmission/TCRF rates (only Sept-2025 values found; $3.60/4CP kW looks low).",
+  "Primary-service rates for all TDUs not verified.",
+  "Whether AMS-metered non-IDR customers below 700 kW can opt into 4CP billing (voluntary IDR) - affects dispatch strategy for small sites.",
+  "2026 ERS clearing prices by Time Period and MW procured (ERCOT MIS ERS Procurement Summary) - needed to compute $/kW-yr.",
+  "2026 TDU CLM SOP details: Oncor $/kW (only historical ~$30 seen), event durations, battery eligibility and ERS/LR exclusions for all four TDUs.",
+  "ADER Phase 3: exact per-premise and aggregate minimums, single-load-zone requirement, and whether premises with BTM storage need TDU sign-off.",
+  "TBPP: application window, whether TBPP-funded equipment may also participate in DR/wholesale markets, and grant cap details.",
+  "Local ESS amendments in Houston, San Antonio, Dallas, Fort Worth fire codes and Houston floodplain elevation requirements for outdoor equipment.",
+  "PUCT Project 54233 (DER interconnection rewrite) adoption status and new <=250 kW / >250 kW process timelines.",
+  "Outcome of SB 6 transmission cost allocation rulemaking (Project 58484) - due by 2026-12-31."
+ ]
+}

@@ -1,0 +1,4012 @@
+{
+ "code": "CA",
+ "name": "California",
+ "researched_on": "2026-10-01",
+ "summary": "California IOU territory (SCE, PG&E, SDG&E) still offers some of the highest C&I demand charges in the US: an all-hours facilities/max-demand charge plus time-related demand charges in a 5-hour 4-9pm peak window. That makes bill-management (demand-charge reduction plus TOU arbitrage) the core value stream. The 4-9pm window is energy-limited for 2-hour products: a 200 kW/418 kWh unit can hold only about 84 kW flat across the full 5-hour window. The upfront-incentive landscape changed sharply. All ratepayer-funded SGIP budgets, including Large-Scale Storage, Non-Residential Storage Equity and Equity Resiliency, closed to new applications on 2025-12-31 (D.25-12-003; PU Code 379.6 sunset 2026-01-01). The remaining GGRF/AB 209 SGIP money is for low-income residential customers only. On the CEC side, the 2026 DSGS (Fifth Edition, adopted 2026-04-27) suspended Option 1, capped Option 2 at $1M, and limited Option 3 storage-VPP participation to aggregations that were active in October 2025. Absent new 2027 funding, the realistic stackable revenues for a new developer are therefore bill savings, ELRP ($2/kWh, pilot extended through 2027), CBP/CAISO PDR via an aggregator, and the federal ITC. Key site risks are the 2022/2025 CFC Section 1207 limits on indoor ESS (50 kWh per unit, 600 kWh Li-ion per fire area without approval), long LAFD/LACoFD/SFFD plan checks, Rule 21 non-export review, and secondary networks in downtown SF/Oakland/San Diego. Municipal utilities (LADWP, SMUD and others) are out of scope: they have their own tariffs, and the IOU programs and Rule 21 do not apply there.",
+ "default_energy_price_usd_per_kwh": 0.25,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "sce",
+   "name": "Southern California Edison",
+   "state": "CA",
+   "iso": "CAISO",
+   "load_zone": "SP15 (SCE TAC area; DLAP_SCE-APND)",
+   "retail_choice": true,
+   "default_supply_notes": "Bundled customers pay SCE generation embedded in TOU energy and time-related demand charges. Many C&I sites are served by a CCA for generation, e.g. Clean Power Alliance, Orange County Power Authority, Desert Community Energy, San Jacinto Power, Rancho Mirage Energy Authority, 3CE, Santa Barbara Clean Energy, Lancaster, Pomona/PRIME. CCA customers keep SCE delivery charges, including the Facilities-Related Demand (FRD) charge, and pay a PCIA/CRS. Generation TOU and generation demand components are replaced by the CCA's rate, which usually mirrors SCE TOU periods. Direct Access is capped statewide, so it is not generally available to new customers.",
+   "network_grid_notes": "SCE has limited secondary network service compared with PG&E or SDG&E. Some dense downtown or commercial cores may be served by network or spot-network systems. Confirm with SCE Grid Interconnection before sizing, because network PCCs fail standard Rule 21 Fast Track screens and require supplemental study, usually with strict non-export and minimum-import requirements. Not verified for specific cities.",
+   "interconnection": {
+    "rule_name": "SCE Electric Rule 21 (CPUC-jurisdictional interconnection, non-NEM and NEM); Rule 15/16 for load-side service upgrades driven by battery charging",
+    "tracks": [
+     {
+      "name": "Fast Track - Initial Review (Screens A-M)",
+      "max_kw": null,
+      "conditions": "For certified, inverter-based Generating Facilities. Non-exporting storage that passes Screen I (non-export) and the other screens proceeds to an Interconnection Agreement without study. Size eligibility for Fast Track depends on screens and voltage; not re-verified.",
+      "typical_timeline": "Initial Review is commonly cited as about 15 business days after a complete application (not re-verified 2026)",
+      "application_fee": "Non-NEM Interconnection Request fee commonly cited as $800 (NOT re-verified this session)"
+     },
+     {
+      "name": "Fast Track - Supplemental Review",
+      "max_kw": null,
+      "conditions": "Used when a facility fails one or more Initial Review screens, e.g. network secondary, penetration or short-circuit contribution.",
+      "typical_timeline": "Commonly cited as about 20 business days plus utility queue delays (not re-verified)",
+      "application_fee": "Supplemental Review fee commonly cited as $2,500 (NOT re-verified this session)"
+     },
+     {
+      "name": "Detailed Study (Independent Study Process / Distribution Group Study / Cluster)",
+      "max_kw": null,
+      "conditions": "For exporting or larger facilities, or those that fail Supplemental Review. Not typical for non-export BTM C&I storage.",
+      "typical_timeline": "Months to more than a year",
+      "application_fee": "Study deposits apply; amounts not verified"
+     }
+    ],
+    "non_export_path": "Rule 21 Screen I lets non-exporting facilities qualify by one of several options: (1) reverse-power protection, (2) minimum-power (minimum import) protection, (3) a relative-size limit versus the customer's minimum load, or (4) certified non-export equipment, i.e. a UL 1741-certified inverter with a Power Control System evaluated under UL 1741 CRD/PCS that limits export to near zero. The exact relay settings and percentage thresholds were not re-verified this session; confirm against the current Rule 21 Section G. Battery charging from the grid is load and is handled under Rule 15/16 and service-capacity rules, not Rule 21.",
+    "storage_specific_notes": "Smart-inverter (UL 1741 SA/SB, IEEE 1547) requirements apply to Rule 21 inverters. Non-export storage-only projects are usually the fastest path. Paired PV under the Net Billing Tariff (NBT) adds NEM/NBT-specific rules. Keep battery charging plus existing load within service and transformer capacity to avoid Rule 15/16 upgrade cost.",
+    "sources": [
+     {
+      "title": "SCE Electric Rule 21 (canonical tariff-book location; NOT opened - egress blocked)",
+      "url": "https://www.sce.com/regulatory/tariff-books/rules"
+     },
+     {
+      "title": "SCE business rates tariff book (seen in search results)",
+      "url": "https://www.sce.com/regulatory/tariff-books/rates-pricing-choices/business-rates"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "SCE Electric Rate Options summary (Aug 2025)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/2025_Summary_of_Available_Residential_and_Nonresidential_Rates.pdf"
+    },
+    {
+     "title": "SCE Business Time-of-Use Rate Plans",
+     "url": "https://www.sce.com/business/rates-financing/rate-plans/business-time-of-use-rate-plans"
+    },
+    {
+     "title": "SCE CCA Joint Rate Comparisons (e.g., CCCE)",
+     "url": "https://www.sce.com/customer-service-center/community-choice-aggregation/sce-ccce-joint-rate-comparisons"
+    }
+   ]
+  },
+  {
+   "id": "pge",
+   "name": "Pacific Gas and Electric Company",
+   "state": "CA",
+   "iso": "CAISO",
+   "load_zone": "NP15 / ZP26 (PG&E TAC area; DLAP_PGAE-APND)",
+   "retail_choice": true,
+   "default_supply_notes": "Bundled B-series rates embed PG&E generation in TOU energy and in part of the demand charges. A very large share of C&I load is served by CCAs, e.g. Ava Community Energy, MCE, Peninsula Clean Energy, SVCE, San Jose Clean Energy, CleanPowerSF, Sonoma Clean Power, 3CE. CCA customers keep PG&E distribution and transmission charges, including the maximum-demand charge and the distribution part of the peak demand charges, and pay a PCIA. CCA generation rates usually mirror PG&E TOU periods; some carry generation demand charges. Direct Access is capped.",
+   "network_grid_notes": "PG&E serves downtown San Francisco and downtown Oakland with secondary grid and spot networks. Network PCCs generally fail Rule 21 Fast Track and need supplemental or detailed review. Expect strict non-export, minimum-import and network-protector coordination requirements, plus small allowable generating capacity relative to minimum load. Treat network sites as high interconnection risk for BESS sizing. Detailed PG&E network limits were not verified (pge.com blocked).",
+   "interconnection": {
+    "rule_name": "PG&E Electric Rule 21; Rules 15/16 for load-side upgrades",
+    "tracks": [
+     {
+      "name": "Fast Track - Initial Review",
+      "max_kw": null,
+      "conditions": "Same statewide Rule 21 structure as SCE and SDG&E. Non-export storage normally goes through Screen I options.",
+      "typical_timeline": "Commonly cited as about 15 business days (not re-verified)",
+      "application_fee": "Commonly cited as $800 non-NEM (NOT re-verified)"
+     },
+     {
+      "name": "Fast Track - Supplemental Review",
+      "max_kw": null,
+      "conditions": "Triggered by screen failure; mandatory in practice for network-served sites",
+      "typical_timeline": "Commonly cited as about 20 business days (not re-verified)",
+      "application_fee": "Commonly cited as $2,500 (NOT re-verified)"
+     },
+     {
+      "name": "Detailed Study",
+      "max_kw": null,
+      "conditions": "Exporting or larger facilities",
+      "typical_timeline": "Months to more than a year",
+      "application_fee": "Deposits; not verified"
+     }
+    ],
+    "non_export_path": "Rule 21 Screen I options: reverse power, minimum power, relative size, or certified non-export PCS (UL 1741 CRD). PG&E typically requires an approved single-line diagram showing the PCS settings and protective functions. Thresholds were not re-verified.",
+    "storage_specific_notes": "PG&E queue durations have been a pain point. Option S eligibility on B-19/B-20 requires the storage to meet a minimum size relative to peak demand (see tariffs). Downtown SF/Oakland network sites need early engagement.",
+    "sources": [
+     {
+      "title": "PG&E Electric Rule 21 (canonical; NOT opened - pge.com blocked)",
+      "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_RULES_21.pdf"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "PG&E Schedule B-19 tariff (canonical; fetch attempted, blocked)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    },
+    {
+     "title": "3CE Rates in PG&E Territory effective 2026-02-15 (seen in search results)",
+     "url": "https://3cenergy.org/wp-content/uploads/2026/02/PGE-Commercial-Website-Rate-Sheet-v29-2026.02.15.pdf"
+    }
+   ]
+  },
+  {
+   "id": "sdge",
+   "name": "San Diego Gas & Electric",
+   "state": "CA",
+   "iso": "CAISO",
+   "load_zone": "SP15 (SDG&E TAC area; DLAP_SDGE-APND)",
+   "retail_choice": true,
+   "default_supply_notes": "Bundled C&I rates (AL-TOU etc.) embed SDG&E commodity (EECC) charges. Most of SDG&E territory is now served by CCAs (San Diego Community Power, Clean Energy Alliance). These customers keep SDG&E UDC delivery charges, including non-coincident and on-peak distribution demand charges, and pay a PCIA. Direct Access is capped.",
+   "network_grid_notes": "Downtown San Diego has secondary network service. Expect the same Rule 21 supplemental-review and non-export constraints as PG&E networks. Not verified in detail.",
+   "interconnection": {
+    "rule_name": "SDG&E Electric Rule 21",
+    "tracks": [
+     {
+      "name": "Fast Track - Initial Review",
+      "max_kw": null,
+      "conditions": "Statewide Rule 21 structure",
+      "typical_timeline": "Commonly cited as about 15 business days (not re-verified)",
+      "application_fee": "Commonly cited as $800 non-NEM (NOT re-verified)"
+     },
+     {
+      "name": "Fast Track - Supplemental Review",
+      "max_kw": null,
+      "conditions": "Screen failures",
+      "typical_timeline": "Commonly cited as about 20 business days (not re-verified)",
+      "application_fee": "Commonly cited as $2,500 (NOT re-verified)"
+     },
+     {
+      "name": "Detailed Study",
+      "max_kw": null,
+      "conditions": "Exporting or larger facilities",
+      "typical_timeline": "Months",
+      "application_fee": "Deposits; not verified"
+     }
+    ],
+    "non_export_path": "Same Screen I non-export options as SCE and PG&E (reverse power, minimum power, relative size, certified UL 1741 CRD PCS).",
+    "storage_specific_notes": "SDG&E has historically had the highest demand charges of the three IOUs, which strengthens the BTM bill-savings case. Confirm network status for downtown sites.",
+    "sources": [
+     {
+      "title": "SDG&E tariff book - Electric Rules (canonical; NOT opened)",
+      "url": "https://tariffsprd.sdge.com/view/tariff/?utilId=SDGE&bookId=ELEC&sectId=ELEC-RULES"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "SDG&E ELRP Group A Terms & Conditions (seen in search results)",
+     "url": "https://www.sdge.com/sites/default/files/ELRP%20TC%20Group%20A.pdf"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "sce-tou-gs-1",
+   "utility_id": "sce",
+   "name": "TOU-GS-1 (General Service, small) - Options E / D",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 20,
+    "text": "Small business customers with maximum demand below 20 kW"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Facilities-Related Demand (Option D only, if applicable)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified whether TOU-GS-1 Option D carries FRD and/or TRD in 2026. Option E is energy-only (no demand charge)."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekdays"
+    },
+    {
+     "label": "Summer mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekends/holidays"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9pm-8am daily"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "8am-4pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Generally a weak storage candidate (under 20 kW). The 30 kW/150 kWh product is oversized for most GS-1 sites, and the main value is TOU arbitrage.",
+   "sources": [
+    {
+     "title": "SCE Rate Schedule TOU-GS-1 fact sheet",
+     "url": "https://www.sce.com/factsheet/rate-schedule-tou-gs-1"
+    },
+    {
+     "title": "SCE Electric Rate Options summary (Aug 2025)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/2025_Summary_of_Available_Residential_and_Nonresidential_Rates.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "The applicability thresholds (<20 / 20-200 / 200-500 / >500 kW) come from search excerpts of SCE material. The TOU periods are the SCE post-2019 business TOU structure; summer on-peak 4-9pm on non-holiday weekdays is confirmed in search excerpts, and the other periods are recalled. No 2026 $ values could be verified: sce.com was blocked by the egress proxy and the search budget was exhausted."
+  },
+  {
+   "id": "sce-tou-gs-2",
+   "utility_id": "sce",
+   "name": "TOU-GS-2 (General Service, medium 20-200 kW) - Option D (demand) / Option E (energy)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 20,
+    "max_kw": 200,
+    "text": "Business customers with maximum demand of 20-200 kW"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Facilities-Related Demand (FRD)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Highest 15-min demand in the billing month, any hour, year-round. Not verified for Option D/E. A prior search excerpt of SCE Schedule TOU-GS-2-RTP (Sheet 74764-E, date unverified) showed an FRD of $23.42/kW; it is indicative only and NOT used here."
+    },
+    {
+     "label": "Time-Related Demand - Summer On-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. TRD is a bundled charge whose generation piece is replaced by CCA rates for CCA customers; the split was not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Time-Related Demand - Winter Mid-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. Per SCE fact-sheet summaries, the winter TRD is billed on Mid-Peak (4-9pm weekday) demand.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays"
+    },
+    {
+     "label": "Summer mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekends/holidays"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9pm-8am daily"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "8am-4pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Option D has higher time-related and facilities-related demand charges and lower $/kWh energy charges. Option E has lower demand charges and higher energy charges. After installing storage, re-run the D versus E comparison, because storage usually favors Option D. California has no customer-level capacity or transmission tag; wholesale capacity value comes through RA contracts and DR programs. CPP may apply (see sce-cpp).",
+   "sources": [
+    {
+     "title": "SCE TOU-GS-2 Rate Fact Sheet (Jul 2025)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/TOU-GS-2_Rate_Fact_Sheet_072025_Accessible.pdf"
+    },
+    {
+     "title": "SCE Schedule TOU-GS-2-RTP (search excerpt with FRD value)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/ELECTRIC_SCHEDULES_TOU-GS-2-RTP.pdf"
+    },
+    {
+     "title": "SCE - Components of your energy bill (FRD vs TRD definitions)",
+     "url": "https://www.sce.com/business/rates/time-of-use/Understanding-Time-Of-Use-Charges"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Search summary of SCE business fact sheets (Jul 2025): TRD applies year-round on the highest demand in On-Peak (summer) and Mid-Peak (winter) hours on NON-HOLIDAY WEEKDAYS. FRD applies to the monthly max demand at any hour. Option D has higher TRD and FRD and lower $/kWh than Option E. The previous CA.json listed a summer mid-peak (weekend) TRD; it was dropped because SCE describes TRD as weekday-only. No 2025/2026 SCE $ values could be verified: sce.com and openei.org are blocked by the egress proxy, search summaries never returned the TOU-GS/TOU-8 rate tables, and the session web-search budget ran out mid-task. Pull the values from the SCE tariff book (ELECTRIC_SCHEDULES_<schedule>.pdf) or a current bill. The structure corrections are from SCE fact-sheet search summaries."
+  },
+  {
+   "id": "sce-tou-gs-3",
+   "utility_id": "sce",
+   "name": "TOU-GS-3 (General Service, 200-500 kW) - Option D / Option E",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 200,
+    "max_kw": 500,
+    "text": "Business customers with maximum demand of 200-500 kW"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Facilities-Related Demand (FRD)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Highest 15-min demand in the billing month, any hour, year-round. Not verified for Option D/E. A TOU-GS-3-RTP sheet (74787-E) exists on sce.com but its values were not surfaced."
+    },
+    {
+     "label": "Time-Related Demand - Summer On-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. TRD is a bundled charge whose generation piece is replaced by CCA rates for CCA customers; the split was not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Time-Related Demand - Winter Mid-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. Per SCE fact-sheet summaries, the winter TRD is billed on Mid-Peak (4-9pm weekday) demand.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays"
+    },
+    {
+     "label": "Summer mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekends/holidays"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9pm-8am daily"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "8am-4pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "This is a sweet spot for 200 kW/418 kWh and 200 kW/600 kWh products. Sites over 200 kW are generally defaulted to Critical Peak Pricing, so reserve battery energy for 4-9pm CPP events. Customers that grow past 500 kW migrate to TOU-8; batteries can help keep a site below the threshold, but migration rules were not verified.",
+   "sources": [
+    {
+     "title": "SCE Business Rate Basics - Rate Schedule TOU-GS-3",
+     "url": "https://www.sce.com/sites/default/files/inline-files/TOU-GS-3%20Rate%20Fact%20Sheet_WCAG.pdf"
+    },
+    {
+     "title": "SCE Electric Rate Options summary (Aug 2025)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/2025_Summary_of_Available_Residential_and_Nonresidential_Rates.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Search summary of SCE business fact sheets (Jul 2025): TRD applies year-round on the highest demand in On-Peak (summer) and Mid-Peak (winter) hours on NON-HOLIDAY WEEKDAYS. FRD applies to the monthly max demand at any hour. Option D has higher TRD and FRD and lower $/kWh than Option E. Summer mid-peak TRD was dropped (weekday-only TRD). No 2025/2026 SCE $ values could be verified: sce.com and openei.org are blocked by the egress proxy, search summaries never returned the TOU-GS/TOU-8 rate tables, and the session web-search budget ran out mid-task. Pull the values from the SCE tariff book (ELECTRIC_SCHEDULES_<schedule>.pdf) or a current bill. The structure corrections are from SCE fact-sheet search summaries."
+  },
+  {
+   "id": "sce-tou-8-d",
+   "utility_id": "sce",
+   "name": "TOU-8 Option D (Large General Service >500 kW, demand-heavy) - Secondary (below 2 kV)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 500,
+    "max_kw": null,
+    "text": "Large C&I customers registering demand above 500 kW. Per a search summary of the SCE TOU-8 fact sheet (Jul 2025), Option D-CPP is the default, and Option D is limited to customers with annual peak demand of 5 MW or less (verify). Separate rate lines for Below 2 kV, 2-50 kV and above 50 kV; this entry is Below 2 kV."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Facilities-Related Demand (FRD)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Highest 15-min demand in the billing month, any hour, year-round; Below 2 kV line. Not verified."
+    },
+    {
+     "label": "Time-Related Demand - Summer On-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. TRD is a bundled charge whose generation piece is replaced by CCA rates for CCA customers; the split was not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Time-Related Demand - Winter Mid-Peak (Option D)",
+     "component": "generation",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm non-holiday weekdays",
+     "notes": "Not verified. Per SCE fact-sheet summaries, the winter TRD is billed on Mid-Peak (4-9pm weekday) demand.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm non-holiday weekdays"
+    },
+    {
+     "label": "Summer mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekends/holidays"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9pm-8am daily"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "8am-4pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "FRD (all hours) and summer on-peak TRD (4-9pm) are the main storage value levers. CPP is the default for this class unless the customer opts out (see sce-cpp). Standby (Schedule S) applicability to storage-only sites was not verified. TOU-8-RTP and TOU-8-S (standby) variants exist.",
+   "sources": [
+    {
+     "title": "SCE Business Rate Basics - Rate Schedule TOU-8",
+     "url": "https://www.sce.com/sites/default/files/inline-files/TOU-8%20Rate%20Fact%20Sheet_WCAG%20(1).pdf"
+    },
+    {
+     "title": "SCE Schedule TOU-8-RTP (structure reference)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/ELECTRIC_SCHEDULES_TOU-8-RTP.pdf"
+    },
+    {
+     "title": "RMEA Commercial Rates effective 2026-03-01 (lists SCE-equivalent TOU-8-SEC-D; seen in search, not opened)",
+     "url": "https://cms2.revize.com/revize/ranchomirageenergyca/RMEA%20Commercial%20Rates_effective%20March%201,%202026.pdf?t=202603251937060"
+    },
+    {
+     "title": "SCE Business Rate Basics - TOU-8 fact sheet (Jul 2025)",
+     "url": "https://www.sce.com/sites/default/files/custom-files/PDF_Files/Business/TOU-8_Rate_Fact_Sheet_072025_Accessible.pdf"
+    },
+    {
+     "title": "SCE Schedule TOU-8 (Scribd copy; seen in search, values not surfaced)",
+     "url": "https://www.scribd.com/document/869623067/ELECTRIC-SCHEDULES-TOU-8"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Search summary of SCE business fact sheets (Jul 2025): TRD applies year-round on the highest demand in On-Peak (summer) and Mid-Peak (winter) hours on NON-HOLIDAY WEEKDAYS. FRD applies to the monthly max demand at any hour. Option D has higher TRD and FRD and lower $/kWh than Option E. Summer mid-peak TRD was dropped (weekday-only TRD). No 2025/2026 SCE $ values could be verified: sce.com and openei.org are blocked by the egress proxy, search summaries never returned the TOU-GS/TOU-8 rate tables, and the session web-search budget ran out mid-task. Pull the values from the SCE tariff book (ELECTRIC_SCHEDULES_<schedule>.pdf) or a current bill. The structure corrections are from SCE fact-sheet search summaries. NOT USED: one sce.com search summary that mixed TOU-8-RTP and TOU-8-RTP-S (standby) sheets of unknown date returned \"Summer On-Peak Time Related $15.17/kW\", \"Winter Mid-Peak $5.10/kW\" and a \"6.03 transmission + 12.94 distribution = 18.97\" component pair, which looks like a Below-2-kV delivery FRD. It could not be attributed to Option D or dated, so it is recorded here only as an order-of-magnitude hint."
+  },
+  {
+   "id": "sce-tou-8-e",
+   "utility_id": "sce",
+   "name": "TOU-8 Option E (Large General Service >500 kW, energy-heavy) - Secondary",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 500,
+    "max_kw": null,
+    "text": "Optional energy-weighted alternative to Option D for >500 kW customers"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Facilities-Related Demand (FRD)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Lower than Option D per SCE fact-sheet language; value not verified. Whether Option E retains any TRD was not verified."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekdays"
+    },
+    {
+     "label": "Summer mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm weekends/holidays"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter mid-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9pm-8am daily"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "8am-4pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "This option is better for arbitrage-heavy dispatch with a 4-9pm energy spread. Storage sites usually do better on Option D. Model both.",
+   "sources": [
+    {
+     "title": "SCE Business Rate Basics - Rate Schedule TOU-8",
+     "url": "https://www.sce.com/sites/default/files/inline-files/TOU-8%20Rate%20Fact%20Sheet_WCAG%20(1).pdf"
+    },
+    {
+     "title": "SCE Option E Tariff (seen in search results)",
+     "url": "https://www.sce.com/sites/default/files/inline-files/Option+E+Tariff.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Only the qualitative D-versus-E trade-off was confirmed. No values."
+  },
+  {
+   "id": "pge-b-1",
+   "utility_id": "pge",
+   "name": "B-1 Small General Service TOU (incl. B-1-ST storage option - verify)",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 75,
+    "text": "Small business customers below about 75 kW (threshold recalled, not verified)"
+   },
+   "effective_date": null,
+   "demand_charges": [],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm (recalled; verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours excl. super-off-peak"
+    },
+    {
+     "label": "Winter super-off-peak (spring)",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm (recalled; verify)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "No demand charge on standard B-1, so value is TOU arbitrage only. PG&E has offered a B-1-ST storage variant with a peak-period demand charge and lower energy rates; its existence and terms in 2026 were not verified.",
+   "sources": [
+    {
+     "title": "PG&E tariff book (canonical B-1; NOT opened - blocked)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-1.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "pge.com was blocked and the search budget ran out. Structure and thresholds are recalled, not verified. The 4-9pm peak is PG&E's standard C&I peak since its TOU transition."
+  },
+  {
+   "id": "pge-b-6",
+   "utility_id": "pge",
+   "name": "B-6 Small General Service TOU (optional, energy-only)",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 75,
+    "text": "Optional small-business TOU rate with no demand charge (recalled; verify)"
+   },
+   "effective_date": null,
+   "demand_charges": [],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Pure arbitrage value from the 4-9pm spread. A low-priority target for C&I storage.",
+   "sources": [
+    {
+     "title": "PG&E tariff book (canonical B-6; NOT opened - blocked)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-6.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Nothing verified this session."
+  },
+  {
+   "id": "pge-b-10",
+   "utility_id": "pge",
+   "name": "B-10 Medium General Demand-Metered TOU",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 75,
+    "max_kw": 499,
+    "text": "Customers with maximum demand of 75-499 kW (confirmed in the B-10 tariff search summary). Max demand is the highest 15-minute average in the billing month."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Maximum demand - Secondary (total bundled)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 11.37,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Search-result summary of the PG&E B-10 tariff: $11.37/kW in summer and winter, secondary. The summary also showed transmission max demand of $9.10/kW and reliability services of $0.03/kW, so this charge appears to be mostly transmission. Whether those pieces sit inside the $11.37 or are added to it was not confirmed. The summary showed no 4-9pm (TOU) demand charge on B-10."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.21228,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.15059,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.11803,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.15424,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm daily (months: B-19 lists super-off-peak under winter; earlier designs used Mar-May only - verify)",
+     "notes": "Not extracted"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "The demand charge is modest (about $11/kW-month on max demand at any hour), so B-10 storage value is mostly 4-9pm energy arbitrage (summer peak minus off-peak is about $0.094/kWh) plus PDP event value (see pge-pdp). The customer charge was summarized as $11.36882/meter/day (about $346/month). Option S availability on B-10 was not verified. CCA customers replace the generation share of energy rates with CCA rates.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-10 (tariff book; values from WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-10.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "From a WebSearch summary of the canonical PG&E B-10 PDF (secondary): max demand $11.37; energy summer 0.21228/0.15059/0.11803 and winter peak 0.15424. The PDF was not opened and the rate-page effective date was not shown (assumed 2025-2026 vintage, since the tariff book shows current sheets). Winter off-peak and super-off-peak not extracted.",
+   "arbitrage": [
+    {
+     "label": "Summer (Jun–Sep)",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.21228,
+     "offpeak_price": 0.11803,
+     "days": "all"
+    }
+   ]
+  },
+  {
+   "id": "pge-b-19",
+   "utility_id": "pge",
+   "name": "B-19 Medium-Large General Demand-Metered TOU",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 500,
+    "max_kw": 999,
+    "text": "Mandatory for customers with maximum demand of 500-999 kW (confirmed in the B-19 tariff search summary). Secondary, primary and transmission voltage lines; this entry is SECONDARY."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Maximum demand (all hours) - Secondary",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 37.37,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Search-result summary of the B-19 tariff, \"Maximum Demand Winter $37.37 (R)\", secondary. B-19 normally uses the same max-demand charge in summer and winter (B-20 shows identical values), but the B-19 summer figure was not separately confirmed. Distribution/transmission; stays with PG&E for CCA customers."
+    },
+    {
+     "label": "Summer peak-period demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 46.16,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Search-result summary, \"Maximum Peak Demand Summer $46.16/kW\". Mostly generation plus some distribution; split not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    },
+    {
+     "label": "Summer part-peak demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 10.52,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)",
+     "notes": "Search-result summary, \"Maximum Part-Peak Demand Summer $10.52/kW\".",
+     "window": [
+      {
+       "start": 14,
+       "end": 16
+      },
+      {
+       "start": 21,
+       "end": 23
+      }
+     ],
+     "days": "all"
+    },
+    {
+     "label": "Winter peak-period demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 2.31,
+     "basis": "tou_window",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily incl. weekends/holidays",
+     "notes": "Search-result summary, \"Maximum Peak Demand Winter $2.31/kW\". The summary confirms the winter peak is 4-9pm every day, Oct 1-May 31.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.18648,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.14775,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.12037,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.16188,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.12026,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "all other hours excl. super-off-peak"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.06442,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm daily",
+     "notes": "Listed under winter in the tariff summary; whether it covers all of Oct-May or only Mar-May is not verified."
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Option S (storage) is available when installed storage is at least 10% of the customer's 12-month peak demand (confirmed in the B-19 tariff summary). Option S bills the summer 4-9pm demand DAILY ($1.60/kW-day) instead of monthly ($46.16/kW-month), so a missed dispatch costs one day, not the month. Its monthly max demand excludes 9am-2pm (per the B-20 Option S design), which allows midday charging. Standard B-19 summer demand stacks to about $83.5/kW-month ($37.37 max + $46.16 peak) and winter to about $39.7. The energy arbitrage spread is small: summer peak minus off-peak about $0.066/kWh; winter peak minus super-off-peak about $0.097/kWh. PDP is the default dynamic overlay (see pge-pdp). For CCA customers the generation share of peak demand and energy is replaced by CCA rates.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; values from WebSearch summaries)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    },
+    {
+     "title": "3CE PG&E-territory commercial rate sheet effective 2026-02-15 (CCA generation; seen in search)",
+     "url": "https://3cenergy.org/wp-content/uploads/2026/02/PGE-Commercial-Website-Rate-Sheet-v29-2026.02.15.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "All numbers come from two WebSearch summaries of the canonical PG&E B-19 PDF (secondary): max demand $37.37; summer peak $46.16 and part-peak $10.52; winter peak $2.31; energy summer 0.18648/0.14775/0.12037 and winter 0.16188/0.12026/0.06442; Option S daily $1.60 peak and $0.08 part-peak per kW-day; 10% storage eligibility; 500-999 kW applicability. The PDF was not opened and the effective date of the rate pages was not shown. They are likely current (2025-2026), because the tariff-book URL serves the in-effect sheets. The values are internally consistent: Option S $1.60 x 30 is close to $46.16, and they track B-20. Confirm against the current tariff or a bill before contracting. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
+   "arbitrage": [
+    {
+     "label": "Summer (Jun–Sep)",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.18648,
+     "offpeak_price": 0.12037,
+     "days": "all"
+    },
+    {
+     "label": "Spring (Mar–May), charge 9am–2pm super-off-peak",
+     "months": [
+      3,
+      4,
+      5
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.06442,
+     "days": "all"
+    },
+    {
+     "label": "Winter (Oct–Feb)",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.12026,
+     "days": "all"
+    }
+   ]
+  },
+  {
+   "id": "pge-b-20",
+   "utility_id": "pge",
+   "name": "B-20 Large General Demand-Metered TOU (≥1,000 kW)",
+   "customer_class": "Large C&I / Industrial",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": null,
+    "text": "Customers with demand of about 1,000 kW or more; secondary, primary and transmission voltage (threshold recalled; verify)"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Maximum demand (all hours) - Secondary",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 39.08,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Search-result summary of the PG&E B-20 tariff (Oakland-header sheets, so post-2022): \"Maximum Demand Summer $39.08; Maximum Demand Winter $39.08\", secondary. Stays with PG&E for CCA customers."
+    },
+    {
+     "label": "Summer peak-period demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 41.35,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Search-result summary, \"Maximum Peak Demand Summer $41.35/kW\". Split not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    },
+    {
+     "label": "Summer part-peak demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 9.27,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)",
+     "notes": "Search-result summary, \"$9.27/kW\".",
+     "window": [
+      {
+       "start": 14,
+       "end": 16
+      },
+      {
+       "start": 21,
+       "end": 23
+      }
+     ],
+     "days": "all"
+    },
+    {
+     "label": "Winter peak-period demand - Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 2.32,
+     "basis": "tou_window",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Search-result summary, \"Maximum Peak Demand Winter $2.32/kW\".",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.17702,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.14227,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm daily (verify months)",
+     "notes": "Not extracted"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Standard B-20 secondary summer demand stacks to about $80/kW-month ($39.08 max + $41.35 peak). Option S moves the summer peak to a daily charge ($1.30/kW-day) and excludes 9am-2pm from the monthly max demand. Eligibility is assumed to match B-19 (storage at least 10% of 12-month peak; confirmed for B-19 only). Many B-20 sites take PRIMARY or transmission service, which has lower charges; these values are SECONDARY. PDP overlay applies (see pge-pdp).",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-20 (tariff book; values from WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Secondary values come from a WebSearch summary of the canonical B-20 PDF (Oakland-header sheets; rate effective date not shown). Summer off-peak, all winter energy, and the full set of Option S monthly components were not extracted."
+  },
+  {
+   "id": "sdge-tou-a",
+   "utility_id": "sdge",
+   "name": "TOU-A (Small Commercial TOU; TOU-A-2/A-3 variants)",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 20,
+    "text": "Small commercial customers below about 20 kW (recalled; verify)"
+   },
+   "effective_date": null,
+   "demand_charges": [],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "6am-4pm and 9pm-midnight weekdays; 2pm-4pm and 9pm-midnight weekends (verify)"
+    },
+    {
+     "label": "Summer super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "midnight-6am weekdays; midnight-2pm weekends/holidays (verify)"
+    },
+    {
+     "label": "Winter on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours (verify)"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "midnight-6am weekdays (plus 10am-2pm in March-April); midnight-2pm weekends (verify)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Energy-only value (arbitrage).",
+   "sources": [
+    {
+     "title": "SDG&E electric tariff book (canonical; NOT opened)",
+     "url": "https://tariffsprd.sdge.com/view/tariff/?utilId=SDGE&bookId=ELEC&sectId=ELEC-SCHEDS"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "SDG&E summer is June 1-October 31 and on-peak is 4-9pm every day; both are recalled with fair confidence. Everything else is unverified."
+  },
+  {
+   "id": "sdge-al-tou",
+   "utility_id": "sdge",
+   "name": "AL-TOU (General Service TOU, demand-metered >=20 kW)",
+   "customer_class": "Medium/Large C&I",
+   "applicability": {
+    "min_kw": 20,
+    "max_kw": null,
+    "text": "Commercial/industrial customers with demand of about 20 kW or more; secondary, primary and transmission voltage (recalled; verify)"
+   },
+   "effective_date": "2026-06-01",
+   "demand_charges": [
+    {
+     "label": "Non-coincident (maximum) demand - Secondary",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 30.37,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "SDG&E Summary Table for Medium Commercial, effective 2026-06-01 (WebSearch summary). Billed on the GREATER of the monthly maximum demand or 50% of the maximum annual demand. Distribution (UDC); stays with SDG&E for CCA customers."
+    },
+    {
+     "label": "On-peak demand - Summer, Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 21.22,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "4pm-9pm daily incl. weekends/holidays",
+     "notes": "Summary Table 2026-06-01, \"Summer Maximum On-Peak $21.22\". Bundled total; the UDC vs commodity (EECC) split was not verified, and CCA customers keep only the UDC piece.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    },
+    {
+     "label": "On-peak demand - Winter, Secondary (total bundled)",
+     "component": "generation",
+     "rate_usd_per_kw_month": 16.25,
+     "basis": "tou_window",
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily incl. weekends/holidays",
+     "notes": "Summary Table 2026-06-01, \"Winter Maximum On-Peak $16.25\". Split not verified.",
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Not extracted. The 6/1/26 summary table has it."
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "6am-4pm and 9pm-midnight weekdays; 2pm-4pm and 9pm-midnight weekends (verify)"
+    },
+    {
+     "label": "Summer super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "hours": "midnight-6am weekdays; midnight-2pm weekends/holidays (verify)"
+    },
+    {
+     "label": "Winter on-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours (verify)"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "midnight-6am weekdays (+10am-2pm in Mar-Apr); midnight-2pm weekends (verify)"
+    }
+   ],
+   "ratchet": {
+    "pct": 0.5,
+    "lookback_months": 11,
+    "applies_to": "Non-coincident (maximum) demand: billed on the greater of monthly max demand or 50% of the maximum annual demand. The exact 12-month window wording was not verified."
+   },
+   "coincident_peak_charges": [],
+   "storage_notes": "Strongest demand-charge case of the three IOUs: about $51.6/kW-month in summer ($30.37 NCD + $21.22 on-peak) and $46.6 in winter at secondary. The on-peak window runs every day, including weekends, so on-peak shaving needs daily cycling. The 50% annual ratchet on NCD means a single unshaved spike raises the NCD floor for up to 12 months, so size for the worst day, not the typical one. The basic service fee is $151.26/month at secondary (summary table title). CPP-D overlay may apply (see sdge-cpp-d).",
+   "sources": [
+    {
+     "title": "SDG&E Summary Table for Medium Commercial rates, effective 6-1-26",
+     "url": "https://www.sdge.com/sites/default/files/regulatory/Summary%20Table%20for%20Medium%20Comm%206-1-26.pdf"
+    },
+    {
+     "title": "SDG&E Schedule AL-TOU tariff",
+     "url": "https://www.sdge.com/sites/default/files/elec_elec-scheds_al-tou.pdf"
+    },
+    {
+     "title": "SDG&E Total Electric Rates page (index of rate tables)",
+     "url": "https://www.sdge.com/total-electric-rates"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Demand charges (secondary: NCD $30.37; summer on-peak $21.22; winter on-peak $16.25) and the 50%-of-annual-max NCD ratchet come from a WebSearch summary of SDG&E's 6/1/26 Medium Commercial summary table, a primary source. The PDF was not opened. An 8/1/26 SDG&E rate change was seen for residential tables; check whether commercial rates also changed then. Energy $/kWh and the UDC/EECC split were not extracted. Off-peak and super-off-peak windows are recalled."
+  },
+  {
+   "id": "sdge-al-tou-2",
+   "utility_id": "sdge",
+   "name": "AL-TOU-2 (optional alternative to AL-TOU)",
+   "customer_class": "Medium/Large C&I",
+   "applicability": {
+    "min_kw": 20,
+    "max_kw": null,
+    "text": "Optional rate for AL-TOU-eligible customers; design details not verified"
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Non-coincident demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Not verified; AL-TOU-2 demand design (including any daily or peak demand component) needs confirmation from the SDG&E tariff book"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Model against AL-TOU once the actual design is pulled.",
+   "sources": [
+    {
+     "title": "SDG&E electric tariff book (canonical; NOT opened)",
+     "url": "https://tariffsprd.sdge.com/view/tariff/?utilId=SDGE&bookId=ELEC&sectId=ELEC-SCHEDS"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Could not verify AL-TOU-2 structure or values."
+  },
+  {
+   "id": "sdge-dg-r",
+   "utility_id": "sdge",
+   "name": "DG-R (Distributed Generation Renewable - optional C&I rate)",
+   "customer_class": "Medium/Large C&I with on-site renewable DG",
+   "applicability": {
+    "min_kw": 20,
+    "max_kw": null,
+    "text": "Optional for demand-metered customers with on-site renewable generation sized to at least a minimum share of peak demand (commonly cited as 10%; verify). Lower demand charges and higher energy charges."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Non-coincident demand (reduced vs AL-TOU)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Value not verified"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "On-peak (higher than AL-TOU)",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "4pm-9pm daily"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Storage-only sites are generally not eligible (renewable DG required). PV+storage sites should compare DG-R arbitrage value with AL-TOU demand-charge value.",
+   "sources": [
+    {
+     "title": "SDG&E electric tariff book (canonical; NOT opened)",
+     "url": "https://tariffsprd.sdge.com/view/tariff/?utilId=SDGE&bookId=ELEC&sectId=ELEC-SCHEDS"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Eligibility percentage and values not verified."
+  },
+  {
+   "id": "pge-b-19-s",
+   "utility_id": "pge",
+   "name": "B-19 Option S (storage) — Secondary",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 500,
+    "max_kw": 999,
+    "text": "Option S (storage) variant of B-19 Medium-Large General Demand-Metered TOU (with Option S storage variant). Requires on-site storage ≥ 10% of peak demand (per search summary; verify).",
+    "min_storage_kw_pct_of_peak": 0.1
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Option S daily summer peak-period demand",
+     "component": "generation",
+     "rate_usd_per_kw_month": 1.6,
+     "basis": "daily",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all",
+     "notes": "$/kW-day, billed on each day’s 4–9pm max."
+    },
+    {
+     "label": "Option S daily summer part-peak demand",
+     "component": "generation",
+     "rate_usd_per_kw_month": 0.08,
+     "basis": "daily",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "window": [
+      {
+       "start": 14,
+       "end": 16
+      },
+      {
+       "start": 21,
+       "end": 23
+      }
+     ],
+     "days": "all",
+     "notes": "$/kW-day."
+    },
+    {
+     "label": "Option S monthly maximum demand (all hours except 9am–2pm)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [],
+     "window": {
+      "start": 14,
+      "end": 9
+     },
+     "days": "all",
+     "notes": "Whether this is the full Option S monthly max-demand total was not confirmed."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.18648,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.14775,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.12037,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.16188,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.12026,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "all other hours excl. super-off-peak"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.06442,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm daily",
+     "notes": "Listed under winter in the tariff summary; whether it covers all of Oct-May or only Mar-May is not verified."
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Option S replaces most monthly peak-period demand charges with daily ones, which rewards a battery that shaves every day. Winter Option S components were not extracted.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-19 (tariff book; values from WebSearch summaries)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    },
+    {
+     "title": "3CE PG&E-territory commercial rate sheet effective 2026-02-15 (CCA generation; seen in search)",
+     "url": "https://3cenergy.org/wp-content/uploads/2026/02/PGE-Commercial-Website-Rate-Sheet-v29-2026.02.15.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use. Super-off-peak (9am–2pm) applies Mar–May only; Oct–Feb arbitrage uses the winter off-peak price.",
+   "arbitrage": [
+    {
+     "label": "Summer (Jun–Sep)",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.18648,
+     "offpeak_price": 0.12037,
+     "days": "all"
+    },
+    {
+     "label": "Spring (Mar–May), charge 9am–2pm super-off-peak",
+     "months": [
+      3,
+      4,
+      5
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.06442,
+     "days": "all"
+    },
+    {
+     "label": "Winter (Oct–Feb)",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2
+     ],
+     "peak_window": {
+      "start": 16,
+      "end": 21
+     },
+     "peak_price": 0.16188,
+     "offpeak_price": 0.12026,
+     "days": "all"
+    }
+   ]
+  },
+  {
+   "id": "pge-b-20-s",
+   "utility_id": "pge",
+   "name": "B-20 Option S (storage) — Secondary",
+   "customer_class": "Large C&I / Industrial",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": null,
+    "text": "Option S (storage) variant of B-20 Large General Demand-Metered TOU (>=1,000 kW; with Option S). Requires on-site storage ≥ 10% of peak demand (per search summary; verify).",
+    "min_storage_kw_pct_of_peak": 0.1
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Option S daily summer peak-period demand",
+     "component": "generation",
+     "rate_usd_per_kw_month": 1.3,
+     "basis": "daily",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "window": {
+      "start": 16,
+      "end": 21
+     },
+     "days": "all",
+     "notes": "$/kW-day, billed on each day’s 4–9pm max."
+    },
+    {
+     "label": "Option S daily summer part-peak demand",
+     "component": "generation",
+     "rate_usd_per_kw_month": 0.07,
+     "basis": "daily",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "window": [
+      {
+       "start": 14,
+       "end": 16
+      },
+      {
+       "start": 21,
+       "end": 23
+      }
+     ],
+     "days": "all",
+     "notes": "$/kW-day."
+    },
+    {
+     "label": "Option S monthly maximum demand (all hours except 9am–2pm)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 5.56,
+     "basis": "tou_window",
+     "months": [],
+     "window": {
+      "start": 14,
+      "end": 9
+     },
+     "days": "all",
+     "notes": "Whether this is the full Option S monthly max-demand total was not confirmed."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Summer peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.17702,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "4pm-9pm daily"
+    },
+    {
+     "label": "Summer part-peak",
+     "component": "total",
+     "rate_usd_per_kwh": 0.14227,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "2pm-4pm and 9pm-11pm daily (verify)"
+    },
+    {
+     "label": "Summer off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all other hours",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "4pm-9pm daily",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "other hours",
+     "notes": "Not extracted"
+    },
+    {
+     "label": "Winter super-off-peak",
+     "component": "total",
+     "rate_usd_per_kwh": null,
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": "9am-2pm daily (verify months)",
+     "notes": "Not extracted"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Option S replaces most monthly peak-period demand charges with daily ones, which rewards a battery that shaves every day. Winter Option S components were not extracted.",
+   "sources": [
+    {
+     "title": "PG&E Electric Schedule B-20 (tariff book; values from WebSearch summary)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-20.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Option S daily rates from web-search summaries of the PG&E tariff PDF; winter and some monthly Option S components missing. Verify before use."
+  }
+ ],
+ "programs": [
+  {
+   "id": "ca-sgip-nonres-storage",
+   "name": "Self-Generation Incentive Program (SGIP) - non-residential storage (Large-Scale Storage, Non-Residential Storage Equity, Equity Resiliency)",
+   "state": "CA",
+   "utility_ids": [
+    "sce",
+    "pge",
+    "sdge"
+   ],
+   "administrator": "CPUC; PAs: PG&E, SCE, SoCalGas, CSE (SDG&E territory)",
+   "category": "upfront_incentive",
+   "status": "closed",
+   "status_notes": "All ratepayer-funded SGIP budgets closed to new applications, including waitlist submissions, on 2025-12-31. This covers Large-Scale Storage, Small Residential Storage, Residential Solar & Storage Equity (ratepayer), Non-Residential Storage Equity, Equity Resiliency and Generation (D.25-12-003; PU Code 379.6 administration sunset 2026-01-01; unallocated funds returned to ratepayers). The PAs' Tier 1 advice letter of 2026-01-05 implementing D.25-12-003 did three things: (1) gave Non-Residential Equity and Equity Resiliency projects already in the queue four additional 6-month extensions, (2) cut the PBI period from 5 to 2 years for projects entering PBI on or after 2025-12-31, and (3) removed the DR requirement for residential equity budgets. The only SGIP money still open is the GGRF/AB 209 Residential Solar & Storage Equity budget, for low-income residential customers only ($1.10/Wh storage plus $3.10/W solar). It is encumbrance-limited to 2026-06-30, with closure in 2028, and is not available to C&I. No new non-residential SGIP budget was identified as of 2026-10-01.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "public agency",
+     "non-profit"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Historical rules for reference: at least 52 full discharge cycles per year; non-residential GHG reduction of at least 5 kg CO2 per rebated kWh per year, with a $1/kg incentive reduction penalty; operation against a GHG signal; 10-year warranty and operating-permanence obligations. Equity budgets required a DAC/low-income site or a public/non-profit host."
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": null,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "rebated kWh capacity, after duration derate",
+    "duration_basis_hr": 2,
+    "cap": "Not applicable (closed). Historically, systems over 30 kW got 50% upfront and 50% as PBI.",
+    "tiers": [
+     {
+      "label": "Large-Scale Storage Step 1 (historical)",
+      "rate": 500,
+      "conditions": "$0.50/Wh"
+     },
+     {
+      "label": "Large-Scale Storage Step 2 (historical)",
+      "rate": 400,
+      "conditions": "$0.40/Wh"
+     },
+     {
+      "label": "Large-Scale Storage Step 3 (historical)",
+      "rate": 350,
+      "conditions": "$0.35/Wh"
+     },
+     {
+      "label": "Large-Scale Storage Step 4 (historical)",
+      "rate": 300,
+      "conditions": "$0.30/Wh"
+     },
+     {
+      "label": "Large-Scale Storage Step 5 (historical, last step)",
+      "rate": 250,
+      "conditions": "$0.25/Wh; Steps 6-7 N/A in 2025 handbook"
+     },
+     {
+      "label": "Large-Scale Storage Resiliency Adder (historical)",
+      "rate": 150,
+      "conditions": "$0.15/Wh adder"
+     },
+     {
+      "label": "Non-Residential Storage Equity (historical)",
+      "rate": 850,
+      "conditions": "$0.85/Wh; DAC/low-income community or public agency hosts; was waitlisted before closure"
+     },
+     {
+      "label": "Equity Resiliency (historical)",
+      "rate": 1000,
+      "conditions": "$1.00/Wh; critical facilities in high-fire-threat or PSPS-affected areas"
+     }
+    ],
+    "term_years": 10,
+    "notes": "Rate is null because no budget is open. Duration derate (2025 handbook, as summarized in search): standard storage gets 100% for the 0-2 h portion, with step-downs above 2 h. The schedule commonly cited is 100% (0-2 h), 50% (2-4 h), 25% (4-6 h), 0% (>6 h). For backup-capable or resiliency projects the search summary showed 100% up to 4 h and 50% for 4-6 h. Verify which schedule applied to which budget."
+   },
+   "dispatch": {
+    "season": null,
+    "window": "GHG-signal-optimized dispatch (historical)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Annual cycle and GHG performance via metered data (historical)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings",
+     "ELRP",
+     "CBP"
+    ],
+    "conflicts_with": [],
+    "notes": "Not applicable to new projects."
+   },
+   "vpp_relevance": "Already-funded SGIP systems in a portfolio still carry 52-cycle and GHG obligations for their term. Track these obligations when aggregating legacy sites.",
+   "sources": [
+    {
+     "title": "2025 SGIP Handbook v1 (CPUC)",
+     "url": "https://www.cpuc.ca.gov/-/media/cpuc-website/divisions/energy-division/documents/self-generation-incentive-program/2025-sgip-handbook-v1.pdf"
+    },
+    {
+     "title": "SGIP Statewide Announcements",
+     "url": "https://www.selfgenca.com/home/about/"
+    },
+    {
+     "title": "CPUC filing re D.25-12-003 implementation",
+     "url": "https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M614/K481/614481350.PDF"
+    },
+    {
+     "title": "PU Code 379.6 (FindLaw)",
+     "url": "https://codes.findlaw.com/ca/public-utilities-code/puc-sect-379-6/"
+    },
+    {
+     "title": "CPUC SGIP page",
+     "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/self-generation-incentive-program"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Closure and the D.25-12-003 changes are confirmed across multiple search results citing selfgenca.com and CPUC documents. Historical rates come from search excerpts of the 2025 handbook. Primary pages could not be opened directly because of the egress block."
+  },
+  {
+   "id": "ca-dsgs-option3-storage-vpp",
+   "name": "Demand Side Grid Support (DSGS) - Option 3 Market-Aware Storage Virtual Power Plant",
+   "state": "CA",
+   "utility_ids": [],
+   "administrator": "California Energy Commission (Olivine as program implementer for some participants)",
+   "category": "performance_incentive",
+   "status": "closed",
+   "status_notes": "Operating for the 2026 season (May-October) for incumbents only. The DSGS Guidelines Fifth Edition, adopted at the 2026-04-27 CEC business meeting, limit 2026 Option 3 participation to storage VPP aggregations that participated in October 2025, except aggregators of bidirectional EVSE. Up to $42.7M is available for Option 3 performance-based capacity payments in 2026, of which up to $26.9M is DEBA funds. The Fifth Edition also adds a defined total compensation amount, a per-provider payment cap, a mandatory three-consecutive-day test event in August, and a measured baseline. DSGS funding was cut in 2025 (pv magazine, 2025-09-15). 2027 funding is unknown. Whether new customer sites can be added under an incumbent 2025 aggregator was not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "residential",
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 2,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Behind-the-meter batteries aggregated by a Storage VPP Aggregator, with statewide eligibility (IOU and POU territories). Dual enrollment of the same resource in IOU DR programs such as ELRP, CBP and BIP is expected to be prohibited, but the exact 2026 rule was not verified. Capacity tiers are 2 h, 3 h and 4 h."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 82.8,
+    "unit": "$/kW-season",
+    "months_per_year": 6,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "demonstrated capacity (average kW delivered over event hours vs. baseline), settled monthly",
+    "duration_basis_hr": 4,
+    "cap": "2026 total Option 3 pool up to $42.7M with a per-provider cap",
+    "tiers": [
+     {
+      "label": "4-hour capacity (season total)",
+      "rate": 82.8,
+      "conditions": "Monthly $/kW: May 9.00, Jun 9.30, Jul 16.80, Aug 18.00, Sep 19.20, Oct 10.50"
+     },
+     {
+      "label": "3-hour capacity (season total)",
+      "rate": 74.52,
+      "conditions": "Monthly $/kW: May 8.10, Jun 8.37, Jul 15.12, Aug 16.20, Sep 17.28, Oct 9.45"
+     },
+     {
+      "label": "2-hour capacity (season total)",
+      "rate": 62.1,
+      "conditions": "Monthly $/kW: May 6.75, Jun 6.98, Jul 12.60, Aug 13.50, Sep 14.40, Oct 7.88"
+     },
+     {
+      "label": "4-hour incl. 30% 2026 bonus",
+      "rate": 107.64,
+      "conditions": "82.80 x 1.30; bonus reported for program year 2026; subject to per-provider cap"
+     },
+     {
+      "label": "3-hour incl. 30% 2026 bonus",
+      "rate": 96.88,
+      "conditions": "74.52 x 1.30 = 96.876"
+     },
+     {
+      "label": "2-hour incl. 30% 2026 bonus",
+      "rate": 80.73,
+      "conditions": "62.10 x 1.30"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Product mapping: 30 kW/150 kWh (5.0 h) and 200 kW/600 kWh (3.0 h) map to the 4 h and 3 h tiers respectively. The 65 kW/200 kWh unit (3.08 h) maps to 3 h, and 200 kW/418 kWh (2.09 h) maps to 2 h. Prices are the Fourth Edition (2025) Storage VPP capacity table; whether the Fifth Edition changed them was not verified. The bonus applies to DR-provider capacity incentives per search summaries."
+   },
+   "dispatch": {
+    "season": "May 1 - Oct 31",
+    "window": "4pm-9pm, 7 days/week",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead; event hours are those where the CAISO day-ahead hourly LMP is at least $200/MWh. Events are called as consecutive hours, so gap hours between qualifying hours are included.",
+    "baseline_or_mv": "2026: measured baseline (Fifth Edition) plus a three-consecutive-day August test event"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings (TOU/demand)",
+     "federal ITC"
+    ],
+    "conflicts_with": [
+     "ca-bip",
+     "ca-cbp",
+     "ca-elrp"
+    ],
+    "notes": "The conflicts list is the expected treatment and needs verification against Fifth Edition Chapter 5. The 4-9pm dispatch overlaps the IOU peak windows, so DSGS dispatch generally also reduces TRD and on-peak energy, which is a natural stack with bill savings."
+   },
+   "vpp_relevance": "This was California's flagship BTM storage VPP pathway (record dispatches in 2025-2026). For a new C&I developer in 2026 it is reachable only through an incumbent aggregator. Plan for 2027 eligibility if funding is renewed.",
+   "sources": [
+    {
+     "title": "CEC - DSGS Program Guidelines, Fifth Edition (2026)",
+     "url": "https://www.energy.ca.gov/publications/2026/demand-side-grid-support-dsgs-program-guidelines-fifth-edition"
+    },
+    {
+     "title": "DSGS Guidelines Fifth Edition (docket 22-RENEW-01, TN 269650)",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=269650&DocumentContentId=106742"
+    },
+    {
+     "title": "Revised Proposed DSGS Guidelines (Fourth Ed., TN 262552) - Storage VPP capacity price table",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=262552"
+    },
+    {
+     "title": "CCarbon - CEC issues Fifth Edition DSGS guidelines",
+     "url": "https://www.ccarbon.info/news/cec-issues-fifth-edition-dsgs-guidelines-suspends-option-1-and-caps-2026-enrollment-and-payments/"
+    },
+    {
+     "title": "Olivine DSGS FAQ",
+     "url": "https://dsgs.olivineinc.com/faq/"
+    },
+    {
+     "title": "pv magazine - California cuts funding for nation's largest VPP (2025-09-15)",
+     "url": "https://pv-magazine-usa.com/2025/09/15/california-cuts-funding-for-nations-largest-virtual-power-plant/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Search excerpts confirmed the following: the 2026 restrictions; the $42.7M and $26.9M DEBA figures; the 4-9pm May-October window; the $200/MWh day-ahead LMP trigger; the Fourth Edition capacity price table; and the 30% bonus. Not verified: Fifth Edition price-table changes, the per-provider cap amount, event count limits, and dual-enrollment rules."
+  },
+  {
+   "id": "ca-dsgs-option2",
+   "name": "DSGS - Option 2 (capacity payment for CAISO-bid load reduction / PDR-type resources)",
+   "state": "CA",
+   "utility_ids": [],
+   "administrator": "California Energy Commission",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "The Fifth Edition (2026) sets a 2026 enrollment cap, removes the interim settlement option, and limits the Option 2 budget to $1M for 2026. With the season ending 2026-10-31 and the cap small, practical availability is minimal. Verify whether the cap has been reached.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 3,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Resource must be bid into the CAISO day-ahead market at no more than $600/MWh, or self-scheduled, for at least 3 consecutive hours between 4pm and 10pm to earn capacity payments (per search excerpt of draft guidelines)."
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": null,
+    "unit": "$/kW-month",
+    "months_per_year": 6,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "incremental demonstrated capacity",
+    "duration_basis_hr": 3,
+    "cap": "$1M total program budget for 2026",
+    "tiers": [
+     {
+      "label": "May",
+      "rate": 9.0,
+      "conditions": "$9,000/MW-month per search excerpt (guideline edition not confirmed); separate rates for every-day vs non-holiday-weekday availability"
+     },
+     {
+      "label": "June",
+      "rate": 9.3,
+      "conditions": "$9,300/MW-month"
+     },
+     {
+      "label": "July",
+      "rate": 16.8,
+      "conditions": "$16,800/MW-month"
+     }
+    ],
+    "term_years": 1,
+    "notes": "August-October rates not captured. Top-level rate left null because the edition and availability-type mapping are unverified."
+   },
+   "dispatch": {
+    "season": "May-Oct",
+    "window": "4pm-10pm bid window",
+    "event_duration_hr": 3,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "CAISO day-ahead",
+    "baseline_or_mv": "CAISO PDR settlement / incremental capacity"
+   },
+   "stacking": {
+    "compatible_with": [
+     "caiso-pdr-dera-aggregator"
+    ],
+    "conflicts_with": [
+     "ca-dsgs-option3-storage-vpp"
+    ],
+    "notes": "Conflict assumed (same resource, same window); verify."
+   },
+   "vpp_relevance": "Shows the CEC model of paying for capacity bid into CAISO; relevant if DSGS is refunded in 2027.",
+   "sources": [
+    {
+     "title": "DSGS Guidelines Fifth Edition (TN 269649)",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=269649&DocumentContentId=106743"
+    },
+    {
+     "title": "CCarbon - Fifth Edition summary",
+     "url": "https://www.ccarbon.info/news/cec-issues-fifth-edition-dsgs-guidelines-suspends-option-1-and-caps-2026-enrollment-and-payments/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Status and budget cap are confirmed in search. Monthly rates are a partial excerpt with an unconfirmed edition."
+  },
+  {
+   "id": "ca-dsgs-option1",
+   "name": "DSGS - Option 1 (Emergency Dispatch, pay-for-performance)",
+   "state": "CA",
+   "utility_ids": [],
+   "administrator": "California Energy Commission",
+   "category": "demand_response",
+   "status": "paused",
+   "status_notes": "Suspended for the 2026 program year by the Fifth Edition guidelines because of budget limits. Earlier editions paid about $2/kWh of verified incremental load reduction during emergency events.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Historically for customers not enrolled in IOU DR programs (largely POU customers)."
+   },
+   "valuation": {
+    "method": "per_kwh_event",
+    "rate": null,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "incremental load reduction vs baseline",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Suspended in 2026. The historical $2/kWh figure appears in search excerpts of earlier guidelines."
+   },
+   "dispatch": {
+    "season": "May-Oct",
+    "window": "emergency (CAISO EEA)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "day-of / emergency",
+    "baseline_or_mv": "baseline"
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "None in 2026.",
+   "sources": [
+    {
+     "title": "CCarbon - Fifth Edition suspends Option 1",
+     "url": "https://www.ccarbon.info/news/cec-issues-fifth-edition-dsgs-guidelines-suspends-option-1-and-caps-2026-enrollment-and-payments/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Suspension confirmed in search excerpts."
+  },
+  {
+   "id": "ca-elrp",
+   "name": "Emergency Load Reduction Program (ELRP) - Group A non-residential and VPP aggregator sub-groups",
+   "state": "CA",
+   "utility_ids": [
+    "sce",
+    "pge",
+    "sdge"
+   ],
+   "administrator": "IOUs (PG&E via Olivine; SCE; SDG&E), CPUC-authorized pilot",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "D.23-12-005 (2023-12-20) extended the ELRP pilot through 2027, except residential sub-group A.6, which ended after the 2025 season. The non-residential sub-groups and the A.4 VPP aggregator and A.5 VGI sub-groups continue for the 2026 and 2027 seasons. The Commission has proposed sunsetting ELRP at the end of 2027. 2026 enrollment terms were not directly verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Sub-groups: A.1 is non-residential direct enrollment; A.2 is non-residential through aggregators; A.4 is VPP aggregators of non-residential and residential battery storage; A.5 is EV/VGI aggregations, including export-capable ones. Whether battery export beyond the site's load is compensated in A.4 was not verified."
+   },
+   "valuation": {
+    "method": "per_kwh_event",
+    "rate": 2.0,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "incremental load reduction vs. baseline during event hours",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "$2/kWh for all participants since the 2022 modification. There are no capacity payments and no penalties (pay-for-performance). Event counts depend on grid emergencies and vary widely year to year, so treat the expected value as uncertain."
+   },
+   "dispatch": {
+    "season": "May-Oct",
+    "window": "Typically within 4pm-9pm, triggered by CAISO emergency or alert conditions",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead or day-of, triggered by CAISO EEA Watch or alerts",
+    "baseline_or_mv": "Baseline-based incremental load reduction (interval meter)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings"
+    ],
+    "conflicts_with": [
+     "ca-dsgs-option3-storage-vpp"
+    ],
+    "notes": "ELRP has rules for participants also in other IOU DR programs (no double payment for the same kWh); exact 2026 dual-participation rules not verified."
+   },
+   "vpp_relevance": "The most accessible open aggregated-battery pathway for new C&I sites in IOU territory in 2026-2027 (via A.4), but revenue is low and unpredictable.",
+   "sources": [
+    {
+     "title": "CPUC - ELRP Data and Information",
+     "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/copy-of-demand-response-dr/emergency-load-reduction-program-data-and-information"
+    },
+    {
+     "title": "SDG&E ELRP Group A Terms & Conditions",
+     "url": "https://www.sdge.com/sites/default/files/ELRP%20TC%20Group%20A.pdf"
+    },
+    {
+     "title": "SCE ELRP Aggregator Agreement Group A",
+     "url": "https://elrp.sce.com/_files/sce/elrp/SCE-ELRP-Aggregator-Agreement-Group-A.pdf"
+    },
+    {
+     "title": "PG&E ELRP Group A Terms & Conditions (Olivine)",
+     "url": "https://elrp.olivineinc.com/_files/pge/elrp/PGE-ELRP-Group-A-Terms-and-Conditions.pdf"
+    },
+    {
+     "title": "SCE PY2024 ELRP evaluation (Demand Side Analytics, 2025-04-01)",
+     "url": "https://www.calmac.org/publications/PY2024_SCE_DR_Program_Report_ELRP_FINAL_PUBLIC.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Confirmed in search: the extension through 2027 (D.23-12-005), the end of A.6 after 2025, the $2/kWh rate, and A.4 as the battery VPP sub-group. Not verified: 2026-specific terms, the maximum event-hour cap, and treatment of export."
+  },
+  {
+   "id": "ca-cbp",
+   "name": "Capacity Bidding Program (CBP) - SCE, PG&E, SDG&E",
+   "state": "CA",
+   "utility_ids": [
+    "sce",
+    "pge",
+    "sdge"
+   ],
+   "administrator": "IOUs; participation via third-party aggregators",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Authorized in the 2024-2027 IOU DR portfolio (D.23-12-005). Season is May-October with monthly nominations. 2026 terms and prices were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Customer load reduction measured at the meter; batteries may participate, but export beyond site load is generally not credited. Minimum portfolio sizes and other details not verified."
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": null,
+    "unit": "$/kW-month",
+    "months_per_year": 6,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "nominated kW, adjusted by measured performance",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": 1,
+    "notes": "Capacity price varies by month and product (day-ahead / day-of) and energy payment is per kWh during events; values not verified. Underperformance reduces payment."
+   },
+   "dispatch": {
+    "season": "May-Oct",
+    "window": "Evening peak (aligned to 4-9pm in recent program years; verify)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead (DA product) or day-of",
+    "baseline_or_mv": "10-in-10 style baseline with adjustment (verify)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings",
+     "ca-elrp (with rules)"
+    ],
+    "conflicts_with": [
+     "ca-bip",
+     "ca-dsgs-option3-storage-vpp"
+    ],
+    "notes": "One capacity-paying DR program per service account is typical; verify."
+   },
+   "vpp_relevance": "Integrated into CAISO as PDR. Good fit for multi-site aggregation through a CBP aggregator, though prices are modest.",
+   "sources": [
+    {
+     "title": "SCE demand response programs (canonical; NOT opened)",
+     "url": "https://www.sce.com/business/savings-incentives/demand-response"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "No 2026 CBP data verified (sites blocked, search budget exhausted)."
+  },
+  {
+   "id": "ca-bip",
+   "name": "Base Interruptible Program (BIP) - SCE, PG&E, SDG&E",
+   "state": "CA",
+   "utility_ids": [
+    "sce",
+    "pge",
+    "sdge"
+   ],
+   "administrator": "IOUs (bid into CAISO as a Reliability Demand Response Resource)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Emergency reliability DR in the 2024-2027 portfolio. 2026 enrollment status and any statewide MW cap were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "Large C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Must commit to reduce to a Firm Service Level (FSL). The commitment is commonly stated as at least 100 kW, or 15% of maximum demand, whichever is greater (NOT re-verified). Aggregator participation is available at some IOUs."
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": null,
+    "unit": "$/kW-month",
+    "months_per_year": 12,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "average demand minus FSL (committed load reduction)",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": 1,
+    "notes": "Monthly capacity credit per kW of committed reduction. Steep excess-energy penalties apply if load exceeds FSL during events. Values not verified."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Any time (CAISO emergency)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "15- or 30-minute notice options (verify)",
+    "baseline_or_mv": "Metered load vs FSL"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings"
+    ],
+    "conflicts_with": [
+     "ca-cbp",
+     "ca-dsgs-option3-storage-vpp"
+    ],
+    "notes": "Battery-only BIP is risky: events can run several hours, and 2-3 h batteries cannot hold FSL through a long event without load curtailment."
+   },
+   "vpp_relevance": "Low for battery-only aggregation. Best for industrial sites with curtailable process load, with the battery as a firming bridge.",
+   "sources": [
+    {
+     "title": "SCE demand response programs (canonical; NOT opened)",
+     "url": "https://www.sce.com/business/savings-incentives/demand-response"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "The min_kw of 100 reflects the commonly stated BIP rule (also in the task brief) and was not re-verified against 2026 tariffs."
+  },
+  {
+   "id": "sce-cpp",
+   "name": "SCE Critical Peak Pricing (Schedule CPP) - default overlay for larger business customers",
+   "state": "CA",
+   "utility_ids": [
+    "sce"
+   ],
+   "administrator": "SCE",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "Default dynamic overlay for larger business customers (generally above 200 kW) unless they opt out. The current default population and 2026 values were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Bundled and CCA customers: the CPP generation component may differ for CCA customers (verify)."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kWh event adder; $/kW summer on-peak demand credit",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": 5,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "High $/kWh adder during event hours (4-9pm) in exchange for a credit on summer on-peak demand or energy. A battery that covers the full 5-hour event captures the credit and avoids the adder. Values not verified."
+   },
+   "dispatch": {
+    "season": "Year-round events possible (mostly summer)",
+    "window": "4pm-9pm",
+    "event_duration_hr": 5,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead",
+    "baseline_or_mv": "Tariff billing (no baseline)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings",
+     "ca-elrp"
+    ],
+    "conflicts_with": [],
+    "notes": "Tariff-based, so it stacks with most DR programs; check IOU dual-participation rules."
+   },
+   "vpp_relevance": "Event days drive SOC reservation in the dispatch model.",
+   "sources": [
+    {
+     "title": "SCE Business TOU rate plans",
+     "url": "https://www.sce.com/business/rates-financing/rate-plans/business-time-of-use-rate-plans"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Structure recalled; no 2026 values verified. The 5-hour event duration assumes 4-9pm event hours; verify."
+  },
+  {
+   "id": "pge-pdp",
+   "name": "PG&E Peak Day Pricing (PDP) - default overlay for demand-metered business customers",
+   "state": "CA",
+   "utility_ids": [
+    "pge"
+   ],
+   "administrator": "PG&E",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "Default dynamic overlay for eligible B-10/B-19/B-20 customers with opt-out. 2026 event hours, event counts and credits were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kWh event charge; $/kW or $/kWh summer credits",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Event-day surcharge in exchange for non-event credits; values and event window not verified."
+   },
+   "dispatch": {
+    "season": "Mostly summer",
+    "window": "Evening event window (verify)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead",
+    "baseline_or_mv": "Tariff billing"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings"
+    ],
+    "conflicts_with": [],
+    "notes": "Check PG&E dual-participation rules with CBP and BIP."
+   },
+   "vpp_relevance": "SOC reservation on event days.",
+   "sources": [
+    {
+     "title": "PG&E tariff book (canonical PDP; NOT opened)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_E-PDP.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Nothing verified this session."
+  },
+  {
+   "id": "sdge-cpp-d",
+   "name": "SDG&E Critical Peak Pricing - Default (CPP-D)",
+   "state": "CA",
+   "utility_ids": [
+    "sdge"
+   ],
+   "administrator": "SDG&E",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "Default critical-peak overlay for many demand-metered C&I customers (opt-out). 2026 parameters were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": ""
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kWh event adder",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Values not verified."
+   },
+   "dispatch": {
+    "season": "Year-round (mostly summer)",
+    "window": "Evening peak (verify)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead",
+    "baseline_or_mv": "Tariff billing"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings"
+    ],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "SOC reservation on event days.",
+   "sources": [
+    {
+     "title": "SDG&E electric tariff book (canonical; NOT opened)",
+     "url": "https://tariffsprd.sdge.com/view/tariff/?utilId=SDGE&bookId=ELEC&sectId=ELEC-SCHEDS"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Nothing verified this session."
+  },
+  {
+   "id": "pge-option-s",
+   "name": "PG&E Option S (storage rate option on B-19/B-20 - daily demand charges)",
+   "state": "CA",
+   "utility_ids": [
+    "pge"
+   ],
+   "administrator": "PG&E",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "Storage rate option with daily peak-period demand charges. Historically capped by enrollment MW. Whether the 2026 cap is reached, and the eligibility details, were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "Large C&I"
+    ],
+    "min_kw": 500,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Storage rated capacity of at least a set share of the customer's maximum demand (commonly cited as 10%; verify)"
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/kW-day",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "daily maximum demand in peak/part-peak windows",
+    "duration_basis_hr": 5,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Moves cost from monthly to daily demand charges. The dispatch model should compute daily peak-window maxima. See tariff ids pge-b-19 and pge-b-20."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "4pm-9pm daily (peak), plus part-peak in summer (verify)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "N/A (tariff)",
+    "baseline_or_mv": "Billing interval data"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ca-elrp",
+     "ca-cbp"
+    ],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Daily charges reward reliable daily dispatch, which suits fleet-managed VPP operations.",
+   "sources": [
+    {
+     "title": "PG&E Schedule B-19 (canonical; fetch blocked)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_B-19.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Concept recalled; no 2026 data verified."
+  },
+  {
+   "id": "caiso-pdr-dera-aggregator",
+   "name": "CAISO wholesale participation via Demand Response Provider (PDR / PDR-LSR) or DER Aggregation (DERA)",
+   "state": "CA",
+   "utility_ids": [],
+   "administrator": "CAISO; IOU Rule 24 (PG&E/SDG&E) / Rule 24-equivalent DR registration",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "Available year-round through a registered Demand Response Provider (DRP) or Scheduling Coordinator. Resource Adequacy value is realized only through a bilateral RA contract with a load-serving entity (IOU, CCA or ESP); CAISO has no centralized capacity auction.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "PDR measures load reduction (export not counted). PDR-LSR adds load-shift (charging) credit. DERA allows export but requires Rule 21 export interconnection and wholesale metering. CAISO minimum resource sizes (commonly cited as 100 kW for PDR) not re-verified."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": "$/MWh energy; $/kW-month RA (bilateral)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "registered PDR capacity / NQC",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "RA counting for storage and slice-of-day RA require 4-hour-equivalent capability for full credit under CPUC rules (verify). 2-hour products are derated."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Market-driven; RA must-offer obligations",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead / real-time",
+    "baseline_or_mv": "CAISO baseline (10-in-10, control group, or meter-before/after)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "bill savings"
+    ],
+    "conflicts_with": [
+     "ca-cbp",
+     "ca-dsgs-option3-storage-vpp"
+    ],
+    "notes": "Avoid double counting with IOU DR that is already registered as PDR or RDRR. Conflicts as researched: ca-cbp (already a PDR)"
+   },
+   "vpp_relevance": "Long-term VPP monetization path once the fleet is large enough to contract RA with CCAs.",
+   "sources": [
+    {
+     "title": "DSGS Guidelines Fifth Edition (PDR bid requirements reference)",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=269649&DocumentContentId=106743"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Structural description; CAISO/CPUC specifics not verified this session."
+  },
+  {
+   "id": "ca-iou-adr-technology-incentives",
+   "name": "IOU Automated Demand Response / technology incentives (SCE Auto-DR/ART, PG&E ADR, SDG&E TI)",
+   "state": "CA",
+   "utility_ids": [
+    "sce",
+    "pge",
+    "sdge"
+   ],
+   "administrator": "IOUs",
+   "category": "upfront_incentive",
+   "status": "open",
+   "status_notes": "The IOUs have offered $/kW incentives for automated DR-enabling controls tied to DR enrollment. Whether battery storage hardware or controls qualify in 2026, and the current funding, were NOT verified. Treat as unconfirmed.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Typically requires enrollment in an IOU DR program (CBP, BIP or CPP) for a minimum term."
+   },
+   "valuation": {
+    "method": "upfront_per_kw",
+    "rate": null,
+    "unit": "$/kW",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "verified automated load shed",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Not verified."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Load-shed test"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ca-cbp",
+     "ca-bip",
+     "sce-cpp"
+    ],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Could offset controls or integration cost if storage qualifies.",
+   "sources": [
+    {
+     "title": "SCE demand response programs (canonical; NOT opened)",
+     "url": "https://www.sce.com/business/savings-incentives/demand-response"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Included at the request of the task brief. Status 'open' is an assumption pending verification."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "caiso-dsgs-option3-trigger",
+   "label": "DSGS Option 3 dispatch trigger: CAISO day-ahead hourly LMP threshold",
+   "value": 200,
+   "unit": "$/MWh",
+   "period": "2025-2026 program seasons (May-Oct, 4-9pm)",
+   "sources": [
+    {
+     "title": "Revised Proposed DSGS Guidelines (TN 262552)",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=262552"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Hours with day-ahead LMP of at least $200/MWh trigger Option 3 events, with consecutive-hour fill. Useful as a proxy for VPP event frequency: count DA LMP hours at or above $200 in the 4-9pm window historically."
+  },
+  {
+   "id": "caiso-ra-bilateral",
+   "label": "CPUC Resource Adequacy bilateral capacity price (system RA)",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "2026",
+   "sources": [
+    {
+     "title": "CPUC Resource Adequacy reports (canonical; NOT opened)",
+     "url": "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-power-procurement/resource-adequacy-homepage"
+    }
+   ],
+   "confidence": "low",
+   "notes": "California has no capacity auction. RA is bilateral and the CPUC publishes average prices with a lag. Value not verified; pull it from the latest CPUC RA Report."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "ca-rule21-non-export-screen-i",
+   "topic": "interconnection",
+   "title": "Rule 21 Screen I - non-exporting storage options",
+   "rule": "BTM storage that will not export can pass Fast Track Screen I by one of several options: reverse-power protection, minimum-power (minimum import) protection, a relative-size limit versus minimum load, or certified non-export equipment (UL 1741-certified inverter with a UL 1741 CRD Power Control System limiting export). Passing allows an Interconnection Agreement without a detailed study.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Non-export lets battery kW exceed minimum site load only if the PCS caps discharge to follow load. Discharge kW is effectively limited to coincident site load in each interval, which caps the usable kW of 200 kW units at low-load sites. Relative-size and minimum-import options can further cap kW.",
+   "applies_to": "sce, pge, sdge",
+   "sources": [
+    {
+     "title": "PG&E Electric Rule 21 (canonical; NOT opened)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_RULES_21.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-rule21-fees-timelines",
+   "topic": "interconnection",
+   "title": "Rule 21 fees and review timelines (non-NEM)",
+   "rule": "Commonly cited figures are an $800 Interconnection Request fee, a $2,500 Supplemental Review fee, about 15 business days for Initial Review and about 20 business days for Supplemental Review. Actual IOU queues often run longer. None of these values was re-verified this session.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Staying within Fast Track (non-export, certified PCS, under screen limits) avoids study cost and delay. Size to fit the screens.",
+   "applies_to": "sce, pge, sdge",
+   "sources": [
+    {
+     "title": "SCE Rule 21 / tariff books (canonical; NOT opened)",
+     "url": "https://www.sce.com/regulatory/tariff-books/rules"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "pge-sf-oakland-secondary-network",
+   "topic": "network_grid",
+   "title": "PG&E secondary networks - downtown San Francisco and Oakland",
+   "rule": "Sites served from PG&E grid or spot networks fail standard Fast Track screens. They require supplemental or detailed review, strict non-export and minimum-import protection, and coordination with network protectors. Allowable generating capacity is typically a small fraction of minimum load.",
+   "threshold": {
+    "metric": "kW",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Expect battery kW to be capped well below site peak. Screen these sites out early, or plan for a long study.",
+   "applies_to": "pge (downtown SF, Oakland); similar for sdge downtown San Diego",
+   "sources": [
+    {
+     "title": "PG&E Electric Rule 21 (canonical; NOT opened)",
+     "url": "https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_RULES_21.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-cfc-1207-threshold",
+   "topic": "fire_code",
+   "title": "CFC Section 1207 applicability threshold for lithium-ion ESS",
+   "rule": "Under the 2022 California Fire Code (based on the 2021 IFC), Section 1207 applies to stationary ESS above the threshold quantity in Table 1207.1.1, which is 20 kWh for lithium-ion. ESS must be listed to UL 9540, and AHJ permits and plan review are required.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "All four products exceed 20 kWh, so every project needs a fire permit under Section 1207.",
+   "applies_to": "state-wide (local amendments may be stricter)",
+   "sources": [
+    {
+     "title": "2022 California Fire Code Chapter 12 (ICC; canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "threshold_kwh"
+  },
+  {
+   "id": "ca-cfc-1207-indoor-unit-and-fire-area-limits",
+   "topic": "fire_code",
+   "title": "Indoor ESS: 50 kWh per unit and 600 kWh lithium-ion per fire area",
+   "rule": "Indoor ESS units are limited to 50 kWh each, with 3 ft spacing between units and from walls. The aggregate lithium-ion quantity within a room or fire area is limited to 600 kWh. Larger units or quantities need approval based on UL 9540A large-scale fire testing and a hazard mitigation analysis. These limits come from the 2021 IFC/2022 CFC Section 1207.5 as recalled and were not re-opened this session.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "The 150, 200, 418 and 600 kWh cabinets each exceed 50 kWh per unit, so indoor installs need UL 9540A-based approval. One 600 kWh unit consumes the entire per-fire-area allowance. Favor outdoor, pad-mounted installs.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "2022 California Fire Code Chapter 12 (ICC; canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "indoor_max_kwh"
+  },
+  {
+   "id": "ca-cfc-1207-outdoor-separation",
+   "topic": "fire_code",
+   "title": "Outdoor ESS separation (10 ft, reducible with UL 9540A)",
+   "rule": "Outdoor ESS must be separated at least 10 ft from lot lines, public ways, buildings, stored combustibles and other exposures. The distance may be reduced (to about 3 ft) where UL 9540A large-scale fire test data and AHJ approval support it. Walk-in units are treated as rooms. Values are recalled from 2021 IFC 1207.8 and not re-opened.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "Parking-lot and rear-of-building pads must satisfy setbacks. Tight urban retail sites may fit only one or two cabinets.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "2022 California Fire Code Chapter 12 (ICC; canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "outdoor_setback_ft"
+  },
+  {
+   "id": "ca-cfc-2025-update",
+   "topic": "fire_code",
+   "title": "2025 California Fire Code (effective 2026-01-01)",
+   "rule": "The 2025 California Building Standards Code cycle (CFC based on the 2024 IFC) took effect 2026-01-01 for permits applied for on or after that date. The 2024 IFC ESS provisions align more closely with NFPA 855 (2023). The specific CA changes to Section 1207 thresholds were not verified.",
+   "threshold": {
+    "metric": "kWh",
+    "value": null,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Confirm with each AHJ which code edition applies to the permit date. Thresholds may have shifted.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "ICC code library (canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-local-ahj-la-sf",
+   "topic": "permitting",
+   "title": "Local AHJ requirements: LAFD, LA County Fire, SFFD",
+   "rule": "The large urban AHJs (LAFD Fire Prevention, LA County Fire Department Fire Prevention, SFFD Plan Check) generally require a separate fire plan check for ESS, UL 9540/9540A documentation, hazard mitigation analysis for larger systems, emergency response plans, signage, and sometimes local amendments stricter than the CFC. Specific 2026 requirements and review times were not verified.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Budget 2-6+ months of permitting in LA and SF. Staying outdoors with listed cabinets under the unit and aggregate thresholds shortens review.",
+   "applies_to": "City of Los Angeles; unincorporated LA County and contract cities; San Francisco",
+   "sources": [
+    {
+     "title": "2022 California Fire Code Chapter 12 (ICC; canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-title24-nonres-battery",
+   "topic": "building_code",
+   "title": "Title 24 Part 6 (2022, continued in 2025) - PV and battery requirements for new nonresidential buildings",
+   "rule": "The 2022 Energy Code (effective 2023-01-01) requires solar PV, and battery storage where PV is required, for specified new nonresidential occupancies (e.g., offices, retail, grocery, schools, warehouses, hotels). Battery kWh and kW are sized by code formulas relative to PV size. The 2025 Energy Code (effective 2026-01-01) continues this. Formula factors and exceptions were not verified.",
+   "threshold": {
+    "metric": "kWh",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "New-construction sites may already have code-required storage, which reduces incremental retrofit value. Code-minimum batteries can be an upsell opportunity.",
+   "applies_to": "state-wide (new construction)",
+   "sources": [
+    {
+     "title": "CEC 2022 Building Energy Efficiency Standards (canonical; NOT opened)",
+     "url": "https://www.energy.ca.gov/programs-and-topics/programs/building-energy-efficiency-standards/2022-building-energy-efficiency"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-electrical-code-pcs",
+   "topic": "electrical",
+   "title": "California Electrical Code - Article 706 ESS and 705.13 Power Control Systems",
+   "rule": "ESS installations follow CEC (California Electrical Code) Article 706 and Article 705 interconnection rules. A Power Control System (705.13) can limit current on busbars and conductors, allowing larger battery inverters on existing switchgear without a service upgrade. The 2025 CEC (based on NEC 2023) took effect 2026-01-01. Details were not re-verified.",
+   "threshold": {
+    "metric": "amps",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Switchgear busbar ratings and available breaker space often cap battery inverter kW at retail sites. A PCS can unlock headroom.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "ICC code library (canonical; NOT opened)",
+     "url": "https://codes.iccsafe.org/content/CAFC2022P1/chapter-12-energy-systems"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-go-167-c",
+   "topic": "permitting",
+   "title": "CPUC General Order 167-C (generation and storage maintenance/operation standards)",
+   "rule": "GO 167-C sets maintenance, operation and logbook standards for generating assets and energy storage systems, aimed at utility-scale or grid-connected facilities. It is generally not applicable to small BTM C&I storage, but applicability thresholds were not verified.",
+   "threshold": {
+    "metric": "kW",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Likely none for 30-600 kWh BTM units. Confirm if multi-MW sites are aggregated.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "CPUC (canonical; NOT opened)",
+     "url": "https://www.cpuc.ca.gov/"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ca-dsgs-duration-tier",
+   "topic": "program_rule",
+   "title": "DSGS Option 3 capacity tiers by duration (2 h / 3 h / 4 h)",
+   "rule": "Option 3 capacity prices step by battery duration. Per season, 4 h earns $82.80/kW, 3 h earns $74.52/kW and 2 h earns $62.10/kW (Fourth Edition table), plus a reported 30% bonus in 2026.",
+   "threshold": {
+    "metric": "other",
+    "value": 2,
+    "comparison": "min",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "The 200 kW/418 kWh unit (2.09 h) earns the 2 h tier. Pairing units to reach 3-4 h (e.g., 200 kW/600 kWh) earns 20-33% more per kW.",
+   "applies_to": "statewide (if eligible)",
+   "sources": [
+    {
+     "title": "Revised Proposed DSGS Guidelines (TN 262552)",
+     "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=262552"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (Southern California Edison)",
+   "topic": "FRD vs TRD and the 5-hour window",
+   "severity": "critical",
+   "note": "On TOU-GS-2/3 and TOU-8 Option D, the Facilities-Related Demand charge is set by the single highest 15-minute interval in any hour of the month. One morning HVAC spike can wipe out the savings, so dispatch must guard FRD all day, not just 4-9pm. The 4-9pm summer on-peak window is 5 hours, so a 200 kW/418 kWh unit can hold only about 84 kW flat across it (418/5).",
+   "persona_id": "sce"
+  },
+  {
+   "persona": "Utility program manager (Southern California Edison)",
+   "topic": "Option D vs E and CPP default",
+   "severity": "caution",
+   "note": "Re-run the Option D versus Option E comparison after commissioning. Storage nearly always favors D, but rate switches are limited (typically once per 12 months). Larger accounts default onto CPP, so CPP event days (4-9pm) need full state of charge at 4pm or the event adder erodes the month's savings.",
+   "persona_id": "sce"
+  },
+  {
+   "persona": "Utility program manager (PG&E)",
+   "topic": "Option S de-risks performance",
+   "severity": "info",
+   "note": "On B-19/B-20, Option S converts most peak-period demand charges to daily charges. A missed dispatch costs one day rather than the month. That suits fleet operations and lower-confidence load forecasts. Confirm eligibility (storage size relative to peak) and whether the enrollment cap has room before modeling it.",
+   "persona_id": "pge"
+  },
+  {
+   "persona": "Utility program manager (PG&E)",
+   "topic": "Network and queue risk",
+   "severity": "caution",
+   "note": "Downtown San Francisco and Oakland network-served sites will not get through Fast Track. Expect supplemental review, strict minimum-import settings and a small allowable capacity. PG&E Rule 21 and Rule 15/16 queues are slow, so start interconnection and service-capacity requests in parallel.",
+   "persona_id": "pge"
+  },
+  {
+   "persona": "Retail/CCA & VPP aggregator perspective (Constellation-style)",
+   "topic": "CCA customers keep IOU delivery demand charges",
+   "severity": "info",
+   "note": "For CCA-served sites, the IOU distribution demand charges (SCE FRD, PG&E max demand, SDG&E non-coincident) remain on the bill, so demand-charge savings largely survive CCA enrollment. Generation-side TOU or demand savings depend on the CCA's own tariff, so model bundled and CCA variants separately.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail/CCA & VPP aggregator perspective (Constellation-style)",
+   "topic": "Incentive cliff in 2026",
+   "severity": "critical",
+   "note": "With SGIP closed since 2025-12-31 and DSGS Option 3 closed to new aggregations for 2026, there is no state upfront incentive and no large VPP capacity program open to a new C&I fleet today. Underwrite on bill savings, the federal ITC and ELRP A.4 ($2/kWh). Treat DSGS 2027 and any successor (e.g., a CPUC or CEC VPP or DR redesign) as upside only.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail/CCA & VPP aggregator perspective (Constellation-style)",
+   "topic": "RA via CCAs",
+   "severity": "info",
+   "note": "In CAISO the durable VPP revenue is bilateral RA sold to CCAs or other LSEs through PDR registration. Slice-of-day RA counting favors 4-hour-capable aggregations, so 2-hour units are derated.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Indoor fire-code limits",
+   "severity": "critical",
+   "note": "Every product here exceeds the CFC 50 kWh-per-unit indoor limit, and a single 600 kWh cabinet consumes the 600 kWh lithium-ion fire-area allowance. Indoor installs need UL 9540A data and AHJ approval. In LA and SF, plan on outdoor pads with 10 ft separation unless test data support less.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Non-export PCS and load-following",
+   "severity": "caution",
+   "note": "Under Rule 21 non-export (Screen I, certified UL 1741 CRD PCS), discharge must track site load at a sub-second to seconds timescale. At low-load retail sites in the evening, a 200 kW inverter may only deliver 60-100 kW. Size kW to the 4-9pm load floor, not to peak.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Service capacity and charging load",
+   "severity": "caution",
+   "note": "Grid charging of 200 kW units adds load on the service and transformer. If charging coincides with daytime peaks it can trigger Rule 15/16 upgrades, or raise the FRD/max-demand charge the battery is meant to cut. Schedule charging in the 8am-4pm super-off-peak hours with a demand-cap guard.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Code-cycle transition",
+   "severity": "info",
+   "note": "Permits filed on or after 2026-01-01 fall under the 2025 California Building Standards Code (CFC and CEC). Confirm the applicable edition with each AHJ, because Section 1207 and Article 706 details changed between cycles.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "All 2026 tariff $ values for SCE (TOU-GS-1/2/3, TOU-8 D/E), PG&E (B-1, B-6, B-10, B-19, B-20, Option S) and SDG&E (TOU-A, AL-TOU, AL-TOU-2, DG-R) are null. sce.com, pge.com, sdge.com and cpuc.ca.gov were blocked by the egress proxy, and the web-search budget was exhausted. Pull them from the IOU tariff books (e.g., pge.com/tariffs ELEC_SCHEDS_B-19.pdf; sce.com tariff books 'General Service & Industrial Rates'; tariffsprd.sdge.com) or the 2026 CCA joint rate comparisons. RMEA's 2026-03-01 sheet lists TOU-8-SEC-D.",
+  "Confirm exact 2026 SCE and PG&E rate effective dates. The CCA sheets dated 2026-02-15 (3CE) and 2026-03-01 (RMEA) suggest IOU rate changes around then.",
+  "Confirm whether the DSGS Fifth Edition kept the Fourth Edition Option 3 capacity price table ($82.80/$74.52/$62.10 per kW-season). Also confirm the per-provider cap and whether new customer sites can join an incumbent aggregator's 2026 aggregation.",
+  "Confirm DSGS dual-enrollment rules for Option 3 versus ELRP, CBP and BIP.",
+  "Confirm ELRP 2026 operating parameters: maximum event hours, event window, A.4 treatment of battery export, and dual-participation rules.",
+  "Confirm CBP and BIP 2026 capacity prices, event windows, and BIP minimum commitment (stated as 100 kW or 15%).",
+  "Verify Rule 21 Screen I option thresholds, the $800 and $2,500 fees, and current review timelines from the current Rule 21 tariff text.",
+  "Verify PG&E Option S eligibility (storage at least about 10% of peak demand?), enrollment cap status, and daily demand rates.",
+  "Verify the SDG&E AL-TOU-2 design and DG-R eligibility percentage.",
+  "Verify the 2025 CFC (effective 2026-01-01) changes to Section 1207 (unit kWh limits, fire-area aggregates, outdoor separation) and LAFD, LACoFD and SFFD local ESS requirements.",
+  "Confirm whether any successor non-residential storage incentive has been authorized after the SGIP sunset, e.g., a CPUC or CEC VPP or DR program or legislation in the 2026 session.",
+  "Confirm whether storage-only sites are exempt from standby charges (SCE Schedule S, PG&E Schedule S) in 2026.",
+  "LADWP, SMUD and other municipal utilities are out of scope. Their rates, programs and interconnection rules differ, and they are not covered by Rule 21 or IOU programs (DSGS has historically included POU customers)."
+ ]
+}

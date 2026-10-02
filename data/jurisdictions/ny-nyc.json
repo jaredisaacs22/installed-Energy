@@ -1,0 +1,1835 @@
+{
+ "code": "NY-NYC",
+ "name": "New York City (Con Edison)",
+ "researched_on": "2026-10-01",
+ "summary": "NYC (Con Edison, NYISO Zone J) is one of the highest-value US markets for BTM C&I storage on paper. Stacked value comes from: very high, multi-window SC 9 Rate II demand charges (2026-2028 rate plan adopted 2026-01-22); Zone J capacity, which cleared at a record $32.6/kW-month in May 2026 and $32.5 in June 2026; Con Ed CSRP ($18/kW-month outside Staten Island) and DLRP ($18/$25 per kW-month by network tier) reservation payments; and the NYSERDA retail incentive (NYC block proposed at $125/kWh). Capacity is softening: the 1,250 MW CHPE line entered the July 2026 auction, so post-June 2026 Zone J prices and capacity-tag value should be modeled lower. Tag savings reach the customer only if the retail supply contract passes them through. The binding constraints are physical and regulatory, not economic. Most of Manhattan and much of the Bronx, Brooklyn and Queens is fed by secondary area or spot networks, so systems must be non-export: network protectors trip on reverse power, and Con Ed flags systems above 50 kW-AC. FDNY rules come next. Every unit model needs an FDNY Certificate of Approval. Outdoor systems above 250 kWh are 'Large' under 3 RCNY 608-01, with 10 ft separation from lot lines and exposures. Indoor lithium-ion is reportedly capped at 400 kWh per control area under the 2022 NYC Fire Code. As a result, the 418 kWh and 600 kWh units are effectively outdoor or rooftop products in NYC, while the 150 kWh and 200 kWh units are the indoor and basement candidates. Current 2026 SC 9 $/kW values, the Jul–Oct 2026 Zone J prices and the Term/Auto-DLM prices were not verifiable in this pass (search-only environment) and are null.",
+ "default_energy_price_usd_per_kwh": 0.24,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "coned-nyc",
+   "name": "Consolidated Edison Company of New York (Con Edison), NYC service area",
+   "state": "NY",
+   "iso": "NYISO",
+   "load_zone": "Zone J (New York City). Westchester (also Con Ed) sits outside Zone J and is not in scope.",
+   "retail_choice": true,
+   "default_supply_notes": "Full-service customers pay Con Ed's Market Supply Charge (MSC), which resets monthly and includes a capacity component. For SC 9 Rates II and V, the MSC capacity component is a $/kW charge: $9.99/kW in NYC in the March 2025 statement (msccap-202503). The capacity statement is republished monthly (e.g., msccap-202605). The basis kW (billing demand vs capacity tag) was not confirmed. Large customers are believed to be on mandatory day-ahead hourly supply pricing; the kW threshold is unverified. ESCO supply is available, and capacity/ICAP tag savings flow only if the ESCO contract passes capacity through at the customer's tag.",
+   "network_grid_notes": "Much of NYC (Manhattan and large parts of the Bronx, Brooklyn and Queens) is served by low-voltage secondary area networks, and large buildings may sit on dedicated spot networks. Network protectors open when power flows back from the LV bus toward the feeder, which is the same condition as an ESS discharging more than the local load. Con Ed flags undesirable impacts (voltage fluctuation, repetitive network protector operation), particularly for ESS above 50 kW-AC. In practice BTM storage in network areas must be non-export, with a minimum-import margin. Staten Island (and Westchester) are largely radial, which is why CSRP pays a lower reservation rate there.",
+   "interconnection": {
+    "rule_name": "NYS Standardized Interconnection Requirements (SIR) for DG and energy storage <=5 MW. The version in effect is effective 2026-02-09 (Case 24-E-0621 redline of the 2025-08-01 SIR). Con Ed also publishes an Energy Storage System Guide (v4, July 2022) and ESS Interconnection Best Practices.",
+    "tracks": [
+     {
+      "name": "Simplified / expedited (small inverter-based)",
+      "max_kw": 50,
+      "conditions": "Inverter-based systems up to 50 kW. The 50 kW boundary follows the SIR structure as commonly applied. It was not re-confirmed from the 2026 SIR text in this pass.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Standard process",
+      "max_kw": 5000,
+      "conditions": "Systems above 50 kW up to 5 MW AC nameplate or export capacity. Includes preliminary/supplemental screening and CESIR (coordinated electric system interconnection review) where screens fail. Energy storage applications include the AC inverter/converter nameplate. Export is capped at 5 MW AC.",
+      "typical_timeline": null,
+      "application_fee": null
+     }
+    ],
+    "non_export_path": "Under the 2025 SIR edits, UL 1741 CRD (Certification Requirement Decision) Power Control Systems with multi-mode capability can limit export or import, so a non-export or limited-export ESS can be evaluated at its controlled export level rather than inverter nameplate. In Con Ed networks, non-export is effectively mandatory. Expect a reverse-power or minimum-import relay at the PCC, coordinated with network protector settings, and Con Ed protection review for anything above 50 kW-AC.",
+    "storage_specific_notes": "Con Ed filed a 'Notice on SIR Energy Storage' with DPS on 2026-01-14 (content not retrieved). On 2025-08-15, Con Ed told developers about capacity constraints at specific substations and said projects without executed interconnection agreements need further evaluation. Check substation and network headroom before committing sites. Grid charging adds load and can trigger service or transformer upgrades even when export is zero.",
+    "sources": [
+     {
+      "title": "NYS SIR effective February 9, 2026 (redline from Aug 1, 2025), Case 24-E-0621",
+      "url": "https://dps.ny.gov/system/files/documents/2026/06/24-e-0621-sirs-effective-february-9-2026-redlined-from-august-1-2025_0.pdf"
+     },
+     {
+      "title": "NYS Standardized Interconnection Requirements (effective 8/1/2025)",
+      "url": "https://dps.ny.gov/system/files/documents/2025/08/nys-standardized-interconnection-requirements-effective-080125.pdf"
+     },
+     {
+      "title": "DPS: UL 1741 CRD multi-mode requirements, SIR edits (May 2025)",
+      "url": "https://dps.ny.gov/system/files/documents/2025/05/2025-05-22-ul-1741-crd-multi-mode-requirements-sir-edits_clean_highlight.pdf"
+     },
+     {
+      "title": "Con Edison Notice on SIR Energy Storage (Jan 14, 2026)",
+      "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B100EBE9B-0000-C512-BD61-5C2EE682E11D%7D&amp=&DocTitle=Con+Edison+Notice+on+SIR+Energy+Storage"
+     },
+     {
+      "title": "Con Edison Energy Storage System Guide, Version 4 (July 2022)",
+      "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-guide.pdf"
+     },
+     {
+      "title": "Con Edison Energy Storage Interconnection Best Practices",
+      "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-interconnection-best-practices.pdf"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "NYS DPS: Con Edison electric rate case summary (Jan 2026)",
+     "url": "https://dps.ny.gov/system/files/documents/2026/01/con-edison-electric-rate-case-summary.pdf"
+    },
+    {
+     "title": "PSC Order Adopting Terms of a Joint Proposal and Establishing Electric and Gas Rate Plans (Cases 25-E-0072/25-G-0073)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B800DE79B-0000-C74C-9247-B3A408818830%7D&DocTitle=Order+Adopting+Terms+of+a+Joint+Proposal+and+Establishing+Electric+and+Gas+Rate+Plans"
+    },
+    {
+     "title": "Con Edison Energy Storage System Guide, Version 4 (July 2022)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-guide.pdf"
+    },
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, March 2025",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202503.pdf"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "coned-sc9-rate2",
+   "utility_id": "coned-nyc",
+   "name": "SC 9 General Large, Rate II (Time-of-Day demand), Low Tension",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "General Large service. Rate II is the time-of-day demand rate, labeled 'Mandatory Time-of-Day' in Con Ed rate documents and mandatory for larger SC 9 customers. The kW threshold that makes TOD mandatory was not verified in this pass (commonly cited around 1,500 kW; verify in the current PSC 10 leaf). Smaller SC 9 customers may be on Rate I."
+   },
+   "effective_date": "2026 rate year 1 of the rate plan adopted 2026-01-22 (Case 25-E-0072). Exact leaf effective date not confirmed.",
+   "demand_charges": [
+    {
+     "label": "Delivery demand, summer, Mon-Fri 8am-6pm",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "Mon-Fri 8am-6pm",
+     "notes": "Separate charge on the monthly max kW within this window, additive to the 8am-10pm and all-hours charges. The 2026 $/kW was not verified. An older (pre-PSC 10) tariff summary showed $8.35/kW. Do not use it.",
+     "window": {
+      "start": 8,
+      "end": 18
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Delivery demand, summer, Mon-Fri 8am-10pm",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "Mon-Fri 8am-10pm",
+     "notes": "Typically the largest component. The 2026 value was not verified. An older tariff summary showed $19.89/kW. Do not use it.",
+     "window": {
+      "start": 8,
+      "end": 22
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Delivery demand, all hours (summer)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all hours, all days",
+     "notes": "Set by the monthly max kW at any hour, so night-time battery charging can set it. Cap the charging kW. The 2026 value was not verified. An older tariff summary showed $16.51/kW. Do not use it."
+    },
+    {
+     "label": "Delivery demand, non-summer, Mon-Fri 8am-10pm",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+     ],
+     "hours": "Mon-Fri 8am-10pm",
+     "notes": "The 2026 value was not verified.",
+     "window": {
+      "start": 8,
+      "end": 22
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Delivery demand, non-summer, all hours",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours, all days",
+     "notes": "The 2026 value was not verified."
+    },
+    {
+     "label": "MSC capacity component (full-service supply only)",
+     "component": "supply",
+     "rate_usd_per_kw_month": null,
+     "basis": "contract",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "monthly statement",
+     "notes": "Con Ed bills SC 9 Rates II and V supply capacity in $/kW: $9.99/kW NYC in March 2025 (a winter month). Summer 2026 statements should be far higher given $32+/kW-month Zone J prices. The kW basis is not confirmed. It does not apply to ESCO customers."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "icap",
+     "how_set": "Customer capacity obligation (ICAP tag) is set from the customer's load at the prior summer's peak, NYISO/Con Ed peak hour. The exact Con Ed methodology (NYCA vs Con Ed zonal peak, scaling to the Zone J Locational Capacity Requirement and UCAP) was not verified. The tag applies to the following May-April capability year.",
+     "est_value_usd_per_kw_year": null,
+     "derivation": "Inputs (UCAP spot, Zone J): May 2026 $32.6, June 2026 $32.5/kW-month. Jul-Oct 2026 are unknown (CHPE 1,250 MW entered the July auction, so prices are expected lower). Winter 2025-26 was roughly $6/kW-month. Known-to-date summer 2026 sum: 32.6 + 32.5 = $65.1/kW. Upper-bound scenario if all 6 summer months held May/June levels: 6 x 32.55 = 195.3, plus winter 6 x ~6 = 36, for about $231/kW-yr before any tag-to-UCAP scaling (Zone J LCR and derating factors, roughly ±20%). This is not a central estimate. A tag reduction earned in summer 2026 is priced in capability year 2027-28, which is post-CHPE and likely materially lower. Left null pending NYISO auction results for Jul-Oct 2026 and the 2026-27 winter strip.",
+     "passthrough_notes": "Realized only if (a) the customer is full-service on the MSC, where the capacity $/kW tracks the tag or demand basis (verify), or (b) the ESCO contract is capacity pass-through or index at the customer's tag. Fixed all-in ESCO contracts capture none of it until renewal.",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Rate II's overlapping windows mean a 2-4 h battery shaves the monthly peak within each window, not the whole 14-hour 8am-10pm block. Each window's charge is assessed on that window's own monthly max, so one dispatch reduces several charges at once. Charging must be power-limited to avoid setting the all-hours peak. Standby (SC 14-RA) applicability to storage-only customers was not verified (see coned-sc14ra). Non-export applies in network areas.",
+   "sources": [
+    {
+     "title": "NYS DPS: Con Edison electric rate case summary (Jan 2026)",
+     "url": "https://dps.ny.gov/system/files/documents/2026/01/con-edison-electric-rate-case-summary.pdf"
+    },
+    {
+     "title": "PSC Order Adopting Terms of a Joint Proposal and Establishing Electric and Gas Rate Plans (Cases 25-E-0072/25-G-0073)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B800DE79B-0000-C74C-9247-B3A408818830%7D&DocTitle=Order+Adopting+Terms+of+a+Joint+Proposal+and+Establishing+Electric+and+Gas+Rate+Plans"
+    },
+    {
+     "title": "Con Edison P.S.C. No. 9 (historical tariff, service classifications)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/past-tariffs/psc9-service-class.pdf"
+    },
+    {
+     "title": "Con Edison Electric Tariff (PSC 10) service classifications, August 2023 (historical)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/psc-10/tariff/sc-202308.pdf"
+    },
+    {
+     "title": "NYSERDA Energy Storage Customer Electric Rates Reference Guide for Project Developers",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/energy-storage-customer-electric-rates-reference-guide.pdf"
+    },
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, March 2025",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202503.pdf"
+    },
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, May 2026",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202605.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Confirmed: the rate plan was adopted 2026-01-22, with delivery revenue +3.5% (2026), +3.2% (2027) and +3.1% (2028), and the SC 9 Rate II demand-window structure (summer Mon-Fri 8am-6pm, Mon-Fri 8am-10pm, all hours). Search summaries returned only historical $/kW values, and inconsistent ones ($8.35/$19.89/$16.51 and $12.68 or $9.26 for 8am-10pm), so all 2026 rates are null. Pull the current PSC 10 leaf for SC 9 (coned.com/rates) or the JP rate-design appendix."
+  },
+  {
+   "id": "coned-sc9-rate1",
+   "utility_id": "coned-nyc",
+   "name": "SC 9 General Large, Rate I (standard, non-TOD demand), Low Tension",
+   "customer_class": "Medium/Large C&I",
+   "applicability": {
+    "min_kw": 10,
+    "max_kw": null,
+    "text": "General service customers above about 10 kW not on Rate II. Search snippets referenced separate demand pricing for the 'first 10 kW of maximum demand' and 'over 10 kW'. The applicability boundary and the mandatory-TOD threshold were not confirmed."
+   },
+   "effective_date": "2026 (rate plan adopted 2026-01-22)",
+   "demand_charges": [
+    {
+     "label": "Delivery demand, summer, monthly max",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "all hours",
+     "notes": "The 2026 value was not verified."
+    },
+    {
+     "label": "Delivery demand, non-summer, monthly max",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "The 2026 value was not verified."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "A non-TOD monthly max means any interval (including charging) can set the bill. Compare with voluntary TOD if the load is daytime-peaky.",
+   "sources": [
+    {
+     "title": "Con Edison P.S.C. No. 9 (historical tariff, service classifications)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/past-tariffs/psc9-service-class.pdf"
+    },
+    {
+     "title": "Con Edison Electric Tariff (PSC 10) service classifications, August 2023 (historical)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/psc-10/tariff/sc-202308.pdf"
+    },
+    {
+     "title": "NYSERDA Energy Storage Customer Electric Rates Reference Guide for Project Developers",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/energy-storage-customer-electric-rates-reference-guide.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Structure only. All 2026 $/kW values are null."
+  },
+  {
+   "id": "coned-sc2",
+   "utility_id": "coned-nyc",
+   "name": "SC 2 General Small",
+   "customer_class": "Small commercial",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 10,
+    "text": "Small general-service customers, understood to be those with demand of 10 kW or less. Customers above that move to SC 9. Energy-billed with no demand charge, so BTM storage has little bill value except through DR programs."
+   },
+   "effective_date": "2026 (rate plan adopted 2026-01-22)",
+   "demand_charges": [],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Retail sites on SC 2 are poor demand-charge candidates. Value would come from CSRP/DLRP (minimum 50 kW per aggregation) and NYSERDA incentives only.",
+   "sources": [
+    {
+     "title": "Con Edison Electric Tariff (PSC 10) service classifications, August 2023 (historical)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/historical/psc-10/tariff/sc-202308.pdf"
+    },
+    {
+     "title": "NYSERDA Energy Storage Customer Electric Rates Reference Guide for Project Developers",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/energy-storage-customer-electric-rates-reference-guide.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "The 10 kW boundary is from practitioner knowledge, indirectly consistent with SC 9 snippets referencing 'first 10 kW'. It was not confirmed from the current tariff."
+  },
+  {
+   "id": "coned-sc14ra",
+   "utility_id": "coned-nyc",
+   "name": "SC 14-RA Standby Service (customers with on-site generation)",
+   "customer_class": "C&I with on-site generation",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Standby (contract demand plus as-used daily demand) pricing for customers with on-site generation. It is not verified whether storage-only BTM installations are exempt or treated as generation."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Contract demand (standby)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "contract",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "n/a",
+     "notes": "Not verified."
+    },
+    {
+     "label": "As-used daily demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "daily",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "peak periods",
+     "notes": "Not verified."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "Critical diligence item. If storage paired with solar or CHP pushes a site onto standby, demand-charge savings math changes to contract plus daily as-used demand. NY standby exemptions for storage were not confirmed in this pass.",
+   "sources": [
+    {
+     "title": "Con Edison: Standby Rates",
+     "url": "https://www.coned.com/en/accounts-billing/your-bill/standby-rates"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "The web search budget ran out before this could be verified. Read the Con Ed standby rates page and PSC 10 SC 14-RA leaf for storage exemption language."
+  }
+ ],
+ "programs": [
+  {
+   "id": "coned-csrp",
+   "name": "Con Edison Commercial System Relief Program (CSRP), Rider T",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison (Smart Usage Rewards)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "2026 Capability Period guidelines and application are published. Aggregators and direct participants must submit an application each capability period.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 50,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 4,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Direct enrollment or via aggregator. The 50 kW minimum is verified for DLRP and assumed the same for CSRP (verify). Each customer can take Reservation OR Voluntary for each program, and can be in CSRP and DLRP concurrently.",
+    "aggregation_allowed": true
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": 18,
+    "unit": "$/kW-month",
+    "months_per_year": 5,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "pledged/committed kW verified by performance in events (performance factor)",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "Reservation: Bronx, Brooklyn, Manhattan, Queens",
+      "rate": 18,
+      "conditions": "$/kW-month during capability period"
+     },
+     {
+      "label": "Reservation: Staten Island and Westchester",
+      "rate": 6,
+      "conditions": "$/kW-month (radial systems, lower avoided cost)"
+     },
+     {
+      "label": "Reservation performance payment, planned events",
+      "rate": 1,
+      "conditions": "$/kWh"
+     },
+     {
+      "label": "Reservation performance payment, unplanned events",
+      "rate": 6,
+      "conditions": "$/kWh"
+     },
+     {
+      "label": "Voluntary option, planned events",
+      "rate": 3,
+      "conditions": "$/kWh (secondary source)"
+     },
+     {
+      "label": "Voluntary option, unplanned events",
+      "rate": 10,
+      "conditions": "$/kWh (secondary source)"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Annual reservation value in Manhattan, Bronx, Brooklyn and Queens = $18 x 5 = $90/kW-yr (5 months assumes a May-Sep capability period, which is standard Rider T practice but not re-verified). Deliverable kW = min(kW, kWh/4): 30/150 -> 30 kW, 65/200 -> 50 kW, 200/418 -> 104.5 kW, 200/600 -> 150 kW. Reservation payments are scaled by event performance. One snippet mentioned month-based adjustments ($6 vs $11/kW-month for months with ≤4 vs ≥5 planned events); that is unclear, so verify in the Rider T guidelines."
+   },
+   "dispatch": {
+    "season": "Capability period (May-Sep assumed)",
+    "window": "4-hour call windows on weekdays excluding holidays: 11am-3pm or 2pm-6pm (other windows may exist by network)",
+    "event_duration_hr": 4,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "21-hour (day-ahead) for planned events. Triggered when the day-ahead forecast is ≥92% of the forecast summer peak. Unplanned events also exist.",
+    "baseline_or_mv": "Customer baseline load (CBL) per Rider T guidelines, interval metering",
+    "event_months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "event_block": {
+     "start": 14,
+     "end": 18
+    }
+   },
+   "stacking": {
+    "compatible_with": [
+     "coned-dlrp",
+     "nyiso-scr",
+     "coned-sc9-rate2 demand-charge management"
+    ],
+    "conflicts_with": [
+     "coned-term-dlm"
+    ],
+    "notes": "CSRP and DLRP concurrent enrollment is allowed (one option per program). SCR dual participation is commonly done but should be verified in the 2026 guidelines. CSRP afternoon windows overlap SC 9 Rate II peak windows, so dispatch helps both. Conflicts as researched: coned-term-dlm and coned-auto-dlm, for the same kW (likely; verify)"
+   },
+   "vpp_relevance": "The core NYC VPP revenue. Aggregators can pool sites at or above the minimum and manage performance factor across a portfolio. The network-tier map drives value by site.",
+   "sources": [
+    {
+     "title": "Con Edison Demand Response (Rider T) Program Guidelines, 2026 Capability Period",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-guidelines.pdf"
+    },
+    {
+     "title": "CPower: Con Ed Commercial System Relief Program snapshot (2026)",
+     "url": "https://cpowerenergy.com/wp-content/uploads/2024/04/NYISO_CSRP-ConEd_Snapshot-2026-1.pdf"
+    },
+    {
+     "title": "Energy Toolbase: Commercial System Relief Program (CSRP)",
+     "url": "https://www.energytoolbase.com/demand-response-programs/commercial-system-relief-program/"
+    },
+    {
+     "title": "Con Edison Smart Usage Rewards for Aggregators or Direct Enrollees",
+     "url": "https://www.coned.com/en/save-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers/smart-usage-rewards"
+    },
+    {
+     "title": "Con Edison DR Incentive Rates Overview (Reservation Rates)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-example.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "The $18 and $6/kW-month reservation rates come from CPower's 2026 snapshot and Energy Toolbase, and match. The call windows and 21-hour notice come from the 2026 Rider T guidelines search summary. The performance and voluntary $/kWh values come from secondary sources only. Event-day modeling assumes the 2–6pm call window (some networks use 11am–3pm)."
+  },
+  {
+   "id": "coned-dlrp",
+   "name": "Con Edison Distribution Load Relief Program (DLRP), Rider T",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison (Smart Usage Rewards)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "2026 Capability Period guidelines published.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 50,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Network-contingency program. Individual customers or aggregators committing 50 kW or more. Tier depends on the customer's network (see networks-and-tiers list).",
+    "aggregation_allowed": true
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": 18,
+    "unit": "$/kW-month",
+    "months_per_year": 5,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "pledged kW verified by event performance",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "Reservation, Tier 1 networks",
+      "rate": 18,
+      "conditions": "$/kW-month"
+     },
+     {
+      "label": "Reservation, Tier 2 networks",
+      "rate": 25,
+      "conditions": "$/kW-month"
+     },
+     {
+      "label": "Reservation performance payment",
+      "rate": 1,
+      "conditions": "$/kWh, both tiers"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Annual reservation value: Tier 1 = $18 x 5 = $90/kW-yr, Tier 2 = $25 x 5 = $125/kW-yr (5-month capability period assumed). DLRP event duration is not verified. Contingency events can start any time 8am-midnight, so model at least a 4 h duration (an assumption): 200/418 -> about 104 kW, 200/600 -> 150 kW. The voluntary-option $/kWh was not verified."
+   },
+   "dispatch": {
+    "season": "Capability period (May-Sep assumed)",
+    "window": "Any time 8:00am-12:00am (midnight) during the capability period",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "At least 2 hours ahead of the call window (contingency)",
+    "baseline_or_mv": "CBL per Rider T guidelines"
+   },
+   "stacking": {
+    "compatible_with": [
+     "coned-csrp",
+     "nyiso-scr",
+     "coned-sc9-rate2 demand-charge management"
+    ],
+    "conflicts_with": [],
+    "notes": "A DLRP evening call can follow a CSRP afternoon call on the same hot day, so state-of-charge planning must reserve energy."
+   },
+   "vpp_relevance": "Tier 2 networks are premium sites. Short-notice dispatch rewards automated, telemetry-connected fleets.",
+   "sources": [
+    {
+     "title": "Con Edison Demand Response (Rider T) Program Guidelines, 2026 Capability Period",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-guidelines.pdf"
+    },
+    {
+     "title": "Con Edison Demand Response Programs: networks and tiers",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf"
+    },
+    {
+     "title": "Con Edison DR Incentive Rates Overview (Reservation Rates)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-example.pdf"
+    },
+    {
+     "title": "Energy Toolbase: Distribution Load Relief Program (DLRP)",
+     "url": "https://www.energytoolbase.com/demand-response-programs/distribution-load-relief-program/"
+    },
+    {
+     "title": "Con Edison Smart Usage Rewards for Aggregators or Direct Enrollees",
+     "url": "https://www.coned.com/en/save-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers/smart-usage-rewards"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Rates ($18/$25 per kW-month, $1/kWh), the 50 kW minimum and the 8am-midnight window come from the 2026 guidelines and Con Ed DR documents, via search summaries. The event duration and voluntary rate were not verified. Duration basis set to the 4-hour CSRP event length for battery sizing (DLRP events can run longer; verify)."
+  },
+  {
+   "id": "coned-term-dlm",
+   "name": "Con Edison Term-DLM (multi-year Dynamic Load Management), Vintage Year 2026",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison (RFP)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Annual RFP (2026-2027 RFP posted). Status of the next RFP window is not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 4,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Bid as a vendor or aggregator. Minimum 3-year contract term per PSC."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": null,
+    "unit": "$/kW-year (pay-as-bid)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "contracted load relief kW",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [],
+    "term_years": 3,
+    "notes": "Sealed-bid, pay-as-bid auction. Bid caps and clearing prices were not retrieved."
+   },
+   "dispatch": {
+    "season": "Summer capability period",
+    "window": "Pre-determined 4-hour call windows on weekdays",
+    "event_duration_hr": 4,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "At least 21 hours",
+    "baseline_or_mv": "Per RFP"
+   },
+   "stacking": {
+    "compatible_with": [
+     "nyiso-scr (verify)"
+    ],
+    "conflicts_with": [
+     "coned-csrp"
+    ],
+    "notes": "Term-DLM is the multi-year analogue of CSRP and gives bankable revenue for financing. Conflicts as researched: coned-csrp (same function, same kW)"
+   },
+   "vpp_relevance": "A multi-year contract supports VPP financing.",
+   "sources": [
+    {
+     "title": "Con Edison Request for Proposals: Term-DLM and Auto-DLM (2026-2027)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/business-partners/business-opportunities/dynamic-load-managment/2026-2027/rfp.pdf"
+    },
+    {
+     "title": "Con Edison Request for Proposals (DLM), DPS filing",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B302BDA8B-0000-C113-8DC6-B88DDD10551D%7D"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Structure verified from the RFP summary. Prices are null."
+  },
+  {
+   "id": "coned-auto-dlm",
+   "name": "Con Edison Auto-DLM (fast-response, multi-year), Vintage Year 2026",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison (RFP)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Annual RFP. Fixed published price per location (RFP section 4.1). Prices not retrieved.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Must respond within 10 minutes, up to 18 hours/day, 7 days/week. Minimum 3-year term."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": null,
+    "unit": "$/kW-year (fixed, location-specific)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "contracted kW",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": 3,
+    "notes": "The fixed price varies by location (network/substation). Values are null."
+   },
+   "dispatch": {
+    "season": "Per RFP",
+    "window": "18 hours/day, 7 days/week",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "10 minutes",
+    "baseline_or_mv": "Per RFP"
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [
+     "coned-dlrp"
+    ],
+    "notes": "Batteries suit 10-minute response well, but holding SOC reserved 18 h/day conflicts with demand-charge arbitrage. Conflicts as researched: coned-dlrp (similar contingency function, same kW)"
+   },
+   "vpp_relevance": "Only automated fleets with telemetry can meet 10-minute response, so it suits batteries well.",
+   "sources": [
+    {
+     "title": "Con Edison Request for Proposals: Term-DLM and Auto-DLM (2026-2027)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/business-partners/business-opportunities/dynamic-load-managment/2026-2027/rfp.pdf"
+    },
+    {
+     "title": "Con Edison Request for Proposals (DLM), DPS filing",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B302BDA8B-0000-C113-8DC6-B88DDD10551D%7D"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Structure verified. Prices are null."
+  },
+  {
+   "id": "nyiso-scr",
+   "name": "NYISO Special Case Resources (ICAP/SCR) via a Responsible Interface Party (RIP)",
+   "state": "NY",
+   "utility_ids": [],
+   "administrator": "NYISO (through a RIP/aggregator)",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "Capability-period enrollment through a RIP.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 4,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Enrolled kW is based on the customer's average coincident load (ACL) and is converted to UCAP. The RIP minimum aggregation is often cited as 100 kW (not verified here)."
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": null,
+    "unit": "$/kW-month (Zone J UCAP spot price, less RIP share)",
+    "months_per_year": 12,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "UCAP-converted enrolled kW, limited by ACL",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [],
+    "term_years": 1,
+    "notes": "Pays the Zone J ICAP spot clearing price ($32.6 May 2026, $32.5 June 2026; Jul-Oct lower after CHPE; winter about $6) times UCAP, less the RIP fee. The rate is null because it varies monthly; see market_prices."
+   },
+   "dispatch": {
+    "season": "Year-round (summer and winter capability periods)",
+    "window": "NYISO-called events and tests",
+    "event_duration_hr": 4,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Day-ahead advisory, then 2-hour (21-hour advisory common)",
+    "baseline_or_mv": "ACL baseline (ACL rules revised by NYISO)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "coned-csrp",
+     "coned-dlrp"
+    ],
+    "conflicts_with": [
+     "cp:icap"
+    ],
+    "notes": "ACL baselines are based on prior-summer peak loads. A battery that already lowers the peak shrinks the ACL and therefore the enrollable kW. Choose either tag-shaving or SCR for the same kW. Conflicts as researched: capacity-tag reduction of the same kW, if the SCR baseline already reflects battery peak-shaving"
+   },
+   "vpp_relevance": "Wholesale aggregation path. NYISO's DER participation model is an alternative for exporting resources, but NYC networks largely preclude export.",
+   "sources": [
+    {
+     "title": "NYISO Installed Capacity Market (ICAP)",
+     "url": "https://www.nyiso.com/installed-capacity-market"
+    },
+    {
+     "title": "Modo Energy: Capacity prices in New York City hit a record $32.6/kW-month for summer 2026",
+     "url": "https://modoenergy.com/research/en/nyiso-capacity-prices-record-summer-2026"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "SCR rules were not re-verified in this pass (search budget). The 4-hour and ACL descriptions are standard program design. Confirm the current ICAP Manual section 4.12."
+  },
+  {
+   "id": "nyserda-retail-storage-nyc",
+   "name": "NYSERDA Retail Energy Storage Incentive (Market Acceleration Bridge/6 GW Roadmap), Con Edison NYC block",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "NYSERDA",
+   "category": "upfront_incentive",
+   "status": "open",
+   "status_notes": "The implementation plan allocated a NYC block of 300 MW / 1,125 MWh at $125/kWh ($140.6M) and a separate Westchester block of 100 MW / 375 MWh at $125/kWh. Program Manual v2 was published 2026-04-07. MWh remaining and current block step were not verified. Check the Retail Incentive Dashboard.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I",
+     "retail",
+     "front-of-meter distribution"
+    ],
+    "min_kw": null,
+    "max_kw": 5000,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Retail program covers customer-sited and distribution-sited storage up to 5 MW-AC. Participating-contractor and other requirements are in the program manual (not retrieved)."
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": 125,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "usable/rated kWh per program manual",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "NYC block (Con Ed)",
+      "rate": 125,
+      "conditions": "300 MW/1,125 MWh block"
+     },
+     {
+      "label": "Westchester block (Con Ed)",
+      "rate": 125,
+      "conditions": "100 MW/375 MWh block"
+     }
+    ],
+    "term_years": null,
+    "notes": "Example: 200 kW/418 kWh x $125 = $52,250; 200 kW/600 kWh x $125 = $75,000; 30 kW/150 kWh = $18,750; 65 kW/200 kWh = $25,000. Any percent-of-cost cap or performance/clawback terms are not verified."
+   },
+   "dispatch": {
+    "season": "n/a",
+    "window": "n/a",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "n/a",
+    "baseline_or_mv": "Any operational or performance requirements per program manual (not retrieved)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "coned-csrp",
+     "coned-dlrp",
+     "nyiso-scr",
+     "nyc-storage-property-tax-abatement",
+     "federal ITC"
+    ],
+    "conflicts_with": [],
+    "notes": "Expected to stack with utility DR. Confirm any DR-enrollment obligation in the manual."
+   },
+   "vpp_relevance": "Lowers the capex of fleet assets. Large block size gives runway.",
+   "sources": [
+    {
+     "title": "NYSERDA Residential and Retail Energy Storage Incentive Program Manual (April 2026)",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/Residential-and-Retail-Energy-Storage-Program-Manual.pdf"
+    },
+    {
+     "title": "NYSERDA Retail Incentive Dashboard",
+     "url": "https://www.nyserda.ny.gov/All-Programs/Energy-Storage-Program/Developers-and-Contractors/Residential-and-Retail-Storage-Incentives/Retail-Incentive-Dashboard"
+    },
+    {
+     "title": "NYSERDA Residential and Retail Storage Incentives",
+     "url": "https://www.nyserda.ny.gov/All-Programs/Energy-Storage-Program/Developers-and-Contractors/Residential-and-Retail-Storage-Incentives"
+    },
+    {
+     "title": "NYSERDA Residential and Retail Energy Storage Market Acceleration Incentives (Implementation Plan, DPS filing)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B40B96B91-0000-C51C-ADA0-FADBB432F0E9%7D"
+    },
+    {
+     "title": "Hodgson Russ: PSC Approves the Retail and Residential Energy Storage Program Implementation Plan",
+     "url": "https://www.hodgsonruss.com/newsroom/publications/new-york-state-public-service-commission-approves-the-retail-and-residential-energy-storage-program-implementation-plan"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "$125/kWh and the block sizes come from the implementation plan as proposed and approved. The current dashboard step was not verified."
+  },
+  {
+   "id": "nyserda-retail-isi",
+   "name": "NYSERDA Retail Inclusive Storage Incentive (ISI)",
+   "state": "NY",
+   "utility_ids": [],
+   "administrator": "NYSERDA",
+   "category": "upfront_incentive",
+   "status": "pending_launch",
+   "status_notes": "Initial statewide block of 15 MW / 45 MWh at $350/kWh ($15.75M), covering Con Ed and other IOU territories. Launch was targeted for Q1 2026, and the live status as of Oct 2026 is not confirmed. A small block may already be subscribed.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I (inclusive-eligible)"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Enriched incentive for inclusive-eligible projects. The specific criteria (e.g., DAC, affordable housing, public or nonprofit) were not verified. Do not apply by default.",
+    "requires_disadvantaged_community": true
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": 350,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "kWh",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Likely in lieu of, not additive to, the $125/kWh market-rate incentive (verify)."
+   },
+   "dispatch": {
+    "season": "n/a",
+    "window": "n/a",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "n/a",
+    "baseline_or_mv": "n/a"
+   },
+   "stacking": {
+    "compatible_with": [
+     "coned-csrp",
+     "coned-dlrp"
+    ],
+    "conflicts_with": [
+     "nyserda-retail-storage-nyc"
+    ],
+    "notes": "Conflicts as researched: nyserda-retail-storage-nyc (likely alternative)"
+   },
+   "vpp_relevance": "Useful for community-serving sites in the VPP.",
+   "sources": [
+    {
+     "title": "NYSERDA Inclusive Storage Incentives (ISI) Launch Stakeholder Overview Webinar (Dec 2025)",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/FINAL_20251204-ISI-Webinar.pdf"
+    },
+    {
+     "title": "NYSERDA Residential and Retail Energy Storage Incentive Program Manual (April 2026)",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/Residential-and-Retail-Energy-Storage-Program-Manual.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Rate and block size are from the Dec 2025 NYSERDA webinar. Launch and eligibility are not verified."
+  },
+  {
+   "id": "nyc-storage-property-tax-abatement",
+   "name": "NYC Electric Energy Storage Equipment Property Tax Abatement (RPTL Title 4-C, section 499-bbbb)",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "NYC Department of Finance (application via DOB)",
+   "category": "tax",
+   "status": "open",
+   "status_notes": "Extended by 2023 legislation (S6640B). The eligibility end date is reported as 'on or before January 1, 2036', and one secondary summary says systems placed in service 2024-2034. Pending 2025 bills (e.g., A5959/S2470) may amend terms.",
+   "eligibility": {
+    "customer_classes": [
+     "property owners in NYC (C&I and residential)"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Abatement applies to the building's real property tax. It is limited by the tax payable, so tenants or BTM developers must structure with the owner.",
+    "requires_property_owner": true
+   },
+   "valuation": {
+    "method": "pct_of_cost",
+    "rate": 0.3,
+    "unit": "fraction of eligible cost (over 4 years)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "eligible expenditures (materials, labor, site prep, engineering)",
+    "duration_basis_hr": null,
+    "cap": "Lesser of 30% of eligible expenditures or $250,000, in 4 equal annual increments (about 7.5%/yr, up to $62,500/yr), and not more than the tax payable each year",
+    "tiers": [
+     {
+      "label": "Pre-2024 placed-in-service (historical)",
+      "rate": 0.1,
+      "conditions": "Lesser of 10% of expenditures per year, tax payable, or $62,500/yr"
+     }
+    ],
+    "term_years": 4,
+    "notes": "Example: $400k installed cost -> 30% = $120k over 4 yrs ($30k/yr). $1M -> capped at $250k ($62.5k/yr).",
+    "cap_usd": 250000,
+    "spread_years": 4
+   },
+   "dispatch": {
+    "season": "n/a",
+    "window": "n/a",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "n/a",
+    "baseline_or_mv": "n/a"
+   },
+   "stacking": {
+    "compatible_with": [
+     "nyserda-retail-storage-nyc",
+     "federal ITC",
+     "coned-csrp",
+     "coned-dlrp"
+    ],
+    "conflicts_with": [],
+    "notes": "Expenditure basis may need to be net of grants. Verify with DOF rule."
+   },
+   "vpp_relevance": "Improves host economics and helps win host agreements.",
+   "sources": [
+    {
+     "title": "Rosenberg & Estis: NYC Solar and Electric Storage System Property Tax Abatement (Sept 2024)",
+     "url": "https://www.rosenbergestis.com/blog/2024/09/nyc-solar-and-electric-storage-system-property-tax-abatement"
+    },
+    {
+     "title": "NY Senate Bill 2023-S6640B (extension of solar/storage abatement)",
+     "url": "https://www.nysenate.gov/legislation/bills/2023/S6640/amendment/B"
+    },
+    {
+     "title": "NY Real Property Tax Law Title 4-C",
+     "url": "https://www.nysenate.gov/legislation/laws/RPT/A4T4-C"
+    },
+    {
+     "title": "NYC DOF rule: Property Tax Abatement for Solar Electric Generating System or Electric Energy Storage Equipment",
+     "url": "https://rules.cityofnewyork.us/rule/amendment-of-rules-relating-to-property-tax-abatement-for-installation-of-solar-electric-generating-system-or-electric-energy-storage-equipment/"
+    },
+    {
+     "title": "NY Assembly Bill 2025-A5959 (pending amendments to abatement)",
+     "url": "https://www.nysenate.gov/legislation/bills/2025/A5959/amendment/original"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "The 30%/$250k over 4 years comes from a law-firm summary and the bill search summary. One search summary also showed 10%/$62,500 language tied to 2026-2028 placed-in-service dates, possibly from a pending bill. Confirm the current RPTL 499-bbbb text."
+  },
+  {
+   "id": "ny-vder-value-stack",
+   "name": "VDER Value Stack (export compensation) for storage",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison per PSC VDER orders",
+   "category": "tariff_option",
+   "status": "open",
+   "status_notes": "Available to exporting DER including storage. Brief only.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": 5000,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": true,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Requires export, which is largely infeasible on Con Ed secondary networks."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Value Stack components (LBMP, ICAP, E, DRV, LSRV) pay for exported kWh. Generally not a fit for non-export BTM C&I sites in NYC network areas. Could apply at radial Staten Island sites."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "DRV is based on utility peak hours",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Net export metering"
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [
+     "coned-csrp"
+    ],
+    "notes": "Conflicts as researched: coned-csrp/coned-dlrp for the same kW, per DR dual-participation rules (verify)"
+   },
+   "vpp_relevance": "Low for non-export NYC network sites.",
+   "sources": [
+    {
+     "title": "Con Edison Energy Storage System Guide, Version 4 (July 2022)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-guide.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Not researched in depth (out of budget)."
+  },
+  {
+   "id": "coned-nws-storage",
+   "name": "Con Edison Non-Wires Solutions energy storage incentives (location-specific)",
+   "state": "NY",
+   "utility_ids": [
+    "coned-nyc"
+   ],
+   "administrator": "Con Edison",
+   "category": "upfront_incentive",
+   "status": "pilot",
+   "status_notes": "Targeted to specific constrained networks. Current solicitations and status are not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Site must be in an NWS target area."
+   },
+   "valuation": {
+    "method": "upfront_per_kw",
+    "rate": null,
+    "unit": "$/kW",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "kW of qualifying load relief",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "A search snippet suggested $2,500/kW (grid-connected/load-following requiring reinforcement) and $3,000/kW (load-following). The attribution is unclear, so it is not used."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Could be a large upside where available. Screen sites against NWS maps.",
+   "sources": [
+    {
+     "title": "Con Edison Non-Wires Solutions energy storage participant guide",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers/non-wires-solutions-energy-storage/participant-guide.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Not verified. Included as a lead only."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "nyiso-zonej-icap-spot-2026-05",
+   "label": "NYISO ICAP spot auction, NYC (Zone J), May 2026",
+   "value": 32.6,
+   "unit": "$/kW-month",
+   "period": "2026-05",
+   "sources": [
+    {
+     "title": "Modo Energy: Capacity prices in New York City hit a record $32.6/kW-month for summer 2026",
+     "url": "https://modoenergy.com/research/en/nyiso-capacity-prices-record-summer-2026"
+    },
+    {
+     "title": "Modo Energy: NYISO in May 2026: NYC capacity prices doubled YoY",
+     "url": "https://modoenergy.com/research/en/nyiso-bess-may-2026-reference-price"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Record. 67% above the prior Zone J high and more than double May/June 2025. Cleared at the demand-curve reference point with no surplus. UCAP basis."
+  },
+  {
+   "id": "nyiso-zonej-icap-spot-2026-06",
+   "label": "NYISO ICAP spot auction, NYC (Zone J), June 2026",
+   "value": 32.5,
+   "unit": "$/kW-month",
+   "period": "2026-06",
+   "sources": [
+    {
+     "title": "Modo Energy: Capacity prices in New York City hit a record $32.6/kW-month for summer 2026",
+     "url": "https://modoenergy.com/research/en/nyiso-capacity-prices-record-summer-2026"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "UCAP basis."
+  },
+  {
+   "id": "nyiso-zonej-icap-spot-2026-07-10",
+   "label": "NYISO ICAP spot auction, NYC (Zone J), July-October 2026",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "2026-07 to 2026-10",
+   "sources": [
+    {
+     "title": "Modo Energy: Capacity prices in New York City hit a record $32.6/kW-month for summer 2026",
+     "url": "https://modoenergy.com/research/en/nyiso-capacity-prices-record-summer-2026"
+    },
+    {
+     "title": "S&P Global: 1,250-MW CHPE transmission line into NYC reaches commercial operation early",
+     "url": "https://www.spglobal.com/energy/en/news-research/latest-news/electric-power/051326-1250-mw-chpe-transmission-line-into-nyc-reaches-commercial-operation-early"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Not found. CHPE (1,250 MW into NYC) reached COD 2026-05-13 and participated starting with the July 2026 auction, so prices are expected materially below May/June."
+  },
+  {
+   "id": "nyiso-zonej-icap-winter-2025-26",
+   "label": "NYISO ICAP spot, NYC (Zone J), Winter 2025-26 capability period (approx.)",
+   "value": 6,
+   "unit": "$/kW-month",
+   "period": "2025-11 to 2026-04",
+   "sources": [
+    {
+     "title": "Modo Energy: What NYISO's December capacity auction signals for batteries in 2025-2026",
+     "url": "https://modoenergy.com/research/en/nyiso-capacity-market-december-auction-bess-revenues"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Described as 'near $6/kW-month' with significant surplus. Approximate."
+  },
+  {
+   "id": "nyiso-zonej-icap-winter-2026-27",
+   "label": "NYISO ICAP, NYC (Zone J), Winter 2026-27",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "2026-11 to 2027-04",
+   "sources": [
+    {
+     "title": "NYISO Installed Capacity Market (ICAP)",
+     "url": "https://www.nyiso.com/installed-capacity-market"
+    }
+   ],
+   "confidence": "low",
+   "notes": "Strip and spot results not yet available or not found. A $3.96 'forecast' appeared in a DPS-filed Guidehouse model, but its zone and vintage are unclear, so it is not used."
+  },
+  {
+   "id": "coned-msc-capacity-sc9-r2-2025-03",
+   "label": "Con Ed MSC capacity charge, SC 9 Rates II & V, NYC, March 2025",
+   "value": 9.99,
+   "unit": "$/kW-month",
+   "period": "2025-03",
+   "sources": [
+    {
+     "title": "Con Edison Statement of Market Supply Charge - Capacity, March 2025",
+     "url": "https://www.coned.com/-/media/files/coned/documents/rates/electric/psc-10/supply/msc-cap/msccap-202503.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Full-service supply only. Westchester was $3.18/kW. This is a winter month. Summer 2026 statements (e.g., msccap-202605) should be much higher but were not read."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "nyc-fdny-coa",
+   "topic": "fire_code",
+   "title": "FDNY Certificate of Approval required for each ESS unit",
+   "rule": "Every ESS/battery unit must hold an FDNY Certificate of Approval (COA) to be eligible for plan review and installation approval. Outdoor units of 2 kWh or less are exempt.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 2,
+    "comparison": "min",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "Gates product selection. If the specific 150/200/418/600 kWh product SKU lacks an FDNY COA, it cannot be installed in NYC regardless of size. Check the FDNY COA list first.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    },
+    {
+     "title": "NYSERDA/NY-Sun Energy Storage System Permitting and Interconnection Guide (2025 update)",
+     "url": "https://nysolarmap.com/media/2307/ess-permitting-guide_2025-update_final_040325.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "permit_threshold_kwh",
+   "severity": "info"
+  },
+  {
+   "id": "nyc-fdny-outdoor-permit-20kwh",
+   "topic": "permitting",
+   "title": "FDNY permit for outdoor ESS above 20 kWh; all indoor ESS permitted",
+   "rule": "Outdoor systems with aggregate capacity above 20 kWh must be inspected and permitted by FDNY. All indoor ESS must be inspected and permitted by FDNY regardless of size. A DOB construction work permit is required for every stationary ESS regardless of size.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Every product in the lineup (smallest 150 kWh) triggers FDNY permit, inspection and DOB permit. Budget permitting time and cost for all sites.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    },
+    {
+     "title": "3 RCNY 608-01 Outdoor Stationary Energy Storage Systems (NYC Rules, American Legal)",
+     "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-140290"
+    },
+    {
+     "title": "NYSERDA/NY-Sun Energy Storage System Permitting and Interconnection Guide (2025 update)",
+     "url": "https://nysolarmap.com/media/2307/ess-permitting-guide_2025-update_final_040325.pdf"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "permit_threshold_kwh",
+   "severity": "info"
+  },
+  {
+   "id": "nyc-fdny-outdoor-size-classes",
+   "topic": "fire_code",
+   "title": "FDNY 'Large' outdoor system (> 250 kWh): escalated requirements",
+   "rule": "Outdoor lithium-ion systems are classed Small (>2 to ≤20 kWh), Medium (>20 to ≤250 kWh) and Large (>250 kWh). Requirements escalate by class.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 250,
+    "comparison": "max",
+    "scope": "per system"
+   },
+   "impact_on_sizing": "A single 418 kWh or 600 kWh unit is a 'Large' outdoor system. The 150 kWh and 200 kWh units are 'Medium' alone, but two or more aggregated likely exceed 250 kWh (aggregation and spacing rules need verification). Keeping aggregate outdoor capacity ≤250 kWh (e.g., 1 x 200 kWh) avoids Large-system requirements.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "3 RCNY 608-01 Outdoor Stationary Energy Storage Systems (NYC Rules, American Legal)",
+     "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-140290"
+    },
+    {
+     "title": "FDNY Notice of Adoption, 3 RCNY 608-01",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/codes/3-rcny-608-01.pdf"
+    },
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "permit_threshold_kwh",
+   "severity": "caution"
+  },
+  {
+   "id": "nyc-fdny-indoor-li-400kwh",
+   "topic": "fire_code",
+   "title": "Indoor lithium-ion ESS maximum aggregate 400 kWh per control area (NYC FC 2022 section 608)",
+   "rule": "The 2022 NYC Fire Code section 608 reportedly limits indoor lithium-ion ESS to 400 kWh aggregate per control area. The 600 kWh figure applies to lead-acid and nickel chemistries.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 400,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "A single 418 kWh or 600 kWh unit cannot fit indoors within one control area. Maximum indoor configurations per control area are 2 x 200 kWh (400 kWh) or 2 x 150 kWh (300 kWh). The 418/600 kWh units are outdoor or rooftop only unless FDNY approves otherwise.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "NYC Fire Code 2022, Chapter 6 Building Services and Systems (Section 608 ESS)",
+     "url": "https://up.codes/viewer/new_york_city/nyc-fire-code-2022/chapter/6/building-services-and-systems"
+    },
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "indoor_max_kwh"
+  },
+  {
+   "id": "nyc-fdny-outdoor-separation-10ft",
+   "topic": "fire_code",
+   "title": "Outdoor ESS 10 ft from lot lines and exposures",
+   "rule": "Outdoor stationary storage battery systems must be at least 10 ft from lot lines and other exposures (buildings, egress, combustibles), unless the equipment or installation approval requires a different distance.",
+   "threshold": {
+    "metric": "ft",
+    "value": 10,
+    "comparison": "min",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "On tight NYC lots this often rules out sidewalk-adjacent or yard placement. Rooftops or large parking lots may be the only outdoor options.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "3 RCNY 608-01 Outdoor Stationary Energy Storage Systems (NYC Rules, American Legal)",
+     "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-140290"
+    },
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "outdoor_setback_ft"
+  },
+  {
+   "id": "nyc-fdny-rooftop",
+   "topic": "fire_code",
+   "title": "Rooftop ESS: noncombustible roofing within 5 ft; additional rules on roofs",
+   "rule": "On rooftops, the roof covering, roofing system or approved material beneath the ESS must be noncombustible for 5 ft around the installation. Rooftop installations must also demonstrate compliance with NYC FC 504.4 (rooftop access/clearances; the search summary tied this to roofs below 100 ft).",
+   "threshold": {
+    "metric": "ft",
+    "value": 5,
+    "comparison": "min",
+    "scope": "per unit"
+   },
+   "impact_on_sizing": "Rooftop is the likely home for 418/600 kWh units. Structural load (multi-ton cabinets), crane logistics, FC 504.4 clearances and any rooftop kWh limit (not verified) cap the count per roof.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    },
+    {
+     "title": "3 RCNY 608-01 Outdoor Stationary Energy Storage Systems (NYC Rules, American Legal)",
+     "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-140290"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "rooftop_rule",
+   "severity": "caution"
+  },
+  {
+   "id": "nyc-fdny-large-outdoor-emp",
+   "topic": "permitting",
+   "title": "Outdoor ESS: FDNY emergency management/response plan",
+   "rule": "FDNY guidance for outdoor ESS includes an emergency management plan (EMP) and site-specific emergency response provisions, with more stringent requirements for larger systems.",
+   "threshold": {
+    "metric": "kWh",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Adds soft cost and schedule for Large (>250 kWh) outdoor systems.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "Permitting Outdoor Energy Storage Systems in NYC: FDNY Emergency Management Plan outline",
+     "url": "https://nysolarmap.com/media/2103/fdny-emp-outline_12092020.pdf"
+    },
+    {
+     "title": "FDNY Notice of Adoption, 3 RCNY 608-01",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/codes/3-rcny-608-01.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "nyc-dob-ess-rules",
+   "topic": "building_code",
+   "title": "NYC DOB ESS rules and bulletins",
+   "rule": "DOB requires a construction work permit for each stationary ESS. DOB rule 1 RCNY 3616-07 and Buildings Bulletin 2025-009 set further ESS requirements.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Electrical, structural and zoning review on every site. Contents of 1 RCNY 3616-07 and BB 2025-009 were not retrieved.",
+   "applies_to": "NYC only",
+   "sources": [
+    {
+     "title": "NYC DOB rule 1 RCNY 3616-07 promulgation details",
+     "url": "https://www.nyc.gov/assets/buildings/rules/1_RCNY_3616-07_prom_details_date.pdf"
+    },
+    {
+     "title": "NYC DOB Buildings Bulletin 2025-009",
+     "url": "https://www.nyc.gov/assets/buildings/bldgs_bulletins/bb_2025-009.pdf"
+    },
+    {
+     "title": "FDNY Energy Storage System (ESS) Equipment Approval and Installation Guide (4/25/2025)",
+     "url": "https://www.nyc.gov/assets/fdny/downloads/pdf/business/ess-equipment-approval-installation-guide.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "nyc-coned-network-non-export",
+   "topic": "network_grid",
+   "title": "Con Ed secondary/spot networks: non-export with minimum import",
+   "rule": "Network protectors open on reverse power, so an ESS discharging above site load trips protectors. Con Ed flags voltage and protector-cycling impacts especially for ESS above 50 kW-AC. Expect a non-export requirement, a reverse-power or minimum-import relay, and Con Ed review.",
+   "threshold": {
+    "metric": "kW",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Discharge kW is capped at site load minus the import margin at every moment. Low-load periods (nights, weekends) cap usable discharge. Size inverter kW against the 15-minute minimum load during target windows, not nameplate. Above 50 kW-AC expect a longer, protection-focused review.",
+   "applies_to": "coned-nyc (network areas: most of Manhattan and large parts of Bronx, Brooklyn and Queens)",
+   "sources": [
+    {
+     "title": "Con Edison Energy Storage System Guide, Version 4 (July 2022)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-guide.pdf"
+    },
+    {
+     "title": "Con Edison Energy Storage Interconnection Best Practices",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/using-private-generation/specs-and-tariffs/energy-storage-interconnection-best-practices.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "ny-sir-5mw",
+   "topic": "interconnection",
+   "title": "NY SIR applicability ≤5 MW; standard process above 50 kW",
+   "rule": "The SIR (effective 2026-02-09) governs DG and ESS of 5 MW or less AC. Systems of 50 kW or less are believed to use the simplified process. Above 50 kW uses the standard process with screens or CESIR. UL 1741 CRD PCS export controls are accepted.",
+   "threshold": {
+    "metric": "kW",
+    "value": 5000,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Stacking above 250 kW (e.g., 2 x 200 kW) means standard-process review in Con Ed networks. A single 30 kW unit may stay in the simplified track.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "NYS SIR effective February 9, 2026 (redline from Aug 1, 2025), Case 24-E-0621",
+     "url": "https://dps.ny.gov/system/files/documents/2026/06/24-e-0621-sirs-effective-february-9-2026-redlined-from-august-1-2025_0.pdf"
+    },
+    {
+     "title": "NYS Standardized Interconnection Requirements (effective 8/1/2025)",
+     "url": "https://dps.ny.gov/system/files/documents/2025/08/nys-standardized-interconnection-requirements-effective-080125.pdf"
+    },
+    {
+     "title": "DPS: UL 1741 CRD multi-mode requirements, SIR edits (May 2025)",
+     "url": "https://dps.ny.gov/system/files/documents/2025/05/2025-05-22-ul-1741-crd-multi-mode-requirements-sir-edits_clean_highlight.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "nyc-coned-substation-constraints",
+   "topic": "utility_upgrade",
+   "title": "Con Ed substation capacity constraints (Aug 2025 notice)",
+   "rule": "Con Ed told developers on 2025-08-15 that certain substations are capacity-constrained and that projects without executed interconnection agreements need further evaluation. A 2026-01-14 Con Ed SIR energy storage notice also exists (contents not retrieved).",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Grid charging kW may be limited, or may trigger upgrades, at constrained substations. Request pre-application data early.",
+   "applies_to": "coned-nyc",
+   "sources": [
+    {
+     "title": "NYS Standardized Interconnection Requirements (effective 8/1/2025)",
+     "url": "https://dps.ny.gov/system/files/documents/2025/08/nys-standardized-interconnection-requirements-effective-080125.pdf"
+    },
+    {
+     "title": "Con Edison Notice on SIR Energy Storage (Jan 14, 2026)",
+     "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId=%7B100EBE9B-0000-C512-BD61-5C2EE682E11D%7D&amp=&DocTitle=Con+Edison+Notice+on+SIR+Energy+Storage"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ny-nyserda-retail-5mw",
+   "topic": "program_rule",
+   "title": "NYSERDA retail incentive cap 5 MW-AC per project",
+   "rule": "The retail storage incentive supports customer-sited and distribution-sited projects up to 5 MW-AC.",
+   "threshold": {
+    "metric": "kW",
+    "value": 5000,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Not binding for the C&I product lineup.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "NYSERDA Residential and Retail Energy Storage Incentive Program Manual (April 2026)",
+     "url": "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Energy-Storage/Residential-and-Retail-Energy-Storage-Program-Manual.pdf"
+    },
+    {
+     "title": "NYSERDA Residential and Retail Storage Incentives",
+     "url": "https://www.nyserda.ny.gov/All-Programs/Energy-Storage-Program/Developers-and-Contractors/Residential-and-Retail-Storage-Incentives"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "nyc-dr-min-50kw",
+   "topic": "program_rule",
+   "title": "Con Ed DLRP (and likely CSRP) minimum 50 kW per participant or aggregation",
+   "rule": "DLRP participants or aggregators must contract at least 50 kW of load relief.",
+   "threshold": {
+    "metric": "kW",
+    "value": 50,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "A single 30 kW/150 kWh unit needs aggregation with other sites. A 65/200 unit (50 kW over 4 h) just meets it alone.",
+   "applies_to": "coned-nyc",
+   "sources": [
+    {
+     "title": "Con Edison DR Incentive Rates Overview (Reservation Rates)",
+     "url": "https://www.coned.com/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/smart-usage-program-example.pdf"
+    },
+    {
+     "title": "Energy Toolbase: Distribution Load Relief Program (DLRP)",
+     "url": "https://www.energytoolbase.com/demand-response-programs/distribution-load-relief-program/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (Con Edison)",
+   "topic": "Network tier drives DR value",
+   "severity": "caution",
+   "note": "Check the networks-and-tiers list before ranking sites. A Tier 2 network is worth $25/kW-month in DLRP versus $18 in Tier 1, and Staten Island earns only $6/kW-month in CSRP versus $18 elsewhere in NYC.",
+   "persona_id": "coned"
+  },
+  {
+   "persona": "Utility program manager (Con Edison)",
+   "topic": "CSRP plus DLRP on the same hot day",
+   "severity": "critical",
+   "note": "CSRP (11am-3pm or 2-6pm, day-ahead) and DLRP (any time 8am-midnight, 2-hour notice) can both be called on the same peak day. Dispatch logic must reserve energy after the CSRP window. A 200 kW/418 kWh unit that runs flat for 4 h at 104 kW in CSRP has nothing left for an evening DLRP call.",
+   "persona_id": "coned"
+  },
+  {
+   "persona": "Utility program manager (Con Edison)",
+   "topic": "2026 rate reset",
+   "severity": "info",
+   "note": "The 2026-2028 rate plan (adopted 2026-01-22) changed every delivery rate leaf. Pull the current SC 9 leaf rather than using older calculator libraries, because demand-window prices moved.",
+   "persona_id": "coned"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Capacity tag pass-through",
+   "severity": "critical",
+   "note": "At $32+/kW-month in May/June 2026, the Zone J tag is a huge line item, but most C&I customers sit on fixed all-in ESCO contracts that won't credit a lower tag until renewal. Move hosts to a capacity pass-through product or the savings belong to the supplier.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "CHPE price reset",
+   "severity": "caution",
+   "note": "Don't underwrite at the May 2026 record price. CHPE added 1,250 MW in Zone J from the July 2026 auction, and tag reductions earned this summer are priced in 2027-28. Run capacity at a haircut and treat the upside as merchant.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "SCR vs tag-shaving",
+   "severity": "caution",
+   "note": "SCR enrollment is limited by the customer's ACL. If the battery has already shaved the peak hours that set the ACL and tag, you can't sell the same kW again as SCR. Pick one per kW and model it explicitly.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "NYC permitting / FDNY specialist",
+   "topic": "COA first",
+   "severity": "critical",
+   "note": "No FDNY Certificate of Approval for the exact product means no permit, whatever the site economics. Confirm COA status for all four SKUs before any site work, because COA review can take months.",
+   "persona_id": "permitting"
+  },
+  {
+   "persona": "NYC permitting / FDNY specialist",
+   "topic": "418/600 kWh units are outdoor products",
+   "severity": "critical",
+   "note": "Each 418/600 kWh unit is a 'Large' outdoor system under 3 RCNY 608-01 (>250 kWh) and exceeds the reported 400 kWh indoor lithium-ion limit per control area. Plan basements and indoor rooms around 150/200 kWh units, at no more than 2 x 200 kWh per control area, and verify that limit in FC 608.",
+   "persona_id": "permitting"
+  },
+  {
+   "persona": "NYC permitting / FDNY specialist",
+   "topic": "Outdoor siting geometry",
+   "severity": "caution",
+   "note": "The 10 ft setback from lot lines and exposures eliminates most NYC side yards and sidewalks. Rooftops need noncombustible roofing within 5 ft, FC 504.4 clearances and structural sign-off. Expect DOB plus FDNY permits on every site, even the smallest unit.",
+   "persona_id": "permitting"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Network protectors cap discharge",
+   "severity": "critical",
+   "note": "On spot or area networks, discharge must stay below instantaneous building load minus the import margin. Size inverter kW to the minimum load in the target windows from interval data, not to the peak, or protectors will cycle and Con Ed will force a derate.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "All-hours demand and charging",
+   "severity": "caution",
+   "note": "SC 9 Rate II bills an all-hours demand component, so overnight charging at full 200 kW can set a new monthly all-hours peak. Enforce a site-level charge-power limit tied to the running monthly max.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Duration vs Rate II windows",
+   "severity": "caution",
+   "note": "The summer 8am-10pm window is 14 hours, so a 2.1 h unit (200/418) cannot flatten it. Value comes from clipping the monthly peak, which needs good load forecasting. The 3-5 h units (200/600, 30/150) suit the 4 h DR windows better.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Above 50 kW-AC in networks",
+   "severity": "caution",
+   "note": "Con Ed flags ESS above 50 kW-AC for network impact. Expect protection studies, a reverse-power relay and possibly CESIR for 200 kW units. Use UL 1741 CRD export limiting (accepted under the 2025 SIR edits) and file early, given the 2025 substation-constraint notice.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "Current 2026 SC 9 Rate I and Rate II low-tension demand $/kW by window: pull the PSC 10 SC 9 leaf at coned.com/rates (Rates & Tariffs > Electric Tariff, current) or the Case 25-E-0072 JP rate-design appendix.",
+  "The kW threshold for mandatory SC 9 Rate II (TOD) and for mandatory hourly supply pricing: PSC 10 SC 9 Special Provisions and Rider M.",
+  "Zone J ICAP spot prices for Jul-Oct 2026 and the Winter 2026-27 strip: NYISO ICAP auction results at icap.nyiso.com.",
+  "Con Ed ICAP tag methodology (peak hour basis and scaling to LCR/UCAP) and the MSC capacity $/kW basis (tag vs billing demand) for SC 9 Rate II: PSC 10 MSC provisions and the msccap-2026xx statements.",
+  "Whether storage-only BTM sites are exempt from SC 14-RA standby: Con Ed standby rates page and PSC 10 General Rule exemptions.",
+  "Indoor lithium-ion limit (400 kWh per control area) and any rooftop kWh cap: NYC Fire Code 2022 section 608 tables and the FDNY ESS Installation Guide (4/25/2025).",
+  "Whether the 3 RCNY 608-01 outdoor size class is per unit or aggregate per site, and spacing between multiple units: FDNY rule text.",
+  "NYSERDA NYC retail block: current $/kWh step and MWh remaining (Retail Incentive Dashboard), any percent-of-cost cap, and ISI eligibility and launch status.",
+  "CSRP and DLRP voluntary-option $/kWh, DLRP event duration, the CSRP minimum kW, the performance-factor formula and SCR dual-participation rules: 2026 Rider T Program Guidelines.",
+  "Term-DLM bid cap and clearing prices, and Auto-DLM fixed location prices: Con Ed DLM RFP 2026-2027, section 4.1.",
+  "NYC storage property tax abatement: confirm current terms (30%/$250k over 4 yrs vs 10%/$62.5k per yr) and sunset under RPTL 499-bbbb, plus the status of 2025 bills A5959/S2470.",
+  "SIR simplified-track threshold (50 kW) and application fees in the 2026-02-09 SIR. Also the contents of Con Ed's 2026-01-14 SIR energy storage notice."
+ ]
+}

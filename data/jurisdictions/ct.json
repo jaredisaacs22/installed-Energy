@@ -1,0 +1,1628 @@
+{
+ "code": "CT",
+ "name": "Connecticut",
+ "researched_on": "2026-10-01",
+ "summary": "Connecticut is one of the strongest BTM C&I storage markets in ISO-NE. On Apr 1, 2026, the PURA Energy Storage Solutions (ESS) program moved to 'Construct 5': new C&I sites get no upfront rebate, and instead earn 10-year performance payments of $325/kW-yr (small/medium, years 1-5) or $275/kW-yr (large, over 500 kW), dropping to $175/kW-yr in years 6-10. Payment is based on the average kW actually delivered in 30-60 summer and 1-10 winter EDC-called events of up to 3 hours between noon and 9pm. Eversource demand charges are high and billed on monthly maximum demand (Rate 30 about $27/kW-mo distribution plus transmission; Rate 35 about $25.5/kW-mo), so peak shaving and ESS stack well when SOC is managed on event days. ISO-NE capacity tags are worth roughly $31-43/kW-yr (FCA 17/18, unscaled), but only reach customers on pass-through supply contracts. Key risks: the pending CL&P rate case (rates about July 2027), unverified large-TOU and UI demand values, the export/non-export eligibility question under ESS, the NFPA 855 600 kWh indoor fire-area cap, and the stalled 2026 CT fire code.",
+ "default_energy_price_usd_per_kwh": 0.23,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "eversource-ct",
+   "name": "Eversource Energy (The Connecticut Light and Power Company, CL&P)",
+   "state": "CT",
+   "iso": "ISO-NE",
+   "load_zone": "CT (ISO-NE Connecticut load zone)",
+   "retail_choice": true,
+   "default_supply_notes": "C&I customers can buy supply from licensed retail suppliers. Default supply is Standard Service (fixed-price, reset Jan 1 and Jul 1) for smaller customers. Larger customers (historically 500 kW and above) default to Last Resort Service, which is priced monthly. The 500 kW cut-off is not re-verified in this pass. Capacity (ICAP tag) savings reach the customer only through a supplier contract that passes the capacity cost through.",
+   "network_grid_notes": "Not verified in this pass. Downtown Hartford, Stamford and other urban cores are believed to have secondary network service. On networks, BESS discharge is usually limited to non-export, with network-protector and reverse-power review. Ask the Eversource DG group whether the site is on a network before sizing.",
+   "interconnection": {
+    "rule_name": "Eversource/UI Guidelines for Generator Interconnection - Fast Track and Study Processes (PURA Docket 17-12-03RE06), plus the separate <=25 kW inverter guidelines. Being reformed in PURA Docket 25-01-27.",
+    "tracks": [
+     {
+      "name": "Inverter-based <=25 kW (residential); raised to 50 kW for residential by the Docket 25-01-27 interim decision",
+      "max_kw": 25,
+      "conditions": "Certified inverter-based generators. PURA's 2025 interim decision raised the residential threshold from 25 to 50 kW. Whether the threshold also changed for C&I was not verified.",
+      "typical_timeline": null,
+      "application_fee": "$200"
+     },
+     {
+      "name": "Expedited commercial track (new, Docket 25-01-27)",
+      "max_kw": 500,
+      "conditions": "PURA's interim decision (Mar 26, 2025) created an expedited interconnection track for commercial projects under 500 kW. Its screens and timelines were not verified.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Fast Track",
+      "max_kw": 2000,
+      "conditions": "C&I projects up to 2 MW and residential inverters over 25 kW that pass the Fast Track screens",
+      "typical_timeline": null,
+      "application_fee": "$500"
+     },
+     {
+      "name": "Study Process",
+      "max_kw": null,
+      "conditions": "Projects over 2 MW, or projects that fail the Fast Track screens",
+      "typical_timeline": null,
+      "application_fee": "$1,000"
+     }
+    ],
+    "non_export_path": "The CT guidelines treat storage as a generating facility. The specific non-export screens (relay or PCS-based limits, UL 1741 CRD/PCS) were not verified in this pass. The Docket 25-01-27 decisions ordered the EDCs to file flexible-interconnection plans by Mar 15, 2026. ESS rules: only batteries with a utility interconnection agreement may export. A 2025 ESS review let existing non-export batteries enroll if they were interconnected before 2026.",
+    "storage_specific_notes": "Storage counts toward the kW thresholds at inverter nameplate unless export is limited. Confirm with the EDC whether a PCS-limited export value is used for screening.",
+    "sources": [
+     {
+      "title": "Eversource/UI Guidelines for Generator Interconnection - Fast Track and Study Processes (Docket 17-12-03RE06)",
+      "url": "https://www.eversource.com/docs/default-source/ct---pdfs/guidelines-generator-inter-fast-track.pdf"
+     },
+     {
+      "title": "UI copy - Guidelines Fast Track and Study Processes (02.02.24)",
+      "url": "https://www.uinet.com/documents/1678076/49056259/Guidelines+Fast+Track+and+Study+Processes+Final+02.02.24.pdf/ea80fa81-995c-9a5a-30a7-3022558c2df9?t=1706906472211"
+     },
+     {
+      "title": "Eversource/UI 25 kW or less guidelines (UI copy, 09.21.23)",
+      "url": "https://www.uinet.com/documents/1678076/1703582/25kW-or-Less-Guidelines+-+Final+Approved+1206_09.21.23.pdf/373cb958-5af2-dc0a-135f-f86fcf74b0b9"
+     },
+     {
+      "title": "Eversource - Connecticut Application to Connect",
+      "url": "https://www.eversource.com/residential/about/doing-business-with-us/interconnections/connecticut/connecticut-application-to-connect"
+     },
+     {
+      "title": "Pullman & Comley - PURA opens investigation into interconnection process modifications (Docket 25-01-27)",
+      "url": "https://www.pullcom.com/newsroom-publications-Pura-Opens-Investigation-Into-Interconnection-Process-Modifications"
+     },
+     {
+      "title": "CitizenPortal - PURA adopts interim interconnection reforms (Docket 25-01-27)",
+      "url": "https://citizenportal.ai/articles/6106145/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interim-interconnection-reforms-to-speed-clean-energy-connections"
+     },
+     {
+      "title": "CitizenPortal - PURA adopts interconnection changes from 100-day sprint (Docket 25-01-27)",
+      "url": "https://citizenportal.ai/articles/6014268/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interconnection-process-changes-from-100day-sprint-in-Docket-250127"
+     },
+     {
+      "title": "Great Plains Institute - Connecticut charts a path for flexible interconnection",
+      "url": "https://betterenergy.org/blog/connecticut-charts-a-path-for-flexible-interconnection/"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    },
+    {
+     "title": "Eversource CT - Electric Supply Rates (business)",
+     "url": "https://www.eversource.com/business/account-billing/manage-bill/about-your-bill/rates-tariffs/electric-supply-rates/ct"
+    },
+    {
+     "title": "Eversource - Connecticut Application to Connect",
+     "url": "https://www.eversource.com/residential/about/doing-business-with-us/interconnections/connecticut/connecticut-application-to-connect"
+    }
+   ]
+  },
+  {
+   "id": "ui-ct",
+   "name": "The United Illuminating Company (UI, Avangrid)",
+   "state": "CT",
+   "iso": "ISO-NE",
+   "load_zone": "CT (ISO-NE Connecticut load zone); service area is greater New Haven and Bridgeport",
+   "retail_choice": true,
+   "default_supply_notes": "UI offers Standard Service and Last Resort Service generation rates. The 2026 SS/LRS rate sheet shows Rate LPT supply at 13.9778 c/kWh on-peak and 10.9778 c/kWh off-peak for Jul 1 to Dec 31, 2026. Capacity savings reach the customer only through a supplier contract that passes the capacity cost through.",
+   "network_grid_notes": "Not verified. Downtown New Haven and Bridgeport are believed to have network secondary service. Confirm with UI DG interconnection before sizing.",
+   "interconnection": {
+    "rule_name": "Joint Eversource/UI Guidelines for Generator Interconnection - Fast Track and Study Processes (Docket 17-12-03RE06; UI copy dated 02.02.24), being reformed in Docket 25-01-27",
+    "tracks": [
+     {
+      "name": "Inverter-based <=25 kW",
+      "max_kw": 25,
+      "conditions": "Separate <=25 kW guidelines. The residential threshold was raised to 50 kW by the Docket 25-01-27 interim decision.",
+      "typical_timeline": null,
+      "application_fee": "$200"
+     },
+     {
+      "name": "Expedited commercial track",
+      "max_kw": 500,
+      "conditions": "Created by the Docket 25-01-27 interim decision (Mar 26, 2025). Details not verified.",
+      "typical_timeline": null,
+      "application_fee": null
+     },
+     {
+      "name": "Fast Track",
+      "max_kw": 2000,
+      "conditions": "C&I projects up to 2 MW",
+      "typical_timeline": null,
+      "application_fee": "$500"
+     },
+     {
+      "name": "Study Process",
+      "max_kw": null,
+      "conditions": "Projects over 2 MW or projects that fail the screens",
+      "typical_timeline": null,
+      "application_fee": "$1,000"
+     }
+    ],
+    "non_export_path": "Same joint guidelines as Eversource. Non-export screening details were not verified.",
+    "storage_specific_notes": "UI is an ESS program administrator and dispatches enrolled batteries in its own territory.",
+    "sources": [
+     {
+      "title": "UI copy - Guidelines Fast Track and Study Processes (02.02.24)",
+      "url": "https://www.uinet.com/documents/1678076/49056259/Guidelines+Fast+Track+and+Study+Processes+Final+02.02.24.pdf/ea80fa81-995c-9a5a-30a7-3022558c2df9?t=1706906472211"
+     },
+     {
+      "title": "Eversource/UI 25 kW or less guidelines (UI copy, 09.21.23)",
+      "url": "https://www.uinet.com/documents/1678076/1703582/25kW-or-Less-Guidelines+-+Final+Approved+1206_09.21.23.pdf/373cb958-5af2-dc0a-135f-f86fcf74b0b9"
+     },
+     {
+      "title": "CitizenPortal - PURA adopts interim interconnection reforms (Docket 25-01-27)",
+      "url": "https://citizenportal.ai/articles/6106145/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interim-interconnection-reforms-to-speed-clean-energy-connections"
+     },
+     {
+      "title": "CitizenPortal - PURA adopts interconnection changes from 100-day sprint (Docket 25-01-27)",
+      "url": "https://citizenportal.ai/articles/6014268/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interconnection-process-changes-from-100day-sprint-in-Docket-250127"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    },
+    {
+     "title": "UI - Standard Service and Last Resort Service generation rates (2026)",
+     "url": "https://www.uinet.com/documents/d/uinet/0-4-for-hyperlink-ui-standard-service-and-last-resort-generation-rates-effective-april-1-2026-"
+    },
+    {
+     "title": "UI copy - Guidelines Fast Track and Study Processes (02.02.24)",
+     "url": "https://www.uinet.com/documents/1678076/49056259/Guidelines+Fast+Track+and+Study+Processes+Final+02.02.24.pdf/ea80fa81-995c-9a5a-30a7-3022558c2df9?t=1706906472211"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "eversource-ct-rate30",
+   "utility_id": "eversource-ct",
+   "name": "Rate 30 - Small General Electric Service",
+   "customer_class": "Small C&I (demand-metered)",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": 200,
+    "text": "Whole-premise service through one meter where the customer's maximum demand is under 200 kW (per the May 2026 rate summary). The lower bound against the non-demand rates was not verified."
+   },
+   "effective_date": "2026-05-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand (over 2 kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 14.22,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (monthly maximum demand)",
+     "notes": "Charged on kW above the first 2 kW. Seen in a search summary of the May 1, 2026 Eversource rate summary. Riders such as Electric System Improvements or RAM demand components may add more; the summary listed $3.78, $6.42 and $1.47/kW items that could not be matched to labels."
+    },
+    {
+     "label": "Transmission demand (over 2 kW)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 12.84,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (monthly maximum demand)",
+     "notes": "Retail transmission is billed on monthly non-coincident max demand, so BTM peak shaving reduces it directly. There is no separate transmission CP tag at retail."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ICAP tag = customer load at the ISO-NE annual system peak hour in the prior Jun-May year; recalculated each spring and effective Jun 1-May 31",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Proxy = FCA 18 clearing price $3.580/kW-month x 12 = $42.96/kW-yr (2027/28). A peak cut in summer 2027 sets the 2028/29 tag, whose price is not yet known, so FCA 18 is used as the proxy. 2026/27 (FCA 17): $2.590 x 12 = $31.08/kW-yr. The ISO-NE capacity-requirement scaling and loss gross-up, which typically raise the $/kW-tag value, are not applied because they were not verified.",
+     "passthrough_notes": "Realized only if the competitive supply contract passes capacity through (index or pass-through) or at contract renewal. Standard Service and LRS customers capture it only indirectly through class-average pricing.",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Distribution plus transmission demand totals about $27.06/kW-month before riders, all hours, every month, so monthly NCP shaving is the main bill value. Rate eligibility is set by maximum demand, so shaving can affect rate-class migration. Check the tariff's migration rules.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 30 tariff",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-30-ct.pdf?sfvrsn=5f24c062_18"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "The $14.22 and $12.84 values come from search summaries of Eversource's May 1, 2026 rate summary, with consistent results across two queries. The PDF itself was not opened. Ratchet, rider demand components, and energy rates were not verified."
+  },
+  {
+   "id": "eversource-ct-rate35",
+   "utility_id": "eversource-ct",
+   "name": "Rate 35 - Intermediate General Electric Service",
+   "customer_class": "Mid C&I (demand-metered)",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Intermediate general service. A search summary of the tariff gave availability as maximum demand under 200 kW, which conflicts with Rate 30. Rate 56 starts at 350 kW, so Rate 35 likely covers roughly 200 to under 350 kW. NOT verified."
+   },
+   "effective_date": "2026-05-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 8.69,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours (monthly maximum demand)",
+     "notes": "From a search summary of the Rate 35 tariff and the May 2026 rate summary"
+    },
+    {
+     "label": "Transmission (labelled 'Production/Transmission') demand",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 14.58,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Label as given in the search summary"
+    },
+    {
+     "label": "Electric System Improvements demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 2.22,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Rider-type demand charge"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour (prior Jun-May)",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "Same as Rate 30: $3.580 x 12 (FCA 18 proxy). 2026/27: $31.08/kW-yr.",
+     "passthrough_notes": "Only with a pass-through supply contract",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "About $25.49/kW-month in demand charges (8.69 + 14.58 + 2.22), billed on monthly maximum demand. The customer charge is $270/month.",
+   "sources": [
+    {
+     "title": "CL&P dba Eversource - Rate 35 tariff",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-35-ct.pdf?sfvrsn=2824c062_18"
+    },
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Demand values come from search-result summaries attributed to the Eversource tariff and rate summary. Applicability band and ratchet NOT verified."
+  },
+  {
+   "id": "eversource-ct-rate56",
+   "utility_id": "eversource-ct",
+   "name": "Rate 56 - Intermediate Time-of-Day Electric Service (non-manufacturers); Rate 55 is the manufacturer counterpart",
+   "customer_class": "Mid/Large C&I TOU",
+   "applicability": {
+    "min_kw": 350,
+    "max_kw": 1000,
+    "text": "Non-manufacturers with annual maximum demand of at least 350 kW and under 1,000 kW. Rate 55 is believed to be the manufacturer counterpart (not verified)."
+   },
+   "effective_date": "2026-05-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand (on-peak)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Weekdays 12pm-8pm EST / 1pm-9pm DST",
+     "notes": "Value not retrieved. Large-rate siblings bill per kVA.",
+     "window": {
+      "start": 13,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Transmission demand",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Weekdays 12pm-8pm EST / 1pm-9pm DST (assumed same window)",
+     "notes": "Value not retrieved",
+     "window": {
+      "start": 13,
+      "end": 21
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "FCA 18 proxy $3.580 x 12",
+     "passthrough_notes": "Only with a pass-through supply contract. Customers of 500 kW and above are typically on competitive supply or LRS.",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "On-peak window: weekdays 1-9pm during DST and noon-8pm during EST. An 8-hour window favors 3-5 h batteries (200 kW/600 kWh or 30 kW/150 kWh) for demand shaving.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 55 tariff",
+     "url": "https://author.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-55-ct.pdf?sfvrsn=c346c762_64"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Availability band and on-peak hours come from a search summary of the May 2026 rate summary. All $ values are missing."
+  },
+  {
+   "id": "eversource-ct-rate58",
+   "utility_id": "eversource-ct",
+   "name": "Rate 58 - Large Time-of-Day Electric Service (non-manufacturers); Rate 57 is the manufacturer version",
+   "customer_class": "Large C&I TOU",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": null,
+    "text": "Non-manufacturers with annual maximum demand of at least 1,000 kW. Rate 57 is the same for manufacturers."
+   },
+   "effective_date": "2026-05-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand (on-peak, per kVA)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 7.91,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Weekdays 1pm-9pm DST (noon-8pm EST assumed per sibling rates)",
+     "notes": "Billed per kVA, not kW. A second distribution figure of $7.53/kVA was labelled 'off-peak' in the search summary, but the column mapping is uncertain.",
+     "window": {
+      "start": 13,
+      "end": 21
+     },
+     "days": "weekdays"
+    },
+    {
+     "label": "Transmission demand (per kVA)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": 14.93,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "on-peak (as labelled)",
+     "notes": "Billed per kVA. A second transmission figure of $17.04/kVA also appeared, and which one applies on-peak vs all-hours is unverified. Rate 57 (manufacturers) shows distribution $5.45/kVA and transmission $13.13/kVA.",
+     "window": {
+      "start": 13,
+      "end": 21
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "FCA 18 proxy $3.580 x 12",
+     "passthrough_notes": "Only with a pass-through supply contract",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "Demand is billed in kVA, so a 4-quadrant battery inverter that supplies reactive power can cut billed kVA even without kW discharge. The model should track kVA, not kW.",
+   "sources": [
+    {
+     "title": "Eversource - Summary of Connecticut Electric Rates (last updated May 1, 2026)",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/ct-electric-rates.pdf?sfvrsn=2d9afe62_58"
+    },
+    {
+     "title": "CL&P dba Eversource - Rate 57 tariff",
+     "url": "https://www.eversource.com/docs/default-source/rates-tariffs/ct-electric/rate-57-ct.pdf?sfvrsn=1940c762_58"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Values come from LLM search summaries that gave inconsistent on/off-peak labels. Open the May 1, 2026 rate summary and confirm which $/kVA applies to which period and whether billed demand is on-peak only or the monthly maximum."
+  },
+  {
+   "id": "ui-ct-gst",
+   "utility_id": "ui-ct",
+   "name": "Rate GST - General Service Time-of-Use",
+   "customer_class": "Small/Mid C&I TOU",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "General service TOU throughout the UI service area. Includes demand-metered and non-demand-metered customers. kW bounds not verified."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand, summer (demand-metered)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 5.18,
+     "basis": "ncp_monthly",
+     "months": [
+      6,
+      7,
+      8,
+      9
+     ],
+     "hours": "peak demand (definition not verified)",
+     "notes": "Jun-Sep. The winter (Oct-May) distribution demand value was not retrieved."
+    },
+    {
+     "label": "Distribution demand, winter (demand-metered)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      10,
+      11,
+      12,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "hours": null,
+     "notes": "Not retrieved"
+    },
+    {
+     "label": "Transmission demand",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": null,
+     "notes": "Not retrieved"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Distribution energy (demand-metered)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.028517,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "FCA 18 proxy $3.580 x 12",
+     "passthrough_notes": "Only with a pass-through supply contract",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "The tariff has a minimum charge of $8.71/kW of Peak Demand in summer and $7.41/kW in winter, plus a fixed charge of $83.53/month for demand-metered customers. The minimum charge may act as a floor that limits distribution demand savings. Check how it interacts with peak shaving.",
+   "sources": [
+    {
+     "title": "UI - General Service Time-of-Use Rate GST (tariff)",
+     "url": "https://www.uinet.com/documents/d/uinet/14-rate-gst"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Summer distribution demand, minimum charges, fixed charge and distribution energy come from a search summary of the UI GST tariff (effective Jan 1, 2026). Winter demand and transmission demand were not retrieved."
+  },
+  {
+   "id": "ui-ct-lpt",
+   "utility_id": "ui-ct",
+   "name": "Rate LPT - Large Power Time-of-Use (LPT-TRA for transmission-voltage service)",
+   "customer_class": "Large C&I TOU",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "Large power TOU. kW threshold not verified."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": null,
+     "notes": "The rate structure includes $/kW of peak demand for distribution, but the 2026 values were not retrieved"
+    },
+    {
+     "label": "Transmission demand (summer peak / winter peak)",
+     "component": "transmission",
+     "rate_usd_per_kw_month": null,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": null,
+     "notes": "The structure shows separate summer-peak and winter-peak transmission charges. Values not retrieved."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Standard Service generation on-peak (Jul-Dec 2026)",
+     "component": "supply",
+     "rate_usd_per_kwh": 0.139778,
+     "months": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "UI on-peak period (definition not verified)"
+    },
+    {
+     "label": "Standard Service generation off-peak (Jul-Dec 2026)",
+     "component": "supply",
+     "rate_usd_per_kwh": 0.109778,
+     "months": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "UI off-peak period"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "capacity_tag",
+     "how_set": "ISO-NE annual system peak hour",
+     "est_value_usd_per_kw_year": 42.96,
+     "derivation": "FCA 18 proxy $3.580 x 12",
+     "passthrough_notes": "Only with a pass-through supply contract",
+     "passthrough": "supply"
+    }
+   ],
+   "storage_notes": "The basic service charge is $345.49/month. The default-supply TOU spread is about 3.0 c/kWh, too small to justify arbitrage alone.",
+   "sources": [
+    {
+     "title": "UI - Standard Service and Last Resort Service generation rates (2026)",
+     "url": "https://www.uinet.com/documents/d/uinet/0-4-for-hyperlink-ui-standard-service-and-last-resort-generation-rates-effective-april-1-2026-"
+    },
+    {
+     "title": "UI - January 2025 Rate Schedule",
+     "url": "https://www.uinet.com/documents/1678076/1704192/FINAL_design_UPRB301_UI+2025+rate+schedule_12.11.24.pdf/81aee81f-6a18-897b-07a0-8e503d4a8ea2?t=1735846644025"
+    },
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Only the customer charge and SS generation rates were retrieved. The demand charges must be pulled from the UI rate schedule (C.P.U.C.A. No. 2530 or later) or the PURA Docket 26-01-02 compliance filing."
+  },
+  {
+   "id": "ui-ct-gs",
+   "utility_id": "ui-ct",
+   "name": "Rate GS - General Service",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": null,
+    "max_kw": null,
+    "text": "General service. Thresholds not verified."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Distribution demand",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": null,
+     "notes": "Not retrieved"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "storage_notes": "",
+   "sources": [
+    {
+     "title": "UI - Pricing (rate schedules)",
+     "url": "https://www.uinet.com/account/understandyourbill/pricing"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "No 2026 GS demand values were found through search. Pull them from the UI pricing page or tariff."
+  }
+ ],
+ "programs": [
+  {
+   "id": "ct-ess-ci-construct5",
+   "name": "Energy Storage Solutions (ESS) - C&I Active Dispatch, 'Construct 5' (new enrollments from Apr 1, 2026)",
+   "state": "CT",
+   "utility_ids": [
+    "eversource-ct",
+    "ui-ct"
+   ],
+   "administrator": "CT Green Bank, Eversource and UI (overseen by PURA; annual review in the XX-08-05 dockets; the 2026 restructure came from the Docket 25-08-05 review)",
+   "category": "performance_incentive",
+   "status": "open",
+   "status_notes": "Since Apr 1, 2026, all new participants enroll in Construct 5. It replaces the upfront $/kWh incentive and Passive Dispatch with a small enrollment incentive plus 10-year performance payments for Active Dispatch only. A $350 non-refundable application fee applies to all new C&I applications. Program-wide, more than 140 MW of C&I was approved before the restructure. The original goal was 580 MW, with a 1 GW by 2030 storage goal cited. The remaining 2026 capacity or budget was not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "Small commercial (<200 kW annual peak)",
+     "Medium commercial (200-500 kW)",
+     "Large commercial (>500 kW)"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": null,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Customer of Eversource or UI. The class (small/medium/large) is set by annual peak demand. The kW eligible for incentive is capped at 150% of annual peak demand or 2 MW, 'whichever is greater' per the summary; verify, as this may be 'lesser'. Priority customers are critical facilities, grid-edge, small businesses, and C&I sites replacing onsite fossil generation. Only batteries with an interconnection agreement may export. A 2025 review allowed existing non-export batteries interconnected before 2026 to enroll. Whether NEW non-export C&I systems qualify under Construct 5 is unverified."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": 325,
+    "unit": "$/kW-yr",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Average kW-AC delivered across all Active Dispatch events in the season, measured from inverter data, not nameplate. Settled at the end of each summer and winter season.",
+    "duration_basis_hr": 3,
+    "cap": "Eligible kW is capped at 150% of annual peak demand or 2 MW (see eligibility note)",
+    "tiers": [
+     {
+      "label": "Small/Medium commercial, years 1-5",
+      "rate": 325,
+      "conditions": "$/kW-yr; annual peak demand of 500 kW or less"
+     },
+     {
+      "label": "Small/Medium commercial, years 6-10",
+      "rate": 175,
+      "conditions": "$/kW-yr"
+     },
+     {
+      "label": "Large commercial, years 1-5",
+      "rate": 275,
+      "conditions": "$/kW-yr; annual peak demand over 500 kW"
+     },
+     {
+      "label": "Large commercial, years 6-10",
+      "rate": 175,
+      "conditions": "$/kW-yr"
+     },
+     {
+      "label": "Priority C&I enrollment incentive (one-time)",
+      "rate": 10,
+      "conditions": "$/kWh per ESS program-changes page. One secondary source says $/kW, so verify the unit. Non-priority C&I gets no enrollment incentive."
+     }
+    ],
+    "term_years": 10,
+    "notes": "Annual payment = rate x average kW delivered during events. Whether the $/kW-yr is split between summer and winter seasons, and how, was not verified. Under-delivery directly reduces payment. A 3-hour event at full kW needs usable kWh of at least 3 x kW, so deliverable kW = min(inverter kW, usable kWh / 3).",
+    "rate_by_site_peak_kw": [
+     {
+      "max_peak_kw": 500,
+      "rate": 325,
+      "label": "Small/medium commercial (≤ 500 kW peak), years 1–5"
+     },
+     {
+      "max_peak_kw": null,
+      "rate": 275,
+      "label": "Large commercial (> 500 kW peak), years 1–5"
+     }
+    ],
+    "schedule": [
+     {
+      "start_year": 1,
+      "end_year": 5,
+      "factor": 1
+     },
+     {
+      "start_year": 6,
+      "end_year": 10,
+      "rate": 175
+     }
+    ]
+   },
+   "dispatch": {
+    "season": "Summer Jun-Sep; Winter Nov-Mar",
+    "window": "Events up to 3 h within 12pm-9pm (summer). Event length is 1-3 h.",
+    "event_duration_hr": 3,
+    "max_events_per_year": 70,
+    "typical_events_per_year": 55,
+    "notice": "Called by the EDC (Eversource or UI) on high-demand days. Notice lead time not verified.",
+    "baseline_or_mv": "Inverter or battery telemetry (kW-AC output during events), not a meter baseline",
+    "event_months": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "event_block": {
+     "start": 16,
+     "end": 19
+    }
+   },
+   "stacking": {
+    "compatible_with": [
+     "eversource-ct-rate30",
+     "eversource-ct-rate35",
+     "eversource-ct-rate56",
+     "eversource-ct-rate58",
+     "ui-ct-gst",
+     "ui-ct-lpt",
+     "isone-capacity-tag-ct"
+    ],
+    "conflicts_with": [
+     "ct-ess-ci-legacy-upfront"
+    ],
+    "notes": "Demand-charge shaving on non-event days stacks freely. On event days the battery must hold SOC for the 12-9pm window. Summer events are likely to overlap the ISO-NE annual peak hour, which helps the ICAP tag. Dual participation in ISO-NE wholesale markets (ADCR or FCM via an aggregator) is NOT verified, so check the Terms and Conditions."
+   },
+   "vpp_relevance": "The EDCs already dispatch the batteries centrally, so a developer VPP should treat ESS events as the priority dispatch signal and layer bill optimization around them. Fleet telemetry from the inverters forms the M&V basis.",
+   "sources": [
+    {
+     "title": "Energy Storage Solutions - Program Changes for April 1, 2026",
+     "url": "https://energystoragect.com/program-changes-for-april-1-2026/"
+    },
+    {
+     "title": "CT Green Bank - ESS adopts new performance-based framework (2026)",
+     "url": "https://www.ctgreenbank.com/connecticuts-energy-storage-solutions-program-updates-2026ratepayers-and-customers/"
+    },
+    {
+     "title": "ESS Program Manual, version May 19, 2026",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/05/Energy-Storage-Solutions-Program-Manual-Revised-for-05-19-2026.pdf"
+    },
+    {
+     "title": "ESS Program Manual, version February 11, 2026",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/02/ESS-Program-Manual-Revised-for-02112026-CLEAN.pdf"
+    },
+    {
+     "title": "ESS May 2026 Contractor Training (May 20, 2026)",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/05/ESS-Contractor-Training-May-2026.pdf"
+    },
+    {
+     "title": "ESS Universal Terms and Conditions (April 1, 2026)",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/02/Universal-ESS-TC-April-1-2026.pdf"
+    },
+    {
+     "title": "ESS FAQ - What is a priority customer?",
+     "url": "https://energystoragect.com/ufaq/what-is-a-priority-customer/"
+    },
+    {
+     "title": "PURA - Energy Storage Solutions Program page",
+     "url": "https://portal.ct.gov/pura/electric/office-of-technical-and-regulatory-analysis/clean-energy-programs/energy-storage-solutions-program"
+    },
+    {
+     "title": "vpp.services - Connecticut ESS battery VPP guide (secondary)",
+     "url": "https://vpp.services/new-england/connecticut"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Performance rates ($325/$275/$175) and the 10-year term were seen in summaries of the energystoragect.com program-changes page and the CT Green Bank release, with consistent results across three searches. Event counts and windows come from search summaries of the 2026 program manual. max_events_per_year = 60 summer + 10 winter, and typical = about 50 summer + 5 winter. The size cap wording, enrollment-incentive unit, seasonal split, notice and the export requirement were not verified. Event-day modeling assumes 3 h summer events at 4–7pm within the 12–9pm window (winter events are few and not modeled against demand).",
+   "panel_caution": "The researchers could not confirm that NEW non-export C&I batteries qualify under Construct 5 (a 2025 review admitted existing non-export systems interconnected before 2026). Confirm eligibility with Energy Storage Solutions before relying on this payment, since it is usually the largest value in CT.",
+   "requires_confirmation": "Eligibility of new non-export C&I batteries under Construct 5 is unverified."
+  },
+  {
+   "id": "ct-ess-ci-legacy-upfront",
+   "name": "ESS - C&I legacy structure (upfront $/kWh + Passive/Active Dispatch), Tranche 3",
+   "state": "CT",
+   "utility_ids": [
+    "eversource-ct",
+    "ui-ct"
+   ],
+   "administrator": "CT Green Bank, Eversource, UI",
+   "category": "upfront_incentive",
+   "status": "closed",
+   "status_notes": "Closed to new applications from Apr 1, 2026, when Construct 5 replaced it. Kept for modeling projects already enrolled.",
+   "eligibility": {
+    "customer_classes": [
+     "Small/Medium/Large commercial"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": null,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Priority customer adder +25% on upfront"
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": 182,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Upfront on installed kWh; performance on average kW delivered",
+    "duration_basis_hr": 3,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "Small commercial, Tranche 3 block 0-50 MW",
+      "rate": 182.0,
+      "conditions": "$/kWh"
+     },
+     {
+      "label": "Small commercial, block 50-75 MW",
+      "rate": 164.0,
+      "conditions": "$/kWh"
+     },
+     {
+      "label": "Small commercial, block 75-126.1 MW",
+      "rate": 146.0,
+      "conditions": "$/kWh"
+     },
+     {
+      "label": "Medium commercial, blocks 0-50 / 50-75 / 75-126.1 MW",
+      "rate": 159.25,
+      "conditions": "$/kWh (then 143.50, 127.75)"
+     },
+     {
+      "label": "Large commercial, blocks 0-50 / 50-75 / 75-126.1 MW",
+      "rate": 91.0,
+      "conditions": "$/kWh (then 82.00, 73.00)"
+     },
+     {
+      "label": "Performance, summer, years 1-5",
+      "rate": 200,
+      "conditions": "$/kW-summer"
+     },
+     {
+      "label": "Performance, winter, years 1-5",
+      "rate": 25,
+      "conditions": "$/kW-winter"
+     },
+     {
+      "label": "Performance, summer, years 6-10",
+      "rate": 115,
+      "conditions": "$/kW-summer"
+     },
+     {
+      "label": "Performance, winter, years 6-10",
+      "rate": 15,
+      "conditions": "$/kW-winter"
+     }
+    ],
+    "term_years": 10,
+    "notes": "Legacy passive dispatch ran a preset 3-hour summer schedule (about 5-8pm, non-holiday weekdays). Legacy active dispatch called 1-5 winter events."
+   },
+   "dispatch": {
+    "season": "Jun-Sep (+ winter active)",
+    "window": "Passive about 5-8pm weekdays; active 12-9pm",
+    "event_duration_hr": 3,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Inverter telemetry"
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [
+     "ct-ess-ci-construct5"
+    ],
+    "notes": ""
+   },
+   "vpp_relevance": "Existing legacy-enrolled sites remain dispatchable by the EDC for their 10-year terms.",
+   "sources": [
+    {
+     "title": "Energy Toolbase - Connecticut Energy Storage Solutions (secondary)",
+     "url": "https://www.energytoolbase.com/demand-response-programs/connecticut-energy-storage-solutions/"
+    },
+    {
+     "title": "CT Green Bank - Battery storage program opens new tranche of commercial incentives",
+     "url": "https://www.ctgreenbank.com/battery-storage-program-opens-new-tranche-of-commercial-incentives/"
+    },
+    {
+     "title": "ESS Program Manual, version February 11, 2026",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/02/ESS-Program-Manual-Revised-for-02112026-CLEAN.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Tranche 3 values come from a secondary aggregator (Energy Toolbase) summary. The legacy performance rates come from a search summary. Applicability to C&I vs residential was not cross-checked."
+  },
+  {
+   "id": "isone-capacity-tag-ct",
+   "name": "ISO-NE capacity tag (ICAP / peak load contribution) reduction",
+   "state": "CT",
+   "utility_ids": [],
+   "administrator": "ISO-NE (tags computed by Eversource and UI)",
+   "category": "capacity_tag",
+   "status": "open",
+   "status_notes": "Tags are recalculated each spring from the prior Jun-May ISO-NE peak hour and are effective Jun 1-May 31. ISO-NE is moving from the FCM to a prompt/seasonal capacity auction. Prices for 2028/29 onward were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "All"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Requires a supply contract that passes capacity cost through"
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": 42.96,
+    "unit": "$/kW-yr",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "kW of load reduction during the single ISO-NE annual peak hour",
+    "duration_basis_hr": 3,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "2026/27 (FCA 17)",
+      "rate": 31.08,
+      "conditions": "$2.590/kW-mo x 12"
+     },
+     {
+      "label": "2027/28 (FCA 18)",
+      "rate": 42.96,
+      "conditions": "$3.580/kW-mo x 12"
+     }
+    ],
+    "term_years": null,
+    "notes": "Unscaled. Retail capacity charges per kW of tag usually exceed CCP x 12 because of capacity-requirement scaling and losses, but this is not verified. A 3 h duration basis is used because the peak hour is uncertain (usually summer weekdays, late afternoon)."
+   },
+   "dispatch": {
+    "season": "Jun-Aug mainly",
+    "window": "ISO-NE peak hour, typically late afternoon to early evening on the hottest weekday",
+    "event_duration_hr": 1,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Self-forecast",
+    "baseline_or_mv": "Utility interval meter at ISO-NE peak hour"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ct-ess-ci-construct5"
+    ],
+    "conflicts_with": [],
+    "notes": "ESS summer events will likely be called on the same days"
+   },
+   "vpp_relevance": "Peak-hour forecasting across the fleet",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 17 initial results (Mar 10, 2023)",
+     "url": "https://www.iso-ne.com/static-assets/documents/2023/03/20230310_pr_fca17_initial_results_final.pdf"
+    },
+    {
+     "title": "ISO-NE press release - FCA 18 initial results (Feb 9, 2024)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100008/20240209_pr_fca18_initial_results.pdf"
+    },
+    {
+     "title": "EnergyChoiceMatters - ISO-NE reports prices from 2026/2027 capacity auction",
+     "url": "http://www.energychoicematters.com/stories/20230313c.html"
+    },
+    {
+     "title": "Energize CT Rate Board - Choosing a Supplier (ICAP tag explanation)",
+     "url": "https://www.energizect.com/rate-board/choosing-a-supplier"
+    },
+    {
+     "title": "ISO-NE - Forward Capacity Market",
+     "url": "https://www.iso-ne.com/markets-operations/markets/forward-capacity-market"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "FCA 17 = $2.590 and FCA 18 = $3.580 $/kW-mo per ISO-NE press releases as summarized in search results. Tag mechanics come from Energize CT. Scaling factor not verified. Modeled through the capacity_tag peak-tag entry on each CT tariff (avoids double counting)."
+  },
+  {
+   "id": "ct-energizect-ci-demand-response",
+   "name": "Energize CT C&I Demand Response (non-ESS)",
+   "state": "CT",
+   "utility_ids": [
+    "eversource-ct",
+    "ui-ct"
+   ],
+   "administrator": "Energize CT (Eversource, UI)",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "An Energize CT demand response page exists, but no 2026 C&I $/kW rates or storage-specific terms were found. For batteries, ESS is the main path. Status 'open' is an assumption based on the active page.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": null,
+    "requires_export": null,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Unverified. ESS-enrolled batteries are likely barred from double enrollment."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Rates not found"
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [
+     "ct-ess-ci-construct5"
+    ],
+    "notes": "Conflict assumed (same EDC peak-reduction objective). Verify."
+   },
+   "vpp_relevance": "Possible fallback for sites or batteries not in ESS",
+   "sources": [
+    {
+     "title": "Energize CT - Demand Response",
+     "url": "https://www.energizect.com/explore-solutions/demand-response"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Program existence only"
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "isone-fca17-2026-27",
+   "label": "ISO-NE FCA 17 capacity clearing price (2026/27 CCP)",
+   "value": 2.59,
+   "unit": "$/kW-month",
+   "period": "2026-06 to 2027-05",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 17 initial results (Mar 10, 2023)",
+     "url": "https://www.iso-ne.com/static-assets/documents/2023/03/20230310_pr_fca17_initial_results_final.pdf"
+    },
+    {
+     "title": "EnergyChoiceMatters - ISO-NE reports prices from 2026/2027 capacity auction",
+     "url": "http://www.energychoicematters.com/stories/20230313c.html"
+    }
+   ],
+   "confidence": "high",
+   "notes": "All zones including CT. The New Brunswick interface cleared at $2.551. About $31.08/kW-yr."
+  },
+  {
+   "id": "isone-fca18-2027-28",
+   "label": "ISO-NE FCA 18 capacity clearing price (2027/28 CCP)",
+   "value": 3.58,
+   "unit": "$/kW-month",
+   "period": "2027-06 to 2028-05",
+   "sources": [
+    {
+     "title": "ISO-NE press release - FCA 18 initial results (Feb 9, 2024)",
+     "url": "https://www.iso-ne.com/static-assets/documents/100008/20240209_pr_fca18_initial_results.pdf"
+    }
+   ],
+   "confidence": "high",
+   "notes": "All zones. About 38% above FCA 17. About $42.96/kW-yr. Tags set at the summer 2026 peak are billed in this period."
+  },
+  {
+   "id": "isone-capacity-2028-29",
+   "label": "ISO-NE capacity price 2028/29 onward (post-FCM prompt/seasonal auction)",
+   "value": null,
+   "unit": "$/kW-month",
+   "period": "2028-06 onward",
+   "sources": [
+    {
+     "title": "ISO-NE - Forward Capacity Market",
+     "url": "https://www.iso-ne.com/markets-operations/markets/forward-capacity-market"
+    }
+   ],
+   "confidence": "low",
+   "notes": "FCA 19 was delayed and ISO-NE is redesigning toward a prompt/seasonal auction. The price that will apply to tags set by a summer 2027 peak is unknown. FCA 18 is used as a proxy."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "ct-ic-fast-track-2mw",
+   "topic": "interconnection",
+   "title": "Fast Track limit 2 MW (C&I)",
+   "rule": "C&I projects up to 2 MW may use Fast Track ($500 fee) if they pass the screens. Larger projects go to the Study Process ($1,000 fee).",
+   "threshold": {
+    "metric": "kW",
+    "value": 2000,
+    "comparison": "max",
+    "scope": "per site (generating facility)"
+   },
+   "impact_on_sizing": "Keep total inverter kW (or PCS-limited export) at or below 2 MW per site. That is up to 10 x 200 kW units.",
+   "applies_to": "eversource-ct, ui-ct",
+   "sources": [
+    {
+     "title": "Eversource/UI Guidelines for Generator Interconnection - Fast Track and Study Processes (Docket 17-12-03RE06)",
+     "url": "https://www.eversource.com/docs/default-source/ct---pdfs/guidelines-generator-inter-fast-track.pdf"
+    },
+    {
+     "title": "UI copy - Guidelines Fast Track and Study Processes (02.02.24)",
+     "url": "https://www.uinet.com/documents/1678076/49056259/Guidelines+Fast+Track+and+Study+Processes+Final+02.02.24.pdf/ea80fa81-995c-9a5a-30a7-3022558c2df9?t=1706906472211"
+    }
+   ],
+   "confidence": "high",
+   "rule_type": "text"
+  },
+  {
+   "id": "ct-ic-expedited-500kw",
+   "topic": "interconnection",
+   "title": "Expedited commercial track under 500 kW (Docket 25-01-27)",
+   "rule": "PURA's interim decision (Mar 26, 2025) created an expedited interconnection track for commercial projects under 500 kW and raised the residential simplified threshold from 25 to 50 kW. A final decision followed Aug 20, 2025.",
+   "threshold": {
+    "metric": "kW",
+    "value": 500,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Staying under 500 kW of inverter capacity (for example 2 x 200 kW + 1 x 65 kW) may shorten the timeline. Screens are unverified.",
+   "applies_to": "eversource-ct, ui-ct",
+   "sources": [
+    {
+     "title": "CitizenPortal - PURA adopts interim interconnection reforms (Docket 25-01-27)",
+     "url": "https://citizenportal.ai/articles/6106145/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interim-interconnection-reforms-to-speed-clean-energy-connections"
+    },
+    {
+     "title": "CitizenPortal - PURA adopts interconnection changes from 100-day sprint (Docket 25-01-27)",
+     "url": "https://citizenportal.ai/articles/6014268/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interconnection-process-changes-from-100day-sprint-in-Docket-250127"
+    },
+    {
+     "title": "Pullman & Comley - PURA opens investigation into interconnection process modifications (Docket 25-01-27)",
+     "url": "https://www.pullcom.com/newsroom-publications-Pura-Opens-Investigation-Into-Interconnection-Process-Modifications"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "ct-ic-flexible-interconnection",
+   "topic": "interconnection",
+   "title": "Flexible interconnection plans (due Mar 15, 2026)",
+   "rule": "The EDCs were ordered to file plans for flexible interconnection technologies (such as export limits and dynamic curtailment) by Mar 15, 2026.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Could allow larger batteries at constrained feeders through export caps. Implementation status as of Oct 2026 is unverified.",
+   "applies_to": "eversource-ct, ui-ct",
+   "sources": [
+    {
+     "title": "CitizenPortal - PURA adopts interim interconnection reforms (Docket 25-01-27)",
+     "url": "https://citizenportal.ai/articles/6106145/Connecticut/Executive/Organizations/Departments-and-Agencies/Public-Utilities-Regulatory-Authority/PURA-adopts-interim-interconnection-reforms-to-speed-clean-energy-connections"
+    },
+    {
+     "title": "Great Plains Institute - Connecticut charts a path for flexible interconnection",
+     "url": "https://betterenergy.org/blog/connecticut-charts-a-path-for-flexible-interconnection/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "ct-fire-code-edition",
+   "topic": "fire_code",
+   "title": "CT Fire Prevention Code edition: 2022 CSFPC still in force; 2026 code delayed",
+   "rule": "The 2022 CT State Fire Prevention Code (effective Oct 1, 2022, based on NFPA 1) remains in force. The 2026 CSFPC adopts NFPA 1 (2024 edition) and requires permits for ESS above the NFPA 855 Table 1.3 thresholds. It was due Jul 1, 2026, but the Legislative Regulation Review Committee declined to approve it on Apr 28, 2026, so it is delayed.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "max",
+    "scope": "per site (aggregate Li-ion before NFPA 855 permit/compliance applies)"
+   },
+   "impact_on_sizing": "Every product here (150-600 kWh) exceeds 20 kWh, so full NFPA 855 compliance and a fire-marshal permit apply. Confirm with the local fire marshal which edition (2022 CSFPC or 2026) applies at permit date.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "2022 Connecticut State Fire Prevention Code (effective Oct 1, 2022)",
+     "url": "https://portal.ct.gov/-/media/DAS/Office-of-State-Building-Inspector/2022-State-Codes/2022-CSFPC-Final.pdf"
+    },
+    {
+     "title": "2026 Connecticut State Fire Prevention Code - draft for LRRC (Dec 2, 2025)",
+     "url": "https://portal.ct.gov/das/-/media/das/code-adoption/2026-legislative-drafts/2026-csfpc---for-lrrc-12-2-2025.pdf?rev=5d320c1ab0e94492989903a77746fe84&hash=35E36A40A92EE99F0EC48FE46DA41427"
+    },
+    {
+     "title": "CT Building Officials Assn - State Building, Fire Safety and Fire Prevention Codes delayed",
+     "url": "https://www.ctbuildingofficial.org/node/527"
+    },
+    {
+     "title": "CT DAS - Building and Fire Code Adoption Process",
+     "url": "https://portal.ct.gov/das/office-of-state-building-inspector/building-and-fire-code-adoption-process"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "threshold_kwh"
+  },
+  {
+   "id": "ct-nfpa855-indoor-600kwh",
+   "topic": "fire_code",
+   "title": "NFPA 855 indoor Li-ion maximum stored energy per fire area",
+   "rule": "Li-ion ESS installed indoors are limited to 600 kWh aggregate per fire area unless the AHJ approves larger amounts based on UL 9540A or large-scale fire testing and a hazard mitigation analysis. Units are generally limited to 50 kWh each with 3 ft spacing unless test data supports otherwise.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Indoors, one 200 kW/600 kWh unit uses the whole fire-area allowance. Prefer outdoor cabinet units. 418 kWh + 150 kWh = 568 kWh fits; 2 x 418 kWh does not.",
+   "applies_to": "state-wide (via NFPA 1 / NFPA 855)",
+   "sources": [
+    {
+     "title": "UpCodes - Battery Energy Storage Systems (Lithium) thresholds",
+     "url": "https://up.codes/s/6-battery-energy-storage-systems-lithium"
+    },
+    {
+     "title": "TWAICE - NFPA 855 overview (secondary)",
+     "url": "https://www.twaice.com/battery-encyclopedia/nfpa-855"
+    },
+    {
+     "title": "Energy-Storage.News - NFPA 855 2026 edition updates",
+     "url": "https://www.energy-storage.news/nfpa-855-2026-edition-updates-and-what-they-mean-for-energy-storage-projects/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "indoor_max_kwh"
+  },
+  {
+   "id": "ct-ess-size-cap",
+   "topic": "program_rule",
+   "title": "ESS C&I incentive kW cap",
+   "rule": "C&I kW eligible for ESS incentive is capped at 150% of annual peak demand or 2 MW, stated as 'whichever is greater' (verify).",
+   "threshold": {
+    "metric": "kW",
+    "value": 2000,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Battery kW above the cap earns no ESS payment. For sites with low peak demand, battery kW is effectively capped at 1.5 x peak.",
+   "applies_to": "eversource-ct, ui-ct (ESS participants)",
+   "sources": [
+    {
+     "title": "ESS Program Manual, version May 19, 2026",
+     "url": "https://energystoragect.com/wp-content/uploads/2026/05/Energy-Storage-Solutions-Program-Manual-Revised-for-05-19-2026.pdf"
+    },
+    {
+     "title": "PURA - ESS Commercial and Industrial Fact Sheet",
+     "url": "https://portal.ct.gov/-/media/PURA/ESS-Commercial-and-Industrial-Fact-Sheet.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "ct-ess-export",
+   "topic": "program_rule",
+   "title": "ESS export / non-export eligibility",
+   "rule": "Only batteries with a utility interconnection agreement may export. A 2025 annual review allowed existing non-export batteries interconnected before 2026 to join. Treatment of new non-export C&I systems under Construct 5 is unverified.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "If non-export, ESS kW credited is capped by site load during 12-9pm events. Size kW to the evening load floor, or obtain export approval.",
+   "applies_to": "ESS participants",
+   "sources": [
+    {
+     "title": "PURA - Energy Storage Solutions Program page",
+     "url": "https://portal.ct.gov/pura/electric/office-of-technical-and-regulatory-analysis/clean-energy-programs/energy-storage-solutions-program"
+    },
+    {
+     "title": "vpp.services - Connecticut ESS battery VPP guide (secondary)",
+     "url": "https://vpp.services/new-england/connecticut"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (Eversource CT)",
+   "topic": "Construct 5 pays on delivered kW, not nameplate",
+   "severity": "critical",
+   "note": "Under Construct 5 the whole incentive is the average kW-AC delivered across every event. A 200 kW/418 kWh unit sustains only about 139 kW for 3 hours, so model deliverable kW = min(kW, usable kWh / 3) after SOC reserves and losses. Missed or partial events cut the 10-year payment directly.",
+   "persona_id": "eversource-ct"
+  },
+  {
+   "persona": "Utility program manager (Eversource CT)",
+   "topic": "Rate case risk on demand charges",
+   "severity": "caution",
+   "note": "CL&P filed its first full rate case since 2017 in May 2026, seeking about 11%, with new rates expected around July 2027. Distribution demand rates and design (kW vs kVA, TOU windows) could change. Do not escalate today's $/kW flat for 10 years, and run a sensitivity.",
+   "persona_id": "eversource-ct"
+  },
+  {
+   "persona": "Utility program manager (Eversource CT)",
+   "topic": "Rate-class thresholds",
+   "severity": "info",
+   "note": "Eversource rate classes break at 200, 350 and 1,000 kW of maximum demand. Shaving can move a site across a threshold, which changes both the $/kW and the billing basis (NCP kW vs on-peak kVA). Model the bill on the post-battery rate class.",
+   "persona_id": "eversource-ct"
+  },
+  {
+   "persona": "Utility program manager (United Illuminating)",
+   "topic": "UI demand floors and missing data",
+   "severity": "caution",
+   "note": "UI GST carries a $/kW minimum charge ($8.71 summer, $7.41 winter) on Peak Demand, which can limit distribution-demand savings. LPT demand rates were not retrieved. Get the current UI rate schedule before quoting savings in New Haven or Bridgeport.",
+   "persona_id": "ui-ct"
+  },
+  {
+   "persona": "Utility program manager (United Illuminating)",
+   "topic": "Dispatch ownership",
+   "severity": "info",
+   "note": "UI calls ESS events for batteries in its own territory, separately from Eversource. A cross-territory VPP gets two dispatch signals and two settlement calendars.",
+   "persona_id": "ui-ct"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Capacity tag pass-through",
+   "severity": "caution",
+   "note": "CT ICAP tag savings (about $31-43/kW-yr at FCA 17/18 prices, unscaled) reach the customer only on index or pass-through capacity contracts, or at renewal. Most fixed all-in C&I contracts keep the savings with the supplier. Contract structure matters as much as battery dispatch.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "Wholesale layering",
+   "severity": "caution",
+   "note": "ESS-enrolled batteries are dispatched by the EDC. Before layering ISO-NE ADCR, FCM, or reserve participation, confirm the ESS T&Cs on dual participation, telemetry, and whose dispatch takes priority. ISO-NE's move to a prompt capacity auction for 2028+ changes forward capacity revenue assumptions.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Non-export caps ESS earnings",
+   "severity": "critical",
+   "note": "On a non-export interconnection the battery can only offset coincident site load. A retail site with a 120 kW evening load and a 200 kW battery earns ESS on at most about 120 kW. Check 12-9pm interval load on event-type days, or pursue an export or flexible-interconnection agreement.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Indoor fire-area limit and code edition",
+   "severity": "critical",
+   "note": "NFPA 855 caps indoor Li-ion at 600 kWh per fire area (absent large-scale fire testing or AHJ approval). The 2026 CT fire code (NFPA 1-2024) is stalled at the LRRC, so marshals may apply 2022 CSFPC provisions. Plan outdoor UL 9540 cabinets with setbacks, and confirm the edition with the local fire marshal early.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "kVA billing on large TOU rates",
+   "severity": "info",
+   "note": "Eversource Rates 57 and 58 bill demand per kVA. A 4-quadrant PCS can provide VARs to cut kVA, but enabling this needs EDC approval of the inverter settings. Model the kVA demand with the site's power factor, not kW alone.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Interconnection track targeting",
+   "severity": "info",
+   "note": "Under 500 kW gets the new expedited commercial track; up to 2 MW goes Fast Track. Stacking 200 kW units past 500 kW can push a project into longer screening. Consider PCS export limiting so the screened capacity stays under the thresholds.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "Eversource Rate 30/35 exact kW applicability bands (the 200 kW figure appeared for both) and any demand ratchet. Verify in the rate-30-ct.pdf and rate-35-ct.pdf tariffs.",
+  "Eversource Rate 56/55 and 57/58 $/kVA on-peak vs off-peak and all-hours demand values. Verify in the May 1, 2026 'Summary of Connecticut Electric Rates' PDF.",
+  "UI GS, GST (winter and transmission demand) and LPT demand charges for 2026. Verify on the UI pricing page or in the Docket 26-01-02 rate compliance filing.",
+  "ESS Construct 5: summer/winter split of the $/kW-yr, event notice time, whether new non-export C&I systems qualify, whether the size cap is the greater or lesser of 150% of peak and 2 MW, the enrollment-incentive unit ($/kWh vs $/kW), and the remaining 2026 capacity. Verify in ESS Program Manual v. May 19, 2026, Section 6.",
+  "ISO-NE capacity scaling factor (tag-to-obligation) and the 2028/29 capacity price under the prompt auction. Check ISO-NE settlement data and supplier capacity pass-through quotes.",
+  "Whether ESS-enrolled batteries may also participate in ISO-NE markets or Energize CT C&I DR. Check the ESS Universal T&Cs (Apr 1, 2026).",
+  "Expedited <500 kW track screens and timelines, and how PCS export limits are counted. Check the Docket 25-01-27 final decision (Aug 20, 2025) and the EDC flexible-interconnection plans.",
+  "Status of the 2026 CT State Fire Prevention Code after the LRRC rejection (Apr 28, 2026). Check the CT DAS code adoption page.",
+  "CT Green Bank C-PACE (financing for storage, term up to about 20-25 yrs, rate) was NOT researched because the shared web-search budget ran out. No program entry was created to avoid unsourced values. Check ctgreenbank.com/c-pace.",
+  "Energize CT C&I Demand Response 2026 $/kW rates and whether ESS-enrolled batteries are excluded. Check energizect.com and the EDC C&I DR program documents.",
+  "Default-supply threshold (Standard Service vs Last Resort Service, believed to be 500 kW) and LRS pricing for 2026. Check the Eversource and UI supply-rate pages."
+ ]
+}

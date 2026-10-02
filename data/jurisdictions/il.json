@@ -1,0 +1,2098 @@
+{
+ "code": "IL",
+ "name": "Illinois",
+ "researched_on": "2026-10-01",
+ "summary": "Illinois BTM C&I storage value is concentrated on the ComEd (PJM) side. Capacity PLC reduction is worth about $122/kW-yr for summer-2026 peaks (2027/28 BRA $333.44/MW-day at the cap) and $118.63 for 2028/29. Network transmission (NSPL) adds about $46/kW-yr. ComEd's Distribution Facilities Charge ($13-15/kW-month in 2025, billed on the 9am-6pm weekday 30-minute max) makes daytime demand shaving valuable but needs long duration. Ameren (MISO Zone 4) capacity is far weaker and volatile (2026/27 annualized $126.19/MW-day, about $46/kW-yr). DS-3 delivery ($9.69/kW secondary in 2026) moves to on-peak kVA billing in January 2027. CRGA (signed 2026-01-08) keeps a $250-300/kWh DG storage rebate (standalone eligible, max 5 kWh/kW, 25 MWh cap). Since June 2026 the rebate requires 5 summers in the utility Rider SDVPP (weekday 4-6 pm, about $10/kW-season, launching 2027), and that program's export-capability requirement may clash with non-export designs. Key risks: PLC/NSPL savings only reach RES customers with pass-through contracts; PLC savings and PJM DR overlap on the same kW; Chicago Loop networks cap expedited interconnection at 50 kW; and indoor Li-ion fire-area limits (about 600 kWh) apply in Chicago and IFC jurisdictions.",
+ "default_energy_price_usd_per_kwh": 0.11,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption, used only to cost round-trip losses). Enter the site’s actual price.",
+ "data_notes": "Researched 2026-10-01 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked in the research environment). Treat medium/low-confidence values as screening estimates.",
+ "utilities": [
+  {
+   "id": "comed",
+   "name": "Commonwealth Edison Company (ComEd)",
+   "state": "IL",
+   "iso": "PJM",
+   "load_zone": "ComEd zone / ComEd LDA (PJM)",
+   "retail_choice": true,
+   "default_supply_notes": "Customers of 100 kW and above (supply competitively declared) default to Rate BESH: hourly energy at PJM ComEd-zone prices, plus a Capacity Charge = Capacity Obligation (PLC) x Capacity Charge Rate ($/kW-month, reset each June), plus transmission and ancillary charges. Customers under 100 kW can take fixed-price BES. Most large C&I buy from a RES. The 100 kW threshold is expert knowledge; the tariff text was not re-verified in this session.",
+   "network_grid_notes": "ComEd serves the Chicago Loop and other dense downtown areas through underground secondary voltage networks (area/spot networks) fed by multiple primary circuits. Under Part 466, non-exporting DER on an area network gets Level 3 review only if nameplate is 50 kW or less, inverter-based, non-export controlled, and aggregate network generation is at most the lower of 5% of network max load or 50 kVA. Larger systems go to Level 4 study. Expect network-protector coordination, minimum-import requirements and long studies for C&I BESS in the Loop.",
+   "interconnection": {
+    "rule_name": "83 Ill. Adm. Code 466 (DER Interconnection Standards, <=10 MVA); Part 467 for >10 MVA. ComEd DER Interconnection Requirements (Rev. 2026-09-10).",
+    "tracks": [
+     {
+      "name": "Level 1",
+      "max_kw": 50,
+      "conditions": "Export capacity <=25 kW and nameplate <=50 kW (if export not limited, nameplate <=25 kW); lab-certified equipment.",
+      "typical_timeline": null,
+      "application_fee": "$50"
+     },
+     {
+      "name": "Level 2",
+      "max_kw": 3000,
+      "conditions": "Lab-certified inverter-based, nameplate limit by line voltage at POI: <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Screens apply. Screening uses 3 MW (5–15 kV circuits); limit is 500 kW where the POI line is below 5 kV.",
+      "typical_timeline": null,
+      "application_fee": "$100 + $1.00/kVA"
+     },
+     {
+      "name": "Level 3",
+      "max_kw": 50,
+      "conditions": "Non-exporting DER. For area networks: nameplate <=50 kW, lab-certified inverter, acceptable non-export controls, aggregate network DER <= lower of 5% of network max load or 50 kVA. Limit for radial non-export Level 3 not verified.",
+      "typical_timeline": null,
+      "application_fee": "$500 + $2.00/kVA"
+     },
+     {
+      "name": "Level 4",
+      "max_kw": 10000,
+      "conditions": "Nameplate <=10 MVA that does not qualify for (or failed) Levels 1-3; full study.",
+      "typical_timeline": null,
+      "application_fee": "$1,000 + $2.00/kVA"
+     }
+    ],
+    "non_export_path": "Part 466 distinguishes export capacity from nameplate (e.g., Level 1 allows 50 kW nameplate with <=25 kW export), and Level 3 is the non-export path. On ComEd 12 kV-class radial feeders most C&I BESS (<=3 MW inverter-based) fit Level 2 screens. ComEd requires customer DER transformers to be Delta on the ComEd (high) side. ComEd is developing flexible interconnection (Docket 24-0181).",
+    "storage_specific_notes": "Important: CRGA-era DG storage rebates require the system to be capable of supplying energy to the grid and to join the SDVPP (dispatch Jun-Sep weekdays 4-6 pm). A strictly non-exporting Level 3 design may conflict with rebate/SDVPP measurement. Verify Rider SDVPP metering before choosing non-export. Timelines and Level 2 screen details were not verified.",
+    "sources": [
+     {
+      "title": "83 Ill. Adm. Code 466 (JCAR full text)",
+      "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=08300466"
+     },
+     {
+      "title": "Ill. Admin. Code tit. 83 s. 466.80 - Determining the Review Level (Cornell LII)",
+      "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-SS-466.80"
+     },
+     {
+      "title": "Ill. Admin. Code tit. 83 pt. 466 App. C - Levels 2 to 4 Application",
+      "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-466-app-C"
+     },
+     {
+      "title": "ComEd DER Interconnection Requirements for Interconnection Customers (Rev. 2026-09-10)",
+      "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2bdb5921266bf5c4/6ab15b81a6ea1d80e833b7ff/DER_Interconnection_Requirements_2026_Rev09102026.pdf?branch=prod_alias"
+     },
+     {
+      "title": "ComEd Flexible Interconnection: Initial Plan & Process (ICC Docket 24-0181)",
+      "url": "https://icc.illinois.gov/docket/P2024-0181/documents/359481/files/629730.pdf"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "ComEd Ill. C. C. No. 10 - Rate RDS (Retail Delivery Service)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt000eeaac79942ad7/658c50c27a2e06000abc41c7/06_Rate_RDS.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd Hourly Pricing - FAQs",
+     "url": "https://hourlypricing.comed.com/faqs/"
+    },
+    {
+     "title": "ComEd DER Interconnection Requirements for Interconnection Customers (Rev. 2026-09-10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2bdb5921266bf5c4/6ab15b81a6ea1d80e833b7ff/DER_Interconnection_Requirements_2026_Rev09102026.pdf?branch=prod_alias"
+    }
+   ]
+  },
+  {
+   "id": "ameren-il",
+   "name": "Ameren Illinois Company",
+   "state": "IL",
+   "iso": "MISO",
+   "load_zone": "MISO Local Resource Zone 4 (Ameren Illinois)",
+   "retail_choice": true,
+   "default_supply_notes": "Larger non-residential customers (DS-3/DS-4, at least 150 kW) default to hourly supply (Rider HSS) priced off MISO; smaller customers can take fixed-price BGS. The 2026 HSS sheet exists, but the 150 kW threshold and HSS capacity-charge mechanics were not re-verified. Most large C&I buy from a RES.",
+   "network_grid_notes": "Not verified. Downtown secondary networks may exist in larger cities (e.g., Peoria, Springfield, Champaign). The same Part 466 Level 3 area-network limits (<=50 kW non-export) apply.",
+   "interconnection": {
+    "rule_name": "83 Ill. Adm. Code 466 (DER <=10 MVA); Part 467 (>10 MVA); Ameren Illinois DER Interconnection Policy",
+    "tracks": [
+     {
+      "name": "Level 1",
+      "max_kw": 50,
+      "conditions": "Export <=25 kW and nameplate <=50 kW (or nameplate <=25 kW if export not limited).",
+      "typical_timeline": null,
+      "application_fee": "$50"
+     },
+     {
+      "name": "Level 2",
+      "max_kw": 3000,
+      "conditions": "Lab-certified inverter-based; <5 kV <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Screening uses 3 MW (5–15 kV circuits); limit is 500 kW where the POI line is below 5 kV.",
+      "typical_timeline": null,
+      "application_fee": "$100 + $1.00/kVA"
+     },
+     {
+      "name": "Level 3",
+      "max_kw": 50,
+      "conditions": "Non-exporting; area network <=50 kW with aggregate cap.",
+      "typical_timeline": null,
+      "application_fee": "$500 + $2.00/kVA"
+     },
+     {
+      "name": "Level 4",
+      "max_kw": 10000,
+      "conditions": "All others <=10 MVA; study.",
+      "typical_timeline": null,
+      "application_fee": "$1,000 + $2.00/kVA"
+     }
+    ],
+    "non_export_path": "Same statewide Part 466 framework. Ameren-specific non-export or PCS acceptance practices were not verified.",
+    "storage_specific_notes": "Same SDVPP/rebate export-capability caveat as ComEd (Ameren Rider SDVPP approved June 2026).",
+    "sources": [
+     {
+      "title": "83 Ill. Adm. Code 466 (JCAR full text)",
+      "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=08300466"
+     },
+     {
+      "title": "Ill. Admin. Code tit. 83 s. 466.80 - Determining the Review Level (Cornell LII)",
+      "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-SS-466.80"
+     },
+     {
+      "title": "Ameren Illinois - DER Interconnection Policy public-facing guide",
+      "url": "https://www.ameren.com/-/media/illinois-site/files/electricchoice/aic-der-interconnection-policy-public-facing-guide.ashx"
+     }
+    ],
+    "confidence": "medium"
+   },
+   "sources": [
+    {
+     "title": "Ameren Illinois - DS-3 General Delivery Service tariff",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel13rtds3.pdf"
+    },
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges), rev. 2025-08-28",
+     "url": "https://www.ameren.com/-/media/rates/illinois/non-residential/electric-rates/distribution-delivery/aiel8rtpbrr08282025.ashx"
+    },
+    {
+     "title": "Ameren Illinois - DER Interconnection Policy public-facing guide",
+     "url": "https://www.ameren.com/-/media/illinois-site/files/electricchoice/aic-der-interconnection-policy-public-facing-guide.ashx"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "comed-rds-small",
+   "utility_id": "comed",
+   "name": "Rate RDS - Small Load Delivery Class (0-100 kW)",
+   "customer_class": "Small C&I",
+   "applicability": {
+    "min_kw": 0,
+    "max_kw": 100,
+    "text": "Nonresidential retail delivery under Rate RDS; delivery class based on maximum demand (0-100 kW). Delivery charges apply regardless of supplier (BESH/BES or RES)."
+   },
+   "effective_date": "2025-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Facilities Charge (DFC), secondary voltage",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 14.58,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. Customers under 100 kW usually take fixed-price BES supply or RES supply.",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Illinois Electricity Distribution Tax charge",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00124,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    },
+    {
+     "label": "Supply energy (BESH hourly default or RES contract)",
+     "component": "supply",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "hourly (BESH tracks PJM ComEd-zone hourly prices)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
+     "est_value_usd_per_kw_year": 122.04,
+     "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    },
+    {
+     "type": "nspl",
+     "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
+     "est_value_usd_per_kw_year": 46.03,
+     "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2024 bill insert)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/65b1645e841a66000aefdb13/07EXE133703_Nonres_bill_insert_508.pdf?branch=test_alias"
+    },
+    {
+     "title": "ComEd Ill. C. C. No. 10 - Rate RDS (Retail Delivery Service)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt000eeaac79942ad7/658c50c27a2e06000abc41c7/06_Rate_RDS.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd 2026 Ratebook (Ill. C. C. No. 10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt86ebee5fe6ed02f8/6ab16afb15d5b73190b00e59/2026_Ratebook.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd Hourly Pricing - FAQs",
+     "url": "https://hourlypricing.comed.com/faqs/"
+    },
+    {
+     "title": "ComEd Hourly Pricing - Capacity Charge Updates",
+     "url": "https://hourlypricing.comed.com/capacity-charge-updates/"
+    },
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM - Network Integration Transmission Service rates by zone (June 2025)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+  },
+  {
+   "id": "comed-rds-medium",
+   "utility_id": "comed",
+   "name": "Rate RDS - Medium Load Delivery Class (>100-400 kW)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 100,
+    "max_kw": 400,
+    "text": "Nonresidential retail delivery under Rate RDS; delivery class based on maximum demand (100-400 kW). Delivery charges apply regardless of supplier (BESH/BES or RES)."
+   },
+   "effective_date": "2025-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Facilities Charge (DFC), secondary voltage",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 13.24,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. Jan-2024 Medium DFC was $12.84/kW.",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Illinois Electricity Distribution Tax charge",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00124,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    },
+    {
+     "label": "Supply energy (BESH hourly default or RES contract)",
+     "component": "supply",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "hourly (BESH tracks PJM ComEd-zone hourly prices)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
+     "est_value_usd_per_kw_year": 122.04,
+     "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    },
+    {
+     "type": "nspl",
+     "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
+     "est_value_usd_per_kw_year": 46.03,
+     "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2024 bill insert)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/65b1645e841a66000aefdb13/07EXE133703_Nonres_bill_insert_508.pdf?branch=test_alias"
+    },
+    {
+     "title": "ComEd Ill. C. C. No. 10 - Rate RDS (Retail Delivery Service)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt000eeaac79942ad7/658c50c27a2e06000abc41c7/06_Rate_RDS.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd 2026 Ratebook (Ill. C. C. No. 10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt86ebee5fe6ed02f8/6ab16afb15d5b73190b00e59/2026_Ratebook.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd Hourly Pricing - FAQs",
+     "url": "https://hourlypricing.comed.com/faqs/"
+    },
+    {
+     "title": "ComEd Hourly Pricing - Capacity Charge Updates",
+     "url": "https://hourlypricing.comed.com/capacity-charge-updates/"
+    },
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM - Network Integration Transmission Service rates by zone (June 2025)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+  },
+  {
+   "id": "comed-rds-large",
+   "utility_id": "comed",
+   "name": "Rate RDS - Large Load Delivery Class (>400-1,000 kW)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 400,
+    "max_kw": 1000,
+    "text": "Nonresidential retail delivery under Rate RDS; delivery class based on maximum demand (400-1000 kW). Delivery charges apply regardless of supplier (BESH/BES or RES)."
+   },
+   "effective_date": "2025-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Facilities Charge (DFC), secondary voltage",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 13.59,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. ",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Illinois Electricity Distribution Tax charge",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00124,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    },
+    {
+     "label": "Supply energy (BESH hourly default or RES contract)",
+     "component": "supply",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "hourly (BESH tracks PJM ComEd-zone hourly prices)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
+     "est_value_usd_per_kw_year": 122.04,
+     "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    },
+    {
+     "type": "nspl",
+     "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
+     "est_value_usd_per_kw_year": 46.03,
+     "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2024 bill insert)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/65b1645e841a66000aefdb13/07EXE133703_Nonres_bill_insert_508.pdf?branch=test_alias"
+    },
+    {
+     "title": "ComEd Ill. C. C. No. 10 - Rate RDS (Retail Delivery Service)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt000eeaac79942ad7/658c50c27a2e06000abc41c7/06_Rate_RDS.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd 2026 Ratebook (Ill. C. C. No. 10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt86ebee5fe6ed02f8/6ab16afb15d5b73190b00e59/2026_Ratebook.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd Hourly Pricing - FAQs",
+     "url": "https://hourlypricing.comed.com/faqs/"
+    },
+    {
+     "title": "ComEd Hourly Pricing - Capacity Charge Updates",
+     "url": "https://hourlypricing.comed.com/capacity-charge-updates/"
+    },
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM - Network Integration Transmission Service rates by zone (June 2025)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+  },
+  {
+   "id": "comed-rds-very-large",
+   "utility_id": "comed",
+   "name": "Rate RDS - Very Large Load Delivery Class (>1,000-10,000 kW)",
+   "customer_class": "Very Large C&I",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": 10000,
+    "text": "Nonresidential retail delivery under Rate RDS; delivery class based on maximum demand (1000-10000 kW). Delivery charges apply regardless of supplier (BESH/BES or RES)."
+   },
+   "effective_date": "2025-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Facilities Charge (DFC), secondary voltage",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 14.09,
+     "basis": "tou_window",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "9:00 AM-6:00 PM Mon-Fri, excluding certain holidays (Maximum Kilowatts Delivered = highest 30-minute demand in that window during the billing month)",
+     "notes": "Value shown is for the January 2025 billing period (latest confirmed). The 2026 DFC (effective Jan 2026 under the multi-year rate plan) was not verified and is likely higher. Load outside 9am-6pm weekdays does not set the DFC, so off-peak and weekend charging is free from a delivery-demand standpoint. ",
+     "window": {
+      "start": 9,
+      "end": 18
+     },
+     "days": "weekdays"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Illinois Electricity Distribution Tax charge",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.00124,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours"
+    },
+    {
+     "label": "Supply energy (BESH hourly default or RES contract)",
+     "component": "supply",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "hourly (BESH tracks PJM ComEd-zone hourly prices)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "ComEd Capacity PLC: average of the customer's metered demand in the 5 summer hours of highest PJM RTO load (PJM 5CP) and the 5 summer hours of highest ComEd zone load (ComEd 5CP), i.e. up to 10 hours per summer (Jun-Sep). It is then adjusted by PJM factors and applies from the following June 1 for 12 months.",
+     "est_value_usd_per_kw_year": 122.04,
+     "derivation": "1 kW of capacity PLC reduction ~= BRA price x days in delivery year / 1000 (scaling factors assumed 1.0). 2025/26: $269.92/MW-day x 365 / 1000 = $98.52/kW-yr; 2026/27: $329.17 x 365 / 1000 = $120.15/kW-yr; 2027/28: $333.44 x 366 (Feb-2028 leap) / 1000 = $122.04/kW-yr; 2028/29: $325.00 x 365 / 1000 = $118.63/kW-yr. Timing: summer-2026 coincident-peak performance sets the PLC billed Jun-2027 to May-2028, so a battery operating in summer 2026 earns the 2027/28 value ($122.04/kW-yr); summer 2027 earns 2028/29 ($118.63). Actual billed value = PLC x Final Zonal RPM Scaling Factor x Forecast Pool Requirement x Final Zonal Net Load Price; those factors (and ComEd's loss/weather adjustments to the PLC) were NOT verified in this session, so treat +/-10% as the uncertainty band. Monthly equivalent ~$10.17/kW-month for 2027/28.",
+     "passthrough_notes": "BESH (ComEd hourly default supply) customers pay the Capacity Charge = Capacity Obligation x Capacity Charge Rate ($/kW-month, reset each June), so PLC savings flow through directly. RES (retail supplier) customers realize the savings only if the contract passes capacity through at the customer's actual PLC (index/pass-through). Fixed all-in contracts embed the PLC at signing, so savings appear only at renewal. Small-load customers on fixed-price BES do not see PLC savings because capacity is embedded in the $/kWh rate. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    },
+    {
+     "type": "nspl",
+     "how_set": "Network Service PLC (NSPL) is a separate value that ComEd assigns to each account. ComEd's exact NSPL method (typically the customer's load at the zonal annual peak hour of the prior calendar year) was NOT verified in this session.",
+     "est_value_usd_per_kw_year": 46.03,
+     "derivation": "ComEd zone NITS rate effective 2025-06-01 = $46,025/MW-yr (ATRR $992,308,573), so 1 kW of NSPL reduction ~= $46.03/kW-yr of network transmission. Excludes Schedule 12 RTEP/TEC and other NSPL-allocated charges, which would add to it. The rate for June 2026 onward was not verified. Earlier values: $34,401 (Jun-2018) and $37,749 (Jun-2021), so the rate has risen about 22% since 2021.",
+     "passthrough_notes": "Transmission (NITS) is charged by PJM to the LSE based on NSPL. Savings are realized under BESH/ComEd transmission charges, or under a RES contract only if transmission is a pass-through line item. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "No DFC ratchet was identified, but this is unverified. Note that delivery-class assignment is driven by the customer's peak demand: shaving the peak below a class boundary changes the class, and the 2025 DFC $/kW does not decline monotonically by class (Small $14.58 > Medium $13.24). One battery dispatch window of about 2-4 pm to 6 pm CPT on hot weekdays can stack the DFC (9am-6pm max), PLC (5+5 CP hours) and the CRGA SDVPP (4-6 pm Jun-Sep weekdays). However, the DFC requires all-weekday 9-hour coverage of the monthly max, so long-duration products (3-5 h) are favored.",
+   "sources": [
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2025 billing period)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/679124a91d0aeed2124fed68/ADA_Summary_of_Typical_Nonresidential_Line_Item_Changes.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd - Summary of Typical Nonresidential Line Item Charges (Jan 2024 bill insert)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2a55fd60b0fa4cf2/65b1645e841a66000aefdb13/07EXE133703_Nonres_bill_insert_508.pdf?branch=test_alias"
+    },
+    {
+     "title": "ComEd Ill. C. C. No. 10 - Rate RDS (Retail Delivery Service)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt000eeaac79942ad7/658c50c27a2e06000abc41c7/06_Rate_RDS.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd 2026 Ratebook (Ill. C. C. No. 10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt86ebee5fe6ed02f8/6ab16afb15d5b73190b00e59/2026_Ratebook.pdf?branch=prod_alias"
+    },
+    {
+     "title": "ComEd Hourly Pricing - FAQs",
+     "url": "https://hourlypricing.comed.com/faqs/"
+    },
+    {
+     "title": "ComEd Hourly Pricing - Capacity Charge Updates",
+     "url": "https://hourlypricing.comed.com/capacity-charge-updates/"
+    },
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM - Network Integration Transmission Service rates by zone (June 2025)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "DFC values come from web-search summaries of ComEd's Jan-2025 'Summary of Typical Nonresidential Line Item Charges'. Summaries were inconsistent: one labelled the secondary-voltage DFCs Small $14.58 / Medium $13.24 / Large $13.59 / Very Large $14.09, another listed Small $14.58 / Medium $14.94 / Large $14.59 / Very Large $13.49. The first set is used because it is consistent with the Jan-2024 Medium value of $12.84 (+3%). Confirm against the 2026 Rate RDS informational sheet before relying on it. The MKD window and 30-minute interval were confirmed in summary text. Capacity PLC method confirmed on ComEd Hourly Pricing pages. Scaling factors not verified."
+  },
+  {
+   "id": "ameren-il-ds3",
+   "utility_id": "ameren-il",
+   "name": "DS-3 General Delivery Service",
+   "customer_class": "Medium/Large C&I",
+   "applicability": {
+    "min_kw": 150,
+    "max_kw": 1000,
+    "text": "Customers with demand of at least 150 kW in 2 of the last 12 monthly billing periods but less than 1,000 kW maximum demand."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Delivery Charge (2026, reported as 'All/secondary supply voltage')",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 9.69,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "Through Dec-2026 billing: per kW of billing demand (definition not verified; believed to be the monthly maximum 15-minute demand). From Jan-2027 billing: per kVA; see notes.",
+     "notes": "2026 PBR-R appendix values by supply voltage: $9.690/kW (reported as 'All Supply Voltages', presumably secondary), Primary $7.970, High Voltage $1.767, 100 kV+ $0.272. From the January 2027 billing period the charge moves to $/kVA of billing demand = max(maximum 15-minute apparent demand On-Peak, 50% of maximum apparent demand Off-Peak), with a power-factor penalty below 90% average PF. The On-Peak hours and the 2027 $/kVA rate were not verified."
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Supply energy (Rider HSS hourly default or RES contract)",
+     "component": "supply",
+     "rate_usd_per_kwh": null,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "hourly (MISO Ameren Illinois zone pricing)"
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "MISO capacity obligation assigned by Ameren Illinois to each account. Ameren's PLC derivation method (which peak hours, seasonal or annual) was NOT verified in this session.",
+     "est_value_usd_per_kw_year": 46.06,
+     "derivation": "MISO PRA 2026/27 Zone 4 (Zones 1-7) cleared Summer $424.30, Fall $33.92, Winter $35.97 and Spring $7.61 per MW-day. Day-weighted average = (424.30x92 + 33.92x91 + 35.97x90 + 7.61x92)/365 = $126.19/MW-day, matching MISO/Modo's published annualized value. $126.19 x 365 / 1000 = $46.06/kW-yr if the tag is a single annual PLC. 85% of the value is summer: $424.30 x 92 / 1000 = $39.04/kW per summer season. 2025/26 for comparison: summer $666.50 (record), annualized about $217.6/MW-day (implied by the 42% decrease to $126.19), or about $79/kW-yr.",
+     "passthrough_notes": "Realized under Rider HSS (if Ameren bills capacity on customer PLC) or a RES contract with capacity pass-through. Fixed-price contracts defer the benefit to renewal. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    },
+    {
+     "type": "nspl",
+     "how_set": "Ameren Illinois Rider TS bills interval-metered customers transmission on a $/kW-day basis (2026 Rider TS sheet). The determinant (likely a network service peak load) and rate were not verified.",
+     "est_value_usd_per_kw_year": null,
+     "derivation": "Not computed: Ameren Illinois MISO Schedule 9 zonal rate and Rider TS $/kW-day were not retrieved.",
+     "passthrough_notes": "Depends on supplier contract (RES) or Rider TS (utility supply). Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "The Jan-2027 move to kVA billing with an On-Peak window and a 50% off-peak floor rewards on-peak shaving AND reactive-power support: a 4-quadrant BESS inverter can lift power factor to cut billed kVA. Off-peak charging should be capped below 2x the targeted on-peak billing demand, or the off-peak term sets the bill.",
+   "sources": [
+    {
+     "title": "Ameren Illinois - DS-3 General Delivery Service tariff",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel13rtds3.pdf"
+    },
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges), rev. 2025-08-28",
+     "url": "https://www.ameren.com/-/media/rates/illinois/non-residential/electric-rates/distribution-delivery/aiel8rtpbrr08282025.ashx"
+    },
+    {
+     "title": "Ameren Illinois - BGS/HSS supply charges, Jan 2026",
+     "url": "https://www.ameren.com/-/media/rates/illinois/residential/electric-rates/historical-retail-2016-to-present/2026/aiifhss126.ashx"
+    },
+    {
+     "title": "Ameren Illinois - Rider TS transmission charges 2026 ($/kW-day for interval-metered)",
+     "url": "https://www.ameren.com/-/media/rates/illinois/residential/electric-rates/historical-rider-ts-charges/2026/aiifts126.ashx"
+    },
+    {
+     "title": "MISO news release (2026): Planning Resource Auction shows sufficient capacity for coming year",
+     "url": "https://www.misoenergy.org/meet-miso/media-center/2026---news-releases/misos-planning-resource-auction-shows-sufficient-capacity-for-coming-year"
+    },
+    {
+     "title": "Modo Energy - MISO 2026/27 capacity prices decreased 42% to $126/MW-day",
+     "url": "https://modoenergy.com/research/en/miso-2026-27-capacity-prices-results"
+    },
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "DS-3 applicability and the Jan-2027 kVA billing-demand definition were confirmed from tariff text in search summaries. The 2026 $9.690/kW figure is from a search summary of the PBR-R appendix; the voltage label is ambiguous. Current (2026) billing-demand definition and any ratchet were not verified. MISO PRA prices were cross-checked against two secondary sources and the MISO release."
+  },
+  {
+   "id": "ameren-il-ds4",
+   "utility_id": "ameren-il",
+   "name": "DS-4 Large General Delivery Service",
+   "customer_class": "Very Large C&I",
+   "applicability": {
+    "min_kw": 1000,
+    "max_kw": null,
+    "text": "Customers with maximum demand of 1,000 kW or more (inferred from the DS-3 upper bound)."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Distribution Delivery Charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "not verified",
+     "notes": "Rate is in the Rate PBR-R appendix, but the value was not retrieved. Check whether DS-4 also moves to kVA on-peak billing in Jan-2027 as DS-3 does."
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [
+    {
+     "type": "plc",
+     "how_set": "Same as DS-3 (MISO capacity obligation; method not verified).",
+     "est_value_usd_per_kw_year": 46.06,
+     "derivation": "See ameren-il-ds3: MISO PRA 2026/27 annualized $126.19/MW-day x 365 / 1000.",
+     "passthrough_notes": "Hourly default supply (Rider HSS) or RES pass-through. Default hourly service (ComEd BESH / Ameren hourly) bills capacity and transmission on the PLC/NSPL tags.",
+     "passthrough": "supply",
+     "default_service_passthrough": true
+    }
+   ],
+   "storage_notes": "Large sites often take primary service; primary/high-voltage delivery $/kW is much lower (DS-3 primary $7.97 vs secondary $9.69), so bill-demand value is smaller.",
+   "sources": [
+    {
+     "title": "Ameren Illinois - DS-4 Large General Delivery Service tariff",
+     "url": "https://www.ameren.com/-/media/rates/files/illinois/aiel14rtds4.ashx"
+    },
+    {
+     "title": "Ameren Illinois - Rate PBR-R (appendix of delivery charges), rev. 2025-08-28",
+     "url": "https://www.ameren.com/-/media/rates/illinois/non-residential/electric-rates/distribution-delivery/aiel8rtpbrr08282025.ashx"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "DS-4 rates were not retrieved (search budget exhausted). Only the tariff existence and URL are confirmed."
+  }
+ ],
+ "programs": [
+  {
+   "id": "il-dg-rebate-storage",
+   "name": "Illinois Distributed Generation Rebate - Energy Storage (220 ILCS 5/16-107.6, as amended by CRGA)",
+   "state": "IL",
+   "utility_ids": [
+    "comed",
+    "ameren-il"
+   ],
+   "administrator": "ComEd and Ameren Illinois (ICC-approved tariffs; Rider DG Rebate)",
+   "category": "upfront_incentive",
+   "status": "open",
+   "status_notes": "Open in 2026 with new conditions for storage effective 2026-06-01: mandatory SDVPP enrollment (program effective ~2027-03-01). The $300/kWh base applies until the statutory 'threshold date' (reported as end-2029), after which standalone storage gets $250/kWh. The 25,000 kWh cap is waived for projects with a signed interconnection agreement by 2026-06-01.",
+   "eligibility": {
+    "customer_classes": [
+     "Residential",
+     "Small C&I",
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": 25000,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": true,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Smart inverter (IEEE 1547-2018). Rebated kWh limited to 5 kWh of nameplate energy per 1 kW of participating power (or an ICC-set ratio). The 30 kW/150 kWh product is exactly 5.0 h, at the limit. Statute: paired or standalone storage is separately compensated; CRGA (Oct 2025 passage) made standalone storage eligible. Older ComEd T&C required paired DG, so confirm 2026 T&C. Storage must be export-capable and operate under the utility/ICC dispatch schedule (SDVPP)."
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": 250,
+    "unit": "$/kWh nameplate",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "nameplate kWh",
+    "duration_basis_hr": null,
+    "cap": "25,000 kWh nameplate per project (=$6.25M at $250/kWh) unless IA signed by 2026-06-01; kWh/kW <= 5",
+    "tiers": [
+     {
+      "label": "Non-residential (ComEd 2026 T&C summary)",
+      "rate": 250,
+      "conditions": "C&I storage; confirm in 2026 T&C"
+     },
+     {
+      "label": "Residential / small commercial until threshold date",
+      "rate": 300,
+      "conditions": "Statute base $300/kWh until threshold date (reported as through 2029)"
+     },
+     {
+      "label": "Standalone after threshold date",
+      "rate": 250,
+      "conditions": "After threshold date"
+     }
+    ],
+    "term_years": 5,
+    "notes": "One-time upfront rebate. The 5-year term refers to the mandatory SDVPP commitment (5 seasons). Sources conflict on whether non-residential storage receives $250 or $300/kWh in 2026. $250 is used as the conservative value. Clawback/penalty terms for SDVPP non-performance were not verified.",
+    "max_kwh_incentivized": 25000
+   },
+   "dispatch": {
+    "season": "Jun-Sep",
+    "window": "4-6 pm weekdays (BTM)",
+    "event_duration_hr": 2,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "scheduled (every weekday)",
+    "baseline_or_mv": "Per Rider SDVPP (energy delivered; metering basis not verified)"
+   },
+   "stacking": {
+    "compatible_with": [
+     "comed-rds DFC management",
+     "PLC/NSPL reduction",
+     "pjm-capacity-dr (verify)"
+    ],
+    "conflicts_with": [],
+    "notes": "The SDVPP window overlaps typical ComEd/PJM peak hours, so it is largely complementary to PLC/DFC shaving. Whether SDVPP kW can also be sold as PJM DR (double-counting rules) was not verified."
+   },
+   "vpp_relevance": "High: every rebated system is enrolled in a utility VPP for 5 seasons. That builds a fleet with known summer dispatch obligations that an aggregator must honor.",
+   "sources": [
+    {
+     "title": "220 ILCS 5/16-107.6 (Distributed generation rebate, as amended by CRGA)",
+     "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/022000050K16-107.6.htm"
+    },
+    {
+     "title": "ComEd Distributed Generation Rebate Terms and Conditions (2026)",
+     "url": "https://azure-na-assets.contentstack.com/v3/assets/blt3ebb3fed6084be2a/blt2810b689df2e361f/6a19a2f492d70cb21c15fe39/DG-Rebate-Terms-and-Conditions--2026.pdf"
+    },
+    {
+     "title": "ComEd - Illinois Distributed Generation Rebate page",
+     "url": "https://www.comed.com/SmartEnergy/MyGreenPowerConnection/Pages/SolarRebates.aspx"
+    },
+    {
+     "title": "CUB - Upcoming CRGA Programs (2026-09-14)",
+     "url": "https://www.citizensutilityboard.org/blog/2026/09/14/upcoming-crga-programs/"
+    },
+    {
+     "title": "theday.company - ComEd Battery Storage Rebate 2026 (secondary)",
+     "url": "https://theday.company/answers/comed-battery-storage-rebate"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Statute text confirmed through search summaries of ILGA 16-107.6 ($300/$250, 25,000 kWh, 6/1/2026 IA carve-out, SDVPP 4-6 pm BTM). The non-residential $/kWh in the 2026 ComEd T&C is ambiguous across summaries. The threshold-date definition was not confirmed from statute. Challenger review: statute wording reads \"capability to supply energy\" plus SDVPP participation; whether a non-export interconnection qualifies is unverified. Modeled as requiring export (conservative)."
+  },
+  {
+   "id": "il-sdvpp",
+   "name": "Rider SDVPP - Scheduled Dispatch Virtual Power Plant (ComEd & Ameren Illinois)",
+   "state": "IL",
+   "utility_ids": [
+    "comed",
+    "ameren-il"
+   ],
+   "administrator": "ComEd / Ameren Illinois (ICC-approved June 2026 under CRGA)",
+   "category": "performance_incentive",
+   "status": "pending_launch",
+   "status_notes": "ICC approved the ComEd and Ameren Rider SDVPP tariffs in June 2026. ComEd service available no later than 2027-03-01; first dispatch season Jun-Sep 2027. Mandatory for storage receiving the DG rebate (applications from 2026-06-01).",
+   "eligibility": {
+    "customer_classes": [
+     "Residential",
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": 2,
+    "requires_aggregator_or_csp": false,
+    "requires_export": true,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Storage that received an IL DG rebate (and Illinois Storage for All / community solar+storage). The 2 h minimum is inferred from the 4-6 pm BTM window."
+   },
+   "valuation": {
+    "method": "per_kw_season",
+    "rate": 10,
+    "unit": "$/kW-season",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "average kW dispatched during scheduled window (reported 'energy sent to the grid')",
+    "duration_basis_hr": 2,
+    "cap": null,
+    "tiers": [],
+    "term_years": 5,
+    "notes": "ComEd reported $10/kW-season; statute/ICC floor reported as $10 per kW of average dispatch. Ameren's rate was not verified. About 85 weekday dispatches per season x 2 h. Small cash value; the real cost is the operating constraint."
+   },
+   "dispatch": {
+    "season": "Jun 1-Sep 30",
+    "window": "4-6 pm weekdays (BTM); 4-7 pm (distribution-connected)",
+    "event_duration_hr": 2,
+    "max_events_per_year": null,
+    "typical_events_per_year": 85,
+    "notice": "scheduled daily, no event notice",
+    "baseline_or_mv": "Not verified; summaries say compensation is for energy sent to the grid. If export-based, non-export BTM designs earn nothing and may breach rebate terms."
+   },
+   "stacking": {
+    "compatible_with": [
+     "il-dg-rebate-storage",
+     "ComEd PLC (5CP) reduction",
+     "ComEd DFC"
+    ],
+    "conflicts_with": [],
+    "notes": "Daily 4-6 pm discharge aligns with PJM/ComEd CP hours, but a 2 h product must recharge before the next day and cannot also cover a 9am-6pm DFC peak."
+   },
+   "vpp_relevance": "Utility-run VPP. Aggregators should model it as a fixed summer obligation and size headroom for PJM DR events.",
+   "sources": [
+    {
+     "title": "ComEd e-tariff filing 2026-06-01: Rider SDVPP and Rider DG Rebate Adjustment revisions (ICC)",
+     "url": "https://icc.illinois.gov/downloads/public/filing/4/399541.pdf"
+    },
+    {
+     "title": "ComEd press release 2026-06-30: approval to launch first VPP program in 2027",
+     "url": "https://www.businesswire.com/news/home/20260630515242/en/ComEd-Receives-Approval-to-Launch-its-First-Virtual-Power-Plant-Program-for-Customers-in-2027"
+    },
+    {
+     "title": "SEPA - VPP and Supporting DER Policy Developments: Q2 2026",
+     "url": "https://sepapower.org/knowledge/vpp-and-supporting-der-policy-developments-q2-2026/"
+    },
+    {
+     "title": "220 ILCS 5/16-107.6 (Distributed generation rebate, as amended by CRGA)",
+     "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/022000050K16-107.6.htm"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Approval, start date, term and window were confirmed in multiple summaries. The $10/kW-season rate comes from a ComEd-attributed summary. Ameren rate and M&V method not verified."
+  },
+  {
+   "id": "il-crga-utility-vpp",
+   "name": "CRGA utility Virtual Power Plant programs (broader, beyond SDVPP)",
+   "state": "IL",
+   "utility_ids": [
+    "comed",
+    "ameren-il"
+   ],
+   "administrator": "ComEd / Ameren Illinois (ICC oversight)",
+   "category": "demand_response",
+   "status": "pending_launch",
+   "status_notes": "CRGA (signed 2026-01-08) requires utilities to develop VPP programs enrolling customer-sited resources (batteries, commercial BMS, EVs, thermostats). Filing and launch dates and C&I compensation were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "Residential",
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": null,
+    "requires_export": null,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Details pending."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Unknown; monitor ICC dockets."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Potentially the main future utility revenue for a C&I battery fleet in IL.",
+   "sources": [
+    {
+     "title": "Gov. Pritzker signs Clean and Reliable Grid Affordability Act (2026-01-08)",
+     "url": "https://gov-pritzker-newsroom.prezly.com/gov-pritzker-signs-historic-clean-and-reliable-grid-affordability-act"
+    },
+    {
+     "title": "Utility Dive - Illinois sets 3-GW energy storage target, requires utilities to develop VPPs",
+     "url": "https://www.utilitydive.com/news/illinois-sets-3-gw-energy-storage-target-requires-utilities-to-develop-vir/809189/"
+    },
+    {
+     "title": "CUB - Upcoming CRGA Programs (2026-09-14)",
+     "url": "https://www.citizensutilityboard.org/blog/2026/09/14/upcoming-crga-programs/"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Only the statutory requirement was confirmed (news and governor release)."
+  },
+  {
+   "id": "il-ipa-storage-procurement",
+   "name": "IPA energy storage procurement (CRGA, 3 GW by 2030)",
+   "state": "IL",
+   "utility_ids": [],
+   "administrator": "Illinois Power Agency",
+   "category": "wholesale_market",
+   "status": "pending_launch",
+   "status_notes": "CRGA targets 3,000 MW of storage by 2030 (mostly grid-scale). Projected cost $9.7B and $13.4B in capacity-price suppression over 20 years. Procurement schedule not verified.",
+   "eligibility": {
+    "customer_classes": [],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": null,
+    "requires_export": true,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Grid-scale; not a BTM C&I revenue stream."
+   },
+   "valuation": {
+    "method": "text_only",
+    "rate": null,
+    "unit": null,
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": null,
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Relevant as a downside risk to long-run PJM/MISO capacity (PLC) values in IL."
+   },
+   "dispatch": {
+    "season": null,
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Indirect: 3 GW of new storage will flatten peaks and suppress capacity prices after about 2028.",
+   "sources": [
+    {
+     "title": "Illinois Power Agency - CRGA page",
+     "url": "https://ipa.illinois.gov/crga.html"
+    },
+    {
+     "title": "Utility Dive - Illinois sets 3-GW energy storage target, requires utilities to develop VPPs",
+     "url": "https://www.utilitydive.com/news/illinois-sets-3-gw-energy-storage-target-requires-utilities-to-develop-vir/809189/"
+    },
+    {
+     "title": "Gov. Pritzker signs Clean and Reliable Grid Affordability Act (2026-01-08)",
+     "url": "https://gov-pritzker-newsroom.prezly.com/gov-pritzker-signs-historic-clean-and-reliable-grid-affordability-act"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Target and cost figures from news/governor release."
+  },
+  {
+   "id": "pjm-capacity-dr-comed",
+   "name": "PJM Load Management (Capacity Performance DR) via CSP - ComEd zone",
+   "state": "IL",
+   "utility_ids": [
+    "comed"
+   ],
+   "administrator": "PJM via Curtailment Service Providers",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "DR cleared in RPM for 2026/27, 2027/28 and 2028/29. All DR offered into the 2027/28 BRA cleared. New sites can enroll via a CSP for delivery years already cleared, subject to the CSP's cleared position.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "100 kW minimum (aggregatable by CSP). DR resources may not inject beyond the retail meter: battery output counts only up to site load. From 2027/28, DR availability is year-round 24 hours, with winter peak-load accounting."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": 122.04,
+    "unit": "$/kW-year (gross, 2027/28, before ELCC/CSP share)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "Nominated DR value (based on PLC minus firm service level), times DR ELCC class rating (92% for 2027/28)",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "2026/27",
+      "rate": 120.15,
+      "conditions": "$329.17/MW-day x 365 / 1000"
+     },
+     {
+      "label": "2027/28",
+      "rate": 122.04,
+      "conditions": "$333.44 x 366 / 1000; DR ELCC 92% -> ~$112.28/kW-yr accredited"
+     },
+     {
+      "label": "2028/29",
+      "rate": 118.63,
+      "conditions": "$325 x 365 / 1000"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Gross before CSP revenue share (not verified) and penalties. In ComEd, DR capacity is measured relative to the customer's PLC. A battery that already cuts the PLC through 5CP shaving shrinks the DR nomination, so the two values largely do not stack. Choose PLC reduction OR DR for the same kW.",
+    "accreditation_factor": 0.92
+   },
+   "dispatch": {
+    "season": "Year-round from 2027/28 (summer and winter)",
+    "window": "Any hour (24-hour availability from 2027/28)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Not verified for this session (historically ~30-120 min)",
+    "baseline_or_mv": "Firm Service Level / Guaranteed Load Drop vs PLC; not re-verified"
+   },
+   "stacking": {
+    "compatible_with": [
+     "ComEd DFC",
+     "il-dg-rebate-storage"
+    ],
+    "conflicts_with": [
+     "cp:plc"
+    ],
+    "notes": "Coordinate with SDVPP obligations: a DR event on a hot afternoon coincides with the SDVPP window. Conflicts as researched: ComEd PLC reduction (same kW)"
+   },
+   "vpp_relevance": "Core aggregator revenue in PJM. CSP registration lets the developer's fleet participate directly.",
+   "sources": [
+    {
+     "title": "PJM 2026/2027 Base Residual Auction Report (2025-07-22)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2026-2027/2026-2027-bra-report.pdf"
+    },
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "PJM 2028/2029 Base Residual Auction Results Report (2026-07-14)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2028-2029/2028-2029-bra-results-report.pdf"
+    },
+    {
+     "title": "Enel North America - PJM 2027/2028 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/pjm-2027-2028-capacity-auction-results"
+    },
+    {
+     "title": "Modo Energy - PJM capacity auction 2027/2028 clears at cap; ELCC",
+     "url": "https://modoenergy.com/research/en/pjm-capacity-auction-2027-2028-reliability-price-cap-elcc"
+    },
+    {
+     "title": "PJM - Preliminary ELCC Class Ratings 2027/2028-2035/2036",
+     "url": "https://www.pjm.com/-/media/DotCom/planning/res-adeq/elcc/discussion-of-preliminary-elcc-class-ratings-for-period-2027-2035.pdf"
+    },
+    {
+     "title": "PJM Manual 18: Capacity Market",
+     "url": "https://www.pjm.com/-/media/DotCom/documents/manuals/m18.ashx"
+    },
+    {
+     "title": "PJM Energy Storage fact sheet",
+     "url": "https://www.pjm.com/-/media/DotCom/about-pjm/newsroom/fact-sheets/energy-storage-fact-sheet.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "medium",
+   "verification_notes": "Prices high confidence. DR ELCC 92% (2027/28) and the 24-hour availability change come from secondary sources (Enel/Modo). The 100 kW minimum and no-injection rule come from PJM/secondary summaries. CSP share not verified. Valued net: × 0.92 DR ELCC accreditation (2027/28, secondary source) and × the aggregator customer-share assumption (Settings); 4 h duration basis."
+  },
+  {
+   "id": "pjm-economic-ancillary-dr",
+   "name": "PJM Economic DR, Synchronized Reserve and Regulation (BTM via CSP)",
+   "state": "IL",
+   "utility_ids": [
+    "comed"
+   ],
+   "administrator": "PJM via CSP",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "Available to registered DR in the ComEd zone. Revenue rates not verified in this session.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 100,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "100 kW minimum; regulation requires telemetry and fast response; DR cannot inject past the meter, so regulation range is limited by minimum site load."
+   },
+   "valuation": {
+    "method": "per_mwh",
+    "rate": null,
+    "unit": "$/MWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "load reduction below CBL",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": null,
+    "notes": "Not quantified. Economic DR is paid LMP above the net-benefits threshold; regulation and reserve prices vary."
+   },
+   "dispatch": {
+    "season": "year-round",
+    "window": "market-based",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "real-time",
+    "baseline_or_mv": "Customer baseline load"
+   },
+   "stacking": {
+    "compatible_with": [
+     "pjm-capacity-dr-comed"
+    ],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Optional upside for a telemetered fleet.",
+   "sources": [
+    {
+     "title": "PJM Energy Storage fact sheet",
+     "url": "https://www.pjm.com/-/media/DotCom/about-pjm/newsroom/fact-sheets/energy-storage-fact-sheet.pdf"
+    },
+    {
+     "title": "PJM Manual 18: Capacity Market",
+     "url": "https://www.pjm.com/-/media/DotCom/documents/manuals/m18.ashx"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "Rates and current rules not verified."
+  },
+  {
+   "id": "miso-lmr-ameren",
+   "name": "MISO Load Modifying Resource (LMR) - Zone 4 (Ameren Illinois)",
+   "state": "IL",
+   "utility_ids": [
+    "ameren-il"
+   ],
+   "administrator": "MISO via Market Participant / aggregator",
+   "category": "wholesale_market",
+   "status": "open",
+   "status_notes": "LMRs clear in the seasonal PRA. Accreditation reforms for DR/LMR in coming planning years were not verified.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": true,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Minimum size, notice and availability rules not verified."
+   },
+   "valuation": {
+    "method": "per_kw_year",
+    "rate": 46.06,
+    "unit": "$/kW-year (gross, 2026/27 annualized PRA)",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "accredited LMR MW",
+    "duration_basis_hr": 4,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "2026/27 summer only",
+      "rate": 39.04,
+      "conditions": "$424.30/MW-day x 92 days / 1000"
+     },
+     {
+      "label": "2025/26 summer only (historical)",
+      "rate": 61.32,
+      "conditions": "$666.50 x 92 / 1000"
+     }
+    ],
+    "term_years": 1,
+    "notes": "Gross before aggregator share and accreditation. Overlaps with PLC reduction the same way as PJM DR."
+   },
+   "dispatch": {
+    "season": "seasonal",
+    "window": null,
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": null
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [
+     "cp:plc"
+    ],
+    "notes": "Conflicts as researched: Ameren PLC reduction (same kW)"
+   },
+   "vpp_relevance": "Primary wholesale capacity path for an Ameren-side fleet.",
+   "sources": [
+    {
+     "title": "MISO news release (2026): Planning Resource Auction shows sufficient capacity for coming year",
+     "url": "https://www.misoenergy.org/meet-miso/media-center/2026---news-releases/misos-planning-resource-auction-shows-sufficient-capacity-for-coming-year"
+    },
+    {
+     "title": "Modo Energy - MISO 2026/27 capacity prices decreased 42% to $126/MW-day",
+     "url": "https://modoenergy.com/research/en/miso-2026-27-capacity-prices-results"
+    },
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    },
+    {
+     "title": "MISO April 2025 PRA Results for Planning Year 2025-26 (corrected posting)",
+     "url": "https://cdn.misoenergy.org/2025%20PRA%20Results%20Posting%2020250529_Corrections694160.pdf"
+    }
+   ],
+   "last_verified": "2026-10-01",
+   "confidence": "low",
+   "verification_notes": "PRA prices verified. LMR program rules not verified in this session. 4 h duration basis (LMRs must sustain 4 consecutive hours); aggregator share applied."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "pjm-bra-2025-26-comed",
+   "label": "PJM BRA 2025/26 clearing price - RTO incl. ComEd",
+   "value": 269.92,
+   "unit": "$/MW-day UCAP",
+   "period": "2025-06 to 2026-05",
+   "sources": [
+    {
+     "title": "PJM Annual Report 2025 - Markets",
+     "url": "https://services.pjm.com/annualreport2025/markets/"
+    },
+    {
+     "title": "PJM 2026/2027 Base Residual Auction Report (2025-07-22)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2026-2027/2026-2027-bra-report.pdf"
+    }
+   ],
+   "confidence": "high",
+   "notes": "Rest-of-RTO price (BGE and Dominion were separate). = $98.52/kW-yr."
+  },
+  {
+   "id": "pjm-bra-2026-27-comed",
+   "label": "PJM BRA 2026/27 clearing price - all LDAs (at cap)",
+   "value": 329.17,
+   "unit": "$/MW-day UCAP",
+   "period": "2026-06 to 2027-05",
+   "sources": [
+    {
+     "title": "PJM 2026/2027 Base Residual Auction Report (2025-07-22)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2026-2027/2026-2027-bra-report.pdf"
+    }
+   ],
+   "confidence": "high",
+   "notes": "Cleared at FERC-approved cap. = $120.15/kW-yr."
+  },
+  {
+   "id": "pjm-bra-2027-28-comed",
+   "label": "PJM BRA 2027/28 clearing price - all LDAs (at cap)",
+   "value": 333.44,
+   "unit": "$/MW-day UCAP",
+   "period": "2027-06 to 2028-05",
+   "sources": [
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    }
+   ],
+   "confidence": "high",
+   "notes": "No zonal separation; 134,479 MW cleared; short of reliability requirement. = $122.04/kW-yr (366 days). Set by summer-2026 PLC."
+  },
+  {
+   "id": "pjm-bra-2028-29-comed",
+   "label": "PJM BRA 2028/29 clearing price - RTO (at cap)",
+   "value": 325.0,
+   "unit": "$/MW-day UCAP",
+   "period": "2028-06 to 2029-05",
+   "sources": [
+    {
+     "title": "PJM 2028/2029 Base Residual Auction Results Report (2026-07-14)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2028-2029/2028-2029-bra-results-report.pdf"
+    },
+    {
+     "title": "PJM news release 2026-07-14: Capacity auction procures 138,318 MW",
+     "url": "https://www.pjm.com/-/media/DotCom/about-pjm/newsroom/2026-releases/20260714-pjm-capacity-auction-procures-138318-mw-of-generation-resources.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Cleared at $325 cap; 6,831 MW UCAP short of reliability requirement. PJM simulation without cap: RTO $554.72 and ComEd LDA $776.69/MW-day, so the ComEd LDA is binding underneath the cap. = $118.63/kW-yr."
+  },
+  {
+   "id": "pjm-comed-plc-value-2027-28",
+   "label": "Derived: value of 1 kW ComEd capacity PLC reduction (summer-2026 peaks -> 2027/28 bills)",
+   "value": 122.04,
+   "unit": "$/kW-year",
+   "period": "2027-06 to 2028-05",
+   "sources": [
+    {
+     "title": "PJM 2027/2028 Base Residual Auction Report (2025-12-17)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf"
+    },
+    {
+     "title": "ComEd Hourly Pricing - Capacity Charge Updates",
+     "url": "https://hourlypricing.comed.com/capacity-charge-updates/"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "333.44 x 366 / 1000; scaling factors (zonal scaling x FPR) assumed 1.0, not verified."
+  },
+  {
+   "id": "pjm-comed-nits-2025",
+   "label": "PJM NITS rate - ComEd zone (effective 2025-06-01)",
+   "value": 46025,
+   "unit": "$/MW-year",
+   "period": "2025-06 onward",
+   "sources": [
+    {
+     "title": "PJM - Network Integration Transmission Service rates by zone (June 2025)",
+     "url": "https://www.pjm.com/-/media/DotCom/markets-ops/settlements/network-integration-trans-service-june-2025.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "ATRR $992,308,573. = $46.03/kW-yr of NSPL. June-2026 update not verified. Historical: $37,749 (2021), $34,401 (2018)."
+  },
+  {
+   "id": "miso-pra-2025-26-z4-summer",
+   "label": "MISO PRA 2025/26 Zone 4 summer clearing price",
+   "value": 666.5,
+   "unit": "$/MW-day",
+   "period": "2025-06 to 2025-08",
+   "sources": [
+    {
+     "title": "MISO April 2025 PRA Results for Planning Year 2025-26 (corrected posting)",
+     "url": "https://cdn.misoenergy.org/2025%20PRA%20Results%20Posting%2020250529_Corrections694160.pdf"
+    },
+    {
+     "title": "Modo Energy - MISO 2026/27 capacity prices decreased 42% to $126/MW-day",
+     "url": "https://modoenergy.com/research/en/miso-2026-27-capacity-prices-results"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Record summer price. Fall/winter/spring 2025/26 not verified; annualized about $217.6/MW-day implied by the 42% decline to $126.19."
+  },
+  {
+   "id": "miso-pra-2026-27-z4-summer",
+   "label": "MISO PRA 2026/27 Zones 1-7 (incl. Zone 4) summer",
+   "value": 424.3,
+   "unit": "$/MW-day",
+   "period": "2026-06 to 2026-08",
+   "sources": [
+    {
+     "title": "MISO news release (2026): Planning Resource Auction shows sufficient capacity for coming year",
+     "url": "https://www.misoenergy.org/meet-miso/media-center/2026---news-releases/misos-planning-resource-auction-shows-sufficient-capacity-for-coming-year"
+    },
+    {
+     "title": "Modo Energy - MISO 2026/27 capacity prices decreased 42% to $126/MW-day",
+     "url": "https://modoenergy.com/research/en/miso-2026-27-capacity-prices-results"
+    },
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    }
+   ],
+   "confidence": "high",
+   "notes": "= $39.04/kW for the summer season (92 days)."
+  },
+  {
+   "id": "miso-pra-2026-27-z4-fall",
+   "label": "MISO PRA 2026/27 fall (all zones)",
+   "value": 33.92,
+   "unit": "$/MW-day",
+   "period": "2026-09 to 2026-11",
+   "sources": [
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    }
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "id": "miso-pra-2026-27-z4-winter",
+   "label": "MISO PRA 2026/27 winter (all zones)",
+   "value": 35.97,
+   "unit": "$/MW-day",
+   "period": "2026-12 to 2027-02",
+   "sources": [
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    }
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "id": "miso-pra-2026-27-z4-spring",
+   "label": "MISO PRA 2026/27 spring (all zones)",
+   "value": 7.61,
+   "unit": "$/MW-day",
+   "period": "2027-03 to 2027-05",
+   "sources": [
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    }
+   ],
+   "confidence": "medium",
+   "notes": ""
+  },
+  {
+   "id": "miso-pra-2026-27-z4-annual",
+   "label": "MISO PRA 2026/27 North/Central annualized (day-weighted)",
+   "value": 126.19,
+   "unit": "$/MW-day",
+   "period": "2026-06 to 2027-05",
+   "sources": [
+    {
+     "title": "Modo Energy - MISO 2026/27 capacity prices decreased 42% to $126/MW-day",
+     "url": "https://modoenergy.com/research/en/miso-2026-27-capacity-prices-results"
+    },
+    {
+     "title": "Enel North America - MISO 2026/2027 Capacity Auction Results",
+     "url": "https://www.enelnorthamerica.com/insights/blogs/miso-2026-2027-capacity-auction-results"
+    },
+    {
+     "title": "MISO news release (2026): Planning Resource Auction shows sufficient capacity for coming year",
+     "url": "https://www.misoenergy.org/meet-miso/media-center/2026---news-releases/misos-planning-resource-auction-shows-sufficient-capacity-for-coming-year"
+    }
+   ],
+   "confidence": "high",
+   "notes": "Recomputed: (424.30x92+33.92x91+35.97x90+7.61x92)/365 = 126.19. = $46.06/kW-yr."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "il-466-level1",
+   "topic": "interconnection",
+   "title": "Part 466 Level 1 size limit",
+   "rule": "Level 1 expedited review: export capacity <=25 kW and nameplate <=50 kW (if export not limited, nameplate <=25 kW). Fee $50.",
+   "threshold": {
+    "metric": "kW",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Only a single 30 kW unit fits Level 1 (65 kW and larger exceed the 50 kW nameplate cap). Most C&I builds go to Level 2.",
+   "applies_to": "comed, ameren-il",
+   "sources": [
+    {
+     "title": "Ill. Admin. Code tit. 83 s. 466.80 - Determining the Review Level (Cornell LII)",
+     "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-SS-466.80"
+    },
+    {
+     "title": "83 Ill. Adm. Code 466 (JCAR full text)",
+     "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=08300466"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-466-level2",
+   "topic": "interconnection",
+   "title": "Part 466 Level 2 inverter limits by voltage",
+   "rule": "Lab-certified inverter-based DER: <5 kV line at POI <=500 kW; 5-<15 kV <=3 MW; 15-<30 kV <=4 MW; 30-69 kV <=5 MW. Fee $100 + $1/kVA.",
+   "threshold": {
+    "metric": "kW",
+    "value": 3000,
+    "comparison": "max",
+    "scope": "per site (typical 12 kV ComEd/Ameren feeder)"
+   },
+   "impact_on_sizing": "On 4 kV-class circuits (older ComEd/Ameren areas) Level 2 caps at 500 kW (2 x 200 kW + 1 x 65 kW or so). On 12 kV, up to 3 MW stays on the expedited path.",
+   "applies_to": "comed, ameren-il",
+   "sources": [
+    {
+     "title": "Ill. Admin. Code tit. 83 s. 466.80 - Determining the Review Level (Cornell LII)",
+     "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-SS-466.80"
+    },
+    {
+     "title": "83 Ill. Adm. Code 466 (JCAR full text)",
+     "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=08300466"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-466-area-network",
+   "topic": "network_grid",
+   "title": "Area network (Chicago Loop) non-export cap 50 kW for Level 3",
+   "rule": "DER on the load side of an area network qualifies for Level 3 only if nameplate <=50 kW, lab-certified inverter, non-export controls, and aggregate network DER <= lower of 5% of network max load or 50 kVA. Otherwise Level 4 study ($1,000 + $2/kVA).",
+   "threshold": {
+    "metric": "kW",
+    "value": 50,
+    "comparison": "max",
+    "scope": "per site and per network aggregate (50 kVA)"
+   },
+   "impact_on_sizing": "In ComEd's downtown secondary networks, only one 30 kW unit can use expedited review. Anything larger needs Level 4 with network-protector studies and strict non-export/minimum-import, and may be infeasible.",
+   "applies_to": "comed (Chicago Loop/downtown networks); any Ameren networks",
+   "sources": [
+    {
+     "title": "Ill. Admin. Code tit. 83 pt. 466 App. C - Levels 2 to 4 Application",
+     "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-466-app-C"
+    },
+    {
+     "title": "83 Ill. Adm. Code 466 (JCAR full text)",
+     "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=08300466"
+    },
+    {
+     "title": "ComEd DER Interconnection Requirements for Interconnection Customers (Rev. 2026-09-10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2bdb5921266bf5c4/6ab15b81a6ea1d80e833b7ff/DER_Interconnection_Requirements_2026_Rev09102026.pdf?branch=prod_alias"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-466-level4",
+   "topic": "interconnection",
+   "title": "Part 466 ceiling 10 MVA; Part 467 above",
+   "rule": "Level 4 covers DER <=10 MVA not qualifying for Levels 1-3. Larger facilities go under Part 467.",
+   "threshold": {
+    "metric": "kW",
+    "value": 10000,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Not binding for BTM C&I fleets.",
+   "applies_to": "state-wide",
+   "sources": [
+    {
+     "title": "Ill. Admin. Code tit. 83 s. 466.80 - Determining the Review Level (Cornell LII)",
+     "url": "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-83-SS-466.80"
+    },
+    {
+     "title": "ComEd DER Interconnection Requirements for Interconnection Customers (Rev. 2026-09-10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2bdb5921266bf5c4/6ab15b81a6ea1d80e833b7ff/DER_Interconnection_Requirements_2026_Rev09102026.pdf?branch=prod_alias"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "comed-der-delta-transformer",
+   "topic": "electrical",
+   "title": "ComEd requires Delta high-side DER transformers",
+   "rule": "Customer-owned DER facility transformers must be Delta-connected on the ComEd side.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Affects primary-metered sites with dedicated BESS step-up transformers. Specify the transformer early (long lead times).",
+   "applies_to": "comed",
+   "sources": [
+    {
+     "title": "ComEd DER Interconnection Requirements for Interconnection Customers (Rev. 2026-09-10)",
+     "url": "https://www.comed.com/cdn/assets/v3/assets/blt3ebb3fed6084be2a/blt2bdb5921266bf5c4/6ab15b81a6ea1d80e833b7ff/DER_Interconnection_Requirements_2026_Rev09102026.pdf?branch=prod_alias"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-rebate-kwh-per-kw",
+   "topic": "program_rule",
+   "title": "DG rebate storage ratio <=5 kWh per kW and 25,000 kWh cap",
+   "rule": "Rebated storage energy limited to 5 kWh nameplate per 1 kW participating power (or ICC alternative) and 25,000 kWh per project (cap waived if IA signed by 2026-06-01).",
+   "threshold": {
+    "metric": "kWh",
+    "value": 25000,
+    "comparison": "max",
+    "scope": "per project"
+   },
+   "impact_on_sizing": "All four products are at or under 5 h (30/150 is exactly 5.0 h). Above about 125 x 200 kWh units the cap binds, which is irrelevant for BTM.",
+   "applies_to": "comed, ameren-il",
+   "sources": [
+    {
+     "title": "220 ILCS 5/16-107.6 (Distributed generation rebate, as amended by CRGA)",
+     "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/022000050K16-107.6.htm"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-sdvpp-export",
+   "topic": "program_rule",
+   "title": "Rebated storage must be export-capable and follow SDVPP schedule",
+   "rule": "CRGA storage rebate requires capability to supply energy to the grid and 5-season SDVPP participation (weekdays Jun-Sep 4-6 pm BTM).",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "min",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Non-export (Level 3) designs may be ineligible for the rebate. Export capability may push review to Level 2/4 and trigger upgrades.",
+   "applies_to": "comed, ameren-il",
+   "sources": [
+    {
+     "title": "220 ILCS 5/16-107.6 (Distributed generation rebate, as amended by CRGA)",
+     "url": "https://www.ilga.gov/documents/legislation/ilcs/documents/022000050K16-107.6.htm"
+    },
+    {
+     "title": "ComEd e-tariff filing 2026-06-01: Rider SDVPP and Rider DG Rebate Adjustment revisions (ICC)",
+     "url": "https://icc.illinois.gov/downloads/public/filing/4/399541.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "pjm-dr-no-injection",
+   "topic": "program_rule",
+   "title": "PJM DR cannot inject beyond the meter",
+   "rule": "Battery registered as DR counts only load reduction to zero net load; no credit for export.",
+   "threshold": {
+    "metric": "kW",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site (bounded by coincident site load)"
+   },
+   "impact_on_sizing": "For DR/PLC value, size kW to coincident peak-hour load. Oversized inverters gain nothing in PJM DR.",
+   "applies_to": "comed",
+   "sources": [
+    {
+     "title": "PJM Energy Storage fact sheet",
+     "url": "https://www.pjm.com/-/media/DotCom/about-pjm/newsroom/fact-sheets/energy-storage-fact-sheet.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "chicago-ess-20kwh",
+   "topic": "fire_code",
+   "title": "Chicago Fire Code (2018 IFC-based) ESS threshold 20 kWh (Li-ion)",
+   "rule": "Chicago Fire Code Chapter 12 (Energy Systems) applies ESS requirements above 20 kWh of lithium-ion. Express Permit Program covers ESS only up to 20 kWh (10 kWh non-Li-ion), so all C&I BESS need standard plan review. Rooms with stationary batteries require NFPA 13 sprinklers.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 20,
+    "comparison": "max",
+    "scope": "per site (express permit)"
+   },
+   "impact_on_sizing": "Every product (150-600 kWh) triggers full Chicago permitting and fire review. Budget for CFD/DOB review time and indoor sprinkler/explosion-control requirements.",
+   "applies_to": "City of Chicago",
+   "sources": [
+    {
+     "title": "Chicago Fire Code 2018 - Chapter 12 Energy Systems (UpCodes)",
+     "url": "https://up.codes/viewer/chicago/ifc-2018/chapter/12/energy-systems"
+    },
+    {
+     "title": "City of Chicago - Express Permit Program (solar/ESS work type)",
+     "url": "https://www.chicago.gov/city/en/sites/guide-to-building-permits/home/terms-and-conditions/epp/worktype/SOLAR.html"
+    },
+    {
+     "title": "bess-sdk - Illinois/Chicago BESS code summary (secondary)",
+     "url": "https://bess-sdk.com/codes/jurisdictions/illinois-chicago/"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "chicago-ess-600kwh-fire-area",
+   "topic": "fire_code",
+   "title": "IFC 2018 maximum Li-ion ESS per fire area (600 kWh) - Chicago/IFC jurisdictions",
+   "rule": "Under IFC 2018 Section 1206 (basis of the Chicago Fire Code 2018 and many IL municipal codes), aggregate Li-ion ESS in a fire area is limited to 600 kWh unless approved based on large-scale fire testing/hazard mitigation analysis.",
+   "threshold": {
+    "metric": "kWh",
+    "value": 600,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Indoors: at most one 200 kW/600 kWh unit, or 2 x 200 kWh + 1 x 150 kWh per fire area. Larger builds go outdoor/dedicated enclosure or need multiple fire areas.",
+   "applies_to": "City of Chicago and IFC-adopting IL municipalities",
+   "sources": [
+    {
+     "title": "Chicago Fire Code 2018 - Chapter 12 Energy Systems (UpCodes)",
+     "url": "https://up.codes/viewer/chicago/ifc-2018/chapter/12/energy-systems"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "il-fire-code-patchwork",
+   "topic": "fire_code",
+   "title": "No statewide ESS fire code; local adoption varies",
+   "rule": "OSFM enforces the NFPA 101 Life Safety Code (2015) statewide via 41 Ill. Adm. Code 100. ESS rules come from locally adopted IFC (2015/2018/2021) or NFPA 1/855 where adopted. Statewide NFPA 1/855 adoption was not confirmed.",
+   "threshold": {
+    "metric": "kWh",
+    "value": null,
+    "comparison": "max",
+    "scope": "per fire area"
+   },
+   "impact_on_sizing": "Each municipality's code edition sets indoor limits and spacing. Check the AHJ before layout.",
+   "applies_to": "state-wide (outside Chicago)",
+   "sources": [
+    {
+     "title": "Illinois OSFM - Life Safety Code adoption",
+     "url": "https://sfm.illinois.gov/resources/life-safety-code.html"
+    },
+    {
+     "title": "41 Ill. Adm. Code 100 - OSFM Fire Prevention and Safety",
+     "url": "https://www.ilga.gov/agencies/JCAR/EntirePart?titlepart=04100100"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (ComEd)",
+   "topic": "DFC window and class migration",
+   "severity": "caution",
+   "note": "The ComEd DFC bills the highest 30-minute demand between 9am and 6pm on weekdays, so a battery must cover the whole 9-hour window, not just the afternoon. Peak shaving across a delivery-class boundary changes the DFC $/kW, and Small Load's 2025 rate ($14.58) is higher than Medium's ($13.24). Model the class reassignment.",
+   "persona_id": "comed"
+  },
+  {
+   "persona": "Utility program manager (ComEd)",
+   "topic": "Rebate now comes with a 5-year VPP obligation",
+   "severity": "critical",
+   "note": "Since June 1, 2026, taking the DG storage rebate commits the system to Rider SDVPP for 5 summers of weekday 4-6 pm dispatch at about $10/kW-season. Check that the dispatch counts export, and that a non-export interconnection doesn't void eligibility, before booking the $250-300/kWh.",
+   "persona_id": "comed"
+  },
+  {
+   "persona": "Utility program manager (Ameren Illinois)",
+   "topic": "Jan-2027 kVA on-peak billing",
+   "severity": "caution",
+   "note": "DS-3 moves to kVA billing in January 2027, billed on the greater of on-peak apparent demand or 50% of off-peak apparent demand. Batteries that charge hard overnight can set the bill, and poor power factor now costs money. Use the inverter's reactive capability and cap off-peak charging.",
+   "persona_id": "ameren"
+  },
+  {
+   "persona": "Utility program manager (Ameren Illinois)",
+   "topic": "MISO capacity is summer-weighted and volatile",
+   "severity": "info",
+   "note": "Zone 4 capacity fell from a $666.50 summer clear (2025/26) to $424.30 (2026/27). About 85% of annual value is the summer season, so Ameren-side capacity savings are worth roughly $39-61/kW per summer, far less than PJM's ~$120/kW-yr on the ComEd side.",
+   "persona_id": "ameren"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "PLC/NSPL pass-through",
+   "severity": "critical",
+   "note": "Most ComEd C&I load is on RES contracts. PLC and NSPL savings, worth about $122/kW-yr and $46/kW-yr, reach the customer only with a capacity/transmission pass-through product or at renewal. Fixed all-in deals lock in last year's tag. Put the contract structure in the site screen.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "PLC vs PJM DR double counting",
+   "severity": "caution",
+   "note": "In ComEd, DR nominations are measured against the PLC. Shaving the 10 PLC hours already captures the capacity value, and the same kW can't also be sold as Capacity Performance DR. Pick the higher-value path per site; DR helps when 5CP prediction is poor or the site is on a fixed-price contract.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "Retail supplier / VPP aggregator (Constellation-style)",
+   "topic": "ComEd LDA risk post-cap",
+   "severity": "info",
+   "note": "PJM's 2028/29 simulation showed the ComEd LDA would have cleared at $776.69/MW-day without the $325 cap. If the cap/collar lapses, ComEd PLC value could more than double, which is upside for long-tenor PLC-based savings.",
+   "persona_id": "constellation"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Chicago Loop networks",
+   "severity": "critical",
+   "note": "On ComEd's area/spot networks, Part 466 expedited (Level 3) review stops at 50 kW non-export with a 50 kVA network aggregate. Any 200 kW unit goes to a Level 4 study with network-protector and minimum-import constraints. Screen Loop sites out or assume long timelines.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Fire-area limits indoors",
+   "severity": "caution",
+   "note": "Chicago's 2018 IFC-based code and most IL municipalities limit indoor Li-ion to about 600 kWh per fire area and need full plan review above 20 kWh. Multi-unit 200 kW/600 kWh stacks usually go outdoor or into dedicated rated rooms with sprinklers.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "Duration vs stacked windows",
+   "severity": "caution",
+   "note": "Covering the ComEd 9am-6pm DFC window, up to 10 PLC hours and the 4-6 pm SDVPP needs long duration. The 2.1 h 200 kW/418 kWh unit typically protects only an afternoon slice, so derate its DFC value or pair it with 3-5 h units.",
+   "persona_id": "bess-ix"
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "topic": "4 kV circuits cap Level 2 at 500 kW",
+   "severity": "info",
+   "note": "Parts of ComEd and Ameren still run 4 kV-class circuits, where Part 466 Level 2 caps inverter DER at 500 kW. Check the feeder voltage (hosting capacity map) before quoting multi-unit systems.",
+   "persona_id": "bess-ix"
+  }
+ ],
+ "open_questions": [
+  "ComEd 2026 Rate RDS DFC $/kW by delivery class (effective Jan 2026). Only Jan-2025 values were found, and search summaries conflicted on secondary vs primary columns. Verify in the 2026 Rate RDS informational sheet (comed.com/rates).",
+  "Whether ComEd applies any DFC ratchet or 12-month lookback for delivery-class assignment. Read Rate RDS 'Delivery Class' and 'Maximum Kilowatts Delivered' definitions.",
+  "PJM Final Zonal RPM Scaling Factor and Forecast Pool Requirement for ComEd 2026/27-2028/29 (PJM planning parameters), plus ComEd's loss/weather adjustments to customer PLCs. These are needed to turn $/MW-day into exact $/kW-PLC values.",
+  "ComEd NSPL methodology (1CP zonal annual peak?) and the June-2026 ComEd NITS rate plus Schedule 12 charges (PJM NITS rate posting June 2026).",
+  "Ameren Illinois DS-3 current (2026) billing-demand definition and ratchet; DS-4 2026 delivery $/kW; DS-3 Jan-2027 $/kVA rate and On-Peak hours (Rate PBR-R appendix, DS-3/DS-4 tariffs).",
+  "Ameren Illinois capacity PLC method (which MISO/Ameren peak hours; seasonal vs annual) under Rider HSS, and the Rider TS $/kW-day transmission rate.",
+  "DG storage rebate amount for non-residential in 2026 ($250 vs $300/kWh), the statutory 'threshold date' definition, and whether ComEd's 2026 T&C still requires paired DG. Read 220 ILCS 5/16-107.6 and ComEd/Ameren 2026 DG Rebate T&C.",
+  "Rider SDVPP measurement (net export vs load reduction), Ameren's $/kW-season rate, and non-performance penalties/rebate clawback. ComEd filing 2026-06-01 (ICC e-tariff) and Ameren's equivalent.",
+  "CRGA broader utility VPP program design for C&I (filing dates, $/kW). Monitor ICC dockets and CUB's 'Upcoming CRGA Programs'.",
+  "PJM CSP revenue shares, DR notice times, and the 2027/28+ DR performance and winter rules (PJM Manual 18/11). Also whether SDVPP-enrolled kW can also be PJM DR.",
+  "MISO LMR rules for Ameren-side BTM batteries (minimum size, notice, accreditation reform timing) and whether IL allows ARCs in MISO.",
+  "Whether Illinois OSFM has adopted NFPA 1/NFPA 855 statewide (Illinois Register vol. 50 2026), and Chicago's local amendments to IFC 2018 Section 1206 (600 kWh fire-area limit, spacing).",
+  "Part 466 typical timelines by level and the Level 3 non-export cap for radial (non-network) circuits."
+ ]
+}
