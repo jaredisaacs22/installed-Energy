@@ -283,6 +283,12 @@ export function tariffRows(a) {
   for (const cp of t.coincident_peak_charges || []) {
     rows.push({ ...base, element: 'coincident_peak', label: cp.type, component: cp.passthrough || '', basis: cp.how_set || '', rate: cp.est_value_usd_per_kw_year, unit: '$/kW-yr', months: '', window_start_hr: '', window_end_hr: '', days: '', notes: cp.derivation || '' });
   }
+  if (t.billing_demand_rule || typeof t.min_billing_demand_kw === 'number') {
+    rows.push({ ...base, element: 'billing_demand_rule', label: 'billing demand', component: '', basis: '', rate: t.min_billing_demand_kw ?? '', unit: typeof t.min_billing_demand_kw === 'number' ? 'kW minimum' : '', months: '', window_start_hr: '', window_end_hr: '', days: '', notes: t.billing_demand_rule || '' });
+  }
+  if (typeof t.energy_adder_usd_per_kwh === 'number') {
+    rows.push({ ...base, element: 'energy_adder', label: 'flat per-kWh adder on every hour (e.g. fuel clause)', component: 'supply', basis: '', rate: t.energy_adder_usd_per_kwh, unit: '$/kWh', months: '', window_start_hr: '', window_end_hr: '', days: '', notes: t.energy_adder_note || '' });
+  }
   if (t.ratchet) {
     rows.push({ ...base, element: 'ratchet', label: t.ratchet.applies_to || 'ratchet', component: '', basis: '', rate: t.ratchet.pct, unit: 'fraction', months: '', window_start_hr: '', window_end_hr: '', days: '', notes: `lookback ${t.ratchet.lookback_months ?? '?'} months` });
   }

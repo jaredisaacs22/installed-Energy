@@ -1,7 +1,7 @@
 {
- "data_version": "2026.10.02.3",
- "updated": "2026-10-02",
- "research_note": "Researched 2026-10-01 and re-verified 2026-10-02 by the expert panel from web-search summaries of primary sources (direct document retrieval was blocked). See Data health for the verification log and remaining gaps.",
+ "data_version": "2026.10.05.1",
+ "updated": "2026-10-05",
+ "research_note": "Researched 2026-10-01 and re-verified 2026-10-02 by the expert panel; Hawaii added 2026-10-05. All from web-search summaries of primary sources (direct document retrieval was blocked). See Data health for the verification log and remaining gaps.",
  "jurisdictions": [
   {
    "code": "MA",
@@ -32,6 +32,11 @@
    "code": "CA",
    "name": "California",
    "file": "ca.json"
+  },
+  {
+   "code": "HI",
+   "name": "Hawaii",
+   "file": "hi.json"
   }
  ]
 }

@@ -56,6 +56,12 @@ function monthlyRate(dc, month) {
 }
 
 /** Charges that apply to this site size (e.g. non-IDR transmission only below 700 kW). */
+/** Minimum billing demand (kW) for a demand charge: the charge's own floor, else the tariff's. */
+export function billingFloor(dc, tariff) {
+  const f = typeof dc?.min_billing_demand_kw === 'number' ? dc.min_billing_demand_kw : tariff?.min_billing_demand_kw;
+  return typeof f === 'number' && f > 0 ? f : null;
+}
+
 export function chargeAppliesToSite(item, site) {
   if (typeof item.max_site_peak_kw === 'number' && site.peak_kw > item.max_site_peak_kw) return false;
   if (typeof item.min_site_peak_kw === 'number' && site.peak_kw < item.min_site_peak_kw) return false;
@@ -101,10 +107,11 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
     if (!groups.has(key)) groups.set(key, { active, evs, months: [], md: useInterval ? md : null });
     groups.get(key).months.push(m);
   }
-  const totals = charges.map(() => ({ usd: 0, months: [], kwByMonth: {}, eventLimited: false }));
+  const totals = charges.map(() => ({ usd: 0, months: [], kwByMonth: {}, eventLimited: false, floorLimited: false }));
   for (const { active, evs, months, md } of groups.values()) {
     const comps = active.map(({ dc, i }) => ({ id: String(i), rate: monthlyRate(dc, months[0]), window: dc.window || null }));
     const prof = md ? { kw: md.envelope, dtHours: interval.dtHours } : profile;
+    const compPeaks = componentPeaks(prof, comps);
     const opt = optimizeShave(prof, comps, { ...battery, energyCostPerKwhMonth, steps: md ? 200 : 400 });
     let deltas = opt.deltas;
     if (md) {
@@ -130,7 +137,14 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
           groupEventLimited = true;
         }
       }
-      const realized = override != null ? Math.min(Number(override), config.kw) : theoretical * a.shave_capture;
+      // Minimum billing demand: shaving below the floor does not lower the bill.
+      const floor = billingFloor(dc, tariff);
+      const room = floor != null ? Math.max(0, compPeaks[String(i)] - floor) : Infinity;
+      if (theoretical > room) {
+        theoretical = room;
+        totals[i].floorLimited = true;
+      }
+      const realized = override != null ? Math.min(Number(override), room, config.kw) : theoretical * a.shave_capture;
       realizedDeltas[String(i)] = realized;
       theoreticalDeltas[String(i)] = theoretical;
       optValue += monthlyRate(dc, months[0]) * (deltas[String(i)] || 0);
@@ -149,7 +163,7 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
     // Per-month detail for the savings view: peaks, holds, targets and dollars by charge, the month's
     // worst day under the target caps, and how many days the target holds.
     {
-      const peaks = componentPeaks(prof, comps);
+      const peaks = compPeaks;
       const n = prof.kw.length;
       const holdCaps = capsAt(n, prof.dtHours, comps, peaks, theoreticalDeltas);
       const targetCaps = capsAt(n, prof.dtHours, comps, peaks, realizedDeltas);
@@ -186,8 +200,7 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
     }
     if (md) {
       // Cycling energy from the actual days at the realized caps, scaled to a calendar month.
-      const peaks = componentPeaks(prof, comps);
-      const caps = capsAt(prof.kw.length, prof.dtHours, comps, peaks, realizedDeltas);
+      const caps = capsAt(prof.kw.length, prof.dtHours, comps, compPeaks, realizedDeltas);
       const m = months[0];
       cyclingKwhPerYear += (energyUnderCaps(md.days, caps, prof.dtHours, { ...battery, usableKwh: Infinity }) * daysInMonth(m)) / md.days.length;
       // Typical weekday under the caps, for energy shifting.
@@ -223,8 +236,8 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
           : `${fmt(avgKw)} kW avg reduction (${intervalMonths ? `interval data, held on every day of ${intervalMonths >= 12 ? 'each month' : `${intervalMonths} of 12 months; design day for the rest`}` : 'design-day estimate'} × ${a.shave_capture} capture) × ${dc.rate_usd_per_kw_month} ${unit} × ${totals[i].months.length} months`) +
         (ratchet ? `; off-season months at ${tariff.ratchet.pct} (ratchet)` : ''),
       source_id: tariff.id,
-      notes: [dc.notes, totals[i].eventLimited ? 'Limited by DR/performance event days, when the battery’s energy goes to the event.' : ''].filter(Boolean).join(' '),
-      flags: [ratchet || tariff.ratchet ? 'ratchet' : '', totals[i].eventLimited ? 'event_days_limit_shave' : ''].filter(Boolean),
+      notes: [dc.notes, totals[i].eventLimited ? 'Limited by DR/performance event days, when the battery’s energy goes to the event.' : '', totals[i].floorLimited ? `Limited by the ${billingFloor(dc, tariff)} kW minimum billing demand: shaving below it does not lower the bill.` : ''].filter(Boolean).join(' '),
+      flags: [ratchet || tariff.ratchet ? 'ratchet' : '', totals[i].eventLimited ? 'event_days_limit_shave' : '', totals[i].floorLimited ? 'min_billing_demand' : ''].filter(Boolean),
     };
   });
   return { streams, dailyEnergyKwh, cyclingKwhPerYear, monthOpt, intervalMonths, monthDetail };
@@ -322,7 +335,11 @@ export function arbitrageStreams(site, config, tariff, a, profile, monthOpt = {}
       }
       const rte = rteOf(config, a);
       const eDis = Math.max(0, Math.min(usableKwh(config, a) - outside, config.kw * winHours, site.export_allowed ? Infinity : windowLoadKwh, room * rte - outside));
-      const perDay = Math.max(0, eDis * s.peak_price - (eDis / rte) * s.offpeak_price);
+      // Flat per-kWh adders on every hour (e.g. Hawaii's fuel clause) do not change the spread but raise the cost of round-trip losses.
+      const adder = typeof site.energy_adder_usd_per_kwh === 'number' ? site.energy_adder_usd_per_kwh : tariff?.energy_adder_usd_per_kwh || 0;
+      const pkPrice = s.peak_price + adder;
+      const opPrice = s.offpeak_price + adder;
+      const perDay = Math.max(0, eDis * pkPrice - (eDis / rte) * opPrice);
       const dayFrac = s.days === 'all' ? 1 : 5 / 7;
       const days = months.reduce((n, m) => n + DAYS_IN_MONTH[m - 1] * dayFrac, 0);
       return {
@@ -336,7 +353,7 @@ export function arbitrageStreams(site, config, tariff, a, profile, monthOpt = {}
         kw_used: winHours ? eDis / winHours : 0,
         rate: s.peak_price - s.offpeak_price,
         unit: '$/kWh spread',
-        basis_text: `${fmt(eDis)} kWh/day × ($${s.peak_price} peak − $${s.offpeak_price}/${fmtRte(rte)} RTE off-peak) × ${Math.round(days)} days × ${a.arbitrage_capture} capture${outside > 0.5 ? ` (after ${fmt(outside)} kWh/day used for demand shaving outside the window)` : ''}`,
+        basis_text: `${fmt(eDis)} kWh/day × ($${fmtPrice(pkPrice)} peak − $${fmtPrice(opPrice)}/${fmtRte(rte)} RTE off-peak) × ${Math.round(days)} days × ${a.arbitrage_capture} capture${outside > 0.5 ? ` (after ${fmt(outside)} kWh/day used for demand shaving outside the window)` : ''}`,
         source_id: tariff.id,
         notes: s.notes || '',
         flags: [],
@@ -405,9 +422,10 @@ export function programStream(program, site, config, a, ctx = {}) {
   const elig = programEligibility(program, site, config, isDispatch ? dk : undefined);
   if (!elig.eligible) return null;
   const tier = (v.rate_by_site_peak_kw || []).find((t) => t.max_peak_kw == null || site.peak_kw <= t.max_peak_kw);
-  let rate = site.program_rate_overrides?.[program.id] ?? tier?.rate ?? v.rate;
+  const solarRate = site.has_solar && typeof v.rate_with_solar === 'number' ? v.rate_with_solar : null;
+  let rate = site.program_rate_overrides?.[program.id] ?? tier?.rate ?? solarRate ?? v.rate;
   const flags = [];
-  const notes = [elig.reason, tier?.label ? `Rate tier: ${tier.label}` : ''];
+  const notes = [elig.reason, tier?.label ? `Rate tier: ${tier.label}` : '', !tier && solarRate != null && site.program_rate_overrides?.[program.id] == null ? `Rate with paired solar: $${solarRate} (otherwise $${v.rate})` : ''];
   // Net value factors for wholesale/aggregator programs.
   const perf = isDispatch ? a.dr_performance : 1;
   const accreditation = typeof v.accreditation_factor === 'number' ? v.accreditation_factor : 1;
@@ -695,6 +713,7 @@ function nonEmptySubsets(items) {
 }
 
 const fmtRte = (r) => String(Math.round(r * 1000) / 1000);
+const fmtPrice = (p) => String(Math.round(p * 10000) / 10000);
 
 export function fmt(x) {
   if (x == null || Number.isNaN(x)) return '—';

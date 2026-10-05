@@ -22,7 +22,7 @@ export function addToPortfolio(site, data) {
 export const TEMPLATE_COLUMNS = [
   ['id', 'text', 'Unique site ID'],
   ['name', 'text', 'Site name'],
-  ['jurisdiction', 'text', 'MA | CT | NY-NYC | IL | TX | CA'],
+  ['jurisdiction', 'text', 'MA | CT | NY-NYC | IL | TX | CA | HI'],
   ['utility_id', 'text', 'See Programs & tariffs → Utilities for ids'],
   ['tariff_id', 'text', 'Optional; suggested from peak kW if blank'],
   ['building_type', 'text', 'office | retail | grocery | warehouse | restaurant | manufacturing | school | hotel | cold_storage'],
