@@ -24,6 +24,9 @@ All research lives in JSON under `data/`. Edit it directly on GitHub (pencil ico
 - `window` can be an array for split periods: `[{"start":14,"end":16},{"start":21,"end":23}]`. Hours are 0–24, end exclusive; wrap-around like `{"start":14,"end":9}` is allowed.
 - Peak tags: `coincident_peak_charges: [{ "type": "icap|plc|nspl|4cp|transmission_tag|capacity_tag", "est_value_usd_per_kw_year": 42.96, "derivation": "...", "passthrough": "supply|delivery", "min_site_peak_kw": 700, "optional_election": false }]`.
 - TOU arbitrage: `arbitrage: [{ "label", "months", "peak_window", "peak_price", "offpeak_price", "days" }]` (all-in $/kWh).
+- Tariff-level `min_billing_demand_kw` (or per charge): the billing floor. Shaving below it does not lower the bill, so the engine caps the billable reduction at (month peak − floor). Hawaiian Electric Schedule P bills at least 300 kW, Schedule J at least 25 kW.
+- Tariff-level `energy_adder_usd_per_kwh`: a flat per-kWh amount on every hour (for example Hawaii's fuel clause) that is **not** in `peak_price` / `offpeak_price`. It does not change the spread; it raises the cost of round-trip losses. Document the source in `energy_adder_note`.
+- Tariff-level `billing_demand_rule`: free text for billing-demand rules the engine does not model (such as Hawaiian Electric's "mean of the current peak and the highest of the prior 11 months"). It is exported with the tariff parameters.
 
 ## Programs
 ```json
@@ -32,7 +35,7 @@ All research lives in JSON under `data/`. Edit it directly on GitHub (pencil ico
 ```
 - `method`: `per_kw_season`, `per_kw_month` (+ `months_per_year`), `per_kw_year`, `per_kwh_event` (+ `expected_event_hours_per_year`), `per_mwh`, `upfront_per_kwh`, `upfront_per_kw`, `pct_of_cost` (rate as a **fraction**, e.g. 0.30), `text_only` (shown, not valued).
 - `duration_basis_hr`: event length the battery must sustain. Credited kW = min(kW, usable kWh ÷ hours, site load if non-export).
-- Optional: `rate_by_site_peak_kw` (tiers by site peak), `schedule` (e.g. step-down in years 6–10), `cap_pct_of_cost`, `cap_usd`, `max_kwh_incentivized`, `max_kw_incentivized`.
+- Optional: `rate_with_solar` (rate used instead of `rate` when the site has paired solar, for example Hawaii Energy's $250/kWh vs $150/kWh), `rate_by_site_peak_kw` (tiers by site peak), `schedule` (e.g. step-down in years 6–10), `cap_pct_of_cost`, `cap_usd`, `max_kwh_incentivized`, `max_kw_incentivized`.
 - `eligibility`: `min_kw`, `max_kw`, `min_kwh`, `max_kwh`, `requires_export`, `requires_paired_solar`, `requires_aggregator_or_csp`, `aggregation_allowed`, `requires_disadvantaged_community`.
 - `status`: `open` and `pilot` count in the base case; `waitlist` and `pending_launch` count only in upside; `closed` and `paused` are excluded.
 - `stacking.conflicts_with`: program ids that can't share the same kW (the higher value is kept), or `cp:<type>` (e.g. `cp:plc`) when the program and a peak-tag reduction pay for the same kW.

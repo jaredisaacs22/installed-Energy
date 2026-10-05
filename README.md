@@ -1,12 +1,12 @@
 # BESS Incentive Atlas
 
-A static website (GitHub Pages) for screening **behind-the-meter commercial, industrial and retail battery storage** sites in **Massachusetts, Connecticut, New York City (Con Edison), Illinois, Texas (ERCOT) and California**.
+A static website (GitHub Pages) for screening **behind-the-meter commercial, industrial and retail battery storage** sites in **Massachusetts, Connecticut, New York City (Con Edison), Illinois, Texas (ERCOT), California and Hawaii**.
 
 For any site it:
 
 - **Values every battery configuration** built from your products: 30 kW/150 kWh, 65 kW/200 kWh, 200 kW/418 kWh, 200 kW/600 kWh, and multiples of each. Value streams covered:
   - demand charges
-  - capacity and transmission peak tags (ICAP, PLC, NSPL, ERCOT 4CP)
+  - capacity and transmission peak tags (ICAP, PLC, NSPL, ERCOT 4CP; Hawaii has none)
   - TOU energy shifting
   - demand-response and performance programs
   - upfront incentives and the federal ITC

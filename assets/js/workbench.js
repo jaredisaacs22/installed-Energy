@@ -142,7 +142,7 @@ export const daysInMonth = (m) => DAYS_IN_MONTH[m - 1];
 
 /** Two-letter state from a free-text address ("Islip, NY 11751" → "NY"). */
 export function stateFromAddress(addr) {
-  const m = String(addr || '').toUpperCase().match(/\b(MA|CT|NY|IL|TX|CA|NJ|PA|RI|NH|VT|ME|OH|MI|IN|WI|FL|GA|AZ|NV|CO|WA|OR)\b(?:\s+\d{5})?\s*$/);
+  const m = String(addr || '').toUpperCase().match(/\b(MA|CT|NY|IL|TX|CA|HI|NJ|PA|RI|NH|VT|ME|OH|MI|IN|WI|FL|GA|AZ|NV|CO|WA|OR)\b(?:\s+\d{5})?\s*$/);
   return m ? m[1] : null;
 }
 
@@ -154,9 +154,10 @@ export function marketFor(meta) {
   const st = stateFromAddress(meta?.addr);
   if (/PSEG|LIPA|LONG ISLAND/.test(iso)) return { code: null, reason: 'PSEG Long Island is not in the Atlas markets (NYC is Con Edison only).' };
   if (st === 'NY') return NYC_PLACES.test(String(meta?.addr || '').toUpperCase()) || /CON ?ED/.test(iso) ? { code: 'NY-NYC' } : { code: 'NY-NYC', reason: 'Address is in New York State; Atlas covers Con Edison (NYC) only. Confirm the utility.' };
-  if (['MA', 'CT', 'IL', 'TX', 'CA'].includes(st)) return { code: st };
+  if (['MA', 'CT', 'IL', 'TX', 'CA', 'HI'].includes(st)) return { code: st };
   if (/ERCOT/.test(iso)) return { code: 'TX' };
   if (/CAISO|SCE|SDG|PG&E/.test(iso)) return { code: 'CA' };
+  if (/HECO|HAWAII|MECO|HELCO|KIUC|KAUAI|MAUI|OAHU/.test(iso)) return { code: 'HI', reason: 'Assumed Hawaii from the utility name; confirm.' };
   if (/ISO-?NE/.test(iso)) return { code: null, reason: 'ISO-NE site: pick Massachusetts or Connecticut.' };
   if (/PJM|COMED|MISO|AMEREN/.test(iso)) return { code: 'IL', reason: 'Assumed Illinois from the ISO; confirm.' };
   if (/NYISO/.test(iso)) return { code: 'NY-NYC', reason: 'Assumed Con Edison (NYC) from NYISO; confirm.' };
@@ -167,7 +168,7 @@ export function marketFor(meta) {
 export function matchUtility(name, utilities) {
   if (!name) return null;
   const n = String(name).toUpperCase().replace(/[^A-Z0-9& ]/g, ' ');
-  const alias = { SCE: 'SOUTHERN CALIFORNIA EDISON', 'SDG&E': 'SAN DIEGO', SDGE: 'SAN DIEGO', 'PG&E': 'PACIFIC GAS', PGE: 'PACIFIC GAS', CONED: 'CON EDISON', 'CON ED': 'CON EDISON', NGRID: 'NATIONAL GRID', CNP: 'CENTERPOINT', UI: 'UNITED ILLUMINATING' };
+  const alias = { SCE: 'SOUTHERN CALIFORNIA EDISON', 'SDG&E': 'SAN DIEGO', SDGE: 'SAN DIEGO', 'PG&E': 'PACIFIC GAS', PGE: 'PACIFIC GAS', CONED: 'CON EDISON', 'CON ED': 'CON EDISON', NGRID: 'NATIONAL GRID', CNP: 'CENTERPOINT', UI: 'UNITED ILLUMINATING', HECO: 'HAWAIIAN ELECTRIC', MECO: 'MAUI ELECTRIC', HELCO: 'HAWAII ELECTRIC LIGHT' };
   const target = Object.entries(alias).find(([k]) => n.split(/\s+/).includes(k) || n.includes(k))?.[1] || n;
   return utilities.find((u) => u.name.toUpperCase().includes(target.trim())) || utilities.find((u) => target.includes(u.name.toUpperCase().split(' (')[0])) || null;
 }

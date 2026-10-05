@@ -1,0 +1,1455 @@
+{
+ "code": "HI",
+ "name": "Hawaii",
+ "researched_on": "2026-10-05",
+ "summary": "Hawaii has the highest electricity prices in the country and no ISO market, retail choice or capacity tags, so battery value comes from demand charges, utility programs and, for the few customers still on a time-of-use rate, arbitrage. On Oahu, Schedule J ($15.77/kW, under 300 kW) and Schedule P ($32.14/kW, 300 kW and up) bill demand as the higher of the month's peak or the mean of the current and highest prior-11-month peaks, with 25 kW and 300 kW minimums. Utility programs are the VPP route: Fast DR pays $5/kW-month for 50 kW or more on Oahu and Maui, and BYOD Plus pays $400/kW upfront for solar-charged batteries committed for five years. Hawaii Energy adds a $150 to $250 per kWh commercial storage rebate on Oahu and Maui. Commercial time-of-use rates are closed to new customers, the fuel charge swings between about 18 and 29 cents/kWh, and Schedule P customers do not get the non-export fast path. Values for Maui, Hawaii Island and KIUC are base-tariff or single-source figures and need bill confirmation.",
+ "default_energy_price_usd_per_kwh": 0.36,
+ "default_energy_price_note": "Approximate all-in commercial $/kWh (analyst assumption from the January to July 2026 Oahu fuel-charge range of 18 to 29 cents plus delivery; used only to cost round-trip losses). Enter the site's actual price.",
+ "data_notes": "Researched 2026-10-05 from web-search summaries of Hawaiian Electric tariff sheets, effective-rate summaries, ECRC filings and program pages (direct document retrieval was blocked). Treat low-confidence values as screening estimates and enter bill rates in the Rate panel.",
+ "utilities": [
+  {
+   "id": "hawaiian-electric",
+   "name": "Hawaiian Electric (Oahu)",
+   "state": "HI",
+   "iso": "Island grid (no ISO/RTO)",
+   "load_zone": "Oahu",
+   "retail_choice": false,
+   "default_supply_notes": "Vertically integrated: no retail choice and no capacity or transmission tags. Fuel and purchased-power costs are recovered through the monthly Energy Cost Recovery Clause (ECRC), a flat per-kWh charge on every hour for Schedules G, J, DS, P and F. Oahu ECRC was 18.449 cents/kWh in January 2026 and 27.285 cents/kWh in July 2026, so volumetric prices swing widely.",
+   "network_grid_notes": "Downtown Honolulu and Chinatown are served by an underground network from Iwilei Substation (12 circuits). Network service restricts distributed generation, and microgrid interconnection to a spot or grid network is not allowed under the microgrid tariff. Expect non-export and extra review for batteries on the downtown network; the network boundary was not verified.",
+   "interconnection": {
+    "rule_name": "Hawaiian Electric Rule 14H (distributed generating facilities), Smart Renewable Energy Non-Export, and Rule 33 (BYOD)",
+    "tracks": [
+     {
+      "name": "Smart Renewable Energy Non-Export (expedited, Rule 14H Appendix III)",
+      "max_kw": 100,
+      "conditions": "No export across the point of interconnection except grid support. Open to Schedule R, G and J customers (and TOU variants) only, so Schedule P customers are not eligible. Standalone storage has no stated capacity limit under the program (size governed by Rule 14H); a non-export facility with generation plus storage must be under 100 kW. Expedited review even in areas with voltage limitations.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     },
+     {
+      "name": "Standard Rule 14H interconnection review",
+      "max_kw": null,
+      "conditions": "Distributed generating facilities that incorporate storage obtain an interconnection review under Rule 14H and meet the Company's interconnection standards. Larger, exporting or Schedule P facilities take this path.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     }
+    ],
+    "non_export_path": "Non-export is the fast path (Smart Renewable Energy Non-Export), limited to Schedule R/G/J customers. The facility must be designed to minimize transfer to the utility and may not export except for grid support. Some summaries state that generators not interconnected with the distribution system, and facilities made up solely of storage, may not require a Rule 14H review; this was not confirmed for commercial standalone batteries, so confirm with the utility before relying on it.",
+    "storage_specific_notes": "BYOD Plus requires the battery to charge from renewable generation, so a grid-charged demand-shaving battery does not qualify. Grid-support functions (Smart DER, UL 1741-SB / IEEE 1547) are expected.",
+    "sources": [
+     {
+      "title": "Hawaiian Electric Rule 14 (Rule 14H interconnection)",
+      "url": "https://www.hawaiianelectric.com/Documents/my_account/rates/hawaiian_electric_rules/14.pdf"
+     },
+     {
+      "title": "Hawaiian Electric Smart Renewable Energy Non-Export",
+      "url": "https://www.hawaiianelectric.com/products-and-services/smart-renewable-energy-programs/smart-renewable-energy-non-export"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "Hawaiian Electric Schedule J - General Service Demand (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaiian_electric_rates/heco_rates_sch_j.pdf"
+    },
+    {
+     "title": "Hawaiian Electric Schedule P - Large Power Service (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaiian_electric_rates/heco_rates_sch_p.pdf"
+    },
+    {
+     "title": "Hawaiian Electric Oahu ECRC, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/energy_cost_adjustment_filings/oahu/2026/oahu_ecrc_2026_01.pdf"
+    },
+    {
+     "title": "Hawaiian Electric Oahu ECRC, July 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/energy_cost_adjustment_filings/oahu/2026/oahu_ecrc_2026_07.pdf"
+    }
+   ]
+  },
+  {
+   "id": "maui-electric",
+   "name": "Maui Electric (Maui, Lanai, Molokai)",
+   "state": "HI",
+   "iso": "Island grid (no ISO/RTO)",
+   "load_zone": "Maui Division (Lanai and Molokai have separate divisions and rates)",
+   "retail_choice": false,
+   "default_supply_notes": "Vertically integrated. Fuel and purchased power are recovered through a monthly ECRC per kWh that differs from Oahu's. Lanai and Molokai have their own rates (Molokai's demand charge is far lower).",
+   "network_grid_notes": "No secondary network service identified on Maui. Not verified.",
+   "interconnection": {
+    "rule_name": "Maui Electric Rule 14H and Rule 33 (BYOD)",
+    "tracks": [
+     {
+      "name": "Smart Renewable Energy Non-Export (expedited, Rule 14H Appendix III)",
+      "max_kw": 100,
+      "conditions": "No export across the point of interconnection except grid support. Open to Schedule R, G and J customers (and TOU variants) only, so Schedule P customers are not eligible. Standalone storage has no stated capacity limit under the program (size governed by Rule 14H); a non-export facility with generation plus storage must be under 100 kW. Expedited review even in areas with voltage limitations.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     },
+     {
+      "name": "Standard Rule 14H interconnection review",
+      "max_kw": null,
+      "conditions": "Distributed generating facilities that incorporate storage obtain an interconnection review under Rule 14H and meet the Company's interconnection standards. Larger, exporting or Schedule P facilities take this path.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     }
+    ],
+    "non_export_path": "Non-export is the fast path (Smart Renewable Energy Non-Export), limited to Schedule R/G/J customers. The facility must be designed to minimize transfer to the utility and may not export except for grid support. Some summaries state that generators not interconnected with the distribution system, and facilities made up solely of storage, may not require a Rule 14H review; this was not confirmed for commercial standalone batteries, so confirm with the utility before relying on it.",
+    "storage_specific_notes": "Same Smart Renewable Energy Non-Export structure as Oahu; Maui feeders have tighter hosting capacity in places. Not verified.",
+    "sources": [
+     {
+      "title": "Hawaiian Electric Smart Renewable Energy Non-Export",
+      "url": "https://www.hawaiianelectric.com/products-and-services/smart-renewable-energy-programs/smart-renewable-energy-non-export"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "Maui Electric Schedule J (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/maui_electric_rates_maui/maui_rates_sch_j.pdf"
+    }
+   ]
+  },
+  {
+   "id": "hawaii-electric-light",
+   "name": "Hawaii Electric Light (Hawaii Island)",
+   "state": "HI",
+   "iso": "Island grid (no ISO/RTO)",
+   "load_zone": "Hawaii Island",
+   "retail_choice": false,
+   "default_supply_notes": "Vertically integrated. Fuel and purchased power are recovered through a monthly ECRC per kWh specific to Hawaii Island.",
+   "network_grid_notes": "No secondary network service identified. Not verified.",
+   "interconnection": {
+    "rule_name": "Hawaii Electric Light Rule 14H and Rule 33 (BYOD)",
+    "tracks": [
+     {
+      "name": "Smart Renewable Energy Non-Export (expedited, Rule 14H Appendix III)",
+      "max_kw": 100,
+      "conditions": "No export across the point of interconnection except grid support. Open to Schedule R, G and J customers (and TOU variants) only, so Schedule P customers are not eligible. Standalone storage has no stated capacity limit under the program (size governed by Rule 14H); a non-export facility with generation plus storage must be under 100 kW. Expedited review even in areas with voltage limitations.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     },
+     {
+      "name": "Standard Rule 14H interconnection review",
+      "max_kw": null,
+      "conditions": "Distributed generating facilities that incorporate storage obtain an interconnection review under Rule 14H and meet the Company's interconnection standards. Larger, exporting or Schedule P facilities take this path.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     }
+    ],
+    "non_export_path": "Non-export is the fast path (Smart Renewable Energy Non-Export), limited to Schedule R/G/J customers. The facility must be designed to minimize transfer to the utility and may not export except for grid support. Some summaries state that generators not interconnected with the distribution system, and facilities made up solely of storage, may not require a Rule 14H review; this was not confirmed for commercial standalone batteries, so confirm with the utility before relying on it.",
+    "storage_specific_notes": "Same Smart Renewable Energy Non-Export structure as Oahu. Hawaii Island feeders can be saturated; check locational value maps. Not verified.",
+    "sources": [
+     {
+      "title": "Hawaiian Electric Smart Renewable Energy Non-Export",
+      "url": "https://www.hawaiianelectric.com/products-and-services/smart-renewable-energy-programs/smart-renewable-energy-non-export"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "Hawaii Island (HELCO) Schedule P (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaii_electric_light_rates/helco_rates_sch_p.pdf"
+    }
+   ]
+  },
+  {
+   "id": "kiuc",
+   "name": "Kauai Island Utility Cooperative (KIUC)",
+   "state": "HI",
+   "iso": "Island grid (no ISO/RTO)",
+   "load_zone": "Kauai",
+   "retail_choice": false,
+   "default_supply_notes": "Member-owned cooperative regulated by the Hawaii PUC. Fuel and purchased power is a separate per-kWh charge on Schedule LP. KIUC has a large share of solar-plus-storage on its own system.",
+   "network_grid_notes": "No secondary network service identified. Not verified.",
+   "interconnection": {
+    "rule_name": "KIUC interconnection rules (separate from Hawaiian Electric Rule 14H)",
+    "tracks": [
+     {
+      "name": "KIUC interconnection review",
+      "max_kw": null,
+      "conditions": "KIUC's thresholds and fast-track screens were not found. Contact KIUC.",
+      "typical_timeline": "Not verified",
+      "application_fee": "Not verified"
+     }
+    ],
+    "non_export_path": "Not verified.",
+    "storage_specific_notes": "Not verified.",
+    "sources": [
+     {
+      "title": "KIUC Tariff No. 1 Schedule LP - Large Power Service",
+      "url": "https://kiuc.coop/sites/default/files/2025-05/schedule-lp.pdf"
+     }
+    ],
+    "confidence": "low"
+   },
+   "sources": [
+    {
+     "title": "KIUC Tariff No. 1 Schedule LP - Large Power Service",
+     "url": "https://kiuc.coop/sites/default/files/2025-05/schedule-lp.pdf"
+    }
+   ]
+  }
+ ],
+ "tariffs": [
+  {
+   "id": "heco-sch-j",
+   "utility_id": "hawaiian-electric",
+   "name": "Schedule J - General Service Demand (Oahu)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 25,
+    "max_kw": 300,
+    "text": "General light and power loads above 5,000 kWh a month or above 25 kW three times in 12 months, below 300 kW, on a single meter. Larger loads are on Schedule P."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 15.77,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "All billing kW. Effective Jan-2026 value from the effective-rate summaries (13.00 base tariff value x about 1.213 adjustments). Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum billing demand 25 kW.",
+     "confidence": "medium"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Non-fuel energy (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.053177,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value. The effective summary shows a total energy charge of about $0.282/kWh in January 2026 that appears to include the ECRC and other adjustments."
+    },
+    {
+     "label": "ECRC fuel and purchased power (Jan 2026)",
+     "component": "supply",
+     "rate_usd_per_kwh": 0.18449,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Changes monthly: 27.285 cents/kWh in July 2026."
+    }
+   ],
+   "ratchet": null,
+   "billing_demand_rule": "Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum 25 kW.",
+   "min_billing_demand_kw": 25,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Customer charge $80.04 (single-phase) or $119.09 (three-phase) a month. Flat energy price, so storage value here is demand-charge reduction and DR, not arbitrage. Because billing demand averages the current peak with the highest of the prior 11 months, a one-month peak shave is worth about half; shaving every month's peak counts in full. Smart Renewable Energy Non-Export is open to Schedule J.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Schedule J - General Service Demand (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaiian_electric_rates/heco_rates_sch_j.pdf"
+    },
+    {
+     "title": "Hawaiian Electric effective rate summaries, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/effective_rate_summary/2026/efs_2026_01.pdf"
+    },
+    {
+     "title": "Hawaiian Electric Oahu ECRC, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/energy_cost_adjustment_filings/oahu/2026/oahu_ecrc_2026_01.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Tariff sheet (base customer $66.00/$98.20, demand $13.00, energy 5.3177 cents) and the Jan-2026 effective-rate summary ($80.04/$119.09, $15.77) were both seen in search summaries and agree on a uniform ~1.213 adjustment. A search summary also listed $13.00 for May 2026, which is the base tariff value; the PDFs were not opened, so confirm the current effective demand charge on a bill."
+  },
+  {
+   "id": "heco-sch-p",
+   "utility_id": "hawaiian-electric",
+   "name": "Schedule P - Large Power Service (Oahu)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 300,
+    "max_kw": null,
+    "text": "Large light and power loads of 300 kW or more, supplied and metered at a single voltage and delivery point."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 32.14,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "All billing kW. Effective value from the Jan-2026 and May-2026 effective-rate summaries (26.50 base tariff value x about 1.213). Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum billing demand 300 kW.",
+     "confidence": "medium"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Non-fuel energy (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.0292,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value; the effective energy charge was not confirmed (one summary showed $0.0227/kWh, another about $0.25/kWh including adjustments)."
+    },
+    {
+     "label": "ECRC fuel and purchased power (Jan 2026)",
+     "component": "supply",
+     "rate_usd_per_kwh": 0.18449,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Changes monthly: 27.285 cents/kWh in July 2026."
+    }
+   ],
+   "ratchet": null,
+   "billing_demand_rule": "Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum 300 kW.",
+   "min_billing_demand_kw": 300,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Customer charge $454.76 a month (375.00 base). Flat energy price, so storage value is demand-charge reduction and DR. The 300 kW minimum billing demand means a site peaking at 320 kW can save on at most 20 kW. Schedule P is not eligible for the Smart Renewable Energy Non-Export fast path (Schedule R/G/J only), so expect a standard Rule 14H review. Schedule U (optional TOU demand rate) and Schedule DS (directly served) exist but were not modeled.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Schedule P - Large Power Service (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaiian_electric_rates/heco_rates_sch_p.pdf"
+    },
+    {
+     "title": "Hawaiian Electric effective rate summaries, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/effective_rate_summary/2026/efs_2026_01.pdf"
+    },
+    {
+     "title": "Hawaiian Electric effective rate summaries, April 30 2026 filing (rates effective May 1 2026)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/effective_rate_summary/2026/efs_2026_05.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Tariff sheet ($375.00 customer, $26.50 demand, 2.92 cents energy, 300 kW minimum) and effective summaries ($454.76, $32.14) were seen in search summaries and agree on the same ~1.213 adjustment as Schedule J. PDFs not opened."
+  },
+  {
+   "id": "heco-tou-j",
+   "utility_id": "hawaiian-electric",
+   "name": "Schedule TOU-J - Medium Commercial Time-of-Use (Oahu, closed to new customers)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 25,
+    "max_kw": 300,
+    "text": "Existing Schedule TOU-J customers only: the Oahu rates page lists TOU-J as closed to new customers. A new customer is on Schedule J. Same size band as Schedule J."
+   },
+   "effective_date": "2026-01-01",
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 15.77,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Same demand charge as Schedule J (effective Jan 2026, base 13.00). Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum billing demand 25 kW.",
+     "confidence": "medium"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "On-peak (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.103177,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "5pm-10pm daily",
+     "notes": "Non-fuel energy, base tariff-sheet value."
+    },
+    {
+     "label": "Mid-day (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.023177,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "9am-5pm daily",
+     "notes": "Non-fuel energy, base tariff-sheet value."
+    },
+    {
+     "label": "Off-peak (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.073177,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "10pm-9am daily",
+     "notes": "Non-fuel energy, base tariff-sheet value."
+    }
+   ],
+   "ratchet": null,
+   "billing_demand_rule": "Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum 25 kW.",
+   "min_billing_demand_kw": 25,
+   "energy_adder_usd_per_kwh": 0.22867,
+   "energy_adder_note": "Flat per-kWh adder on every hour, modeled as the mean of the Oahu ECRC published for January 2026 (18.449 cents) and July 2026 (27.285 cents) = 22.867 cents. The ECRC changes monthly and other volumetric riders are excluded, so this is an approximation. It does not change the 8.0 cent on-peak minus mid-day spread, only the cost of round-trip losses.",
+   "coincident_peak_charges": [],
+   "arbitrage": [
+    {
+     "label": "Daily (on-peak 5-10pm vs mid-day 9am-5pm)",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "peak_window": {
+      "start": 17,
+      "end": 22
+     },
+     "peak_price": 0.103177,
+     "offpeak_price": 0.023177,
+     "days": "all"
+    }
+   ],
+   "storage_notes": "Daily 8.0 cent/kWh spread between on-peak (5-10pm) and mid-day (9am-5pm) at base tariff values; charging mid-day also soaks up solar-hour surplus. The effective spread may be about 13% higher if the January 2026 base-rate adjustment applies to energy as it does to the customer and demand charges; that was not confirmed, so the base spread is used (conservative). Available only to existing TOU-J customers. The Shift and Save / Advanced Rate Design commercial TOU (ARD TOU J) closed to new enrollments on Feb 1 2025 and is not modeled.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Oahu Schedule TOU-J (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaiian_electric_rates/heco_rates_tou_j.pdf"
+    },
+    {
+     "title": "Hawaiian Electric effective rate summaries, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/effective_rate_summary/2026/efs_2026_01.pdf"
+    },
+    {
+     "title": "Hawaiian Electric: Shift and Save closed to new enrollments",
+     "url": "https://www.hawaiianelectric.com/hawaiian-electric-to-close-shift-and-save-time-of-use-rates-program-to-new-enrollments-as-of-feb-1"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Time periods and base energy rates (10.3177 / 2.3177 / 7.3177 cents) were seen in search summaries of the tariff sheet; customer and demand charges match the Jan-2026 effective summary. Closed-to-new-customers status comes from a search summary of the Oahu rates page. Whether the base-rate adjustment scales the TOU energy charges was not confirmed."
+  },
+  {
+   "id": "meco-sch-j",
+   "utility_id": "maui-electric",
+   "name": "Schedule J - General Service Demand (Maui Division)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 25,
+    "max_kw": 200,
+    "text": "Loads above 5,000 kWh a month or above 25 kW three times in 12 months, below 200 kW, on a single meter."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 13.0,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value. Oahu's effective demand charge is about 21% above its base value after rate adjustments, so Maui's current effective charge is probably higher; confirm on a bill. Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum billing demand 25 kW.",
+     "confidence": "low"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Non-fuel energy (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.096846,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value; fuel is billed separately through the Maui ECRC."
+    }
+   ],
+   "ratchet": null,
+   "billing_demand_rule": "Billing demand is the greater of the month's maximum 15-minute kW or the mean of the current month's maximum and the highest maximum of the preceding 11 months, with a minimum billing demand (see min_billing_demand_kw). Minimum 25 kW.",
+   "min_billing_demand_kw": 25,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Customer charge $66.00 (single-phase) or $82.00 (three-phase) base. Flat energy price, so storage value is demand-charge reduction and DR. Fast DR is available on Maui.",
+   "sources": [
+    {
+     "title": "Maui Electric Schedule J (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/maui_electric_rates_maui/maui_rates_sch_j.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Values are the base tariff-sheet numbers from a search summary of the Maui Division Schedule J sheet. A different summary returned Oahu's effective numbers ($80.04/$119.09/$15.77) for Maui, which looks like a mix-up and was not used. Current effective rates not verified."
+  },
+  {
+   "id": "meco-sch-p",
+   "utility_id": "maui-electric",
+   "name": "Schedule P - Large Power Service (Maui Division)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 200,
+    "max_kw": null,
+    "text": "Large light and power loads. The size threshold (assumed 200 kW from the Schedule J upper limit) was not confirmed."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Rate not found. Enter it from the customer's bill in the Rate panel. Expect a billing-demand rule like Schedule J's (greater of current peak or the mean with the prior 11 months' highest).",
+     "confidence": "low"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Structure only. Fast DR is available on Maui.",
+   "sources": [
+    {
+     "title": "Maui Electric Schedule P (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/maui_electric_rates_maui/maui_rates_sch_p.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "The tariff sheet was found but the demand charge was not extracted from search summaries."
+  },
+  {
+   "id": "helco-sch-j",
+   "utility_id": "hawaii-electric-light",
+   "name": "Schedule J - General Service Demand (Hawaii Island)",
+   "customer_class": "Medium C&I",
+   "applicability": {
+    "min_kw": 25,
+    "max_kw": 200,
+    "text": "Medium commercial loads below the Schedule P threshold (about 200 kW on Hawaii Island). Threshold not confirmed."
+   },
+   "effective_date": null,
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": null,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Rate not found; search summaries mixed Oahu's numbers into Hawaii Island results and were not used. Enter it from the customer's bill.",
+     "confidence": "low"
+    }
+   ],
+   "energy_rates": [],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Structure only.",
+   "sources": [
+    {
+     "title": "Hawaii Island (HELCO) Schedule J (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaii_electric_light_rates/helco_rates_sch_j.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Tariff sheet located; values not extracted."
+  },
+  {
+   "id": "helco-sch-p",
+   "utility_id": "hawaii-electric-light",
+   "name": "Schedule P - Large Power Service (Hawaii Island)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 200,
+    "max_kw": null,
+    "text": "Large light and power loads of 200 kW or more, supplied and metered at a single voltage and delivery point."
+   },
+   "effective_date": "2020-11-01",
+   "demand_charges": [
+    {
+     "label": "Demand charge (all billing kW)",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 27.0,
+     "basis": "ncp_monthly",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value from the sheet effective Nov 1 2020. Rate adjustments since then (Oahu's is about +21%) mean the current effective charge is higher; one summary showed $32.14 for 2026, which is Oahu's number and was not used. Confirm on a bill.",
+     "confidence": "low"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Non-fuel energy (base tariff value)",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.062376,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Base tariff-sheet value; fuel is billed separately through the Hawaii Island ECRC."
+    }
+   ],
+   "ratchet": null,
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Customer charge $450.00 a month (base). Flat energy price, so storage value is demand-charge reduction and DR. Whether the Oahu-style billing-demand averaging and a minimum billing demand apply was not confirmed.",
+   "sources": [
+    {
+     "title": "Hawaii Island (HELCO) Schedule P (tariff sheet)",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaii_electric_light_rates/helco_rates_sch_p.pdf"
+    }
+   ],
+   "confidence": "low",
+   "verification_notes": "Base values from a search summary of the Hawaii Island Schedule P sheet (customer $450.00, demand $27.00, 6.2376 cents). Effective 2026 values not verified."
+  },
+  {
+   "id": "kiuc-lp",
+   "utility_id": "kiuc",
+   "name": "Schedule LP - Large Power Service (KIUC)",
+   "customer_class": "Large C&I",
+   "applicability": {
+    "min_kw": 100,
+    "max_kw": null,
+    "text": "Power users with metered loads above 100 kW in any 15-minute period in any month."
+   },
+   "effective_date": "2025-05-01",
+   "demand_charges": [
+    {
+     "label": "Demand charge",
+     "component": "delivery",
+     "rate_usd_per_kw_month": 12.86,
+     "basis": "ratchet",
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Billing demand is the greater of the month's highest kW or 75% of the highest kW in the preceding 11 months.",
+     "confidence": "medium"
+    }
+   ],
+   "energy_rates": [
+    {
+     "label": "Non-fuel energy",
+     "component": "delivery",
+     "rate_usd_per_kwh": 0.16374,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Per tariff sheet dated May 2025."
+    },
+    {
+     "label": "Fuel and purchased power",
+     "component": "supply",
+     "rate_usd_per_kwh": 0.20188,
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ],
+     "hours": "all hours",
+     "notes": "Varies with fuel and purchased-power costs."
+    }
+   ],
+   "ratchet": {
+    "pct": 0.75,
+    "lookback_months": 11,
+    "applies_to": "demand charge"
+   },
+   "coincident_peak_charges": [],
+   "arbitrage": [],
+   "storage_notes": "Customer charge $396.63 a month. The 75% ratchet means a peak shave only fully pays when it holds across the year; off-peak months are valued at 75% of the saved kW. KIUC filed a rate case, so 2026 values may differ from the May 2025 sheet. No KIUC battery or demand-response incentive was found.",
+   "sources": [
+    {
+     "title": "KIUC Tariff No. 1 Schedule LP - Large Power Service",
+     "url": "https://kiuc.coop/sites/default/files/2025-05/schedule-lp.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Customer $396.63, demand $12.86, non-fuel $0.16374, fuel $0.20188 and the 75% / 11-month rule come from one search summary of the KIUC tariff PDF (dated May 2025). 2026 values not verified."
+  }
+ ],
+ "programs": [
+  {
+   "state": "HI",
+   "last_verified": "2026-10-05",
+   "id": "hi-fast-dr",
+   "name": "Hawaiian Electric Fast Demand Response (Fast DR)",
+   "utility_ids": [
+    "hawaiian-electric",
+    "maui-electric"
+   ],
+   "administrator": "Hawaiian Electric",
+   "category": "demand_response",
+   "status": "open",
+   "status_notes": "Open to commercial and industrial customers on Oahu and Maui County that can commit at least 50 kW. Hawaii Island was not listed.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": 50,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Utility pays for the enabling technology that automates curtailment. A battery that discharges to hold the site's load down during an event counts as load reduction at the meter."
+   },
+   "valuation": {
+    "method": "per_kw_month",
+    "rate": 5,
+    "unit": "$/kW-month",
+    "months_per_year": 12,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "committed kW of controlled demand",
+    "duration_basis_hr": 1,
+    "cap": null,
+    "tiers": [],
+    "term_years": 1,
+    "notes": "$5 per kW per month Controlled Demand Incentive is credited whether or not an event occurs (50 kW = $3,000 a year). Event energy payments (reported as $0.50 per kW-hour) are not modeled. Oahu events last up to 1 hour with an annual limit of 40 or 80 hours; Maui events last up to 1 or 4 hours with a 40-hour limit."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Oahu 7am-9pm weekdays excluding holidays; Maui 24/7",
+    "event_duration_hr": 1,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Fast response (minutes); notice period not verified",
+    "baseline_or_mv": "Load reduction measured at the meter; baseline method not verified"
+   },
+   "stacking": {
+    "compatible_with": [
+     "hi-hawaii-energy-power-move-ces",
+     "demand charge reduction"
+    ],
+    "conflicts_with": [
+     "hi-byod-plus"
+    ],
+    "notes": "Whether Fast DR can be combined with BYOD Plus on the same battery was not verified. They are treated as mutually exclusive (the higher-value one counts) so the same kW is not paid twice; confirm with Hawaiian Electric."
+   },
+   "vpp_relevance": "Utility-run C&I demand response with automated controls; a fleet of 50 kW+ sites fits well. Small events keep battery wear low.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Fast Demand Response",
+     "url": "https://www.hawaiianelectric.com/products-and-services/customer-incentive-programs/fast-demand-response"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Eligibility, $5/kW-month and event limits are consistent across two search summaries of the program page. The 30 kW unit alone is below the 50 kW minimum, so it needs a second unit or other load to commit."
+  },
+  {
+   "state": "HI",
+   "last_verified": "2026-10-05",
+   "id": "hi-byod-plus",
+   "name": "Hawaiian Electric Bring Your Own Device Plus (BYOD Plus)",
+   "utility_ids": [
+    "hawaiian-electric",
+    "maui-electric",
+    "hawaii-electric-light"
+   ],
+   "administrator": "Hawaiian Electric (Rule 33)",
+   "category": "upfront_incentive",
+   "status": "open",
+   "status_notes": "Five-year program, May 15 2025 to May 14 2030, until 50 MW statewide is enrolled (BYOD Level 1 plus BYOD Plus, with 25 MW reserved for low-to-moderate-income customers). Succeeded the Battery Bonus program.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": true,
+    "requires_ul9540": null,
+    "other": "New battery with at least 1 kW of committed capacity, charged from renewable generation (for example the site's PV), committed for five years and discharged in the evening peak (5-9 pm). Exports are credited at the customer's retail rate. Maximum commercial size and non-export treatment were not verified."
+   },
+   "valuation": {
+    "method": "upfront_per_kw",
+    "rate": 400,
+    "unit": "$/kW",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "committed kW",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [
+     {
+      "label": "Low-to-moderate-income (LMI) customers",
+      "rate": 800,
+      "conditions": "Documented LMI designation from a local, state or federal entity"
+     }
+    ],
+    "term_years": 5,
+    "notes": "One-time $400 per committed kW ($800 for LMI) plus export credit at the retail rate during the commitment. Counted at the full battery kW; committed kW and any commercial cap should be confirmed."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Evening peak 5-9 pm (another source cites 6-8 pm)",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Scheduled discharge",
+    "baseline_or_mv": "Battery meter data"
+   },
+   "stacking": {
+    "compatible_with": [
+     "hi-hawaii-energy-power-move-ces"
+    ],
+    "conflicts_with": [
+     "hi-fast-dr"
+    ],
+    "notes": "Hawaii Energy encourages BYOD enrollment alongside its commercial storage rebate. Treated as exclusive with Fast DR until a combination is confirmed (see hi-fast-dr)."
+   },
+   "vpp_relevance": "Utility-run VPP: committed batteries are dispatched in the evening peak. Fits a PV-plus-storage fleet; it does not fit a grid-charged demand-shaving battery because charging must come from renewable generation.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Bring Your Own Device Plus",
+     "url": "https://www.hawaiianelectric.com/products-and-services/customer-incentive-programs/bring-your-own-device-plus"
+    },
+    {
+     "title": "Hawaiian Electric Rule 33 (BYOD) tariff",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaii_electric_light_rules/33.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Rates, term, cap and the paired-solar requirement come from search summaries of the program page and Rule 33. The 5-9 pm window is stated by one source and 6-8 pm by another.",
+   "panel_caution": "Requires the battery to charge from renewable generation. Do not count it for a grid-charged battery."
+  },
+  {
+   "state": "HI",
+   "last_verified": "2026-10-05",
+   "id": "hi-battery-bonus",
+   "name": "Hawaiian Electric Battery Bonus (closed, replaced by BYOD Plus)",
+   "utility_ids": [
+    "hawaiian-electric",
+    "maui-electric"
+   ],
+   "administrator": "Hawaiian Electric",
+   "category": "upfront_incentive",
+   "status": "closed",
+   "status_notes": "Replaced by BYOD Plus on May 15 2025. Listed for reference.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": true,
+    "requires_ul9540": null,
+    "other": "Rooftop solar customers adding a battery charged from solar; ten-year commitment to discharge two consecutive hours between 6 and 8:30 pm."
+   },
+   "valuation": {
+    "method": "upfront_per_kw",
+    "rate": 850,
+    "unit": "$/kW",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "committed kW",
+    "duration_basis_hr": null,
+    "cap": null,
+    "tiers": [],
+    "term_years": 10,
+    "notes": "$850 per committed kW one time, plus a $5 per kW-month capacity credit for ten years. 40 MW cap on Oahu and 15 MW on Maui."
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "Two consecutive hours set by the utility, 6-8:30 pm",
+    "event_duration_hr": 2,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": "Scheduled",
+    "baseline_or_mv": "Battery meter data"
+   },
+   "stacking": {
+    "compatible_with": [],
+    "conflicts_with": [],
+    "notes": ""
+   },
+   "vpp_relevance": "Historical reference for the BYOD Plus design.",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Battery Bonus",
+     "url": "https://www.hawaiianelectric.com/products-and-services/customer-incentive-programs/battery-bonus"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Closed status from the BYOD Plus launch information; historical rates from the Battery Bonus page and news."
+  },
+  {
+   "state": "HI",
+   "last_verified": "2026-10-05",
+   "id": "hi-hawaii-energy-power-move-ces",
+   "name": "Hawaii Energy Power Move: Commercial Energy Storage rebate",
+   "utility_ids": [
+    "hawaiian-electric",
+    "maui-electric"
+   ],
+   "administrator": "Hawaii Energy (Public Benefits Fund)",
+   "category": "upfront_incentive",
+   "status": "open",
+   "status_notes": "PY26 rebates are effective July 1 2026 to June 30 2027 or while funding lasts. First come, first served; one-time payment after the system is installed and operating.",
+   "eligibility": {
+    "customer_classes": [
+     "C&I"
+    ],
+    "min_kw": null,
+    "max_kw": null,
+    "min_kwh": null,
+    "max_kwh": null,
+    "min_duration_hr": null,
+    "requires_aggregator_or_csp": false,
+    "requires_export": false,
+    "requires_paired_solar": false,
+    "requires_ul9540": null,
+    "other": "Commercial-rate-schedule Hawaiian Electric account on Oahu or Maui that pays into the Public Benefits Fund; new installation (projects in progress considered case by case); one award per installation address. Enrollment in the utility's battery program is encouraged but not required."
+   },
+   "valuation": {
+    "method": "upfront_per_kwh",
+    "rate": 150,
+    "unit": "$/kWh",
+    "months_per_year": null,
+    "expected_event_hours_per_year": null,
+    "kw_basis": "storage kWh (basis not verified: nameplate, usable or committed)",
+    "duration_basis_hr": null,
+    "cap": "Per-applicant total capped at 25% of the program-year energy-storage budget. Per-project and percent-of-cost caps were not found.",
+    "tiers": [
+     {
+      "label": "Solar-tied, charged daily from on-site solar, dispatched 6:00-8:30 pm",
+      "rate": 250,
+      "conditions": "Rate with paired solar (used when the site has solar)"
+     },
+     {
+      "label": "Shoulder windows 5-6 pm and 8:30-9 pm",
+      "rate": 125,
+      "conditions": "Either solar-tied or not; not modeled"
+     },
+     {
+      "label": "No renewable generation attached",
+      "rate": 150,
+      "conditions": "Base rate"
+     }
+    ],
+    "term_years": null,
+    "notes": "Storage must be scheduled to serve on-site needs or export between 5 and 9 pm. The kWh basis and any per-project cap should be confirmed in the program rules before relying on this.",
+    "rate_with_solar": 250
+   },
+   "dispatch": {
+    "season": "Year-round",
+    "window": "5-9 pm",
+    "event_duration_hr": null,
+    "max_events_per_year": null,
+    "typical_events_per_year": null,
+    "notice": null,
+    "baseline_or_mv": "Interval data"
+   },
+   "stacking": {
+    "compatible_with": [
+     "hi-byod-plus",
+     "hi-fast-dr",
+     "federal ITC"
+    ],
+    "conflicts_with": [],
+    "notes": "Rebates reduce the ITC basis."
+   },
+   "vpp_relevance": "Pays for evening-peak-capable storage that can also enroll in BYOD Plus.",
+   "sources": [
+    {
+     "title": "Hawaii Energy Power Move Commercial Energy Storage rules",
+     "url": "https://hawaiienergy.com/wp-content/uploads/pm_commercial-energy-storage-rules.pdf"
+    },
+    {
+     "title": "Hawaii Energy PY26 rebate summary",
+     "url": "https://hawaiienergy.com/wp-content/uploads/rebate-summary-sheet.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "verification_notes": "Rates, eligibility and PY26 dates come from search summaries of the rules and PY26 sheet. Earlier text cited a January 31 2024 end date for the original program, so confirm funding is still available."
+  }
+ ],
+ "market_prices": [
+  {
+   "id": "oahu-ecrc-2026-01",
+   "label": "Oahu ECRC, January 2026",
+   "value": 0.18449,
+   "unit": "$/kWh",
+   "period": "2026-01",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Oahu ECRC, January 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/energy_cost_adjustment_filings/oahu/2026/oahu_ecrc_2026_01.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "Flat per-kWh fuel and purchased-power charge on every hour for Schedules G, J, DS, P and F. A decrease of 0.326 cents from the previous month."
+  },
+  {
+   "id": "oahu-ecrc-2026-07",
+   "label": "Oahu ECRC, July 2026",
+   "value": 0.27285,
+   "unit": "$/kWh",
+   "period": "2026-07",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Oahu ECRC, July 2026",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/energy_cost_adjustment_filings/oahu/2026/oahu_ecrc_2026_07.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "notes": "A decrease of 1.798 cents from June 2026 (about 29.1 cents), so fuel charges rose roughly 10 cents between January and June. This swing moves the all-in price of every kWh but not the demand charge."
+  }
+ ],
+ "site_constraints": [
+  {
+   "id": "hi-honolulu-fire-code",
+   "topic": "fire_code",
+   "title": "Honolulu Fire Code is based on NFPA 1 (2021 edition)",
+   "rule": "The City and County of Honolulu Fire Code is based on NFPA 1, 2021 edition, whose Chapter 52 covers stationary energy storage systems. HFD requires permits and plan review. Residential storage is capped at 20 kWh per dwelling unit and UL 9540A data is needed to exceed it. Behind-the-meter systems in commercial or multi-family buildings may use a professional self-certification pathway. The model thresholds in the federal rules (20 kWh permit, 50 kWh unit, 600 kWh group, setbacks) are applied as the baseline.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Plan on the model-code limits: outdoor group limits and setbacks drive unit count and placement. Confirm the exact NFPA 855 edition and any Honolulu amendments with HFD, and the county for sites off Oahu.",
+   "applies_to": "Honolulu (Oahu). Other counties adopt their own fire codes.",
+   "sources": [
+    {
+     "title": "City and County of Honolulu Fire Code based on NFPA 1 (2021 edition)",
+     "url": "https://fire.honolulu.gov/wp-content/uploads/2025/04/City-and-County-of-Honolulu-Fire-Code-Based-on-the-NFPA-1-2021-Edition.pdf"
+    },
+    {
+     "title": "Battery Codes: City and County of Honolulu code adoption (secondary)",
+     "url": "https://www.batterycodes.com/jurisdiction/hawaii/city-and-county-of-honolulu/"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "hi-state-electrical-code",
+   "topic": "electrical",
+   "title": "Hawaii adopts the 2023 NEC; Honolulu's local edition may lag",
+   "rule": "The Hawaii State Building Code Council adopted the 2023 NEC (NFPA 70) statewide, effective September 1 2024 per a secondary source. County adoption can lag by up to two years, so Honolulu may still enforce an older edition. NEC 705.12 (120% rule) and Article 706 apply in all recent editions.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Use the NEC 120% backfeed rule (checked by the tool) and confirm the edition with the permitting office.",
+   "applies_to": "State-wide; county adoption varies",
+   "sources": [
+    {
+     "title": "UpCodes: Hawaii Electrical Code 2023 based on NFPA 70 2023 (secondary)",
+     "url": "https://up.codes/viewer/hawaii/nfpa-70-2023"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "hi-rule14h-nonexport-fast-path",
+   "topic": "interconnection",
+   "title": "Smart Renewable Energy Non-Export covers Schedule R/G/J only",
+   "rule": "The expedited non-export path (Rule 14H Appendix III) is open to Schedule R, G and J customers and their TOU variants. Schedule P customers go through the standard Rule 14H review. A non-export facility made up of generation plus storage must be under 100 kW (sum of inverter string capacities); standalone storage has no stated capacity limit under the program. The facility may not export except for grid support.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "A battery at a Schedule J site (under 300 kW) can use the fast path; a Schedule P site (300 kW or more) should plan for a longer standard review. Keep PV-plus-storage under 100 kW on the fast path.",
+   "applies_to": "hawaiian-electric, maui-electric, hawaii-electric-light",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Smart Renewable Energy Non-Export",
+     "url": "https://www.hawaiianelectric.com/products-and-services/smart-renewable-energy-programs/smart-renewable-energy-non-export"
+    },
+    {
+     "title": "Hawaiian Electric Rule 14 (Rule 14H interconnection)",
+     "url": "https://www.hawaiianelectric.com/Documents/my_account/rates/hawaiian_electric_rules/14.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "hi-network-grid",
+   "topic": "network_grid",
+   "title": "Downtown Honolulu secondary network",
+   "rule": "Downtown Honolulu and Chinatown are served by an underground network from Iwilei Substation. Network service restricts distributed generation and the microgrid tariff does not allow interconnection to a spot or grid network. Expect non-export operation, reverse-power protection and extra utility review.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Set the network flag in the screener for downtown sites. Discharge is limited to site load; confirm the network boundary with the utility.",
+   "applies_to": "hawaiian-electric (downtown Honolulu)",
+   "sources": [
+    {
+     "title": "Hawaiian Electric downtown Honolulu network upgrades",
+     "url": "https://www.hawaiianelectric.com/about-us/our-vision-and-commitment/investing-in-the-future/downtown-honolulu-network-upgrades"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  },
+  {
+   "id": "hi-byod-renewable-charging",
+   "topic": "program_rule",
+   "title": "BYOD Plus requires renewable charging",
+   "rule": "BYOD Plus requires the battery to charge from renewable generation such as PV and to be committed for five years, discharging in the evening peak. A battery that charges from the grid for demand management or arbitrage does not meet the rule.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Choose between the BYOD Plus $400/kW incentive (solar-charged, evening peak) and a grid-charged demand-shaving design; the tool counts BYOD Plus only when the site has solar.",
+   "applies_to": "hawaiian-electric, maui-electric, hawaii-electric-light",
+   "sources": [
+    {
+     "title": "Hawaiian Electric Bring Your Own Device Plus",
+     "url": "https://www.hawaiianelectric.com/products-and-services/customer-incentive-programs/bring-your-own-device-plus"
+    },
+    {
+     "title": "Hawaiian Electric Rule 33 (BYOD) tariff",
+     "url": "https://www.hawaiianelectric.com/documents/billing_and_payment/rates/hawaii_electric_light_rules/33.pdf"
+    }
+   ],
+   "confidence": "medium",
+   "rule_type": "text"
+  },
+  {
+   "id": "hi-coastal-flood-siting",
+   "topic": "zoning",
+   "title": "Coastal, flood and hurricane siting",
+   "rule": "Many Hawaii commercial sites are near the shoreline. Expect scrutiny of FEMA flood and tsunami zones, Special Management Area review near the coast, hurricane wind loads and salt-air corrosion (outdoor enclosures rated for corrosive environments). Practitioner knowledge, not a verified code threshold.",
+   "threshold": {
+    "metric": "other",
+    "value": null,
+    "comparison": "max",
+    "scope": "per site"
+   },
+   "impact_on_sizing": "Can limit ground-level placement and push batteries to elevated pads or indoor rooms (which then fall under the indoor limits). Check the flood-zone box in the screener.",
+   "applies_to": "Coastal sites statewide",
+   "sources": [
+    {
+     "title": "City and County of Honolulu Fire Code based on NFPA 1 (2021 edition)",
+     "url": "https://fire.honolulu.gov/wp-content/uploads/2025/04/City-and-County-of-Honolulu-Fire-Code-Based-on-the-NFPA-1-2021-Edition.pdf"
+    }
+   ],
+   "confidence": "low",
+   "rule_type": "text"
+  }
+ ],
+ "panel_notes": [
+  {
+   "persona": "Utility program manager (Hawaiian Electric)",
+   "persona_id": "heco",
+   "topic": "Billing demand averages in the prior 11 months",
+   "severity": "caution",
+   "note": "On Schedules J and P, billing demand is the greater of the month's peak or the mean of the current peak and the highest peak of the previous 11 months. Shaving one month does little; the battery has to hold every month's peak so the highest prior month comes down too. Schedule P also bills at least 300 kW, so a site peaking near 300 kW saves almost nothing."
+  },
+  {
+   "persona": "Utility program manager (Hawaiian Electric)",
+   "persona_id": "heco",
+   "topic": "Fuel charge swings dwarf demand charges",
+   "severity": "info",
+   "note": "The Oahu ECRC moved from 18.4 cents/kWh in January 2026 to about 29 cents in June and 27.3 cents in July. The charge applies to every kWh, so it raises the cost of round-trip losses but not the spread. Demand charges ($15.77 on Schedule J, $32.14 on Schedule P) are the stable part of the value."
+  },
+  {
+   "persona": "Utility program manager (Hawaiian Electric)",
+   "persona_id": "heco",
+   "topic": "Time-of-use options are closed",
+   "severity": "caution",
+   "note": "Schedule TOU-J is closed to new customers and the Shift and Save / ARD commercial TOU closed to new enrollments on Feb 1 2025. A new commercial site is on a flat energy price (Schedule J or P), so arbitrage value is limited to existing TOU customers."
+  },
+  {
+   "persona": "Utility program manager (Hawaiian Electric)",
+   "persona_id": "heco",
+   "topic": "Rebasing could raise charges in 2027",
+   "severity": "info",
+   "note": "Hawaiian Electric has proposed a rebasing increase of about $170 million a year ($125 million from January 2027, $45 million from January 2028) in Docket 2026-0162. Demand-charge values may rise if approved."
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "persona_id": "bess-ix",
+   "topic": "Fast path is for Schedule J, not P",
+   "severity": "caution",
+   "note": "Smart Renewable Energy Non-Export fast-tracks Schedule R/G/J customers only. A 200 kW battery at a Schedule P site (300 kW or more) takes the standard Rule 14H review, so start the application early. PV plus storage on the fast path must stay under 100 kW."
+  },
+  {
+   "persona": "BESS & interconnection engineer",
+   "persona_id": "bess-ix",
+   "topic": "BYOD Plus means renewable charging",
+   "severity": "caution",
+   "note": "BYOD Plus pays $400/kW but the battery must charge from renewable generation and be committed for five years. If the business plan is grid-charged demand shaving, the incentive does not apply; if there is rooftop PV, compare the two designs."
+  },
+  {
+   "persona": "Fire code & permitting specialist",
+   "persona_id": "permitting",
+   "topic": "Honolulu is on NFPA 1 (2021)",
+   "severity": "info",
+   "note": "Honolulu's fire code is based on NFPA 1, 2021 edition. Commercial behind-the-meter systems may qualify for professional self-certification, but outdoor group limits and setbacks still drive layout. Add flood, tsunami and salt-air checks on coastal sites."
+  },
+  {
+   "persona": "Retail supply & VPP aggregator",
+   "persona_id": "constellation",
+   "topic": "No competitive VPP market",
+   "severity": "info",
+   "note": "Hawaii has no retail choice and no ISO market, so a third-party aggregator cannot sell capacity or ancillary services the way it can on the mainland. The VPP revenue available today is utility-run: Fast DR ($5/kW-month) and BYOD Plus ($400/kW)."
+  }
+ ],
+ "open_questions": [
+  "Current effective Schedule J and P demand charges: the $15.77 and $32.14 figures come from search summaries of the January 2026 effective-rate summaries. Confirm on a recent bill, and whether the May 2026 filing changed them.",
+  "Whether the January 2026 base-rate adjustment (about 1.213x on customer and demand charges) also scales the TOU energy charges. If it does, the TOU-J on-peak vs mid-day spread is about 9.7 cents instead of 8.0 cents.",
+  "Oahu Schedule TOU-P, Schedule U (optional TOU demand rate: $30.50 priority-peak and $27.50 mid-peak base) and Schedule DS: rates and whether they are open to new customers were not verified, so they are not modeled.",
+  "Maui Schedule P and Hawaii Island Schedule J: rates not found. Maui Schedule J and Hawaii Island Schedule P are base tariff-sheet values and are probably about 20% below today's effective charges.",
+  "KIUC: only Schedule LP (May 2025 sheet) was found; 2026 rates after the rate case, KIUC's TOU options, and any customer battery or demand-response program were not found.",
+  "Hawaii Energy Power Move storage rebate: whether $150/$250 per kWh applies to nameplate, usable or committed kWh, any per-project or percent-of-cost cap, and remaining PY26 funding.",
+  "BYOD Plus: maximum committed kW for a commercial site, whether a non-export site qualifies, and whether it can be combined with Fast DR on the same battery.",
+  "Whether a standalone, non-exporting commercial battery needs a Rule 14H review at all (some summaries say storage-only facilities do not); confirm with Hawaiian Electric before relying on it.",
+  "Hawaii State Fire Council / county adoption of NFPA 855 and the NEC edition Honolulu enforces; Maui, Hawaii and Kauai county fire codes were not researched.",
+  "Whether battery storage qualifies for Hawaii's Renewable Energy Technologies Income Tax Credit (the 35% credit is documented for solar; 2026 Act 24 changes the credit from tax year 2027), and any federal energy-community bonus for Hawaii counties.",
+  "Boundary of the downtown Honolulu secondary network."
+ ]
+}

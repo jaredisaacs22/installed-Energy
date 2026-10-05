@@ -493,3 +493,112 @@ test('per-month detail: sustainable hold matches an all-days brute force; dollar
   near(sb.effDischarge, 0.94, 1e-9);
   assert.equal(sb.chargeKw, 40);
 });
+
+// ---- Hawaii-driven engine features: billing-demand floor, flat energy adder, solar-paired program rate ----
+import { billingFloor } from '../assets/js/engine/value.js';
+
+test('minimum billing demand: shaving below the floor does not lower the bill', () => {
+  const cfg = buildConfig([{ productId: 'B200-600', count: 1 }], products);
+  const site = { ...baseSite, peak_kw: 320, annual_kwh: 320 * 8760 * 0.5, energy_price: 0.3 };
+  const profile = designDayProfile({ peakKw: 320, annualKwh: site.annual_kwh, buildingType: 'retail' });
+  const mk = (floor) => ({ id: 't', min_billing_demand_kw: floor, demand_charges: [{ label: 'NCP', basis: 'ncp_monthly', rate_usd_per_kw_month: 30, months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }] });
+  const free = demandChargeStreams(site, cfg, mk(null), A, profile);
+  const floored = demandChargeStreams(site, cfg, mk(300), A, profile);
+  assert.equal(billingFloor({}, mk(300)), 300);
+  assert.equal(billingFloor({ min_billing_demand_kw: 50 }, mk(300)), 50, 'charge-level floor wins');
+  // Peak 320 kW with a 300 kW floor: at most 20 kW of reduction is billable per month.
+  assert.ok(floored.streams[0].kw_used <= 20 + 1e-6, `kw_used ${floored.streams[0].kw_used}`);
+  assert.ok(floored.streams[0].annual_usd < free.streams[0].annual_usd);
+  assert.ok(floored.streams[0].flags.includes('min_billing_demand'));
+  assert.ok(!free.streams[0].flags.includes('min_billing_demand'));
+});
+
+test('flat energy adder raises the cost of round-trip losses but not the spread', () => {
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], products);
+  const profile = designDayProfile({ peakKw: 500, annualKwh: baseSite.annual_kwh, buildingType: 'office' });
+  const tariff = (adder) => ({ id: 'a', energy_adder_usd_per_kwh: adder, demand_charges: [], arbitrage: [{ label: 'All', months: [], peak_window: { start: 17, end: 22 }, peak_price: 0.10, offpeak_price: 0.02, days: 'all' }] });
+  const none = arbitrageStreams(baseSite, cfg, tariff(0), A, profile)[0];
+  const adder = arbitrageStreams(baseSite, cfg, tariff(0.25), A, profile)[0];
+  assert.ok(adder.annual_usd < none.annual_usd, 'losses cost more at a higher all-in price');
+  // Per kWh discharged: peak − offpeak/RTE, so the adder lowers it by adder × (1/RTE − 1).
+  const rte = cfg.rte ?? A.rte_ac;
+  const drop = (none.annual_usd - adder.annual_usd) / none.annual_usd;
+  assert.ok(drop > 0.2 && drop < 0.6, `drop ${drop}`);
+  // A site-level override wins over the tariff's adder.
+  const overridden = arbitrageStreams({ ...baseSite, energy_adder_usd_per_kwh: 0 }, cfg, tariff(0.25), A, profile)[0];
+  near(overridden.annual_usd, none.annual_usd, 1e-9);
+  void rte;
+});
+
+test('program rate with paired solar applies only when the site has solar', () => {
+  const cfg = buildConfig([{ productId: 'B65-200', count: 1 }], products);
+  const prog = { id: 'ps', name: 'Solar-tiered rebate', category: 'upfront_incentive', status: 'open', utility_ids: [], confidence: 'medium', eligibility: {}, valuation: { method: 'upfront_per_kwh', rate: 150, rate_with_solar: 250 } };
+  const without = programStream(prog, { ...baseSite, has_solar: false }, cfg, A, {});
+  const withSolar = programStream(prog, { ...baseSite, has_solar: true }, cfg, A, {});
+  near(without.upfront_usd, 150 * cfg.kwh, 1e-9);
+  near(withSolar.upfront_usd, 250 * cfg.kwh, 1e-9);
+  assert.match(withSolar.notes, /paired solar/i);
+  const overridden = programStream(prog, { ...baseSite, has_solar: true, program_rate_overrides: { ps: 100 } }, cfg, A, {});
+  near(overridden.upfront_usd, 100 * cfg.kwh, 1e-9);
+});
+
+// ---- Hawaii data regression (real data/jurisdictions/hi.json) ----
+import { loadAll } from '../scripts/validate-data.mjs';
+const REAL = loadAll();
+const hiSite = (over) => ({ jurisdiction: 'HI', utility_id: 'hawaiian-electric', tariff_id: 'heco-sch-p', building_type: 'retail', peak_kw: 450, annual_kwh: 450 * 8760 * 0.5, service_voltage: 480, phases: 3, service_amps: 1200, busbar_amps: 1200, main_breaker_amps: 1200, network_secondary: 'no', install_location: 'outdoor_ground', supply_contract: 'unknown', setback_ok: 'yes', energy_price: 0.36, ...over });
+const settingsFeoc = { assumptions: { itc_feoc_confirmed: true } };
+
+test('Hawaii is a market with its own utilities, tariffs and persona', () => {
+  assert.ok(REAL.manifest.jurisdictions.some((j) => j.code === 'HI'));
+  const hi = REAL.jurisdictions.HI;
+  assert.deepEqual(hi.utilities.map((u) => u.id).sort(), ['hawaii-electric-light', 'hawaiian-electric', 'kiuc', 'maui-electric']);
+  assert.ok(REAL.panel.personas.some((p) => p.id === 'heco' && p.utility_ids.includes('kiuc')));
+  assert.equal(hi.utilities.every((u) => u.retail_choice === false), true);
+  assert.ok(hi.tariffs.every((t) => (t.coincident_peak_charges || []).length === 0), 'no capacity or transmission tags in Hawaii');
+});
+
+test('Hawaii Schedule P: 300 kW minimum billing demand caps the billable shave', () => {
+  const a = analyzeSite(hiSite({ peak_kw: 305, annual_kwh: 305 * 8760 * 0.5 }), REAL, settingsFeoc);
+  const demand = a.recommended.streams.find((s) => s.category === 'demand_charge');
+  assert.ok(demand.kw_used <= 5 + 1e-6, `only ${305 - 300} kW is billable, got ${demand.kw_used}`);
+  assert.ok(demand.flags.includes('min_billing_demand'));
+  const big = analyzeSite(hiSite({ peak_kw: 900, annual_kwh: 900 * 8760 * 0.5 }), REAL, settingsFeoc);
+  assert.ok(!big.recommended.streams.find((s) => s.category === 'demand_charge').flags.includes('min_billing_demand'));
+});
+
+test('Hawaii programs: eligibility by island, solar tier, and no double-paying the same kW', () => {
+  const oahu = analyzeSite(hiSite({ tariff_id: 'heco-sch-j', peak_kw: 200, annual_kwh: 200 * 8760 * 0.5, has_solar: false }), REAL, settingsFeoc);
+  const labels = (a, cfgId) => a.results.find((r) => r.config.id === cfgId).streams.map((s) => s.program_id).filter(Boolean);
+  assert.ok(labels(oahu, '1xB65-200').includes('hi-fast-dr'), 'Fast DR counts at 65 kW (>= 50 kW)');
+  assert.ok(!labels(oahu, '1xB30-150').includes('hi-fast-dr'), '30 kW is below the 50 kW minimum');
+  assert.ok(!labels(oahu, '1xB65-200').includes('hi-byod-plus'), 'BYOD Plus needs paired solar');
+  const noSolar = oahu.results.find((r) => r.config.id === '1xB65-200').streams.find((s) => s.program_id === 'hi-hawaii-energy-power-move-ces');
+  near(noSolar.upfront_usd, 150 * 200, 1e-9);
+  const solar = analyzeSite(hiSite({ tariff_id: 'heco-sch-j', peak_kw: 200, annual_kwh: 200 * 8760 * 0.5, has_solar: true }), REAL, settingsFeoc);
+  const sol = solar.results.find((r) => r.config.id === '1xB65-200').streams;
+  near(sol.find((s) => s.program_id === 'hi-hawaii-energy-power-move-ces').upfront_usd, 250 * 200, 1e-9);
+  const both = ['hi-fast-dr', 'hi-byod-plus'].filter((id) => sol.some((s) => s.program_id === id));
+  assert.equal(both.length, 1, 'Fast DR and BYOD Plus are treated as exclusive until confirmed');
+  // Hawaii Island and Kauai are outside the Oahu/Maui programs.
+  const helco = analyzeSite(hiSite({ utility_id: 'hawaii-electric-light', tariff_id: 'helco-sch-p', has_solar: true }), REAL, settingsFeoc);
+  assert.ok(!helco.recommended.streams.some((s) => s.program_id === 'hi-hawaii-energy-power-move-ces' || s.program_id === 'hi-fast-dr'));
+});
+
+test('Hawaii TOU-J arbitrage uses the fuel-charge adder for round-trip losses', () => {
+  const a = analyzeSite(hiSite({ tariff_id: 'heco-tou-j', peak_kw: 200, annual_kwh: 200 * 8760 * 0.5 }), REAL, settingsFeoc);
+  const arb = a.results.find((r) => r.config.id === '1xB65-200').streams.find((s) => s.category === 'energy_arbitrage');
+  assert.ok(arb, 'TOU-J has an arbitrage stream');
+  assert.match(arb.basis_text, /\$0\.3318 peak/);
+  assert.match(arb.basis_text, /\$0\.2518/);
+});
+
+test('Hawaii: tariffs with no found rate are reported missing, not valued at zero', () => {
+  const a = analyzeSite(hiSite({ utility_id: 'maui-electric', tariff_id: 'meco-sch-p', peak_kw: 400 }), REAL, settingsFeoc);
+  assert.ok(a.missing.length > 0);
+  assert.equal(a.recommended.streams.filter((s) => s.category === 'demand_charge').length, 0);
+});
+
+test('workbench: Hawaii addresses and utility names map to the HI market', () => {
+  assert.equal(marketFor({ iso: '', addr: '1 Beach Rd, Honolulu, HI 96815' }).code, 'HI');
+  assert.equal(marketFor({ iso: 'Hawaiian Electric', addr: '' }).code, 'HI');
+});
