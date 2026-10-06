@@ -388,3 +388,36 @@ input[aria-invalid='true'] { border-color: var(--critical); }
 .legend .sw.line { height: 3px; width: 16px; border-radius: 2px; vertical-align: 3px; }
 .legend .sw.dash { height: 0; width: 16px; border-radius: 0; border-top: 2.5px dashed currentColor; background: none; vertical-align: 3px; }
 @media print { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+/* Interval data tab (the workbench's tab 1, built into the screener) */
+.iv-tab > .card + .card, .iv-tab > .card + .iv-kpis, .iv-tab > .iv-kpis + .card, .iv-tab > .callout + .card, .iv-tab > .iv-kpis + .callout, .iv-tab > .grid-2 + .card, .iv-tab > .card + .grid-2, .iv-tab > .callout + .grid-2, .iv-tab > .iv-kpis + .grid-2 { margin-top: 16px; }
+.drop { border: 2px dashed var(--line-strong); border-radius: 10px; padding: 26px 16px; text-align: center; color: var(--ink-2); cursor: pointer; background: var(--surface-2); }
+.drop:hover, .drop:focus-visible, .drop.over { border-color: var(--green); background: var(--green-tint-2); outline: none; }
+.drop b { color: var(--ink); }
+.iv-error { margin-top: 10px; border: 1px solid #f0c4c4; background: #fdeeee; border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.iv-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.iv-kpis .kpi .value small { font-size: 13px; font-weight: 500; color: var(--muted); }
+.iv-zoombar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.det-tbl { max-width: 680px; margin-bottom: 10px; }
+.det-tbl td:first-child { color: var(--ink-2); width: 42%; }
+.warn-strong { color: var(--warning-ink); font-weight: 600; }
+.good-strong { color: var(--green); font-weight: 600; }
+.warn-note { margin: 6px 0 0; color: var(--warning-ink); font-size: 13px; }
+.ov-details { margin-top: 8px; }
+.ov-details > summary { cursor: pointer; font-weight: 600; color: var(--green-dark); }
+.dgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px 14px; margin-top: 10px; }
+.dgrid .field { margin: 0; }
+.iv-charts .dchart-wrap { margin-top: 4px; }
+.iv-year { touch-action: pan-y; }
+.heatmap { border-collapse: collapse; font-size: 11px; width: 100%; min-width: 760px; }
+.heatmap th { font-weight: 600; color: var(--ink-2); padding: 3px 4px; text-align: center; }
+.heatmap tbody th { text-align: left; padding-right: 8px; }
+.heatmap td { text-align: center; padding: 4px 2px; border: 1px solid #fff; min-width: 26px; font-variant-numeric: tabular-nums; }
+@media print { .iv-tab .no-print { display: none !important; } }
+
+.iv-kpis .kpi-date .value { font-size: 17px; margin-top: 5px; white-space: nowrap; }
+@media (max-width: 760px) {
+  .iv-tab .dchart .axis text, .iv-tab .dchart .axis-title { font-size: 15px; }
+  .iv-tab .iv-year .axis text, .iv-tab .iv-year .axis-title { font-size: 25px; }
+  .iv-tab .dchart .axis text { stroke-width: 0; }
+}

@@ -4,13 +4,13 @@ import { h, s, num, usd, showTip, hideTip } from './ui.js';
 
 const COLORS = { original: '#49525e', shaved: '#008545', shavedFill: 'rgba(0,133,69,0.10)', target: '#c99400', soc: '#0a9396', socFill: 'rgba(10,147,150,0.12)', bar: '#008545' };
 
-function niceStep(raw) {
+export function niceStep(raw) {
   const p = 10 ** Math.floor(Math.log10(Math.max(raw, 1e-9)));
   const m = raw / p;
   return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
 }
 
-const hhmm = (hours) => {
+export const hhmm = (hours) => {
   const hh = Math.floor(hours + 1e-9);
   const mm = Math.round((hours - hh) * 60);
   return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;

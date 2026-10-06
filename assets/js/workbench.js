@@ -173,6 +173,19 @@ export function matchUtility(name, utilities) {
   return utilities.find((u) => u.name.toUpperCase().includes(target.trim())) || utilities.find((u) => target.includes(u.name.toUpperCase().split(' (')[0])) || null;
 }
 
+/** Site fields, notes and warnings that follow from an interval series (buildInterval result). */
+export function intervalPatch(interval) {
+  const patch = {
+    peak_kw: Math.round(interval.peak_kw * 10) / 10,
+    annual_kwh: Math.round(interval.annual_kwh),
+    min_load_kw: Math.round(interval.p05_kw * 10) / 10,
+  };
+  const notes = [`Interval data: ${interval.start} to ${interval.end} (${interval.days} days, ${interval.monthsCovered} months, ${Math.round(interval.dtHours * 60)}-min${interval.resampledFrom ? `, averaged from ${interval.resampledFrom}-min` : ''}). Peak ${patch.peak_kw} kW; annualized ${Math.round(patch.annual_kwh).toLocaleString('en-US')} kWh; minimum load (0.5th percentile) ${patch.min_load_kw} kW.`];
+  const warnings = [];
+  if (interval.monthsCovered < 12) warnings.push(`Interval data covers ${interval.monthsCovered} of 12 months; missing months use the generic load shape.`);
+  return { patch, notes, warnings };
+}
+
 /**
  * Map a workbench site model onto an Atlas site patch, plus notes and cross-checks for the user.
  * `interval` is the result of buildInterval (or null).
@@ -202,11 +215,10 @@ export function siteFromWorkbench(model, interval, data) {
     patch.phases = 3;
   }
   if (interval) {
-    patch.peak_kw = Math.round(interval.peak_kw * 10) / 10;
-    patch.annual_kwh = Math.round(interval.annual_kwh);
-    patch.min_load_kw = Math.round(interval.p05_kw * 10) / 10;
-    notes.push(`Interval data: ${interval.start} to ${interval.end} (${interval.days} days, ${interval.monthsCovered} months, ${Math.round(interval.dtHours * 60)}-min${interval.resampledFrom ? `, averaged from ${interval.resampledFrom}-min` : ''}). Peak ${patch.peak_kw} kW; annualized ${Math.round(patch.annual_kwh).toLocaleString('en-US')} kWh; minimum load (0.5th percentile) ${patch.min_load_kw} kW.`);
-    if (interval.monthsCovered < 12) warnings.push(`Interval data covers ${interval.monthsCovered} of 12 months; missing months use the generic load shape.`);
+    const ip = intervalPatch(interval);
+    Object.assign(patch, ip.patch);
+    notes.push(...ip.notes);
+    warnings.push(...ip.warnings);
   } else {
     const a = model?.analysis || {};
     if (a.peakKW) patch.peak_kw = Math.round(a.peakKW * 10) / 10;

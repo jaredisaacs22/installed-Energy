@@ -9,7 +9,9 @@ import { settingsStore } from '../app.js';
 import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, atlasBlockFor } from '../export.js';
 import { addToPortfolio } from './portfolio.js';
 import { intervalStore, recordId } from '../interval-store.js';
-import { decodeRaw, buildInterval, siteFromWorkbench, mergeAtlasIntoWorkbench } from '../workbench.js';
+import { decodeRaw, buildInterval, siteFromWorkbench, intervalPatch, mergeAtlasIntoWorkbench } from '../workbench.js';
+import { ingestCsvText, ingestXlsx, selectSheet, reprocess, recordFromState } from '../interval-ingest.js';
+import { intervalTab } from './interval-tab.js';
 
 const SITE_KEY = 'atlas.site';
 
@@ -110,6 +112,10 @@ export function renderScreener(root, data, params) {
   let savingsMonth = null; // month shown in the dispatch chart (null = month with the highest peak)
   let savingsView = 'hold'; // 'hold' = workbench view (sustainable hold), 'plan' = the target the savings assume
   const holdCache = new WeakMap();
+  let ivSession = null; // the live import of the loaded interval file ({ id, state }); lets the user re-process it with other columns
+  let ivBusy = null; // name of the file being parsed
+  let ivError = null; // { name, msg } of the last failed import
+  const ivUi = { wd: null, zoom: null }; // Interval data tab view state: worst-day period, year-chart zoom
 
   const formHost = h('div', { class: 'card form' });
   const resultHost = h('div', {});
@@ -180,6 +186,8 @@ export function renderScreener(root, data, params) {
       toast('Not a workbench site file (no meta or interval data found).');
       return;
     }
+    ivSession = null;
+    ivError = null;
     const decoded = model.raw ? decodeRaw(model.raw) : null;
     if (model.raw && !decoded) toast('The interval data block is inconsistent and was ignored.');
     const iv = decoded ? buildInterval(decoded) : null;
@@ -206,25 +214,141 @@ export function renderScreener(root, data, params) {
     toast(imp.warnings.length ? `Imported with ${imp.warnings.length} note${imp.warnings.length > 1 ? 's' : ''} — see the workbench box.` : `Imported ${file.name}.`);
   }
 
+  /** Route a dropped or picked file: workbench site file (.json), Excel workbook, or CSV / TSV text. */
+  async function importIntervalFile(file) {
+    const ext = ((file.name.match(/\.([^.]+)$/) || [])[1] || '').toLowerCase();
+    if (ext === 'json') return importWorkbench(file);
+    if (ext === 'xls') {
+      ivError = { name: file.name, msg: 'Legacy .xls (binary) is not supported — open it in Excel and re-save as .xlsx, or export CSV.' };
+      return refresh();
+    }
+    ivError = null;
+    ivBusy = file.name;
+    refresh();
+    try {
+      const isX = ext === 'xlsx' || ext === 'xlsm';
+      const state = isX ? await ingestXlsx(await file.arrayBuffer(), file.name) : ingestCsvText(await file.text(), file.name);
+      await adoptState(state);
+    } catch (err) {
+      ivError = { name: file.name, msg: err.message || String(err) };
+      ivBusy = null;
+      refresh();
+    }
+  }
+
+  async function importPasted(text) {
+    ivError = null;
+    try {
+      await adoptState(ingestCsvText(text, 'pasted.csv'));
+    } catch (err) {
+      ivError = { name: 'Pasted data', msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  /** Store a parsed import, take the site's peak, annual kWh and minimum load from it, and show the Interval data tab. */
+  async function adoptState(state) {
+    const probe = recordFromState(state, 'pending');
+    const id = recordId({ meta: probe.model.meta, raw: probe.raw });
+    await intervalStore.put({ ...probe, id });
+    const iv = intervalStore.intervalFor(id);
+    if (!iv) throw new Error('No complete day of interval data was found in that file.');
+    const ip = intervalPatch(iv);
+    ivSession = { id, state };
+    ivBusy = null;
+    ivUi.wd = null;
+    ivUi.zoom = null;
+    site = normalizeSite(
+      {
+        ...site,
+        ...ip.patch,
+        name: site.name && site.name !== 'New site' ? site.name : probe.model.meta.site,
+        interval_id: id,
+        workbench_file: probe.file_name,
+        workbench: { notes: ip.notes, warnings: ip.warnings },
+        custom_profile: worstDayProfile(iv),
+        shave_kw_override: {},
+      },
+      data,
+    );
+    storage.set(SITE_KEY, site);
+    resultsTab = 'interval';
+    renderForm();
+    runAnalysis();
+  }
+
+  async function reprocessLoaded(overrides) {
+    if (!ivSession) return;
+    try {
+      await adoptState(reprocess(ivSession.state, overrides));
+      ivError = null;
+    } catch (err) {
+      ivError = { name: ivSession.state.file.name, msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  async function switchSheet(name) {
+    if (!ivSession) return;
+    try {
+      await adoptState(await selectSheet(ivSession.state, name));
+      ivError = null;
+    } catch (err) {
+      ivError = { name: ivSession.state.file.name, msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  function removeInterval() {
+    ivSession = null;
+    ivError = null;
+    update({ interval_id: null, custom_profile: null, workbench: null, workbench_file: null }, { rerenderForm: true });
+  }
+
+  function intervalCtx() {
+    const rec = intervalStore.get(site.interval_id);
+    return {
+      rec,
+      analysis: rec ? intervalStore.analysisFor(rec.id) : null,
+      live: ivSession && rec && ivSession.id === rec.id ? ivSession.state : null,
+      persistent: intervalStore.persistent,
+      busy: ivBusy,
+      error: ivError,
+      ui: ivUi,
+      rerender: () => refresh(),
+      onFile: importIntervalFile,
+      onPaste: importPasted,
+      onRemove: removeInterval,
+      onReprocess: reprocessLoaded,
+      onSheet: switchSheet,
+    };
+  }
+
+  /** The no-peak state still offers the Interval data import, since loading a file fills the peak in. */
+  function renderEmpty() {
+    resultHost.replaceChildren(h('div', { class: 'card empty' }, 'Enter the site’s peak demand to start, or load a meter interval file below.'), intervalTab(intervalCtx()));
+  }
+  const refresh = () => (site.peak_kw > 0 && analysis ? renderResults() : renderEmpty());
+
   function workbenchBox() {
     const rec = intervalStore.get(site.interval_id);
     const iv = rec ? intervalStore.intervalFor(site.interval_id) : null;
-    const input = h('input', { type: 'file', accept: '.json,application/json', style: { display: 'none' }, 'aria-label': 'Workbench site file', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) importWorkbench(f); } });
+    const input = h('input', { type: 'file', accept: '.json,application/json,.csv,.tsv,.txt,.xlsx,.xlsm', style: { display: 'none' }, 'aria-label': 'Workbench site file', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) importIntervalFile(f); } });
     const wb = site.workbench;
     return h('div', { class: `wb-box${iv ? ' on' : ''}` },
       h('div', { class: 'wb-head' },
-        h('div', {}, h('strong', {}, iv ? 'Interval data from the workbench' : 'Have a workbench site file?'),
-          h('div', { class: 'small muted' }, iv ? `${rec.file_name} · ${iv.start} to ${iv.end} · ${iv.days} days · ${Math.round(iv.dtHours * 60)}-min` : 'Open the <site>-site.json saved by the Site Analysis Workbench to value the site from its real interval data.')),
+        h('div', {}, h('strong', {}, iv ? (rec.source === 'interval-file' ? 'Interval data from a meter file' : 'Interval data from the workbench') : 'Have a meter file or workbench site file?'),
+          h('div', { class: 'small muted' }, iv ? `${rec.file_name} · ${iv.start} to ${iv.end} · ${iv.days} days · ${Math.round(iv.dtHours * 60)}-min` : 'Open a meter interval file (CSV or Excel) or the <site>-site.json saved by the Site Analysis Workbench to value the site from its real interval data.')),
         h('div', { class: 'btn-row' },
-          h('button', { class: 'btn small primary', type: 'button', onclick: () => input.click() }, iv ? 'Replace file' : 'Open site file'),
-          iv ? h('button', { class: 'btn small', type: 'button', onclick: () => { update({ interval_id: null, custom_profile: null, workbench: null, workbench_file: null }, { rerenderForm: true }); } }, 'Remove') : null,
+          h('button', { class: 'btn small primary', type: 'button', onclick: () => input.click() }, iv ? 'Replace file' : 'Open file'),
+          iv ? h('button', { class: 'btn small', type: 'button', onclick: removeInterval }, 'Remove') : null,
         ),
         input,
       ),
       wb && (wb.warnings?.length || wb.notes?.length)
         ? h('ul', { class: 'wb-notes small' }, [...(wb.warnings || []).map((t) => h('li', { class: 'warn' }, t)), ...(wb.notes || []).map((t) => h('li', {}, t))])
         : null,
-      site.interval_id && !iv ? h('div', { class: 'small warn' }, 'The interval data for this site is not stored in this browser. Open the site file again to use it.') : null,
+      site.interval_id && !iv ? h('div', { class: 'small warn' }, 'The interval data for this site is not stored in this browser. Open the file again to use it.') : null,
     );
   }
 
@@ -286,7 +410,7 @@ export function renderScreener(root, data, params) {
   function runAnalysis() {
     for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community', 'property_owner']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
     if (!(site.peak_kw > 0)) {
-      resultHost.replaceChildren(h('div', { class: 'card empty' }, 'Enter the site’s peak demand to start.'));
+      renderEmpty();
       return;
     }
     try {
@@ -315,6 +439,7 @@ export function renderScreener(root, data, params) {
     };
     const panelCount = a.panel.length + a.briefing.length;
     const TABS = [
+      ['interval', 'Interval data'],
       ['sizing', 'Sizing'],
       ['savings', 'Savings'],
       ['limits', 'Site limits'],
@@ -330,6 +455,7 @@ export function renderScreener(root, data, params) {
       h('div', { class: 'tabs-inline result-tabs no-print', role: 'tablist', style: { marginTop: '16px' } },
         TABS.map(([id, label]) => h('button', { type: 'button', role: 'tab', 'aria-selected': resultsTab === id ? 'true' : 'false', onclick: () => { resultsTab = id; renderResults(); } }, label)),
       ),
+      pane('interval', resultsTab === 'interval' ? intervalTab(intervalCtx()) : null),
       pane('sizing',
         h('div', { class: 'card' },
           h('div', { class: 'card-head' }, h('h2', {}, 'Battery configurations'),
@@ -437,7 +563,7 @@ export function renderScreener(root, data, params) {
     const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
     const daysLine = held != null
       ? (held === ivDays.length ? h('div', { class: 'check-ok' }, '✓ ', h('strong', {}, `Holds all ${ivDays.length} days of ${MON[m - 1]}.`), ` Dispatched at ${num(minCap, 1)} kW — highest shaved peak on the worst day: ${num(sim.peakAfter, 1)} kW.`) : h('div', { class: 'check-warn' }, '⚠ ', h('strong', {}, `Holds ${held} of ${ivDays.length} days of ${MON[m - 1]}`), ' when simulated interval by interval from a full battery each morning.'))
-      : h('div', { class: 'check-info' }, 'Design day only. Open the workbench site file to check every day of every month.');
+      : h('div', { class: 'check-info' }, 'Design day only. Load a meter interval file (Interval data tab) or a workbench site file to check every day of every month.');
     const viewSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Dispatch view' },
       h('button', { type: 'button', 'aria-pressed': savingsView === 'hold' ? 'true' : 'false', onclick: () => { savingsView = 'hold'; renderResults(); } }, 'Sustainable hold (workbench view)'),
       h('button', { type: 'button', 'aria-pressed': savingsView === 'plan' ? 'true' : 'false', onclick: () => { savingsView = 'plan'; renderResults(); } }, 'Planned target (savings basis)'));
@@ -478,7 +604,7 @@ export function renderScreener(root, data, params) {
         h('div', { class: 'card-head' }, h('h2', {}, 'Per-month peak targets & savings'), h('span', { class: 'small muted' }, 'Click a row to chart that month')),
         h('p', { class: 'small ink2' }, iv
           ? 'Sustainable hold is the lowest all-hours peak the battery holds on every day of that month (the workbench’s “Sustainable hold”). Target is what the savings assume after the capture factor. Dollars use every demand charge in the selected rate, including on-peak windows.'
-          : 'Sustainable hold and target come from the design day. Open the workbench site file to size each month from every day of interval data.'),
+          : 'Sustainable hold and target come from the design day. Load a meter interval file or workbench site file to size each month from every day of interval data.'),
         h('div', { class: 'table-wrap' }, h('table', { class: 'pm-table' },
           h('thead', {}, h('tr', {}, ['Month', 'Peak', 'Sustainable hold', 'Target (kW)', 'kW reduction', 'Demand savings'].map((t, i) => h('th', { class: i ? 'num' : '' }, t)))),
           h('tbody', {},
