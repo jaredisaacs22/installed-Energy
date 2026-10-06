@@ -8,6 +8,7 @@ import { renderMethod } from './views/method.js';
 import { renderSettings } from './views/settings.js';
 import { renderOverview } from './views/overview.js';
 import { renderHealth } from './views/health.js';
+import { renderWorkbench } from './views/workbench.js';
 import { requireSignIn, signOut } from './access.js';
 import { intervalStore } from './interval-store.js';
 
@@ -50,6 +51,7 @@ export const settingsStore = {
 const routes = {
   overview: renderOverview,
   screener: renderScreener,
+  workbench: renderWorkbench,
   health: renderHealth,
   portfolio: renderPortfolio,
   library: renderLibrary,
@@ -65,13 +67,14 @@ function parseHash() {
 }
 
 let DATA = null;
-const TITLES = { overview: 'Overview', screener: 'Site screener', portfolio: 'Portfolio', library: 'Programs & tariffs', health: 'Data health', panel: 'Expert panel', method: 'Methodology', settings: 'Settings' };
+const TITLES = { overview: 'Overview', screener: 'Site screener', workbench: 'Workbench', portfolio: 'Portfolio', library: 'Programs & tariffs', health: 'Data health', panel: 'Expert panel', method: 'Methodology', settings: 'Settings' };
 
 async function render() {
   const { route, params } = parseHash();
   document.querySelectorAll('[data-route]').forEach((a) => a.setAttribute('aria-current', a.dataset.route === route ? 'page' : 'false'));
   document.title = `${TITLES[route] || 'BESS Incentive Atlas'} · BESS Incentive Atlas`;
   app.replaceChildren();
+  app.classList.toggle('wide', route === 'workbench');
   try {
     routes[route](app, DATA, params);
   } catch (err) {
