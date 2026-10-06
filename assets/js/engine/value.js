@@ -4,6 +4,7 @@
 
 import { designDayProfile, optimizeShave, windowMask, eventDayReduction, deepenAcrossDays, componentPeaks, capsAt, energyUnderCaps, simulateDay } from './loadshape.js';
 import { daysInMonth } from '../workbench.js';
+import { dispatchOptionsOf } from './hold.js';
 
 export const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const ALL_MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -86,14 +87,17 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
   const override = site.shave_kw_override?.[config.id];
   const ratchetPeakMonths = a.ratchet_peak_months || [6, 7, 8, 9];
   const rte = rteOf(config, a);
-  const battery = { kw: config.kw, chargeKw: chargeKwOf(config), usableKwh: usableKwh(config, a), rte };
+  // Reserve capacity (Savings tab): the share of usable kWh held back is never discharged for peak shaving,
+  // which is the same as shaving with a battery smaller by that share (the workbench's own reasoning).
+  const keep = 1 - dispatchOptionsOf(site).reserve;
+  const battery = { kw: config.kw, chargeKw: chargeKwOf(config), usableKwh: usableKwh(config, a) * keep, rte };
   const energyCostPerKwhMonth = site.energy_price > 0 ? (1 / rte - 1) * site.energy_price * ((a.shave_days_per_year || 250) / 12) : 0;
   let dailyEnergyKwh = 0;
   let cyclingKwhPerYear = 0;
   let intervalMonths = 0;
   const monthOpt = {};
   const monthDetail = {};
-  const simBattery = simBatteryOf(config, a);
+  const simBattery = { ...simBatteryOf(config, a), storedKwh: simBatteryOf(config, a).storedKwh * keep };
   // Months are grouped by active charges and event programs when they share the design-day profile.
   // With interval data each month is its own group: its envelope, its days.
   const groups = new Map();

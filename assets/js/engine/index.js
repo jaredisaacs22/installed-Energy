@@ -41,9 +41,12 @@ export function analyzeSite(site, data, settings = {}, extras = {}) {
   const ctx = { site, jurisdiction, global: data.global, panel: data.panel, products, assumptions, tariff, programs, profile, interval };
   const limits = siteLimits(site, ctx, profile);
 
-  const configs = site.custom_configs?.length
+  let configs = site.custom_configs?.length
     ? site.custom_configs.map((items) => buildConfig(items, products))
     : candidateConfigs(products, { usefulKwCeiling: Math.max(limits.usefulKwCeiling ?? site.peak_kw, 1), maxUnitsPerProduct: site.max_units_per_product || 8 });
+  // A system built by hand on the Savings tab (any mix of models) is evaluated alongside the candidates.
+  const custom = site.custom_system?.length ? buildConfig(site.custom_system, products) : null;
+  if (custom && custom.units > 0 && !configs.some((c) => c.id === custom.id)) configs = [...configs, custom];
 
   const results = configs.map((config) => {
     const vs = valueStack(site, config, ctx);

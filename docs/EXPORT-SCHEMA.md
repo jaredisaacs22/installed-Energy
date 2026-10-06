@@ -5,6 +5,8 @@ The screener exports one site and the portfolio exports many, each as an Excel w
 ## Inputs
 One row per input: `section` (`site` | `assumption` | `meta`), `key`, `value`. Includes `export_schema_version` and `generated_at`.
 
+Savings-tab settings are site inputs too: `dispatch.reserve_pct` (0–90, share of usable kWh never discharged for shaving), `dispatch.carry` (charge carried across days), `dispatch.max_daily` (deeper discharge on lighter days), `dispatch.sched.*` (fixed discharge/charge windows, months and weekdays) and `dispatch.month_targets.<month>` (per-month kW target overrides). A hand-built system is `custom_system`, a JSON list of `{productId, count}`. Interval data loaded from a meter file is referenced by `interval_id` and is not part of these tables.
+
 ## Configs (one row per battery configuration)
 | Column | Meaning |
 |---|---|

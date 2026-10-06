@@ -94,7 +94,7 @@ function overrides(ctx, d, live) {
       field('Date-only col (if split)', sel('date', opts(null, true))),
       field('Time-of-day col (if split)', sel('time', opts(null, true))),
       field('Value column', sel('val', opts(null, true))),
-      field('Value type', typeSel),
+      field('Value type', [typeSel, h('div', { class: 'hint' }, 'Applies only when a value column is chosen above.')]),
     ];
     go = () => ctx.onReprocess({ dtCol: val('dt'), dateCol: val('date'), timeCol: val('time'), valCol: val('val'), valueType: val('type') });
   } else {

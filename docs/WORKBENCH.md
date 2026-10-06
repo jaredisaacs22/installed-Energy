@@ -41,6 +41,24 @@ The script rewrites `assets/workbench/workbench.html`. Every edit asserts that i
 
 Do not edit `assets/workbench/workbench.html` by hand; changes are overwritten the next time the script runs.
 
+## The first two tabs, built into the Site screener
+
+The Workbench tab above is the original file in a frame. Its first two tabs are also built into the Site screener, so a site can go from a meter file to incentives and tariffs in one place:
+
+| Workbench tab | In the screener | How it was ported |
+|---|---|---|
+| 1. Interval Data | **Interval data** result tab: import, detection summary and overrides, KPIs, monthly peak vs average, worst-day profile, year overview, monthly table, heat map | `assets/js/interval-parse.js` is the workbench's parsing code ported verbatim (CSV and Excel readers, unit and column detection, multi-meter, DST and gap handling, the monthly analysis). On 14 test inputs (CSV layouts, DST, multi-year, multi-meter and an Excel workbook) in four time zones it matches the original field for field. Charts are redrawn as SVG instead of Chart.js. |
+| 2. Sizing | **Savings** result tab: custom system, reserve, schedule, carry, maximize on lighter days, daily dispatch by month with audit and CSV, per-month targets | `assets/js/engine/hold.js` is the workbench's dispatch core (`dispatchProfileFrom`, `robustHold`, `monthSustainCheck`, schedules, reserve). It reproduces the original's sustainable holds, month checks and dispatch traces on 140 combinations of site, system and option. |
+| 3. Energy Displacement | Not built in. Use the **Workbench** tab. | |
+
+What differs from the workbench:
+
+- **Product list.** The screener uses the products in `data/products.json` (the four Sunbelt units and any mix of them), not the workbench's catalog, so there is no RPSLinkIN, RPS1200 or US-BESS 2.5 MW option, no unit-spec editor and no "use this system on both tabs".
+- **Resolution.** Interval data is averaged to 15-minute intervals before the monthly dispatch search, as the rest of the Atlas does. 15-minute files match the workbench exactly; finer data can differ slightly.
+- **Dollars.** The workbench runs kW-only in this build. The screener adds the Atlas demand-charge valuation. Of the workbench options only the reserve changes those dollars; the schedule and carry options apply to the holds and dispatch charts.
+- **No ComStock proxy.** The screener's building-type load shape covers the no-interval-file case.
+- **Excel value type.** As in the workbench, choosing a value type in the override only takes effect together with a chosen value column.
+
 ## Access
 
 The page itself is a static file under `assets/`, so it is reachable by URL without signing in, like every other file on the site. It contains no customer data and, after the scrub, no prices or fonts. Site files you open in it stay in your browser.

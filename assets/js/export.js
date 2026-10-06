@@ -353,7 +353,7 @@ export function inputRows(a) {
   const s = a.site;
   const rows = [];
   for (const [k, v] of Object.entries(s)) {
-    if (Array.isArray(v)) rows.push({ section: 'site', key: k, value: v.join(',') });
+    if (Array.isArray(v)) rows.push({ section: 'site', key: k, value: v.some((x) => x && typeof x === 'object') ? JSON.stringify(v) : v.join(',') });
     else if (v && typeof v === 'object') {
       // Nested user entries (bill rate overrides, program overrides, event windows, shave overrides).
       for (const [k2, v2] of Object.entries(v)) {
