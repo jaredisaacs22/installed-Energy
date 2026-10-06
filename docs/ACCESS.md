@@ -10,6 +10,7 @@ GitHub Pages serves static files, so this check runs in the visitor's browser:
 
 - It **does not verify** that the person owns the address; anyone can type any `@sunbeltrentals.com` address.
 - The JSON files under `data/` (public programs and tariffs research) remain downloadable by URL. If the repository is public, the source is visible on GitHub too.
+- The Workbench page (`assets/workbench/workbench.html`) is a static file like any other under `assets/`, so it is reachable by URL without signing in. That is why its embedded fonts and unit prices were removed before it was committed ([WORKBENCH.md](WORKBENCH.md)). Do not add prices, customer data or licensed files under `assets/` or `data/`.
 - **Site inputs and portfolios never leave the visitor's browser** (they live in `localStorage`), so customer site data is not exposed by the hosting.
 
 Treat the gate as a "keep casual visitors out" measure, not security.

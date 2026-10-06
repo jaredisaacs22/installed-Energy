@@ -1,7 +1,7 @@
 // Site screener: inputs on the left, ranked configurations, value stack, limits and panel review on the right.
 import { h, usd, num, yrs, pct, badge, sevBadge, sevIcon, confBadge, toast, storage, initials, sourcesList } from '../ui.js';
-import { analyzeSite, BUILDING_SHAPES, loadFactor } from '../engine/index.js';
-import { blockText, allHoursHolds, simBatteryOf } from '../engine/value.js';
+import { analyzeSite, buildConfig, BUILDING_SHAPES, loadFactor } from '../engine/index.js';
+import { blockText, simBatteryOf } from '../engine/value.js';
 import { simulateDay } from '../engine/loadshape.js';
 import { dispatchDayChart, socChart, monthlySavingsChart } from '../dispatch-chart.js';
 import { valueStackChart } from '../chart.js';
@@ -9,7 +9,10 @@ import { settingsStore } from '../app.js';
 import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, atlasBlockFor } from '../export.js';
 import { addToPortfolio } from './portfolio.js';
 import { intervalStore, recordId } from '../interval-store.js';
-import { decodeRaw, buildInterval, siteFromWorkbench, mergeAtlasIntoWorkbench } from '../workbench.js';
+import { decodeRaw, buildInterval, siteFromWorkbench, intervalPatch, mergeAtlasIntoWorkbench } from '../workbench.js';
+import { ingestCsvText, ingestXlsx, selectSheet, reprocess, recordFromState } from '../interval-ingest.js';
+import { intervalTab } from './interval-tab.js';
+import { dispatchSection } from './dispatch-tab.js';
 
 const SITE_KEY = 'atlas.site';
 
@@ -107,9 +110,11 @@ export function renderScreener(root, data, params) {
   let tariffOpen = null; // null = auto (open when rates are missing)
   let resultsTab = params.get('tab') || 'sizing';
   if (resultsTab === 'detail') resultsTab = 'savings';
-  let savingsMonth = null; // month shown in the dispatch chart (null = month with the highest peak)
-  let savingsView = 'hold'; // 'hold' = workbench view (sustainable hold), 'plan' = the target the savings assume
-  const holdCache = new WeakMap();
+  const dispUi = { month: null, day: null, view: 'day', basis: 'workbench' }; // Savings tab dispatch view state
+  let ivSession = null; // the live import of the loaded interval file ({ id, state }); lets the user re-process it with other columns
+  let ivBusy = null; // name of the file being parsed
+  let ivError = null; // { name, msg } of the last failed import
+  const ivUi = { wd: null, zoom: null }; // Interval data tab view state: worst-day period, year-chart zoom
 
   const formHost = h('div', { class: 'card form' });
   const resultHost = h('div', {});
@@ -180,6 +185,8 @@ export function renderScreener(root, data, params) {
       toast('Not a workbench site file (no meta or interval data found).');
       return;
     }
+    ivSession = null;
+    ivError = null;
     const decoded = model.raw ? decodeRaw(model.raw) : null;
     if (model.raw && !decoded) toast('The interval data block is inconsistent and was ignored.');
     const iv = decoded ? buildInterval(decoded) : null;
@@ -206,25 +213,141 @@ export function renderScreener(root, data, params) {
     toast(imp.warnings.length ? `Imported with ${imp.warnings.length} note${imp.warnings.length > 1 ? 's' : ''} — see the workbench box.` : `Imported ${file.name}.`);
   }
 
+  /** Route a dropped or picked file: workbench site file (.json), Excel workbook, or CSV / TSV text. */
+  async function importIntervalFile(file) {
+    const ext = ((file.name.match(/\.([^.]+)$/) || [])[1] || '').toLowerCase();
+    if (ext === 'json') return importWorkbench(file);
+    if (ext === 'xls') {
+      ivError = { name: file.name, msg: 'Legacy .xls (binary) is not supported — open it in Excel and re-save as .xlsx, or export CSV.' };
+      return refresh();
+    }
+    ivError = null;
+    ivBusy = file.name;
+    refresh();
+    try {
+      const isX = ext === 'xlsx' || ext === 'xlsm';
+      const state = isX ? await ingestXlsx(await file.arrayBuffer(), file.name) : ingestCsvText(await file.text(), file.name);
+      await adoptState(state);
+    } catch (err) {
+      ivError = { name: file.name, msg: err.message || String(err) };
+      ivBusy = null;
+      refresh();
+    }
+  }
+
+  async function importPasted(text) {
+    ivError = null;
+    try {
+      await adoptState(ingestCsvText(text, 'pasted.csv'));
+    } catch (err) {
+      ivError = { name: 'Pasted data', msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  /** Store a parsed import, take the site's peak, annual kWh and minimum load from it, and show the Interval data tab. */
+  async function adoptState(state) {
+    const probe = recordFromState(state, 'pending');
+    const id = recordId({ meta: probe.model.meta, raw: probe.raw });
+    await intervalStore.put({ ...probe, id });
+    const iv = intervalStore.intervalFor(id);
+    if (!iv) throw new Error('No complete day of interval data was found in that file.');
+    const ip = intervalPatch(iv);
+    ivSession = { id, state };
+    ivBusy = null;
+    ivUi.wd = null;
+    ivUi.zoom = null;
+    site = normalizeSite(
+      {
+        ...site,
+        ...ip.patch,
+        name: site.name && site.name !== 'New site' ? site.name : probe.model.meta.site,
+        interval_id: id,
+        workbench_file: probe.file_name,
+        workbench: { notes: ip.notes, warnings: ip.warnings },
+        custom_profile: worstDayProfile(iv),
+        shave_kw_override: {},
+      },
+      data,
+    );
+    storage.set(SITE_KEY, site);
+    resultsTab = 'interval';
+    renderForm();
+    runAnalysis();
+  }
+
+  async function reprocessLoaded(overrides) {
+    if (!ivSession) return;
+    try {
+      await adoptState(reprocess(ivSession.state, overrides));
+      ivError = null;
+    } catch (err) {
+      ivError = { name: ivSession.state.file.name, msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  async function switchSheet(name) {
+    if (!ivSession) return;
+    try {
+      await adoptState(await selectSheet(ivSession.state, name));
+      ivError = null;
+    } catch (err) {
+      ivError = { name: ivSession.state.file.name, msg: err.message || String(err) };
+      refresh();
+    }
+  }
+
+  function removeInterval() {
+    ivSession = null;
+    ivError = null;
+    update({ interval_id: null, custom_profile: null, workbench: null, workbench_file: null }, { rerenderForm: true });
+  }
+
+  function intervalCtx() {
+    const rec = intervalStore.get(site.interval_id);
+    return {
+      rec,
+      analysis: rec ? intervalStore.analysisFor(rec.id) : null,
+      live: ivSession && rec && ivSession.id === rec.id ? ivSession.state : null,
+      persistent: intervalStore.persistent,
+      busy: ivBusy,
+      error: ivError,
+      ui: ivUi,
+      rerender: () => refresh(),
+      onFile: importIntervalFile,
+      onPaste: importPasted,
+      onRemove: removeInterval,
+      onReprocess: reprocessLoaded,
+      onSheet: switchSheet,
+    };
+  }
+
+  /** The no-peak state still offers the Interval data import, since loading a file fills the peak in. */
+  function renderEmpty() {
+    resultHost.replaceChildren(h('div', { class: 'card empty' }, 'Enter the site’s peak demand to start, or load a meter interval file below.'), intervalTab(intervalCtx()));
+  }
+  const refresh = () => (site.peak_kw > 0 && analysis ? renderResults() : renderEmpty());
+
   function workbenchBox() {
     const rec = intervalStore.get(site.interval_id);
     const iv = rec ? intervalStore.intervalFor(site.interval_id) : null;
-    const input = h('input', { type: 'file', accept: '.json,application/json', style: { display: 'none' }, 'aria-label': 'Workbench site file', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) importWorkbench(f); } });
+    const input = h('input', { type: 'file', accept: '.json,application/json,.csv,.tsv,.txt,.xlsx,.xlsm', style: { display: 'none' }, 'aria-label': 'Workbench site file', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) importIntervalFile(f); } });
     const wb = site.workbench;
     return h('div', { class: `wb-box${iv ? ' on' : ''}` },
       h('div', { class: 'wb-head' },
-        h('div', {}, h('strong', {}, iv ? 'Interval data from the workbench' : 'Have a workbench site file?'),
-          h('div', { class: 'small muted' }, iv ? `${rec.file_name} · ${iv.start} to ${iv.end} · ${iv.days} days · ${Math.round(iv.dtHours * 60)}-min` : 'Open the <site>-site.json saved by the Site Analysis Workbench to value the site from its real interval data.')),
+        h('div', {}, h('strong', {}, iv ? (rec.source === 'interval-file' ? 'Interval data from a meter file' : 'Interval data from the workbench') : 'Have a meter file or workbench site file?'),
+          h('div', { class: 'small muted' }, iv ? `${rec.file_name} · ${iv.start} to ${iv.end} · ${iv.days} days · ${Math.round(iv.dtHours * 60)}-min` : 'Open a meter interval file (CSV or Excel) or the <site>-site.json saved by the Site Analysis Workbench to value the site from its real interval data.')),
         h('div', { class: 'btn-row' },
-          h('button', { class: 'btn small primary', type: 'button', onclick: () => input.click() }, iv ? 'Replace file' : 'Open site file'),
-          iv ? h('button', { class: 'btn small', type: 'button', onclick: () => { update({ interval_id: null, custom_profile: null, workbench: null, workbench_file: null }, { rerenderForm: true }); } }, 'Remove') : null,
+          h('button', { class: 'btn small primary', type: 'button', onclick: () => input.click() }, iv ? 'Replace file' : 'Open file'),
+          iv ? h('button', { class: 'btn small', type: 'button', onclick: removeInterval }, 'Remove') : null,
         ),
         input,
       ),
       wb && (wb.warnings?.length || wb.notes?.length)
         ? h('ul', { class: 'wb-notes small' }, [...(wb.warnings || []).map((t) => h('li', { class: 'warn' }, t)), ...(wb.notes || []).map((t) => h('li', {}, t))])
         : null,
-      site.interval_id && !iv ? h('div', { class: 'small warn' }, 'The interval data for this site is not stored in this browser. Open the site file again to use it.') : null,
+      site.interval_id && !iv ? h('div', { class: 'small warn' }, 'The interval data for this site is not stored in this browser. Open the file again to use it.') : null,
     );
   }
 
@@ -286,7 +409,7 @@ export function renderScreener(root, data, params) {
   function runAnalysis() {
     for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community', 'property_owner']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
     if (!(site.peak_kw > 0)) {
-      resultHost.replaceChildren(h('div', { class: 'card empty' }, 'Enter the site’s peak demand to start.'));
+      renderEmpty();
       return;
     }
     try {
@@ -315,6 +438,7 @@ export function renderScreener(root, data, params) {
     };
     const panelCount = a.panel.length + a.briefing.length;
     const TABS = [
+      ['interval', 'Interval data'],
       ['sizing', 'Sizing'],
       ['savings', 'Savings'],
       ['limits', 'Site limits'],
@@ -330,6 +454,7 @@ export function renderScreener(root, data, params) {
       h('div', { class: 'tabs-inline result-tabs no-print', role: 'tablist', style: { marginTop: '16px' } },
         TABS.map(([id, label]) => h('button', { type: 'button', role: 'tab', 'aria-selected': resultsTab === id ? 'true' : 'false', onclick: () => { resultsTab = id; renderResults(); } }, label)),
       ),
+      pane('interval', resultsTab === 'interval' ? intervalTab(intervalCtx()) : null),
       pane('sizing',
         h('div', { class: 'card' },
           h('div', { class: 'card-head' }, h('h2', {}, 'Battery configurations'),
@@ -392,74 +517,82 @@ export function renderScreener(root, data, params) {
     );
   }
 
-  // Savings tab, laid out like the Site Analysis Workbench's Sizing tab (worst-day dispatch by month,
-  // state of charge, dispatch check, per-month peak targets) with the dollars added.
+  // Savings tab: the Site Analysis Workbench's Sizing tab (custom system, reserve, schedule, carry, daily dispatch by
+  // month, per-month targets) with the Atlas dollars added. The kW work is views/dispatch-tab.js (engine/hold.js).
   function savingsTab(a, r) {
     const md = r.monthDetail || {};
     const months = Object.keys(md).map(Number).sort((x, y) => x - y);
     const iv = intervalStore.intervalFor(site.interval_id);
-    if (!holdCache.has(r)) holdCache.set(r, allHoursHolds(site, r.config, a.assumptions, a.profile, iv));
-    const holds = holdCache.get(r);
-    const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
-    const peakOf = (m) => md[m]?.peak ?? (iv?.months?.[m] ? Math.max(...iv.months[m].envelope) : Math.max(...a.profile.kw));
-    const cutPct = allMonths.map((m) => (peakOf(m) > 0 ? (peakOf(m) - holds[m]) / peakOf(m) : 0));
-    const avgCut = cutPct.reduce((x, y) => x + y, 0) / 12;
-    const demandUsd = months.reduce((n, m) => n + (md[m].usd || 0), 0);
+    const sec = dispatchSection({
+      site, a, r, iv,
+      products: settings.products,
+      ui: dispUi,
+      setDispatch,
+      setCustomSystem,
+      rerender: () => renderResults(),
+      planView: (m, setM, avail) => planDispatch(a, r, md, iv, m, setM, avail),
+    });
     const basis = iv ? `interval data, every day of ${iv.monthsCovered >= 12 ? 'each month' : `${iv.monthsCovered} months`}` : 'design-day load shape';
     const isRec = r === a.recommended;
+    const opt = sec.D.opt;
+    const kwh = sec.D.u.usableKwh * (1 - opt.reserve);
     const banner = h('div', { class: 'card rec-banner' },
       h('div', { class: 'rec-line' },
-        h('span', { class: 'rec-tag' }, isRec ? 'Recommended' : 'Selected'), ' ',
+        h('span', { class: 'rec-tag' }, site.custom_system?.length && r.config.id === buildConfig(site.custom_system, settings.products).id ? 'Your system' : isRec ? 'Recommended' : 'Selected'), ' ',
         h('strong', {}, r.config.label),
-        ` — ${num(r.config.kw)} kW / ${num(r.config.usableKwh ?? r.config.kwh * a.assumptions.usable_fraction, 0)} kWh deliverable · holds each month’s peak `, h('strong', {}, `${Math.round(avgCut * 100)}%`), ' lower on average · ',
+        ` — ${num(r.config.kw)} kW / ${num(r.config.usableKwh ?? r.config.kwh * a.assumptions.usable_fraction, 0)} kWh deliverable`,
+        opt.reserve > 0 ? ` (${num(kwh * (sec.D.u.effD || 1), 0)} kWh to shave after the ${Math.round(opt.reserve * 1000) / 10}% reserve)` : '',
+        ' · holds each month’s peak ', h('strong', {}, sec.cut != null ? `${Math.round(sec.cut * 100)}%` : '—'), ' lower on average · ',
         h('strong', {}, `${usd(r.totals.annual_base)}/yr`), ' base value'),
       h('div', { class: 'small muted' }, `Basis: ${basis}. Demand dollars use the selected rate’s charges and a ${a.assumptions.shave_capture} capture factor for forecasting misses.`),
     );
-    if (!months.length) {
-      return h('div', {}, banner, h('div', { class: 'card' }, h('h3', {}, 'No priced demand charges'), h('p', { class: 'muted' }, a.tariff ? 'This rate has no demand charge with a verified rate, so there is nothing to shave against. Enter the bill’s demand rates in Rates & programs.' : 'Pick a rate to see dispatch and monthly savings.')), streamsCard(a, r));
-    }
-    const defaultMonth = months.reduce((b, m) => (md[m].peak > md[b].peak ? m : b), months[0]);
-    const m = months.includes(savingsMonth) ? savingsMonth : defaultMonth;
-    const d = md[m];
+    const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
+    const demandUsd = months.reduce((n, m) => n + (md[m].usd || 0), 0);
+    const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const setMonth = (mm) => { dispUi.month = mm; dispUi.day = null; renderResults(); };
+    const dollars = months.length
+      ? h('div', { class: 'card' },
+        h('div', { class: 'card-head' }, h('h2', {}, 'Monthly demand savings'), h('span', { class: 'small muted' }, `${usd(demandUsd)}/yr from demand charges`)),
+        monthlySavingsChart({ months: allMonths.map((mm) => ({ month: mm, name: MON[mm - 1], usd: md[mm]?.usd || 0, reduction: md[mm] ? primary(md[mm]).reduction : 0 })), selected: sec.D.months.includes(dispUi.month) ? dispUi.month : sec.D.defaultMonth, onSelect: setMonth }))
+      : h('div', { class: 'card' }, h('h3', {}, 'No priced demand charges'), h('p', { class: 'muted' }, a.tariff ? 'This rate has no demand charge with a verified rate, so there are no demand dollars. The kW sizing above still applies. Enter the bill’s demand rates in Rates & programs.' : 'Pick a rate to see demand-charge dollars.'));
+    return h('div', {}, banner, ...sec.settings, ...sec.dispatch, sec.targets, dollars, streamsCard(a, r));
+  }
+
+  /** The target the demand-charge dollars assume (after the capture factor and DR event days), charted for one month. */
+  function planDispatch(a, r, md, iv, m, setM, avail) {
+    const months = Object.keys(md).map(Number).sort((x, y) => x - y);
+    if (!months.length) return [h('div', { class: 'card empty' }, 'No priced demand charges, so there is no planned target to chart.')];
+    const mm = months.includes(m) ? m : months.reduce((b, x) => (md[x].peak > md[b].peak ? x : b), months[0]);
+    const d = md[mm];
     const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const battery = simBatteryOf(r.config, a.assumptions);
-    // Workbench view: one all-hours cap at the sustainable hold. Plan view: the per-window caps the savings use.
-    const holdCaps = d.worstDay.kw.map(() => holds[m]);
-    const caps = savingsView === 'hold' ? holdCaps : d.targetCaps;
+    const caps = d.targetCaps;
     const sim = simulateDay(d.worstDay.kw, caps, d.dtHours, battery);
-    const ivDays = iv?.months?.[m]?.days || null;
+    const ivDays = iv?.months?.[mm]?.days || null;
     const held = ivDays ? ivDays.filter((day) => simulateDay(day.kw, caps, d.dtHours, battery).held).length : null;
-    const eventProgs = r.streams.filter((st) => st.event && st.scenario === 'base' && st.event.months.includes(m));
-    const dayLabel = d.worstDay.date ? `${MON[m - 1]} worst day ${d.worstDay.date}` : `${MON[m - 1]} design day`;
+    const eventProgs = r.streams.filter((st) => st.event && st.scenario === 'base' && st.event.months.includes(mm));
+    const dayLabel = d.worstDay.date ? `${MON[mm - 1]} worst day ${d.worstDay.date}` : `${MON[mm - 1]} design day`;
     const finiteCaps = caps.filter((c) => c !== Infinity);
     const minCap = finiteCaps.length ? Math.min(...finiteCaps) : null;
-    const setMonth = (mm) => { savingsMonth = mm; renderResults(); };
-    const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
     const daysLine = held != null
-      ? (held === ivDays.length ? h('div', { class: 'check-ok' }, '✓ ', h('strong', {}, `Holds all ${ivDays.length} days of ${MON[m - 1]}.`), ` Dispatched at ${num(minCap, 1)} kW — highest shaved peak on the worst day: ${num(sim.peakAfter, 1)} kW.`) : h('div', { class: 'check-warn' }, '⚠ ', h('strong', {}, `Holds ${held} of ${ivDays.length} days of ${MON[m - 1]}`), ' when simulated interval by interval from a full battery each morning.'))
-      : h('div', { class: 'check-info' }, 'Design day only. Open the workbench site file to check every day of every month.');
-    const viewSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Dispatch view' },
-      h('button', { type: 'button', 'aria-pressed': savingsView === 'hold' ? 'true' : 'false', onclick: () => { savingsView = 'hold'; renderResults(); } }, 'Sustainable hold (workbench view)'),
-      h('button', { type: 'button', 'aria-pressed': savingsView === 'plan' ? 'true' : 'false', onclick: () => { savingsView = 'plan'; renderResults(); } }, 'Planned target (savings basis)'));
+      ? (held === ivDays.length ? h('div', { class: 'check-ok' }, '✓ ', h('strong', {}, `Holds all ${ivDays.length} days of ${MON[mm - 1]}.`), ` Dispatched at ${num(minCap, 1)} kW — highest shaved peak on the worst day: ${num(sim.peakAfter, 1)} kW.`) : h('div', { class: 'check-warn' }, '⚠ ', h('strong', {}, `Holds ${held} of ${ivDays.length} days of ${MON[mm - 1]}`), ' when simulated interval by interval from a full battery each morning.'))
+      : h('div', { class: 'check-info' }, 'Design day only. Load a meter interval file (Interval data tab) or a workbench site file to check every day of every month.');
     const drNote = d.eventLimited && eventProgs.length
-      ? h('div', { class: 'check-warn', style: { marginBottom: '10px' } }, h('strong', {}, `${MON[m - 1]} is a ${eventProgs.map((st) => st.label.split(' - ')[0].split(' (')[0]).join(' / ')} month. `),
-          `Event days (${eventProgs.map((st) => blockText(st.event.block)).join(', ')}) fall on the hot days that set the monthly peak and take the battery’s energy, so the plan counts ${usd(d.usd)} of demand savings this month instead of shaving to the hold. The program payments are larger; see the Annual value stack. Switch views to compare.`)
+      ? h('div', { class: 'check-warn', style: { marginBottom: '10px' } }, h('strong', {}, `${MON[mm - 1]} is a ${eventProgs.map((st) => st.label.split(' - ')[0].split(' (')[0]).join(' / ')} month. `),
+        `Event days (${eventProgs.map((st) => blockText(st.event.block)).join(', ')}) fall on the hot days that set the monthly peak and take the battery’s energy, so the plan counts ${usd(d.usd)} of demand savings this month instead of shaving to the hold. The program payments are larger; see the Annual value stack.`)
       : null;
     const tile = (label, value, unit, sub, cls = '') => h('div', { class: `dtile ${cls}` }, h('div', { class: 'lab' }, label), h('div', { class: 'val' }, value, unit ? h('span', { class: 'u' }, ` ${unit}`) : null), sub ? h('div', { class: 'sub' }, sub) : null);
-    return h('div', {},
-      banner,
+    return [
       h('div', { class: 'card' },
-        h('div', { class: 'card-head' }, h('h2', {}, 'Daily dispatch — by month'), h('span', { class: `badge ${sim.held ? 'ok' : 'caution'}` }, sim.held ? 'Holds target' : 'Undersized')),
-        h('div', { class: 'btn-row', style: { marginBottom: '10px' } }, viewSeg),
+        h('div', { class: 'card-head' }, h('h3', {}, `Planned target — ${MON[mm - 1]}`), h('span', { class: `badge ${sim.held ? 'ok' : 'caution'}` }, sim.held ? 'Holds target' : 'Undersized')),
         drNote,
         h('div', { class: 'disp-controls' },
-          field('Billing month', h('select', { 'aria-label': 'Billing month', onchange: (e) => setMonth(Number(e.target.value)) }, months.map((mm) => h('option', { value: mm, selected: mm === m }, `${MON[mm - 1]}${md[mm].worstDay.date ? ` — worst day ${md[mm].worstDay.date}` : ''}`)))),
-          field(savingsView === 'hold' ? 'Sustainable hold this month (kW)' : 'Planned target this month (kW)', h('div', { class: 'readout' }, minCap != null ? `${num(minCap, 1)} kW` : '—'),
-            savingsView === 'hold' ? 'Lowest all-hours peak held on every day of the month (same figure as the workbench)' : d.comps.length > 1 ? 'Lowest of the caps; each demand window has its own target' : `After the ${a.assumptions.shave_capture} capture factor${d.eventLimited ? ' and DR event days' : ''}`),
+          field('Billing month', h('select', { 'aria-label': 'Billing month', onchange: (e) => setM(Number(e.target.value)) }, months.map((x) => h('option', { value: x, selected: x === mm }, `${MON[x - 1]}${md[x].worstDay.date ? ` — worst day ${md[x].worstDay.date}` : ''}`)))),
+          field('Planned target this month (kW)', h('div', { class: 'readout' }, minCap != null ? `${num(minCap, 1)} kW` : '—'), d.comps.length > 1 ? 'Lowest of the caps; each demand window has its own target' : `After the ${a.assumptions.shave_capture} capture factor${d.eventLimited ? ' and DR event days' : ''}`),
         ),
-        h('p', { class: 'small ink2' }, `${d.worstDay.date || 'Design day'}: the battery discharges to hold this day under the target, then recharges below it (charging up to ${num(battery.chargeKw)} kW).`),
-        dispatchDayChart({ load: d.worstDay.kw, sim, caps, dtHours: d.dtHours, label: d.worstDay.date || MON[m - 1] }),
-      ),
+        h('p', { class: 'small ink2' }, `${d.worstDay.date || 'Design day'}: the battery discharges to hold this day under the target, then recharges (charging up to ${num(battery.chargeKw)} kW).`),
+        dispatchDayChart({ load: d.worstDay.kw, sim, caps, dtHours: d.dtHours, label: d.worstDay.date || MON[mm - 1] })),
       h('div', { class: 'grid-2' },
         h('div', { class: 'card' }, h('h3', {}, `State of charge — ${dayLabel}`), socChart({ sim, storedKwh: battery.storedKwh, dtHours: d.dtHours })),
         h('div', { class: 'card' }, h('h3', {}, `Dispatch check — ${dayLabel}`),
@@ -470,40 +603,19 @@ export function renderScreener(root, data, params) {
             tile('Energy used', num(sim.energyUsed, 0), 'kWh', `of ${num(battery.storedKwh * battery.effDischarge, 0)} kWh deliverable`),
             tile('Lowest charge', num(sim.lowestSoc, 0), 'kWh', `${Math.round((100 * sim.lowestSoc) / battery.storedKwh)}% of stored`),
           ),
-          daysLine,
+          daysLine)),
+    ];
+  }
 
-        ),
-      ),
-      h('div', { class: 'card' },
-        h('div', { class: 'card-head' }, h('h2', {}, 'Per-month peak targets & savings'), h('span', { class: 'small muted' }, 'Click a row to chart that month')),
-        h('p', { class: 'small ink2' }, iv
-          ? 'Sustainable hold is the lowest all-hours peak the battery holds on every day of that month (the workbench’s “Sustainable hold”). Target is what the savings assume after the capture factor. Dollars use every demand charge in the selected rate, including on-peak windows.'
-          : 'Sustainable hold and target come from the design day. Open the workbench site file to size each month from every day of interval data.'),
-        h('div', { class: 'table-wrap' }, h('table', { class: 'pm-table' },
-          h('thead', {}, h('tr', {}, ['Month', 'Peak', 'Sustainable hold', 'Target (kW)', 'kW reduction', 'Demand savings'].map((t, i) => h('th', { class: i ? 'num' : '' }, t)))),
-          h('tbody', {},
-            allMonths.map((mm) => {
-              const dm = md[mm];
-              const pc = dm ? primary(dm) : null;
-              return h('tr', { class: `${mm === m ? 'sel' : ''}${dm ? ' click' : ''}`, onclick: dm ? () => setMonth(mm) : null },
-                h('td', {}, MON[mm - 1], mm === m ? ' ◀' : '', dm?.eventLimited ? h('span', { class: 'badge caution', style: { marginLeft: '6px' } }, 'DR events') : null),
-                h('td', { class: 'num' }, num(peakOf(mm), 1)),
-                h('td', { class: 'num' }, num(holds[mm], 1)),
-                h('td', { class: 'num' }, pc ? num(pc.target, 1) : '—', pc && pc.window ? h('div', { class: 'small muted' }, compLabel(pc)) : null),
-                h('td', { class: 'num' }, pc ? `${num(pc.reduction, 1)} kW` : '—', dm && dm.comps.length > 1 ? h('div', { class: 'small muted' }, dm.comps.filter((c) => c !== pc).map((c) => `${compLabel(c)}: ${num(c.reduction, 1)} kW`).join(' · ')) : null),
-                h('td', { class: 'num' }, dm ? usd(dm.usd) : h('span', { class: 'muted' }, 'no demand charge')),
-              );
-            }),
-          ),
-          h('tfoot', {}, h('tr', {}, h('td', {}, h('strong', {}, 'Year')), h('td', {}), h('td', { class: 'num small muted' }, `avg cut ${Math.round(avgCut * 100)}%`), h('td', {}), h('td', {}), h('td', { class: 'num' }, h('strong', {}, usd(demandUsd))))),
-        )),
-      ),
-      h('div', { class: 'card' },
-        h('div', { class: 'card-head' }, h('h2', {}, 'Monthly demand savings'), h('span', { class: 'small muted' }, `${usd(demandUsd)}/yr from demand charges`)),
-        monthlySavingsChart({ months: allMonths.map((mm) => ({ month: mm, name: MON[mm - 1], usd: md[mm]?.usd || 0, reduction: md[mm] ? primary(md[mm]).reduction : 0 })), selected: m, onSelect: setMonth }),
-      ),
-      streamsCard(a, r),
-    );
+  function setDispatch(patch) {
+    const cur = { ...(site.dispatch || {}), ...patch };
+    if (cur.carry) cur.max_daily = false; // carry and "maximize on lighter days" are exclusive; carry wins
+    update({ dispatch: cur });
+  }
+
+  function setCustomSystem(items) {
+    update({ custom_system: items && items.length ? items : null });
+    selectedId = items && items.length ? buildConfig(items, settings.products).id : null;
   }
 
   function compLabel(c) {
