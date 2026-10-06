@@ -571,7 +571,7 @@ function targetsCard(ctx, D) {
     const t = D.targetOf(m);
     const below = t < x.achievable - 0.05;
     return h('tr', { class: `click${m === m0 ? ' sel' : ''}${below ? ' below' : ov ? ' ov' : ''}`, onclick: () => { ui.month = m; ui.day = null; ctx.rerender(); } },
-      h('td', {}, MON[m - 1], m === m0 ? ' ◀' : '', below ? h('span', { class: 'bad-text', title: 'not sustainable' }, ' ⚠') : null),
+      h('td', {}, MON[m - 1], m === m0 ? ' ◀' : '', below ? h('span', { class: 'bad-text', title: 'not sustainable' }, ' ⚠') : null, dm?.eventLimited ? h('span', { class: 'badge caution', style: { marginLeft: '6px' }, title: 'DR event days take the battery’s energy, so the planned demand savings are lower than the hold implies' }, 'DR events') : null),
       h('td', { class: 'num' }, num(x.peak, 1)),
       h('td', { class: 'num' }, num(x.achievable, 1)),
       h('td', { class: 'num' }, h('input', { type: 'number', min: 0, step: 1, class: `tgt${below ? ' below' : ''}`, value: Math.round(t * 10) / 10, 'aria-label': `Target for ${MON[m - 1]} (kW)`, title: ov ? 'manual override' : '', onclick: (e) => e.stopPropagation(), onchange: (e) => setTarget(ctx, m, e.target.value) })),
