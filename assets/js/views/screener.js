@@ -1,18 +1,19 @@
-// Site screener: inputs on the left, ranked configurations, value stack, limits and panel review on the right.
+// Site screener: what you know about a site on the left; on the right a cost-free summary and tabs that follow
+// the evaluation: demand savings by month, the load data behind them, other systems, site checks, rates and
+// programs, export.
 import { h, usd, num, yrs, pct, badge, sevBadge, sevIcon, confBadge, toast, storage, initials, sourcesList } from '../ui.js';
 import { analyzeSite, buildConfig, BUILDING_SHAPES, loadFactor } from '../engine/index.js';
-import { blockText, simBatteryOf } from '../engine/value.js';
-import { simulateDay } from '../engine/loadshape.js';
-import { dispatchDayChart, socChart, monthlySavingsChart } from '../dispatch-chart.js';
-import { valueStackChart } from '../chart.js';
+import { blockText } from '../engine/value.js';
+import { demandModel, monthPeaksFor, usesBills, billsOf, billedMonths, MONTHS as DS_MON } from '../engine/demand-savings.js';
 import { settingsStore } from '../app.js';
-import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, atlasBlockFor } from '../export.js';
+import { xlsx, zip, toCsv, download, siteWorkbookSheets, README_ROWS, configRows, streamRows, tariffRows, programRows, limitRows, panelRows, inputRows, monthlyRows, atlasBlockFor } from '../export.js';
 import { addToPortfolio } from './portfolio.js';
 import { intervalStore, recordId } from '../interval-store.js';
 import { decodeRaw, buildInterval, siteFromWorkbench, intervalPatch, mergeAtlasIntoWorkbench } from '../workbench.js';
 import { ingestCsvText, ingestXlsx, selectSheet, reprocess, recordFromState } from '../interval-ingest.js';
 import { intervalTab } from './interval-tab.js';
 import { dispatchSection } from './dispatch-tab.js';
+import { demandTab } from './demand-tab.js';
 
 const SITE_KEY = 'atlas.site';
 
@@ -104,25 +105,31 @@ export function renderScreener(root, data, params) {
   }
   site = normalizeSite(site, data);
   let selectedId = null;
+  let pinned = false; // the user chose a system; otherwise the selection follows the suggested one
   let analysis = null;
   let personaFilter = 'all';
+  let panelOpen = false;
   let scenario = 'base';
   let tariffOpen = null; // null = auto (open when rates are missing)
-  let resultsTab = params.get('tab') || 'sizing';
-  if (resultsTab === 'detail') resultsTab = 'savings';
-  const dispUi = { month: null, day: null, view: 'day', basis: 'workbench' }; // Savings tab dispatch view state
+  let resultsTab = params.get('tab') || 'savings';
+  resultsTab = { detail: 'savings', panel: 'limits' }[resultsTab] || resultsTab;
+  const dispUi = { month: null, day: null, view: 'day', openDispatch: false, openSettings: false }; // Demand savings tab view state
   let ivSession = null; // the live import of the loaded interval file ({ id, state }); lets the user re-process it with other columns
   let ivBusy = null; // name of the file being parsed
   let ivError = null; // { name, msg } of the last failed import
-  const ivUi = { wd: null, zoom: null }; // Interval data tab view state: worst-day period, year-chart zoom
+  const ivUi = { wd: null, zoom: null }; // Load data tab view state: worst-day period, year-chart zoom
 
   const formHost = h('div', { class: 'card form' });
+  const formOpen = {}; // which optional form sections are unfolded
   const resultHost = h('div', {});
   root.append(
     h(
       'div',
       { class: 'page-head' },
-      h('div', {}, h('h1', {}, 'Site screener'), h('p', {}, 'Enter what you know about a site. Every battery configuration is valued against current tariffs and programs, then checked against electrical, code and program limits and reviewed by the expert panel.')),
+      h('div', {}, h('h1', {}, 'Site screener'), h('p', {}, 'Open a meter file (or enter the peak), pick the rate or type in the customer’s bills, and see how far a battery cuts each month’s peak and what that saves. Site limits, programs and the expert panel are one tab away.')),
+      h('div', { class: 'btn-row no-print' },
+        h('button', { class: 'btn', type: 'button', onclick: () => { addToPortfolio(site, data); toast(`Saved ${site.name || 'the site'} to the portfolio`); } }, 'Save to portfolio'),
+        h('a', { class: 'btn', href: '#/portfolio' }, 'Open portfolio')),
     ),
     h('div', { class: 'screener' }, formHost, resultHost),
   );
@@ -208,6 +215,7 @@ export function renderScreener(root, data, params) {
       data,
     );
     storage.set(SITE_KEY, site);
+    pinned = false;
     renderForm();
     runAnalysis();
     toast(imp.warnings.length ? `Imported with ${imp.warnings.length} note${imp.warnings.length > 1 ? 's' : ''} — see the workbench box.` : `Imported ${file.name}.`);
@@ -245,7 +253,7 @@ export function renderScreener(root, data, params) {
     }
   }
 
-  /** Store a parsed import, take the site's peak, annual kWh and minimum load from it, and show the Interval data tab. */
+  /** Store a parsed import, take the site's peak, annual kWh and minimum load from it, and show the Load data tab. */
   async function adoptState(state) {
     const probe = recordFromState(state, 'pending');
     const id = recordId({ meta: probe.model.meta, raw: probe.raw });
@@ -271,6 +279,7 @@ export function renderScreener(root, data, params) {
       data,
     );
     storage.set(SITE_KEY, site);
+    pinned = false;
     resultsTab = 'interval';
     renderForm();
     runAnalysis();
@@ -351,6 +360,13 @@ export function renderScreener(root, data, params) {
     );
   }
 
+  /** An optional form section, folded to one line with its current value. */
+  function formFold(n, title, sub, ...kids) {
+    return h('details', { class: 'form-fold', open: formOpen[n] ? true : null, ontoggle: (e) => { formOpen[n] = e.target.open; } },
+      h('summary', {}, h('span', { class: 'step' }, String(n)), h('span', { class: 'ff-title' }, title), h('span', { class: 'ff-sub' }, sub)),
+      h('div', { class: 'ff-body' }, ...kids));
+  }
+
   function renderForm() {
     const jd = data.jurisdictions[site.jurisdiction];
     const utils = jd.utilities;
@@ -381,17 +397,18 @@ export function renderScreener(root, data, params) {
           } }, (site.custom_profile || []).join(', ')), site.custom_profile ? `Using pasted profile (${site.custom_profile.length} values).` : 'Overrides the building-type shape. Use the site’s peak day.'),
         ),
       ),
-      h('fieldset', {}, h('legend', {}, h('span', { class: 'step' }, '3'), 'Electrical service'),
+      h('div', { class: 'form-sep' }, 'Optional: size limits and program eligibility'),
+      formFold(3, 'Electrical service', site.service_voltage > 0 && site.service_amps > 0 ? `${site.service_voltage} V · ${num(site.service_amps)} A` : 'not entered',
         field('Service voltage', h('select', { onchange: (e) => { const [v, p] = e.target.value.split('|').map(Number); update({ service_voltage: v, phases: p }); } }, VOLTAGES.map(([v, l]) => h('option', { value: v, selected: v === `${site.service_voltage}|${site.phases || 3}` }, l)))),
         h('div', { class: 'row3' }, field('Service (A)', numInput('service_amps')), field('Main breaker (A)', numInput('main_breaker_amps')), field('Busbar (A)', numInput('busbar_amps'))),
         field('On a secondary network grid?', seg('network_secondary', [['no', 'No'], ['yes', 'Yes'], ['unknown', 'Unknown']]), 'Common in Manhattan, downtown Boston, Chicago Loop and downtown SF.'),
       ),
-      h('fieldset', {}, h('legend', {}, h('span', { class: 'step' }, '4'), 'Physical siting'),
+      formFold(4, 'Physical siting', (LOCATIONS.find(([v]) => v === site.install_location) || [, 'not set'])[1],
         field('Install location', select('install_location', LOCATIONS, { rerender: true })),
         h('div', { class: 'row2' }, field('Available area (sq ft)', numInput('available_area_sqft', { placeholder: 'optional' })), field('Flood zone', seg('flood_zone', [['no', 'No'], ['yes', 'Yes'], ['unknown', '?']]))),
         field('~10 ft clearance from buildings, lot lines and egress?', seg('setback_ok', [['yes', 'Yes'], ['no', 'No'], ['unknown', 'Unknown']])),
       ),
-      h('fieldset', {}, h('legend', {}, h('span', { class: 'step' }, '5'), 'Commercial'),
+      formFold(5, 'Commercial', `supply: ${(SUPPLY_OPTIONS.find(([v]) => v === site.supply_contract) || [, 'unknown'])[1].split(' (')[0].toLowerCase()}`,
         field('Supply contract', select('supply_contract', SUPPLY_OPTIONS), 'Decides whether capacity/transmission tag savings reach the customer.'),
         h('div', { class: 'row2' },
           field('On-site solar', seg('has_solar', [[false, 'No'], [true, 'Yes']])),
@@ -400,7 +417,7 @@ export function renderScreener(root, data, params) {
         field('Disadvantaged-community site', seg('disadvantaged_community', [[false, 'No'], [true, 'Yes']]), 'Some programs pay adders here.'),
         field('Customer owns the building (pays property tax)', seg('property_owner', [[false, 'No / unknown'], [true, 'Yes']]), 'Needed for property-tax abatements such as NYC’s.'),
       ),
-      h('div', { class: 'btn-row' }, h('button', { class: 'btn small', type: 'button', onclick: () => { site = defaultSite(data); storage.set(SITE_KEY, site); renderForm(); runAnalysis(); } }, 'Reset form')),
+      h('div', { class: 'btn-row' }, h('button', { class: 'btn small', type: 'button', onclick: () => { site = defaultSite(data); pinned = false; storage.set(SITE_KEY, site); renderForm(); runAnalysis(); } }, 'Reset form')),
     );
     // seg() stores strings for booleans; coerce
     for (const k of ['has_solar', 'export_allowed', 'disadvantaged_community', 'property_owner']) if (typeof site[k] === 'string') site[k] = site[k] === 'true';
@@ -418,14 +435,13 @@ export function renderScreener(root, data, params) {
       resultHost.replaceChildren(h('div', { class: 'card' }, h('h3', {}, 'Could not analyze site'), h('pre', {}, String(err.stack || err))));
       return;
     }
-    if (!selectedId || !analysis.results.some((r) => r.config.id === selectedId)) selectedId = analysis.recommended?.config.id;
+    if (!pinned || !selectedId || !analysis.results.some((r) => r.config.id === selectedId)) selectedId = analysis.recommended?.config.id;
     renderResults();
   }
 
   function renderResults() {
     const a = analysis;
-    const rec = a.recommended;
-    const sel = a.results.find((r) => r.config.id === selectedId) || rec;
+    const sel = a.results.find((r) => r.config.id === selectedId) || a.recommended;
     const jd = a.jurisdiction;
     // Re-rendering replaces inputs; remember which one had focus so typing isn't interrupted.
     const active = document.activeElement;
@@ -436,175 +452,97 @@ export function renderScreener(root, data, params) {
       renderResults();
       resultHost.querySelector('details.rate-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
-    const panelCount = a.panel.length + a.briefing.length;
+    const iv = intervalStore.intervalFor(site.interval_id);
+    const dm = sel ? demandModel(a, sel, iv, { targets: site.dispatch?.month_targets || {}, forceBills: !!site.bills?.use }) : null;
+    const worst = sel ? sel.constraints.status : 'ok';
     const TABS = [
-      ['interval', 'Interval data'],
-      ['sizing', 'Sizing'],
-      ['savings', 'Savings'],
-      ['limits', 'Site limits'],
-      ['panel', `Expert panel (${panelCount})`],
+      ['savings', 'Demand savings'],
+      ['interval', 'Load data'],
+      ['sizing', 'Compare systems'],
+      ['limits', worst === 'critical' ? 'Site checks ⚠' : 'Site checks'],
       ['rates', a.missing?.length ? `Rates & programs (${a.missing.length} missing)` : 'Rates & programs'],
       ['export', 'Export'],
     ];
+    if (!TABS.some(([id]) => id === resultsTab)) resultsTab = 'savings';
     const pane = (id, ...children) => h('div', { class: `tab-pane${resultsTab === id ? '' : ' tab-hidden'}`, 'data-tab': id }, ...children);
     resultHost.replaceChildren(
       ...[printHeader(a, data),
-      kpis(a, rec),
+      sel ? summary(a, sel, dm, iv) : h('div', { class: 'card empty' }, 'No configuration could be evaluated.'),
       accuracyChecklist(a, data, goRates),
       h('div', { class: 'tabs-inline result-tabs no-print', role: 'tablist', style: { marginTop: '16px' } },
         TABS.map(([id, label]) => h('button', { type: 'button', role: 'tab', 'aria-selected': resultsTab === id ? 'true' : 'false', onclick: () => { resultsTab = id; renderResults(); } }, label)),
       ),
-      pane('interval', resultsTab === 'interval' ? intervalTab(intervalCtx()) : null),
-      pane('sizing',
-        h('div', { class: 'card' },
-          h('div', { class: 'card-head' }, h('h2', {}, 'Battery configurations'),
-            h('div', { class: 'seg' }, ['base', 'upside'].map((sc) => h('button', { type: 'button', 'aria-pressed': scenario === sc ? 'true' : 'false', onclick: () => { scenario = sc; renderResults(); } }, sc === 'base' ? 'Base case' : 'Upside case')))),
-          h('p', { class: 'small muted' }, 'Annual value by stream for each configuration. Click a bar or row to select it. Upside adds waitlisted, pending or unconfirmed programs, the ITC before FEOC confirmation, and tag savings a supply contract would hold back.'),
-          valueStackChart(a.results, { selectedId: sel?.config.id, recommendedId: rec?.config.id, scenario, onSelect: (id) => { selectedId = id; renderResults(); } }),
-          configTable(a, sel),
-          sel ? h('div', { class: 'btn-row no-print', style: { marginTop: '12px' } }, h('button', { class: 'btn primary small', type: 'button', onclick: () => { resultsTab = 'savings'; renderResults(); } }, `Savings for ${sel.config.label} →`)) : null,
-        ),
-        workbenchCheck(a, site),
-      ),
-      pane('savings', sel ? savingsTab(a, sel) : h('div', { class: 'card empty' }, 'Select a configuration on the Sizing tab.')),
-      pane('limits', limitsCard(a)),
-      pane('panel', panelCard(a)),
-      pane('rates', tariffCard(a), programsCard(a, jd)),
-      pane('export', exportCard(a))].filter(Boolean),
+      pane('savings', sel ? savingsTab(a, sel, dm, iv, goRates) : null),
+      pane('interval', resultsTab === 'interval' ? [iv ? h('div', { class: 'btn-row no-print', style: { marginBottom: '12px' } }, h('button', { class: 'btn small primary', type: 'button', onclick: () => { resultsTab = 'savings'; renderResults(); } }, 'See the demand savings →')) : null, intervalTab(intervalCtx())] : null),
+      pane('sizing', compareCard(a, sel), workbenchCheck(a, site)),
+      pane('limits', sel ? checksCard(a, sel) : null, limitsCard(a), panelCard(a)),
+      pane('rates', tariffCard(a), sel ? valueStackCard(a, sel) : null, programsCard(a, jd)),
+      pane('export', exportCard(a, sel, dm))].filter(Boolean),
     );
     if (focusLabel) {
       const el = [...resultHost.querySelectorAll('[aria-label]')].find((x) => x.getAttribute('aria-label') === focusLabel);
       if (el) {
         el.focus();
-        if (el.type === 'text') el.setSelectionRange(el.value.length, el.value.length);
+        if (el.type === 'text' && el.value != null) el.setSelectionRange(el.value.length, el.value.length);
       }
     }
   }
 
-  function configTable(a, sel) {
-    const fin = (r) => r.finance[scenario];
-    const tot = (r) => (scenario === 'base' ? r.totals.annual_base : r.totals.annual_upside);
-    const up = (r) => (scenario === 'base' ? r.totals.upfront_base : r.totals.upfront_upside);
-    return h('div', { class: 'table-wrap', style: { marginTop: '10px' } },
-      h('table', {},
-        h('thead', {}, h('tr', {}, ['Configuration', 'kW', 'kWh', 'Hours', 'Installed cost', 'Annual value', 'Upfront incentives', 'Payback', '10-yr NPV', 'Site check', 'Shave kW (your model)'].map((t, i) => h('th', { class: i && i < 9 ? 'num' : '' }, t)))),
-        h('tbody', {},
-          a.results.map((r) =>
-            h('tr', { class: [r.config.id === sel?.config.id ? 'selected' : '', r === a.recommended ? 'rec' : ''].join(' '), onclick: (e) => { if (e.target.tagName === 'INPUT') return; selectedId = r.config.id; renderResults(); } },
-              h('td', {}, r === a.recommended ? h('strong', {}, '★ ', r.config.label) : r.config.label),
-              h('td', { class: 'num' }, num(r.config.kw)),
-              h('td', { class: 'num' }, num(r.config.kwh)),
-              h('td', { class: 'num' }, num(r.config.durationHr, 1)),
-              h('td', { class: 'num' }, usd(r.config.installedCostUsd, { compact: true })),
-              h('td', { class: 'num' }, usd(tot(r), { compact: true })),
-              h('td', { class: 'num' }, usd(up(r), { compact: true })),
-              h('td', { class: 'num' }, yrs(fin(r).simplePayback)),
-              h('td', { class: 'num' }, usd(fin(r).npv, { compact: true })),
-              h('td', {}, sevBadge(r.constraints.status)),
-              h('td', {}, h('input', { type: 'number', min: 0, step: 'any', 'aria-label': `Demand reduction kW for ${r.config.label}`, value: site.shave_kw_override?.[r.config.id] ?? '', placeholder: num(avgShave(r), 0), onchange: (e) => {
-                const o = { ...(site.shave_kw_override || {}) };
-                if (e.target.value === '') delete o[r.config.id];
-                else o[r.config.id] = Number(e.target.value);
-                site.shave_kw_override = o;
-                storage.set(SITE_KEY, site);
-                clearTimeout(timer);
-                timer = setTimeout(runAnalysis, 400);
-              } })),
-            ),
-          ),
-        ),
-      ),
-    );
+  /** Four numbers that answer "is this a good place for a battery": the peak, the system, the cut, the savings. */
+  function summary(a, sel, dm, iv) {
+    const peakMonth = Object.entries(dm.holds).reduce((b, [m, x]) => (x && x.peak > (b?.peak ?? -1) ? { m: +m, peak: x.peak } : b), null);
+    const isCustom = site.custom_system?.length && sel.config.id === buildConfig(site.custom_system, settings.products).id;
+    const billMode = !!site.bills?.use;
+    const tile = (label, value, sub, cls = '') => h('div', { class: `kpi ${cls}` }, h('div', { class: 'label' }, label), h('div', { class: 'value' }, value), h('div', { class: 'sub' }, sub));
+    const flatOnly = billMode && billsOf(site).flatRate != null && !billedMonths(billsOf(site)).length;
+    const savingsSub = billMode
+      ? (dm.entered ? (flatOnly ? `at $${num(billsOf(site).flatRate, 2)}/kW from the bills` : `from the customer’s bills${dm.estimated ? ` (${dm.entered} of 12 months entered)` : ''}`) : h('span', { class: 'warn-strong' }, 'enter the bills’ demand charges'))
+      : a.tariff ? (a.missing?.length ? h('span', { class: 'warn-strong' }, 'tariff rates missing — enter bills or rates') : `at ${a.tariff.name.split(' - ')[0].split(' (')[0]} rates`) : 'no rate selected';
+    const tiles = [
+      tile('Peak demand', [num(peakMonth?.peak ?? site.peak_kw, peakMonth?.peak < 100 ? 1 : 0), h('small', {}, ' kW')], iv ? `${peakMonth ? DS_MON[peakMonth.m - 1] + ' · ' : ''}${iv.days} days of interval data` : 'entered · design-day load shape'),
+      tile(isCustom ? 'Your system' : sel === a.recommended ? 'Suggested system' : 'Selected system', h('span', { class: 'value-sm' }, sel.config.label), `${num(sel.config.kw)} kW · ${num(sel.config.usableKwh ?? sel.config.kwh * a.assumptions.usable_fraction)} kWh usable`),
+      tile('Peak cut', [num(dm.depth.kw, dm.depth.kw < 100 ? 1 : 0), h('small', {}, ' kW')], `${Math.round(dm.depth.pct * 100)}% lower on average, ${iv ? 'held every day of each month' : 'design-day estimate'}`),
+      tile('Demand savings', [usd(dm.total), h('small', {}, ' /yr')], savingsSub, 'highlight'),
+    ];
+    if (a.costsKnown) {
+      const f = sel.finance.base;
+      tiles.push(tile('Payback', yrs(f.simplePayback), `NPV ${usd(f.npv, { compact: true })} · installed ${usd(sel.config.installedCostUsd, { compact: true })}`));
+    }
+    return h('div', { class: `kpis result-kpis sum-kpis${a.costsKnown ? ' five' : ''}`, style: { marginBottom: '14px' } }, tiles);
   }
 
-  // Savings tab: the Site Analysis Workbench's Sizing tab (custom system, reserve, schedule, carry, daily dispatch by
-  // month, per-month targets) with the Atlas dollars added. The kW work is views/dispatch-tab.js (engine/hold.js).
-  function savingsTab(a, r) {
-    const md = r.monthDetail || {};
-    const months = Object.keys(md).map(Number).sort((x, y) => x - y);
-    const iv = intervalStore.intervalFor(site.interval_id);
+  // Demand savings tab: system, demand charges (tariff or bills), savings by month; dispatch and settings folded.
+  function savingsTab(a, r, dm, iv, goRates) {
     const sec = dispatchSection({
       site, a, r, iv,
       products: settings.products,
       ui: dispUi,
+      billMode: dm.mode === 'bills' || !!site.bills?.use,
+      monthPeaks: monthPeaksFor(site),
       setDispatch,
       setCustomSystem,
       rerender: () => renderResults(),
-      planView: (m, setM, avail) => planDispatch(a, r, md, iv, m, setM, avail),
     });
-    const basis = iv ? `interval data, every day of ${iv.monthsCovered >= 12 ? 'each month' : `${iv.monthsCovered} months`}` : 'design-day load shape';
-    const isRec = r === a.recommended;
-    const opt = sec.D.opt;
-    const kwh = sec.D.u.usableKwh * (1 - opt.reserve);
-    const banner = h('div', { class: 'card rec-banner' },
-      h('div', { class: 'rec-line' },
-        h('span', { class: 'rec-tag' }, site.custom_system?.length && r.config.id === buildConfig(site.custom_system, settings.products).id ? 'Your system' : isRec ? 'Recommended' : 'Selected'), ' ',
-        h('strong', {}, r.config.label),
-        ` — ${num(r.config.kw)} kW / ${num(r.config.usableKwh ?? r.config.kwh * a.assumptions.usable_fraction, 0)} kWh deliverable`,
-        opt.reserve > 0 ? ` (${num(kwh * (sec.D.u.effD || 1), 0)} kWh to shave after the ${Math.round(opt.reserve * 1000) / 10}% reserve)` : '',
-        ' · holds each month’s peak ', h('strong', {}, sec.cut != null ? `${Math.round(sec.cut * 100)}%` : '—'), ' lower on average · ',
-        h('strong', {}, `${usd(r.totals.annual_base)}/yr`), ' base value'),
-      h('div', { class: 'small muted' }, `Basis: ${basis}. Demand dollars use the selected rate’s charges and a ${a.assumptions.shave_capture} capture factor for forecasting misses.`),
-    );
-    const allMonths = Array.from({ length: 12 }, (_, i) => i + 1);
-    const demandUsd = months.reduce((n, m) => n + (md[m].usd || 0), 0);
-    const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
-    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const setMonth = (mm) => { dispUi.month = mm; dispUi.day = null; renderResults(); };
-    const dollars = months.length
-      ? h('div', { class: 'card' },
-        h('div', { class: 'card-head' }, h('h2', {}, 'Monthly demand savings'), h('span', { class: 'small muted' }, `${usd(demandUsd)}/yr from demand charges`)),
-        monthlySavingsChart({ months: allMonths.map((mm) => ({ month: mm, name: MON[mm - 1], usd: md[mm]?.usd || 0, reduction: md[mm] ? primary(md[mm]).reduction : 0 })), selected: sec.D.months.includes(dispUi.month) ? dispUi.month : sec.D.defaultMonth, onSelect: setMonth }))
-      : h('div', { class: 'card' }, h('h3', {}, 'No priced demand charges'), h('p', { class: 'muted' }, a.tariff ? 'This rate has no demand charge with a verified rate, so there are no demand dollars. The kW sizing above still applies. Enter the bill’s demand rates in Rates & programs.' : 'Pick a rate to see demand-charge dollars.'));
-    return h('div', {}, banner, ...sec.settings, ...sec.dispatch, sec.targets, dollars, streamsCard(a, r));
+    return demandTab({
+      site, a, sel: r, dm, sec, iv,
+      ui: dispUi,
+      setBills,
+      setDispatch,
+      select: pick,
+      rerender: () => renderResults(),
+      goRates,
+    });
   }
 
-  /** The target the demand-charge dollars assume (after the capture factor and DR event days), charted for one month. */
-  function planDispatch(a, r, md, iv, m, setM, avail) {
-    const months = Object.keys(md).map(Number).sort((x, y) => x - y);
-    if (!months.length) return [h('div', { class: 'card empty' }, 'No priced demand charges, so there is no planned target to chart.')];
-    const mm = months.includes(m) ? m : months.reduce((b, x) => (md[x].peak > md[b].peak ? x : b), months[0]);
-    const d = md[mm];
-    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const battery = simBatteryOf(r.config, a.assumptions);
-    const caps = d.targetCaps;
-    const sim = simulateDay(d.worstDay.kw, caps, d.dtHours, battery);
-    const ivDays = iv?.months?.[mm]?.days || null;
-    const held = ivDays ? ivDays.filter((day) => simulateDay(day.kw, caps, d.dtHours, battery).held).length : null;
-    const eventProgs = r.streams.filter((st) => st.event && st.scenario === 'base' && st.event.months.includes(mm));
-    const dayLabel = d.worstDay.date ? `${MON[mm - 1]} worst day ${d.worstDay.date}` : `${MON[mm - 1]} design day`;
-    const finiteCaps = caps.filter((c) => c !== Infinity);
-    const minCap = finiteCaps.length ? Math.min(...finiteCaps) : null;
-    const daysLine = held != null
-      ? (held === ivDays.length ? h('div', { class: 'check-ok' }, '✓ ', h('strong', {}, `Holds all ${ivDays.length} days of ${MON[mm - 1]}.`), ` Dispatched at ${num(minCap, 1)} kW — highest shaved peak on the worst day: ${num(sim.peakAfter, 1)} kW.`) : h('div', { class: 'check-warn' }, '⚠ ', h('strong', {}, `Holds ${held} of ${ivDays.length} days of ${MON[mm - 1]}`), ' when simulated interval by interval from a full battery each morning.'))
-      : h('div', { class: 'check-info' }, 'Design day only. Load a meter interval file (Interval data tab) or a workbench site file to check every day of every month.');
-    const drNote = d.eventLimited && eventProgs.length
-      ? h('div', { class: 'check-warn', style: { marginBottom: '10px' } }, h('strong', {}, `${MON[mm - 1]} is a ${eventProgs.map((st) => st.label.split(' - ')[0].split(' (')[0]).join(' / ')} month. `),
-        `Event days (${eventProgs.map((st) => blockText(st.event.block)).join(', ')}) fall on the hot days that set the monthly peak and take the battery’s energy, so the plan counts ${usd(d.usd)} of demand savings this month instead of shaving to the hold. The program payments are larger; see the Annual value stack.`)
-      : null;
-    const tile = (label, value, unit, sub, cls = '') => h('div', { class: `dtile ${cls}` }, h('div', { class: 'lab' }, label), h('div', { class: 'val' }, value, unit ? h('span', { class: 'u' }, ` ${unit}`) : null), sub ? h('div', { class: 'sub' }, sub) : null);
-    return [
-      h('div', { class: 'card' },
-        h('div', { class: 'card-head' }, h('h3', {}, `Planned target — ${MON[mm - 1]}`), h('span', { class: `badge ${sim.held ? 'ok' : 'caution'}` }, sim.held ? 'Holds target' : 'Undersized')),
-        drNote,
-        h('div', { class: 'disp-controls' },
-          field('Billing month', h('select', { 'aria-label': 'Billing month', onchange: (e) => setM(Number(e.target.value)) }, months.map((x) => h('option', { value: x, selected: x === mm }, `${MON[x - 1]}${md[x].worstDay.date ? ` — worst day ${md[x].worstDay.date}` : ''}`)))),
-          field('Planned target this month (kW)', h('div', { class: 'readout' }, minCap != null ? `${num(minCap, 1)} kW` : '—'), d.comps.length > 1 ? 'Lowest of the caps; each demand window has its own target' : `After the ${a.assumptions.shave_capture} capture factor${d.eventLimited ? ' and DR event days' : ''}`),
-        ),
-        h('p', { class: 'small ink2' }, `${d.worstDay.date || 'Design day'}: the battery discharges to hold this day under the target, then recharges (charging up to ${num(battery.chargeKw)} kW).`),
-        dispatchDayChart({ load: d.worstDay.kw, sim, caps, dtHours: d.dtHours, label: d.worstDay.date || MON[mm - 1] })),
-      h('div', { class: 'grid-2' },
-        h('div', { class: 'card' }, h('h3', {}, `State of charge — ${dayLabel}`), socChart({ sim, storedKwh: battery.storedKwh, dtHours: d.dtHours })),
-        h('div', { class: 'card' }, h('h3', {}, `Dispatch check — ${dayLabel}`),
-          h('div', { class: 'dtiles' },
-            tile('Target held (worst day)?', sim.held ? 'Yes' : 'No', null, null, sim.held ? 'good' : 'bad'),
-            tile('Peak after shave', num(sim.peakAfter, 1), 'kW', `from ${num(sim.peakBefore, 1)} kW`),
-            tile('Max discharge', num(sim.maxDischarge, 1), 'kW', `of ${num(battery.kw)} kW`),
-            tile('Energy used', num(sim.energyUsed, 0), 'kWh', `of ${num(battery.storedKwh * battery.effDischarge, 0)} kWh deliverable`),
-            tile('Lowest charge', num(sim.lowestSoc, 0), 'kWh', `${Math.round((100 * sim.lowestSoc) / battery.storedKwh)}% of stored`),
-          ),
-          daysLine)),
-    ];
+  /** Show a system; choosing anything but the suggested one keeps it selected while the inputs change. */
+  function pick(id) {
+    selectedId = id;
+    pinned = id !== analysis?.recommended?.config.id;
+    renderResults();
+  }
+
+  function setBills(patch) {
+    update({ bills: { ...(site.bills || {}), ...patch } });
   }
 
   function setDispatch(patch) {
@@ -616,18 +554,51 @@ export function renderScreener(root, data, params) {
   function setCustomSystem(items) {
     update({ custom_system: items && items.length ? items : null });
     selectedId = items && items.length ? buildConfig(items, settings.products).id : null;
+    pinned = !!selectedId;
   }
 
-  function compLabel(c) {
-    if (!c.window) return 'all hours';
-    const f = (x) => (x === 0 || x === 24 ? '12am' : x === 12 ? '12pm' : x < 12 ? `${x}am` : `${x - 12}pm`);
-    return `${f(c.window.start)}–${f(c.window.end)}`;
-  }
-
-  function streamsCard(a, r) {
-    const streams = r.streams.slice().sort((x, y) => y.annual_usd + y.upfront_usd / 5 - (x.annual_usd + x.upfront_usd / 5));
+  /** Every configuration side by side: what it cuts and saves; costs only once real ones are entered. */
+  function compareCard(a, sel) {
+    const other = (r) => (scenario === 'base' ? r.totals.annual_base : r.totals.annual_upside) - r.streams.filter((x) => x.category === 'demand_charge' && (scenario === 'upside' || x.scenario === 'base')).reduce((n, x) => n + x.annual_usd, 0);
+    const maxUsd = Math.max(1, ...a.results.map((r) => r.demand.total));
+    const billMode = a.results[0]?.demand.mode === 'bills';
+    const heads = ['System', 'kW', 'kWh usable', 'Peak cut', `Demand savings${billMode ? ' (bills)' : ''}`, 'Programs & other value', 'Site check'];
+    if (a.costsKnown) heads.push('Installed cost', 'Payback', '10-yr NPV');
+    const rows = a.results.map((r) => h('tr', { class: ['click', r.config.id === sel?.config.id ? 'selected' : '', r === a.recommended ? 'rec' : ''].join(' '), onclick: () => { resultsTab = 'savings'; pick(r.config.id); } },
+      h('td', {}, r === a.recommended ? h('strong', {}, '★ ', r.config.label) : r.config.label),
+      h('td', { class: 'num' }, num(r.config.kw)),
+      h('td', { class: 'num' }, num(r.config.usableKwh ?? r.config.kwh * a.assumptions.usable_fraction)),
+      h('td', { class: 'num' }, `${num(r.peakCut.kw, r.peakCut.kw < 100 ? 1 : 0)} kW · ${Math.round(r.peakCut.pct * 100)}%`),
+      h('td', { class: 'num bar-cell' }, h('span', { class: 'inbar', style: { width: `${Math.round((100 * r.demand.total) / maxUsd)}%` } }), h('span', { class: 'inbar-v' }, usd(r.demand.total))),
+      h('td', { class: 'num' }, usd(other(r))),
+      h('td', {}, sevBadge(r.constraints.status)),
+      ...(a.costsKnown ? [h('td', { class: 'num' }, usd(r.config.installedCostUsd, { compact: true })), h('td', { class: 'num' }, yrs(r.finance[scenario].simplePayback)), h('td', { class: 'num' }, usd(r.finance[scenario].npv, { compact: true }))] : []),
+    ));
+    const overrides = h('details', { class: 'adv', style: { marginTop: '12px' } }, h('summary', { class: 'small' }, 'Use the demand reduction from your own model (kW per system, tariff valuation only)'),
+      h('div', { class: 'table-wrap' }, h('table', { class: 'tbl' },
+        h('thead', {}, h('tr', {}, h('th', {}, 'System'), h('th', { class: 'num' }, 'Your model’s kW reduction'))),
+        h('tbody', {}, a.results.map((r) => h('tr', {}, h('td', {}, r.config.label), h('td', { class: 'num' }, h('input', { type: 'number', min: 0, step: 'any', 'aria-label': `Demand reduction kW for ${r.config.label}`, value: site.shave_kw_override?.[r.config.id] ?? '', placeholder: num(avgShave(r), 0), onchange: (e) => {
+          const o = { ...(site.shave_kw_override || {}) };
+          if (e.target.value === '') delete o[r.config.id];
+          else o[r.config.id] = Number(e.target.value);
+          update({ shave_kw_override: o });
+        } }))))))));
     return h('div', { class: 'card' },
-      h('div', { class: 'card-head' }, h('h2', {}, 'Annual value stack'), h('span', { class: 'muted' }, `${r.config.label} · ${num(r.config.kw)} kW · ${num(r.config.kwh)} kWh · ${r.config.units} unit${r.config.units > 1 ? 's' : ''}`)),
+      h('div', { class: 'card-head' }, h('h2', {}, 'Compare systems'),
+        h('div', { class: 'seg' }, ['base', 'upside'].map((sc) => h('button', { type: 'button', 'aria-pressed': scenario === sc ? 'true' : 'false', onclick: () => { scenario = sc; renderResults(); } }, sc === 'base' ? 'Base case' : 'Upside case')))),
+      h('p', { class: 'small muted' }, `Every system the catalog offers for this site. Peak cut is the average monthly reduction the battery holds on every day of the month; demand savings use ${billMode ? 'the customer’s bills' : 'the selected rate'}. ★ = suggested (${a.costsKnown ? 'highest NPV at your installed costs' : 'smallest system within 3 points of the deepest cut; costs are ignored until you enter real ones in Settings'}). Programs & other value = demand response, peak tags and energy shifting (${scenario === 'base' ? 'base case' : 'upside, incl. waitlisted or unconfirmed programs'}). Click a row to open it on the Demand savings tab.`),
+      h('div', { class: 'table-wrap' }, h('table', { class: 'cmp-table' }, h('thead', {}, h('tr', {}, heads.map((t, i) => h('th', { class: i && i !== 6 ? 'num' : '' }, t)))), h('tbody', {}, rows))),
+      overrides,
+    );
+  }
+
+  /** All value streams of the selected system (demand, programs, tags, upfront incentives). */
+  function valueStackCard(a, r) {
+    const streams = r.streams.slice().sort((x, y) => y.annual_usd + y.upfront_usd / 5 - (x.annual_usd + x.upfront_usd / 5));
+    const billMode = r.demand?.mode === 'bills';
+    return h('div', { class: 'card' },
+      h('div', { class: 'card-head' }, h('h2', {}, 'All value streams'), h('span', { class: 'muted' }, `${r.config.label} · ${num(r.config.kw)} kW · ${num(r.config.kwh)} kWh`)),
+      billMode ? h('div', { class: 'check-info', style: { marginBottom: '10px' } }, `The demand-charge rows below are the tariff valuation. The Demand savings tab values demand from the customer’s bills: ${usd(r.demand.total)}/yr for this system.`) : null,
       h('div', { class: 'table-wrap' },
         h('table', {},
           h('thead', {}, h('tr', {}, ['Value stream', 'How it’s calculated', 'Annual', 'Upfront', 'Case', 'Confidence', 'Source'].map((t, i) => h('th', { class: i === 2 || i === 3 ? 'num' : '' }, t)))),
@@ -645,11 +616,19 @@ export function renderScreener(root, data, params) {
           ),
         ),
       ),
-      h('h3', { style: { marginTop: '14px' } }, 'Site checks for this configuration'),
-      r.constraints.checks.map((c) => h('div', { class: 'note' },
+    );
+  }
+
+  /** Electrical, code and interconnection checks for the selected system. */
+  function checksCard(a, r) {
+    const order = { critical: 0, caution: 1, info: 2, ok: 3 };
+    const checks = r.constraints.checks.slice().sort((x, y) => order[x.severity] - order[y.severity]);
+    return h('div', { class: 'card' },
+      h('div', { class: 'card-head' }, h('h2', {}, `Checks for ${r.config.label}`), sevBadge(r.constraints.status)),
+      checks.length ? checks.map((c) => h('div', { class: 'note' },
         h('div', {}, sevIcon(c.severity)),
         h('div', {}, h('div', { class: 'title' }, c.title), h('div', { class: 'text' }, c.detail), c.mitigation ? h('div', { class: 'text' }, h('em', {}, 'Mitigation: '), c.mitigation) : null, sourcesList(c.sources)),
-      )),
+      )) : h('p', { class: 'muted' }, 'No issues found for this system.'),
     );
   }
 
@@ -680,8 +659,9 @@ export function renderScreener(root, data, params) {
     const shown = all.filter((n) => personaFilter === 'all' || n.persona === personaFilter);
     const order = { critical: 0, caution: 1, info: 2, ok: 3 };
     shown.sort((x, y) => (x.src === y.src ? order[x.severity] - order[y.severity] : x.src === 'review' ? -1 : 1));
-    return h('div', { class: 'card' },
-      h('div', { class: 'card-head' }, h('h2', {}, 'Expert panel review'), h('span', { class: 'small muted' }, 'Simulated advisory personas. Not affiliated with the named companies.')),
+    const crit = all.filter((n) => n.severity === 'critical').length;
+    return h('details', { class: 'card fold-card', open: panelOpen ? true : null, ontoggle: (e) => { panelOpen = e.target.open; } },
+      h('summary', {}, h('span', { class: 'fold-title' }, `Expert panel review (${all.length})`), crit ? h('span', { class: 'badge critical' }, `${crit} critical`) : null, h('span', { class: 'small muted' }, 'Simulated advisory personas. Not affiliated with the named companies.')),
       h('div', { class: 'persona-filter' },
         h('button', { class: 'chip', 'aria-pressed': personaFilter === 'all' ? 'true' : 'false', onclick: () => { personaFilter = 'all'; renderResults(); } }, `All (${all.length})`),
         ids.map((id) => h('button', { class: 'chip', 'aria-pressed': personaFilter === id ? 'true' : 'false', onclick: () => { personaFilter = id; renderResults(); } }, `${personas[id]?.short || personas[id]?.name || id} (${all.filter((n) => n.persona === id).length})`)),
@@ -776,14 +756,15 @@ export function renderScreener(root, data, params) {
     );
   }
 
-  function exportCard(a) {
+  function exportCard(a, sel, dm) {
     const base = (site.id || site.name || 'site').replace(/[^\w-]+/g, '_').slice(0, 40);
     return h('div', { class: 'card' },
       h('div', { class: 'card-head' }, h('h2', {}, 'Export & share'), h('span', { class: 'small muted' }, 'Hand the parameters to your interval-data model')),
       h('div', { class: 'btn-row' },
-        h('button', { class: 'btn primary', onclick: () => download(`${base}_bess_screen.xlsx`, xlsx(siteWorkbookSheets(a, README_ROWS)), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }, 'Download Excel (.xlsx)'),
+        h('button', { class: 'btn primary', onclick: () => download(`${base}_bess_screen.xlsx`, xlsx(siteWorkbookSheets(a, README_ROWS, { selected: sel, dm })), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }, 'Download Excel (.xlsx)'),
         h('button', { class: 'btn', onclick: () => download(`${base}_bess_screen_csv.zip`, zip([
           { name: 'inputs.csv', data: toCsv(inputRows(a)) },
+          { name: 'demand_by_month.csv', data: toCsv(monthlyRows(a, sel, dm)) },
           { name: 'configs.csv', data: toCsv(configRows(a)) },
           { name: 'value_streams.csv', data: toCsv(streamRows(a)) },
           { name: 'tariff_params.csv', data: toCsv(tariffRows(a)) },
@@ -806,7 +787,7 @@ export function renderScreener(root, data, params) {
         } }, 'Copy share link'),
         h('button', { class: 'btn', onclick: () => window.print() }, 'Print site report'),
       ),
-      h('p', { class: 'small muted', style: { marginTop: '8px' } }, 'Workbook sheets: Inputs, Configs, ValueStreams (long format), TariffParams (demand windows & rates for bill modeling), Programs, SiteLimits, Panel. See Methodology → Export schema.'),
+      h('p', { class: 'small muted', style: { marginTop: '8px' } }, `Workbook sheets: Inputs, DemandByMonth (${sel ? sel.config.label : 'the selected system'}), Configs, ValueStreams (long format), TariffParams (demand windows & rates for bill modeling), Programs, SiteLimits, Panel. See Methodology → Export schema.`),
       h('p', { class: 'small muted' }, 'The workbench site file keeps everything the workbench saved (interval data included) and adds Atlas results under “atlas”: the recommended system, every configuration’s value and payback, tariff parameters, site limits and panel cautions. It opens in the workbench as before.'),
     );
   }
@@ -862,7 +843,7 @@ function workbenchCheck(a, site) {
     rows.push(h('li', { class: diff != null && Math.abs(diff) > 0.25 ? 'warn' : '' }, h('strong', {}, 'Bills: '), `${wb.billMonths} months of bills average $${num(wb.billRate, 2)} per billed kW. The selected rate’s demand charges add up to $${num(summer, 2)}/kW if every element hits the same peak (it varies by month and window). `,
       diff != null && Math.abs(diff) > 0.25 ? 'That is a large gap: confirm the rate class, or enter the bill’s demand rates in Rates & programs.' : 'Broadly consistent.'));
   }
-  if (wb.drUsdPerKwYr) rows.push(h('li', {}, h('strong', {}, 'Workbench DR estimate: '), `$${num(wb.drUsdPerKwYr)}/kW-yr. Atlas values the territory’s programs individually (Savings → Annual value stack).`));
+  if (wb.drUsdPerKwYr) rows.push(h('li', {}, h('strong', {}, 'Workbench DR estimate: '), `$${num(wb.drUsdPerKwYr)}/kW-yr. Atlas values the territory’s programs individually (Rates & programs → All value streams).`));
   if (!rows.length) return null;
   return h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h2', {}, 'Workbench cross-check'), h('span', { class: 'small muted' }, site.workbench_file || '')), h('ul', { class: 'wb-check' }, rows));
 }
@@ -909,26 +890,28 @@ function printHeader(a, data) {
  */
 export function accuracyItems(a, data) {
   const s = a.site;
-  const settings = settingsStore.get(data);
-  const placeholder = settings.products.some((p) => p.cost_is_placeholder && settings.raw?.products?.[p.id]?.installed_cost_usd_per_kwh == null && settings.raw?.products?.[p.id]?.installed_cost_usd == null);
   const rec = a.recommended;
   const items = [];
   const add = (ok, title, detail, action) => items.push({ ok, title, detail, action });
   const missing = a.missing || [];
-  add(!missing.length, missing.length ? `${missing.length} tariff rate${missing.length > 1 ? 's' : ''} missing` : 'Tariff rates complete', missing.length ? `${missing.join('; ')} — excluded from savings until entered.` : `${a.tariff?.name || ''}${a.tariff?.effective_date ? ` (effective ${a.tariff.effective_date})` : ''}.`, missing.length ? 'rates' : null);
+  if (!usesBills(s)) add(!missing.length, missing.length ? `${missing.length} tariff rate${missing.length > 1 ? 's' : ''} missing` : 'Tariff rates complete', missing.length ? `${missing.join('; ')} — excluded from savings until entered.` : `${a.tariff?.name || ''}${a.tariff?.effective_date ? ` (effective ${a.tariff.effective_date})` : ''}.`, missing.length ? 'rates' : null);
   const lowTariff = a.tariff?.confidence === 'low' && (a.tariff.demand_charges || []).some((d) => typeof d.rate_usd_per_kw_month === 'number' && !d.overridden);
   if (a.tariff) add(!lowTariff, lowTariff ? 'Tariff rates are low-confidence' : `Tariff confidence: ${a.tariff.confidence || 'n/a'}`, lowTariff ? 'Confirm the demand charges against a recent customer bill and override them in the Rate panel.' : 'Rates come from a primary source or two consistent sources.', lowTariff ? 'rates' : null);
-  add(!placeholder, placeholder ? 'Installed cost is a placeholder' : 'Installed costs entered', placeholder ? 'Payback, NPV and the recommended size use $600/kWh. Enter your actual costs.' : 'Economics use your product costs.', placeholder ? 'settings' : null);
+  if (usesBills(s)) {
+    const b = billsOf(s);
+    const n = billedMonths(b).length;
+    add(true, n ? `Demand charges from the customer’s bills (${n} of 12 months)` : `Demand charges at $${num(b.flatRate, 2)}/kW from the bills`, n === 12 ? 'Every month is valued from its own bill.' : b.flatRate != null ? `Months without their own charges use $${num(b.flatRate, 2)}/kW.` : 'Months without charges use the average $/kW of the months entered.', null);
+  }
   const iv = a.interval;
   const hasInterval = !!iv || Array.isArray(s.custom_profile) || Object.keys(s.shave_kw_override || {}).length > 0;
   if (iv) add(iv.monthsCovered >= 12, iv.monthsCovered >= 12 ? 'Interval data applied (all days, every month)' : `Interval data covers ${iv.monthsCovered} of 12 months`, `${iv.start} to ${iv.end}, ${iv.days} days. Each month’s demand caps are checked against every day of that month.${iv.monthsCovered < 12 ? ' Missing months use the generic load shape.' : ''}`, null);
-  else add(hasInterval, hasInterval ? 'Peak-day profile applied' : 'Demand savings use a generic load shape', hasInterval ? 'A single peak-day profile or shave kW from your model is in use. A workbench site file adds every day of every month.' : 'Open the workbench site file (top of the form), paste a peak-day profile (step 2), or enter “Shave kW (your model)”.', null);
+  else add(hasInterval, hasInterval ? 'Peak-day profile applied' : 'Demand savings use a generic load shape', hasInterval ? 'A single peak-day profile or kW from your own model is in use. A meter interval file adds every day of every month.' : 'Open a meter interval file (top of the form) so every day of every month is checked, or paste a peak-day profile (step 2).', null);
   const hasTags = (a.tariff?.coincident_peak_charges || []).some((c) => typeof c.est_value_usd_per_kw_year === 'number');
   if (hasTags) add(s.supply_contract && s.supply_contract !== 'unknown', s.supply_contract && s.supply_contract !== 'unknown' ? 'Supply contract set' : 'Supply contract unknown', s.supply_contract && s.supply_contract !== 'unknown' ? 'Peak-tag savings follow the contract’s pass-through terms.' : 'Peak-tag savings are held in upside until you set the contract (step 5).', null);
   const elec = s.service_voltage > 0 && s.service_amps > 0 && (s.busbar_amps > 0 || s.main_breaker_amps > 0);
   add(elec, elec ? 'Electrical service entered' : 'Electrical service missing', elec ? 'NEC 120% and charging-headroom limits are checked.' : 'Enter voltage, service, main breaker and busbar ratings (step 3) to check size limits.', null);
   if (s.network_secondary === 'unknown') add(false, 'Network grid status unknown', 'Confirm with the utility whether the site is on a secondary network; it restricts export and adds review.', null);
-  add(!!a.assumptions.itc_feoc_confirmed, a.assumptions.itc_feoc_confirmed ? 'ITC supply-chain compliance confirmed' : 'ITC counted in upside only', a.assumptions.itc_feoc_confirmed ? 'The 30% credit counts in the base case.' : 'Confirm the batteries meet the FEOC/MACR rules in Settings to count the ITC in the base case.', a.assumptions.itc_feoc_confirmed ? null : 'settings');
+  if (a.costsKnown) add(!!a.assumptions.itc_feoc_confirmed, a.assumptions.itc_feoc_confirmed ? 'ITC supply-chain compliance confirmed' : 'ITC counted in upside only', a.assumptions.itc_feoc_confirmed ? 'The 30% credit counts in the base case.' : 'Confirm the batteries meet the FEOC/MACR rules in Settings to count the ITC in the base case.', a.assumptions.itc_feoc_confirmed ? null : 'settings');
   const unconfirmed = (rec?.streams || []).filter((x) => x.flags?.includes('eligibility_unconfirmed'));
   if (unconfirmed.length) add(false, 'Program eligibility to confirm', `${unconfirmed.map((x) => x.label).join('; ')} — counted in upside until you tick “Confirmed eligible” in the programs list.`, null);
   if (rec) {
@@ -949,36 +932,13 @@ function accuracyChecklist(a, data, openRates) {
     if (i.action === 'health') return h('a', { class: 'btn small', href: '#/health' }, 'Data health');
     return null;
   };
-  return h('details', { class: 'card', open: open > 0 },
-    h('summary', { style: { cursor: 'pointer', listStyle: 'none' } },
-      h('div', { class: 'card-head', style: { marginBottom: 0 } },
-        h('h2', {}, 'Accuracy checklist'),
-        open ? h('span', { class: 'grade-pill screening' }, sevIcon('caution'), `Screening-grade · ${open} item${open > 1 ? 's' : ''} to resolve`) : h('span', { class: 'grade-pill planning' }, sevIcon('ok'), 'Planning-grade inputs'),
-      ),
+  return h('details', { class: 'card checklist-card' },
+    h('summary', {},
+      h('span', { class: 'fold-title' }, 'Accuracy checklist'),
+      open ? h('span', { class: 'grade-pill screening' }, sevIcon('caution'), `Screening-grade · ${open} item${open > 1 ? 's' : ''} to resolve`) : h('span', { class: 'grade-pill planning' }, sevIcon('ok'), 'Planning-grade inputs'),
     ),
     h('div', { class: 'checklist', style: { marginTop: '10px' } },
       items.sort((x, y) => Number(x.ok) - Number(y.ok)).map((i) => h('div', { class: 'check' }, h('div', {}, sevIcon(i.ok ? 'ok' : 'caution')), h('div', {}, h('div', { class: 't' }, i.title), h('div', { class: 'd' }, i.detail)), h('div', {}, actionEl(i)))),
     ),
-  );
-}
-
-function kpis(a, rec) {
-  const sc = a.score;
-  const ring = (val) => {
-    const C = 2 * Math.PI * 26;
-    const wrap = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    wrap.setAttribute('viewBox', '0 0 64 64');
-    wrap.setAttribute('class', 'ring');
-    wrap.innerHTML = `<circle cx="32" cy="32" r="26" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="32" cy="32" r="26" fill="none" stroke="${val >= 65 ? 'var(--green)' : val >= 35 ? 'var(--gold-dark)' : 'var(--critical)'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(C * val) / 100} ${C}" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)" font-family="system-ui">${val}</text>`;
-    return wrap;
-  };
-  if (!rec) return h('div', { class: 'card empty' }, 'No configuration could be evaluated.');
-  const f = rec.finance.base;
-  return h('div', { class: 'kpis result-kpis', style: { marginBottom: '14px' } },
-    h('div', { class: 'kpi score', title: `Economics ${sc.parts.economics} · Certainty ${sc.parts.certainty} · Feasibility ${sc.parts.feasibility}` }, h('div', { class: 'label' }, sc.incomplete ? 'Site score (incomplete)' : 'Site score'), h('div', { class: 'score-row' }, ring(sc.score), h('div', { class: 'grade' }, sc.incomplete ? `${sc.grade}*` : sc.grade)), h('div', { class: 'sub' }, sc.basis)),
-    h('div', { class: 'kpi' }, h('div', { class: 'label' }, f.npv != null && f.npv < 0 ? 'Best available (NPV negative)' : 'Recommended'), h('div', { class: 'value', style: { fontSize: '16px' } }, rec.config.label), h('div', { class: 'sub' }, f.npv != null && f.npv < 0 ? (f.simplePayback != null ? `Pays back in ${yrs(f.simplePayback)}, but no option earns back its cost at the ${num(a.assumptions.discount_rate_pct)}% discount rate (NPV < 0) at current cost assumptions` : 'No option pays back within the analysis horizon at current cost assumptions') : `${num(rec.config.kw)} kW · ${num(rec.config.kwh)} kWh · highest NPV of feasible options`)),
-    h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Annual value (base)'), h('div', { class: 'value' }, usd(rec.totals.annual_base)), h('div', { class: 'sub' }, `Upside ${usd(rec.totals.annual_upside)}`)),
-    h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Upfront incentives + ITC'), h('div', { class: 'value' }, usd(rec.totals.upfront_base)), h('div', { class: 'sub' }, rec.totals.upfront_upside > rec.totals.upfront_base + 0.5 ? `Upside ${usd(rec.totals.upfront_upside)} · cost ${usd(rec.config.installedCostUsd)}` : `Installed cost ${usd(rec.config.installedCostUsd)}`)),
-    h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Simple payback'), h('div', { class: 'value' }, yrs(f.simplePayback)), h('div', { class: 'sub' }, `NPV ${usd(f.npv, { compact: true })} · IRR ${f.irr != null ? pct(f.irr) : '—'}`)),
   );
 }

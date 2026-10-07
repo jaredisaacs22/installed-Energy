@@ -1,18 +1,23 @@
 // Site attractiveness score (0–100) for ranking candidate sites. Transparent and deliberately simple:
 //   economics (50%)   – simple payback of the recommended config: ≤4 yr → 100, ≥12 yr → 0 (linear),
 //                       capped at 40 when NPV over the analysis horizon is negative
-//                       or, without cost data, value density $/kWh-yr: ≥$120 → 100, ≤$20 → 0
+//                       or, without cost data (or while costs are placeholders), value density
+//                       $/kWh-yr: ≥$120 → 100, ≤$20 → 0
 //   certainty (20%)   – share of value from base-case, medium/high-confidence streams
 //   feasibility (30%) – 100 minus penalties: critical −45, caution −12, info −2 (per check, capped at 0)
 
 const clamp = (x, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, x));
 
-export function siteScore(rec, { incomplete = false } = {}) {
+export function siteScore(rec, { incomplete = false, costsKnown = true } = {}) {
   if (!rec) return { score: 0, grade: 'F', parts: { economics: 0, certainty: 0, feasibility: 0 }, basis: 'No feasible configuration' };
   const fin = rec.finance.base;
   let economics;
   let basis;
-  if (fin.netCost != null && fin.simplePayback == null) {
+  if (!costsKnown) {
+    const density = rec.config.kwh > 0 ? rec.totals.annual_base / rec.config.kwh : 0;
+    economics = clamp(((density - 20) / 100) * 100);
+    basis = `$${density.toFixed(0)}/kWh-yr of battery`;
+  } else if (fin.netCost != null && fin.simplePayback == null) {
     economics = 0;
     basis = 'does not pay back (year-1 net value ≤ 0)';
   } else if (fin.simplePayback != null) {

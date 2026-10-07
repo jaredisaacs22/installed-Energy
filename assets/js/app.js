@@ -37,7 +37,12 @@ export async function loadData() {
 export const settingsStore = {
   get(data) {
     const saved = storage.get('atlas.settings', {});
-    const products = data.products.map((p) => ({ ...p, ...(saved.products?.[p.id] || {}) }));
+    // A product whose installed cost was entered here is no longer a placeholder.
+    const products = data.products.map((p) => {
+      const o = saved.products?.[p.id] || {};
+      const entered = o.installed_cost_usd != null || o.installed_cost_usd_per_kwh != null;
+      return { ...p, ...o, ...(entered ? { cost_is_placeholder: false } : {}) };
+    });
     return { assumptions: saved.assumptions || {}, products, raw: saved };
   },
   save(raw) {
@@ -72,6 +77,12 @@ const TITLES = { overview: 'Overview', screener: 'Site screener', workbench: 'Wo
 async function render() {
   const { route, params } = parseHash();
   document.querySelectorAll('[data-route]').forEach((a) => a.setAttribute('aria-current', a.dataset.route === route ? 'page' : 'false'));
+  const more = document.getElementById('nav-more');
+  if (more) {
+    more.classList.remove('open');
+    more.querySelector('.nav-more-btn')?.setAttribute('aria-expanded', 'false');
+    more.classList.toggle('current', !!more.querySelector(`[data-route="${route}"]`));
+  }
   document.title = `${TITLES[route] || 'BESS Incentive Atlas'} · BESS Incentive Atlas`;
   app.replaceChildren();
   app.classList.toggle('wide', route === 'workbench');
@@ -90,8 +101,26 @@ function initTheme() {
   storage.del('atlas.theme');
 }
 
+// "More" menu in the header: secondary pages (reference material and the standalone workbench).
+function initNavMenu() {
+  const more = document.getElementById('nav-more');
+  if (!more) return;
+  const btn = more.querySelector('.nav-more-btn');
+  const set = (open) => {
+    more.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  };
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    set(!more.classList.contains('open'));
+  });
+  document.addEventListener('click', (e) => { if (!more.contains(e.target)) set(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && more.classList.contains('open')) { set(false); btn.focus(); } });
+}
+
 (async function main() {
   initTheme();
+  initNavMenu();
   const session = await requireSignIn(app);
   const who = document.getElementById('signed-in');
   who.replaceChildren(h('span', { class: 'email' }, session.email), h('button', { class: 'icon-btn', type: 'button', title: `Signed in as ${session.email}`, onclick: signOut }, 'Sign out'));

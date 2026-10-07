@@ -213,6 +213,10 @@ export function configRows(a) {
     kw: r.config.kw,
     kwh: r.config.kwh,
     duration_hr: r.config.durationHr,
+    peak_cut_kw: r.peakCut ? roundTo(r.peakCut.kw, 1) : null,
+    peak_cut_pct: r.peakCut ? roundTo(r.peakCut.pct * 100, 1) : null,
+    demand_savings_usd: r.demand ? roundTo(r.demand.total) : null,
+    demand_savings_basis: r.demand?.mode || null,
     installed_cost_usd: r.config.installedCostUsd,
     annual_value_base_usd: r.totals.annual_base,
     annual_value_upside_usd: r.totals.annual_upside,
@@ -368,10 +372,37 @@ export function inputRows(a) {
   return rows;
 }
 
-export function siteWorkbookSheets(a, readme) {
+/**
+ * Demand savings by month for one system (default: the suggested one): the Demand savings tab's table.
+ * dm = a demand model with the tab's own targets (engine/demand-savings.js demandModel); else the engine's.
+ */
+export function monthlyRows(a, r = a.recommended, dm = r?.demand) {
+  if (!r || !dm) return [];
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return dm.rows.filter((x) => !x.missing).map((x) => ({
+    ...siteKey(a),
+    config_id: r.config.id,
+    month: MON[x.m - 1],
+    basis: dm.mode,
+    peak_kw: roundTo(x.peak, 1),
+    sustainable_hold_kw: x.achievable != null ? roundTo(x.achievable, 1) : null,
+    target_kw: x.target != null ? roundTo(x.target, 1) : null,
+    held_kw: x.held != null ? roundTo(x.held, 1) : null,
+    billed_before_kw: dm.mode === 'bills' ? roundTo(x.before, 1) : null,
+    billed_after_kw: dm.mode === 'bills' ? roundTo(x.after, 1) : null,
+    reduction_kw: roundTo(x.reduction, 1),
+    demand_charges_usd: dm.mode === 'bills' ? x.usd : null,
+    rate_usd_per_kw: dm.mode === 'bills' && x.rate != null ? roundTo(x.rate, 4) : null,
+    rate_estimated: dm.mode === 'bills' && x.estimated ? 'yes' : '',
+    savings_usd: x.savings != null ? roundTo(x.savings, 2) : null,
+  }));
+}
+
+export function siteWorkbookSheets(a, readme, { selected = null, dm = null } = {}) {
   return [
     { name: 'README', rows: readme },
     { name: 'Inputs', rows: inputRows(a) },
+    { name: 'DemandByMonth', rows: monthlyRows(a, selected || a.recommended, dm || (selected || a.recommended)?.demand) },
     { name: 'Configs', rows: configRows(a) },
     { name: 'ValueStreams', rows: streamRows(a) },
     { name: 'TariffParams', rows: tariffRows(a) },
@@ -383,7 +414,8 @@ export function siteWorkbookSheets(a, readme) {
 
 export const README_ROWS = [
   { sheet: 'Inputs', description: 'Site inputs and modeling assumptions used for this run (one key per row).' },
-  { sheet: 'Configs', description: 'One row per battery configuration: size, cost, base/upside annual value, incentives, payback, NPV, IRR, constraint status.' },
+  { sheet: 'DemandByMonth', description: 'Demand savings by month for the selected system: peak, sustainable hold, target, billed demand before/after (bill basis), kW reduction, $/kW and savings. basis = bills (the customer’s demand charges) or tariff (the selected rate).' },
+  { sheet: 'Configs', description: 'One row per battery configuration: size, average monthly peak cut, demand savings, cost, base/upside annual value, incentives, payback, NPV, IRR, constraint status. Costs are placeholders until entered in Settings.' },
   { sheet: 'ValueStreams', description: 'Long format, one row per configuration × value stream. Join to Configs on site_id + config_id.' },
   { sheet: 'TariffParams', description: 'Machine-usable tariff elements (demand charges with months/hour windows, energy rates, coincident-peak $/kW-yr, ratchet) for an interval-data bill model.' },
   { sheet: 'Programs', description: 'Programs available in the territory with rates, event durations, size thresholds, stacking conflicts, and eligibility for the recommended config.' },

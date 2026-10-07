@@ -1,4 +1,4 @@
-// Savings-tab charts, modeled on the Site Analysis Workbench's Sizing tab: worst-day dispatch
+// Demand savings tab charts, modeled on the Site Analysis Workbench's Sizing tab: worst-day dispatch
 // (original load, shaved load, target), state of charge, and monthly demand savings.
 import { h, s, num, usd, showTip, hideTip } from './ui.js';
 
