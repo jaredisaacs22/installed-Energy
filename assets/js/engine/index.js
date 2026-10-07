@@ -7,6 +7,7 @@ import { siteLimits, checkConfig, SEVERITY_ORDER } from './constraints.js';
 import { economics, yearlyValues } from './finance.js';
 import { siteScore } from './score.js';
 import { panelReview, briefingNotes } from './panel.js';
+import { demandModel, kneePick } from './demand-savings.js';
 
 export { buildConfig } from './configs.js';
 export { BUILDING_SHAPES, loadFactor } from './loadshape.js';
@@ -65,15 +66,25 @@ export function analyzeSite(site, data, settings = {}, extras = {}) {
     };
   });
 
+  // Installed costs are ignored until real ones are entered (Settings): the shipped $/kWh figures are
+  // placeholders, so payback and NPV would only rank systems by a made-up number.
+  const costsKnown = !products.some((p) => p.cost_is_placeholder);
+  const analysis = { site, tariff, jurisdiction, limits, profile, results, assumptions, costsKnown };
+  // Cost-free demand view of every configuration: monthly peak cut and demand-charge savings (bills or tariff).
+  for (const r of results) {
+    r.demand = demandModel(analysis, r, interval);
+    r.peakCut = r.demand.depth;
+  }
+
   const feasible = results.filter((r) => r.constraints.status !== 'critical');
   const pool = feasible.length ? feasible : results;
-  const recommended = pickRecommended(pool);
-  const analysis = { site, tariff, jurisdiction, limits, profile, results, recommended, assumptions };
+  const recommended = costsKnown ? pickRecommended(pool) : kneePick(pool, { maxKw: limits.usefulKwCeiling ?? site.peak_kw });
+  analysis.recommended = recommended;
   analysis.interval = interval
     ? { start: interval.start, end: interval.end, days: interval.days, monthsCovered: interval.monthsCovered, peak_kw: interval.peak_kw, annual_kwh: interval.annual_kwh, p05_kw: interval.p05_kw, dt_min: Math.round(interval.dtHours * 60) }
     : null;
   analysis.missing = missingRates(tariff, site);
-  analysis.score = siteScore(recommended, { incomplete: analysis.missing.length > 0 });
+  analysis.score = siteScore(recommended, { incomplete: analysis.missing.length > 0, costsKnown });
   analysis.panel = panelReview(site, analysis, ctx);
   analysis.briefing = briefingNotes(site, jurisdiction, data.panel);
   analysis.programs = programs.map((p) => ({ program: p, ...(recommended ? programEligibility(p, site, recommended.config) : { eligible: false }) }));

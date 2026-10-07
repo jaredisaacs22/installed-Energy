@@ -21,12 +21,17 @@
       <nav class="tabs" aria-label="Main">
         <a href="#/overview" data-route="overview">Overview</a>
         <a href="#/screener" data-route="screener">Site screener</a>
-        <a href="#/workbench" data-route="workbench">Workbench</a>
         <a href="#/portfolio" data-route="portfolio">Portfolio</a>
         <a href="#/library" data-route="library">Programs &amp; tariffs</a>
-        <a href="#/health" data-route="health">Data health</a>
-        <a href="#/panel" data-route="panel">Expert panel</a>
-        <a href="#/method" data-route="method">Methodology</a>
+        <div class="nav-more" id="nav-more">
+          <button type="button" class="nav-more-btn" aria-expanded="false" aria-controls="nav-menu">More <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="nav-menu" id="nav-menu">
+            <a href="#/workbench" data-route="workbench">Workbench</a>
+            <a href="#/health" data-route="health">Data health</a>
+            <a href="#/panel" data-route="panel">Expert panel</a>
+            <a href="#/method" data-route="method">Methodology</a>
+          </div>
+        </div>
       </nav>
       <span class="spacer"></span>
       <span id="signed-in" class="signed-in"></span>

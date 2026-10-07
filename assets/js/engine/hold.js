@@ -147,9 +147,10 @@ export function holdUnitOf(battery,reserve){
 /**
  * Sustainable hold for each month: { [m 1-12]: { peak, achievable } }. Uses every day of the month when
  * interval data covers it; otherwise the design day (a single profile {kw, dtHours}) as a worst-day estimate.
- * opts = { sched, carry }.
+ * opts = { sched, carry }. monthPeaks (optional) = { [m]: kW } scales the design day to that month's peak
+ * (billed demand read off the customer's bills) for months the interval data does not cover.
  */
-export function monthlyHolds(interval,designProfile,u,opts){
+export function monthlyHolds(interval,designProfile,u,opts,monthPeaks){
   opts=opts||{};
   var out={};
   for(var m=1;m<=12;m++){
@@ -158,9 +159,10 @@ export function monthlyHolds(interval,designProfile,u,opts){
       var peak=interval.months[m].peak;
       out[m]={peak:peak,achievable:monthSustainTarget(days,u,interval.dtHours,opts.sched,opts.carry),days:days.length,basis:"interval"};
     }else if(designProfile){
-      var dt=designProfile.dtHours,prof=designProfile.kw.map(function(v,i){return {h:i*dt,kW:v,d:null};});
-      var pk=Math.max.apply(null,designProfile.kw);
-      out[m]={peak:pk,achievable:minAchievablePeak(prof,u,dt,opts.sched||null),days:null,basis:"design"};
+      var dt=designProfile.dtHours,pk0=Math.max.apply(null,designProfile.kw);
+      var want=monthPeaks&&+monthPeaks[m]>0?+monthPeaks[m]:null,f=(want&&pk0>0)?want/pk0:1;
+      var prof=designProfile.kw.map(function(v,i){return {h:i*dt,kW:v*f,d:null};});
+      out[m]={peak:pk0*f,achievable:minAchievablePeak(prof,u,dt,opts.sched||null),days:null,basis:"design",profile:prof};
     }
   }
   return out;

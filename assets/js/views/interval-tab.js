@@ -1,4 +1,4 @@
-// Interval data tab of the Site screener: the Site Analysis Workbench's "Interval Data" tab, built in.
+// Load data tab of the Site screener: the Site Analysis Workbench's "Interval Data" tab, built in.
 // Load a meter interval file (CSV / TSV / Excel, or a workbench site file), see how it was read, and review
 // the load: peak and average demand, monthly peaks, worst days, the year overview and the month × hour heat map.
 import { h, num, pct } from '../ui.js';
@@ -21,7 +21,7 @@ export function intervalTab(ctx) {
   if (!rec || !a) {
     parts.push(h('div', { class: 'card empty' },
       h('h3', {}, 'No interval data yet'),
-      h('p', { class: 'muted' }, 'Drop the site’s meter interval file above. The whole analysis is driven by it: the file sets the peak, the annual energy and each month’s worst day, and the Sizing and Savings tabs check the battery against every day of it. With only monthly bills, enter the peak and annual kWh in the form and the Atlas uses a building-type load shape.')));
+      h('p', { class: 'muted' }, 'Drop the site’s meter interval file above. The whole analysis is driven by it: the file sets the peak, the annual energy and each month’s worst day, and the Demand savings tab checks the battery against every day of it. With only monthly bills, enter the peak and annual kWh in the form, then type the bills on the Demand savings tab; the Atlas uses a building-type load shape scaled to each month’s billed kW.')));
     return h('div', { class: 'iv-tab' }, ...parts);
   }
   if (!rec.detection) parts.push(workbenchFileCard(rec, a));

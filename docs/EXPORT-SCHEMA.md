@@ -5,14 +5,28 @@ The screener exports one site and the portfolio exports many, each as an Excel w
 ## Inputs
 One row per input: `section` (`site` | `assumption` | `meta`), `key`, `value`. Includes `export_schema_version` and `generated_at`.
 
-Savings-tab settings are site inputs too: `dispatch.reserve_pct` (0–90, share of usable kWh never discharged for shaving), `dispatch.carry` (charge carried across days), `dispatch.max_daily` (deeper discharge on lighter days), `dispatch.sched.*` (fixed discharge/charge windows, months and weekdays) and `dispatch.month_targets.<month>` (per-month kW target overrides). A hand-built system is `custom_system`, a JSON list of `{productId, count}`. Interval data loaded from a meter file is referenced by `interval_id` and is not part of these tables.
+Savings-tab settings are site inputs too: `dispatch.reserve_pct` (0–90, share of usable kWh never discharged for shaving), `dispatch.carry` (charge carried across days), `dispatch.max_daily` (deeper discharge on lighter days), `dispatch.sched.*` (fixed discharge/charge windows, months and weekdays) and `dispatch.month_targets.<month>` (per-month kW target overrides). A hand-built system is `custom_system`, a JSON list of `{productId, count}`. The customer's bills are `bills.use` (price demand from the bills instead of the tariff), `bills.rate_usd_per_kw` (one $/kW for every month without its own charges), `bills.months.<month>.usd` / `.kw` (that month's demand charges and billed demand) and `bills.ratchet_pct` (billing floor; blank = the rate's own ratchet). Interval data loaded from a meter file is referenced by `interval_id` and is not part of these tables.
+
+## DemandByMonth (the selected system, one row per month)
+| Column | Meaning |
+|---|---|
+| `config_id` | The system shown on the Demand savings tab (the suggested one in portfolio exports) |
+| `basis` | `bills` (the customer's demand charges, the workbench's bill model) or `tariff` (the selected rate, Atlas valuation) |
+| `peak_kw`, `sustainable_hold_kw` | The month's peak, and the lowest peak the battery holds on every day of the month |
+| `target_kw`, `held_kw` | The target (the hold or your override) and the peak actually held at it |
+| `billed_before_kw`, `billed_after_kw` | Bills only: billed demand without and with the battery (after the ratchet floor) |
+| `reduction_kw` | Bills: billed before − after. Tariff: the reduction counted (after the capture factor and DR event days) |
+| `demand_charges_usd`, `rate_usd_per_kw`, `rate_estimated` | Bills only: the amount entered, the $/kW used, and `yes` where the month had no amount and used the average |
+| `savings_usd` | The month's demand-charge savings |
 
 ## Configs (one row per battery configuration)
 | Column | Meaning |
 |---|---|
 | `config_id` | e.g. `2xB200-418` (count × product id) |
-| `recommended` | `yes` for the highest-NPV configuration without critical site issues |
+| `recommended` | `yes` for the suggested configuration: with placeholder costs, the smallest within 3 points of the deepest average monthly peak cut; with real costs, the highest NPV. Either way only among those without critical site issues |
 | `units`, `kw`, `kwh`, `duration_hr` | Configuration totals |
+| `peak_cut_kw`, `peak_cut_pct` | Average monthly peak reduction at the sustainable holds |
+| `demand_savings_usd`, `demand_savings_basis` | Annual demand-charge savings and whether they come from the `bills` or the `tariff` |
 | `installed_cost_usd` | From product costs (Settings) |
 | `annual_value_base_usd` / `_upside_usd` | Year-1 value. Upside adds waitlisted/pending programs, optional tariff elections, and tag savings a fixed supply contract would hold back |
 | `upfront_incentives_base_usd` / `_upside_usd` | Rebates + ITC (+ NYC property-tax abatement) |

@@ -1,5 +1,5 @@
-id,name,jurisdiction,utility_id,tariff_id,building_type,peak_kw,annual_kwh,min_load_kw,energy_price,service_voltage,phases,service_amps,main_breaker_amps,busbar_amps,network_secondary,install_location,available_area_sqft,setback_ok,flood_zone,supply_contract,has_solar,export_allowed,disadvantaged_community,property_owner
-EX-MA-001,Example grocery (Worcester),MA,ngrid-ma,ngrid-ma-g3,grocery,350,1800000,,0.22,480,3,1200,1200,1200,no,outdoor_ground,600,yes,no,passthrough,false,false,false,false
-EX-NYC-001,Example retail (Brooklyn),NY-NYC,coned-nyc,coned-sc9-rate2,retail,450,1600000,,0.24,208,3,2000,2000,2000,yes,outdoor_ground,,unknown,no,unknown,false,false,false,false
-EX-TX-001,Example distribution center (DFW),TX,oncor,oncor-sec-gt10kw,warehouse,900,3500000,,0.09,480,3,3000,3000,3000,no,outdoor_ground,1500,yes,no,passthrough,false,false,false,false
-EX-CA-001,Example big-box (Fresno),CA,pge,pge-b-19,retail,700,2600000,,0.25,480,3,2000,2000,2000,no,outdoor_ground,900,yes,no,default_service,true,false,false,false
+id,name,jurisdiction,utility_id,tariff_id,building_type,peak_kw,annual_kwh,min_load_kw,energy_price,service_voltage,phases,service_amps,main_breaker_amps,busbar_amps,network_secondary,install_location,available_area_sqft,setback_ok,flood_zone,supply_contract,has_solar,export_allowed,disadvantaged_community,property_owner,demand_rate_usd_per_kw,ratchet_pct
+EX-MA-001,Example grocery (Worcester),MA,ngrid-ma,ngrid-ma-g3,grocery,350,1800000,,0.22,480,3,1200,1200,1200,no,outdoor_ground,600,yes,no,passthrough,false,false,false,false,18.5,
+EX-NYC-001,Example retail (Brooklyn),NY-NYC,coned-nyc,coned-sc9-rate2,retail,450,1600000,,0.24,208,3,2000,2000,2000,yes,outdoor_ground,,unknown,no,unknown,false,false,false,false,,
+EX-TX-001,Example distribution center (DFW),TX,oncor,oncor-sec-gt10kw,warehouse,900,3500000,,0.09,480,3,3000,3000,3000,no,outdoor_ground,1500,yes,no,passthrough,false,false,false,false,,
+EX-CA-001,Example big-box (Fresno),CA,pge,pge-b-19,retail,700,2600000,,0.25,480,3,2000,2000,2000,no,outdoor_ground,900,yes,no,default_service,true,false,false,false,,

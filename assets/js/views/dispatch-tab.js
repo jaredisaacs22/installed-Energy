@@ -1,40 +1,24 @@
-// Sizing & dispatch section of the Savings tab: the Site Analysis Workbench's Sizing tab, built in.
+// Sizing & dispatch pieces of the Demand savings tab: the Site Analysis Workbench's Sizing tab, built in.
 // A custom system builder, reserve capacity, a fixed dispatch schedule, charge carried across days and deeper
-// discharge on lighter days, then the daily dispatch by month (any day of the month, single day or monthly
-// totals, with an audit table and CSV downloads) and the per-month peak targets, which can be overridden.
+// discharge on lighter days, and the daily dispatch by month (any day of the month, single day or monthly
+// totals, with an audit table and CSV downloads). The per-month table with the dollars is views/demand-tab.js.
 //
 // All of the kW work is the workbench's own dispatch core (engine/hold.js), so the sustainable holds and
-// dispatch traces here match the workbench's. Demand-charge dollars still come from the Atlas valuation; only
-// the reserve feeds them (see each card's note).
-import { h, num, usd } from '../ui.js';
+// dispatch traces here match the workbench's. With the customer's bills every option feeds the dollars; with
+// tariff rates only the reserve does (see each card's note).
+import { h, num } from '../ui.js';
 import { download } from '../export.js';
 import { dispatchDayChart, socChart, hhmm } from '../dispatch-chart.js';
 import { buildConfig } from '../engine/configs.js';
 import { simBatteryOf } from '../engine/value.js';
 import * as H from '../engine/hold.js';
+import { cachedHolds } from '../engine/demand-savings.js';
 
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-// ---- cached hold searches (they are the expensive part), keyed per interval object ----
-const memos = new WeakMap();
-const designMemo = new Map();
-function memo(iv, key, fn) {
-  let store = designMemo;
-  if (iv) {
-    store = memos.get(iv);
-    if (!store) memos.set(iv, (store = new Map()));
-  }
-  if (!store.has(key)) {
-    if (store.size > 120) store.clear();
-    store.set(key, fn());
-  }
-  return store.get(key);
-}
-const unitSig = (u) => [u.kw, u.chargeKw, u.usableKwh, u.effC, u.effD, u.reserve].map((x) => Math.round((+x || 0) * 1e6) / 1e6).join('/');
-
+// Hold searches are cached in engine/demand-savings.js, shared with the engine's own pass over every system.
 function holdsFor(ctx, u, o) {
-  const key = ['h', unitSig(u), o.carry ? 1 : 0, JSON.stringify(o.sched || null), ctx.iv ? '' : ctx.a.profile.kw.join(',')].join('|');
-  return memo(ctx.iv, key, () => H.monthlyHolds(ctx.iv, ctx.a.profile, u, o));
+  return cachedHolds(ctx.iv, ctx.a.profile, u, o, ctx.monthPeaks || null);
 }
 
 /** Everything the cards share, computed once per render. */
@@ -86,20 +70,30 @@ const isoKey = (k) => {
 // ============================================================================================
 
 /**
- * ctx = { site, a, r, iv, products, ui, setDispatch(patch), setCustomSystem(items|null), rerender(), planView(month) }
- *   ui: { month, day, view: 'day'|'month', basis: 'workbench'|'plan' }  (mutable, kept by the screener)
- * Returns { settings: [cards], dispatch: [cards], targets: [card], cut } so the screener can place its own
- * cards (banner, streams) between them.
+ * ctx = { site, a, r, iv, products, ui, billMode, monthPeaks, setDispatch(patch), setCustomSystem(items|null), rerender() }
+ *   ui: { month, day, view: 'day'|'month' }  (mutable, kept by the screener)
+ *   billMode: demand is valued from the customer's bills, so the schedule and carry options move the dollars too.
+ * Returns { system: card, settings: [cards], dispatch: [cards], cut, D } for the Demand savings tab to place.
  */
 export function dispatchSection(ctx) {
   const D = derive(ctx);
   return {
-    settings: [systemCard(ctx, D), reserveCard(ctx, D), scheduleCard(ctx, D), carryCard(ctx, D), maxDailyCard(ctx, D)],
+    system: systemCard(ctx, D),
+    settings: [reserveCard(ctx, D), scheduleCard(ctx, D), carryCard(ctx, D), maxDailyCard(ctx, D)],
     dispatch: dispatchCards(ctx, D),
-    targets: targetsCard(ctx, D),
     cut: avgCut(D.holds, D.months),
     D,
   };
+}
+
+/** One line naming the dispatch options in force, for the collapsed settings summary. */
+export function settingsSummary(site) {
+  const o = H.dispatchOptionsOf(site);
+  const parts = [o.sched ? `discharge ${hhmm(+o.sched.disStart)}–${hhmm(+o.sched.disEnd)}` : 'automatic dispatch'];
+  parts.push(o.reserve > 0 ? `${Math.round(o.reserve * 1000) / 10}% reserve` : 'no reserve');
+  if (o.carry) parts.push('charge carried across days');
+  if (o.maxDaily) parts.push('deeper on lighter days');
+  return parts.join(' · ');
 }
 
 // ============================================================================================
@@ -258,7 +252,7 @@ function scheduleCard(ctx, D) {
       const need = D.u.usableKwh - H.reserveFloorKwh(D.u);
       if (refill < need - 0.5) kids.push(h('div', { class: 'check-warn' }, '⚠ ', h('b', {}, 'Charge window may not fully refill the battery'), ` (≈${num(refill)} kWh storable in ${num(H.winLenHrs(raw.chgStart, raw.chgEnd), 1)} h at ${num(D.u.chargeKw || D.u.kw)} kW vs ${num(need, 1)} kWh ${D.opt.reserve > 0 ? 'that can be discharged (usable minus the reserve)' : 'usable'}). The model assumes each day starts full — widen the window or expect shallower real-world holds.`));
     }
-    kids.push(h('p', { class: 'small muted' }, 'The schedule applies to the sustainable holds and the dispatch charts. The demand-charge dollars on this tab assume automatic dispatch.'));
+    kids.push(h('p', { class: 'small muted' }, ctx.billMode ? 'The schedule applies to the sustainable holds, the dispatch charts and the bill-based savings.' : 'The schedule applies to the sustainable holds and the dispatch charts. Dollars valued from the tariff assume automatic dispatch; enter the customer’s bills to value the schedule too.'));
   }
   return opt('Dispatch schedule (optional)', { on: !!sc, status: sc ? `${hhmm(+sc.disStart)}–${hhmm(+sc.disEnd)} active` : 'automatic', children: kids });
 }
@@ -293,7 +287,7 @@ function carryCard(ctx, D) {
     }
   } else {
     kids.push(h('p', { class: 'small ink2' }, 'Each day’s ending charge now carries into the next day instead of resetting to full. ', exclusive));
-    kids.push(h('p', { class: 'small muted' }, 'Carry applies to the sustainable holds and dispatch charts. The demand-charge dollars on this tab assume each day starts full.'));
+    kids.push(h('p', { class: 'small muted' }, ctx.billMode ? 'Carry applies to the sustainable holds, the dispatch charts and the bill-based savings.' : 'Carry applies to the sustainable holds and dispatch charts. Dollars valued from the tariff assume each day starts full; enter the customer’s bills to value carry too.'));
   }
   return opt('Carry battery charge across days (optional)', { on, status: on ? 'on' : 'off', children: kids });
 }
@@ -331,7 +325,7 @@ function dayOptionsOf(ctx, D, m, target) {
 
 function dispatchCards(ctx, D) {
   const { ui, a, r } = ctx;
-  if (!D.months.length) return [h('div', { class: 'card empty' }, 'No peak data to dispatch against. Load a meter interval file (Interval data tab), or enter the site’s peak demand.')];
+  if (!D.months.length) return [h('div', { class: 'card empty' }, 'No peak data to dispatch against. Load a meter interval file (Load data tab), or enter the site’s peak demand.')];
   const m = D.months.includes(ui.month) ? ui.month : D.defaultMonth;
   ui.month = m;
   const x = D.holds[m];
@@ -428,20 +422,12 @@ function dispatchCards(ctx, D) {
   const tile = (label, value, unit, sub, cls = '') => h('div', { class: `dtile ${cls}` }, h('div', { class: 'lab' }, label), h('div', { class: 'val' }, value, unit ? h('span', { class: 'u' }, ` ${unit}`) : null), sub ? h('div', { class: 'sub' }, sub) : null);
   const atFloor = sim.floor > 0 && sim.minSOC <= sim.floor + 0.05;
 
-  const viewSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Dispatch view' },
-    [['workbench', 'Workbench target (kW)'], ['plan', 'Planned target (savings basis)']].map(([v, l]) => h('button', { type: 'button', 'aria-pressed': ui.basis === v ? 'true' : 'false', onclick: () => { ui.basis = v; ctx.rerender(); } }, l)));
   const dayMonthSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Single day or monthly totals' },
     [['day', 'Single day'], ['month', 'Monthly totals']].map(([v, l]) => h('button', { type: 'button', 'aria-pressed': ui.view === v ? 'true' : 'false', onclick: () => { ui.view = v; ctx.rerender(); } }, l)));
 
   const cards = [];
-  if (ui.basis === 'plan') {
-    cards.push(h('div', { class: 'card' }, h('div', { class: 'card-head' }, h('h2', {}, 'Daily dispatch — by month')), h('div', { class: 'btn-row' }, viewSeg), h('p', { class: 'small ink2', style: { marginTop: '8px' } }, 'The target the demand-charge dollars assume: the sustainable hold after the capture factor and any DR event days.')));
-    cards.push(...ctx.planView(m, (mm) => { ui.month = mm; ctx.rerender(); }, D.months));
-    return cards;
-  }
-
   const head = h('div', { class: 'card-head' }, h('h2', {}, 'Daily dispatch — by month'), h('span', { class: `badge ${sim.held ? 'ok' : 'caution'}` }, sim.held ? 'Holds target' : 'Undersized'));
-  const body = [head, h('div', { class: 'btn-row', style: { marginBottom: '10px' } }, viewSeg, dayMonthSeg)];
+  const body = [head, h('div', { class: 'btn-row', style: { marginBottom: '10px' } }, dayMonthSeg)];
   body.push(h('div', { class: 'dgrid' },
     h('div', { class: 'field' }, h('label', {}, 'Billing month'), monthSel),
     ui.view === 'month' ? null : h('div', { class: 'field' }, h('label', {}, 'Day shown on chart'), daySel),
@@ -480,7 +466,7 @@ function dispatchCards(ctx, D) {
   return cards;
 }
 
-function setTarget(ctx, m, v) {
+export function setTarget(ctx, m, v) {
   const cur = { ...(ctx.site.dispatch?.month_targets || {}) };
   if (v === '' || v == null || Number.isNaN(+v)) delete cur[m];
   else cur[m] = Math.max(0, +v);
@@ -552,42 +538,4 @@ function auditTable(ctx, sim, dayKey, m, D, target, days) {
     h('div', { class: 'audit-scroll' }, h('table', { class: 'tbl' },
       h('thead', {}, h('tr', {}, ['Time', 'Load kW', 'Battery kW', 'Grid kW', 'Charge kWh'].map((t, i) => h('th', { class: i ? 'num' : '' }, t)))),
       h('tbody', {}, ...rows))));
-}
-
-// ============================================================================================
-// Per-month peak targets
-// ============================================================================================
-
-function targetsCard(ctx, D) {
-  const { ui, r } = ctx;
-  const md = r.monthDetail || {};
-  const m0 = D.months.includes(ui.month) ? ui.month : D.defaultMonth;
-  const primary = (dm) => dm.comps.find((c) => !c.window) || dm.comps.reduce((b, c) => (c.usd > b.usd ? c : b), dm.comps[0]);
-  const rows = Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
-    const x = D.holds[m];
-    const dm = md[m];
-    if (!x || x.achievable == null) return h('tr', {}, h('td', {}, MON[m - 1]), h('td', { class: 'muted', colspan: 5 }, 'no data'));
-    const ov = D.opt.targets[m] != null && Number.isFinite(+D.opt.targets[m]);
-    const t = D.targetOf(m);
-    const below = t < x.achievable - 0.05;
-    return h('tr', { class: `click${m === m0 ? ' sel' : ''}${below ? ' below' : ov ? ' ov' : ''}`, onclick: () => { ui.month = m; ui.day = null; ctx.rerender(); } },
-      h('td', {}, MON[m - 1], m === m0 ? ' ◀' : '', below ? h('span', { class: 'bad-text', title: 'not sustainable' }, ' ⚠') : null, dm?.eventLimited ? h('span', { class: 'badge caution', style: { marginLeft: '6px' }, title: 'DR event days take the battery’s energy, so the planned demand savings are lower than the hold implies' }, 'DR events') : null),
-      h('td', { class: 'num' }, num(x.peak, 1)),
-      h('td', { class: 'num' }, num(x.achievable, 1)),
-      h('td', { class: 'num' }, h('input', { type: 'number', min: 0, step: 1, class: `tgt${below ? ' below' : ''}`, value: Math.round(t * 10) / 10, 'aria-label': `Target for ${MON[m - 1]} (kW)`, title: ov ? 'manual override' : '', onclick: (e) => e.stopPropagation(), onchange: (e) => setTarget(ctx, m, e.target.value) })),
-      h('td', { class: 'num' }, `${num(Math.max(0, x.peak - t), 1)} kW`),
-      h('td', { class: 'num' }, dm ? usd(dm.usd) : h('span', { class: 'muted' }, 'no demand charge')));
-  });
-  const demandUsd = D.months.reduce((n, m) => n + (md[m]?.usd || 0), 0);
-  const basis = D.holds[D.months[0]]?.basis === 'interval' ? 'Each target is the lowest level the battery holds on every day of that month (full interval file).' : 'Targets are design-day estimates; load a meter interval file to verify across all days.';
-  const anyOv = Object.keys(D.opt.targets).length > 0;
-  return h('div', { class: 'card' },
-    h('div', { class: 'card-head' }, h('h2', {}, 'Per-month peak targets & savings'), anyOv ? h('button', { class: 'btn small', type: 'button', onclick: () => ctx.setDispatch({ month_targets: {} }) }, 'Reset all to auto') : h('span', { class: 'small muted' }, 'Click a row to chart that month')),
-    h('p', { class: 'small ink2' }, `${basis} Edit a target to override it; push one below the sustainable hold (turns red) to find the make-or-break point. `,
-      D.opt.sched ? h('b', {}, `Dispatch schedule active (${hhmm(+D.opt.sched.disStart)}–${hhmm(+D.opt.sched.disEnd)}): holds reflect it. `) : null,
-      'Demand savings are the Atlas valuation of the selected rate’s charges at the planned target, so they do not move with a target typed here.'),
-    h('div', { class: 'table-wrap' }, h('table', { class: 'pm-table' },
-      h('thead', {}, h('tr', {}, ['Month', 'Peak', 'Sustainable hold', 'Target (kW)', 'kW reduction', 'Demand savings'].map((t, i) => h('th', { class: i ? 'num' : '' }, t)))),
-      h('tbody', {}, ...rows),
-      h('tfoot', {}, h('tr', {}, h('td', {}, h('b', {}, 'Year')), h('td', {}), h('td', { class: 'num small muted' }, `avg cut ${Math.round((avgCut(D.holds, D.months) || 0) * 100)}%`), h('td', {}), h('td', {}), h('td', { class: 'num' }, h('b', {}, usd(demandUsd))))))));
 }

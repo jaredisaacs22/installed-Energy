@@ -87,7 +87,7 @@ export function demandChargeStreams(site, config, tariff, a, profile, events = [
   const override = site.shave_kw_override?.[config.id];
   const ratchetPeakMonths = a.ratchet_peak_months || [6, 7, 8, 9];
   const rte = rteOf(config, a);
-  // Reserve capacity (Savings tab): the share of usable kWh held back is never discharged for peak shaving,
+  // Reserve capacity (Demand savings tab): the share of usable kWh held back is never discharged for peak shaving,
   // which is the same as shaving with a battery smaller by that share (the workbench's own reasoning).
   const keep = 1 - dispatchOptionsOf(site).reserve;
   const battery = { kw: config.kw, chargeKw: chargeKwOf(config), usableKwh: usableKwh(config, a) * keep, rte };
