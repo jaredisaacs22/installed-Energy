@@ -124,7 +124,7 @@ export function renderPortfolio(root, data) {
         h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Sites'), h('div', { class: 'value' }, num(ok.length))),
         h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Portfolio battery (recommended)'), h('div', { class: 'value' }, `${num(totalKw / 1000, 2)} MW`), h('div', { class: 'sub' }, `${num(totalKwh / 1000, 2)} MWh — your VPP capacity`)),
         h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Annual value (base)'), h('div', { class: 'value' }, usd(totalVal, { compact: true }))),
-        h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Markets'), h('div', { class: 'value', style: { fontSize: '16px' } }, [...new Set(ok.map((a) => a.site.jurisdiction))].join(', '))),
+        h('div', { class: 'kpi' }, h('div', { class: 'label' }, 'Markets'), h('div', { class: 'value' }, [...new Set(ok.map((a) => a.site.jurisdiction))].join(', '))),
       ),
       h('div', { class: 'card' }, h('div', { class: 'table-wrap' }, h('table', {},
         h('thead', {}, h('tr', {}, ['Rank', 'Site', 'Market / utility', 'Peak kW', 'Recommended', 'Annual value', 'Upfront', 'Payback', 'Score', 'Site check', ''].map((t, i) => h('th', { class: [3, 5, 6, 7].includes(i) ? 'num' : '' }, t)))),
