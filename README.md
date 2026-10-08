@@ -35,7 +35,8 @@ For any site it:
 4. **Portfolio:** save sites or import a CSV ([template](templates/site_import_template.csv); the optional `demand_rate_usd_per_kw` and `ratchet_pct` columns price demand from the bills) to rank install locations by demand savings, savings per kWh of battery, peak cut or site score, and export the whole portfolio.
 5. **More → Workbench:** the Site Analysis Workbench (peak-demand shaving model) runs inside the site, unchanged except that embedded fonts and unit prices were removed because the repository is public. Save a site there, then open it in the Site screener. See [docs/WORKBENCH.md](docs/WORKBENCH.md).
 6. **More → Data health:** see which rates are verified, which are missing, which values are low-confidence, and the verification log of every change and its evidence.
-7. **Settings:** enter your **actual installed cost** per product to add payback and NPV (the shipped $600/kWh is a placeholder, so costs are ignored until you do), and product footprints to enable the space check. These are saved in your browser.
+7. **More → Videos:** short films, kept out of the main navigation. *The Peak* (`assets/videos/the-peak.html`) plays on the page with its own controls, captions and chapters; **Open full screen** opens the film by itself.
+8. **Settings:** enter your **actual installed cost** per product to add payback and NPV (the shipped $600/kWh is a placeholder, so costs are ignored until you do), and product footprints to enable the space check. These are saved in your browser.
 
 ## Deploying to GitHub Pages
 
