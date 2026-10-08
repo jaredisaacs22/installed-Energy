@@ -106,6 +106,10 @@ nav.tabs a[aria-current='page'] { color: #fff; border-bottom-color: #fff; }
 nav.tabs .nav-menu a { display: block; min-height: 0; padding: 9px 12px; border: 0; border-radius: 7px; color: var(--ink); font-weight: 600; }
 nav.tabs .nav-menu a:hover { background: var(--surface-2); color: var(--green-dark); }
 nav.tabs .nav-menu a[aria-current='page'] { color: var(--green-dark); background: var(--green-tint-2); }
+/* Videos: a quiet group at the bottom of the More menu */
+.nav-menu-label { margin: 6px 6px 0; padding: 8px 6px 2px; border-top: 1px solid var(--line); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+nav.tabs .nav-menu a.nav-video { font-weight: 500; color: var(--ink-2); font-size: 13px; }
+.nav-video .nv-short { display: none; }
 .topbar .spacer { flex: 1; }
 .signed-in { display: inline-flex; align-items: center; gap: 10px; color: rgba(255, 255, 255, 0.85); font-size: 12px; }
 @media (max-width: 1799px) { .signed-in .email { display: none; } }
@@ -123,6 +127,10 @@ nav.tabs .nav-menu a[aria-current='page'] { color: var(--green-dark); background
   nav.tabs .nav-menu a { display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 0; border-bottom: 4px solid transparent; color: rgba(255, 255, 255, 0.86); }
   nav.tabs .nav-menu a:hover { background: rgba(255, 255, 255, 0.07); color: #fff; }
   nav.tabs .nav-menu a[aria-current='page'] { color: #fff; background: none; border-bottom-color: #fff; }
+  .nav-menu-label { display: none; }
+  nav.tabs .nav-menu a.nav-video { color: rgba(255, 255, 255, 0.6); font-size: 12.5px; }
+  .nav-video .nv-long { display: none; }
+  .nav-video .nv-short { display: inline; }
   .signed-in .email { display: none; }
 }
 @media (max-width: 480px) {
@@ -575,3 +583,6 @@ details[open] > summary .fold-title::before { transform: rotate(90deg); }
 .steps-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 6px; }
 @media (max-width: 1000px) { .steps-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .steps-4 { grid-template-columns: 1fr; } }
+
+/* Videos page: the film runs in an iframe sized to its content */
+.video-frame { display: block; width: 100%; height: 70vh; min-height: 360px; border: 0; border-radius: var(--radius); background: #0d1422; }

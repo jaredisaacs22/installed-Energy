@@ -9,6 +9,7 @@ import { renderSettings } from './views/settings.js';
 import { renderOverview } from './views/overview.js';
 import { renderHealth } from './views/health.js';
 import { renderWorkbench } from './views/workbench.js';
+import { renderVideos } from './views/videos.js';
 import { requireSignIn, signOut } from './access.js';
 import { intervalStore } from './interval-store.js';
 
@@ -57,6 +58,7 @@ const routes = {
   overview: renderOverview,
   screener: renderScreener,
   workbench: renderWorkbench,
+  videos: renderVideos,
   health: renderHealth,
   portfolio: renderPortfolio,
   library: renderLibrary,
@@ -72,7 +74,7 @@ function parseHash() {
 }
 
 let DATA = null;
-const TITLES = { overview: 'Overview', screener: 'Site screener', workbench: 'Workbench', portfolio: 'Portfolio', library: 'Programs & tariffs', health: 'Data health', panel: 'Expert panel', method: 'Methodology', settings: 'Settings' };
+const TITLES = { overview: 'Overview', screener: 'Site screener', workbench: 'Workbench', videos: 'Videos', portfolio: 'Portfolio', library: 'Programs & tariffs', health: 'Data health', panel: 'Expert panel', method: 'Methodology', settings: 'Settings' };
 
 async function render() {
   const { route, params } = parseHash();
@@ -101,7 +103,7 @@ function initTheme() {
   storage.del('atlas.theme');
 }
 
-// "More" menu in the header: secondary pages (reference material and the standalone workbench).
+// "More" menu in the header: secondary pages (reference material, the standalone workbench, videos).
 function initNavMenu() {
   const more = document.getElementById('nav-more');
   if (!more) return;
