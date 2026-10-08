@@ -2,7 +2,9 @@
 <!-- "The Peak", a short Installed Energy film for a rural electric co-op, shown on the Atlas Videos page (#/videos).
      Added for hosting: this comment, the doctype, charset and viewport lines, and one style rule (the film's own
      .bigplay display rule overrides the hidden attribute, so the big play button stayed on screen during playback
-     and a click on it started a second, double-speed playback loop). The film below is the supplied file, unchanged. -->
+     and a click on it started a second, double-speed playback loop).
+     Edited from the supplied file: the closing chapter ("Firm power": the last line and the logo card) is cut, so
+     the film ends on "Why Sunbelt" at 1:25; and the orange accents are Sunbelt Rentals green and yellow. -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>.bigplay[hidden]{display:none}</style>
@@ -16,8 +18,9 @@
   --night:#0d1422;      /* stage ground */
   --navy:#2F3B52;       /* Sunbelt navy */
   --navy-2:#1a2337;
-  --orange:#F26C21;     /* Sunbelt orange */
-  --ember:#ff9a5c;
+  --yellow:#fed203;     /* Sunbelt Rentals yellow */
+  --green:#008545;      /* Sunbelt Rentals green */
+  --green-hi:#2fb46e;   /* the same green, lifted to read on the night stage */
   --cream:#f3eee6;
   --mist:#a9b3c6;
   --cool:#7cc4e4;       /* charging */
@@ -30,7 +33,7 @@ html,body{background:var(--night);color:var(--cream)}
 body{font-family:var(--body);padding-inline:16px;padding-block:20px 32px}
 .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.eyebrow{font-family:var(--display);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--orange)}
+.eyebrow{font-family:var(--display);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--yellow)}
 .top h1{font-family:var(--display);font-weight:700;font-size:clamp(20px,3vw,28px);margin:2px 0 0;letter-spacing:.01em;text-wrap:balance}
 .top .meta{font-size:12px;color:var(--mist)}
 
@@ -50,9 +53,9 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 .value ul{list-style:none;margin:0;padding:0;display:grid;gap:clamp(6px,1.6vw,16px)}
 .value li{display:grid;grid-template-columns:auto 1fr;gap:.7em;align-items:baseline;font-size:clamp(11px,2vw,22px);font-weight:300;line-height:1.25;opacity:0;transform:translateY(8px)}
 .value li b{font-weight:500;color:var(--cream)}
-.value li::before{content:"";width:.55em;height:.55em;background:var(--orange);display:block;transform:translateY(-.05em)}
-.stat{border-left:2px solid var(--orange);padding-left:5%;min-width:0}
-.stat .big{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,84px);line-height:.95;color:var(--orange);font-variant-numeric:tabular-nums}
+.value li::before{content:"";width:.55em;height:.55em;background:var(--yellow);display:block;transform:translateY(-.05em)}
+.stat{border-left:2px solid var(--green-hi);padding-left:5%;min-width:0}
+.stat .big{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,84px);line-height:.95;color:var(--yellow);font-variant-numeric:tabular-nums}
 .stat .big.c{color:var(--cream)}
 .stat .lab{font-size:clamp(9px,1.4vw,15px);color:var(--mist);margin:.2em 0 .6em}
 .stat .src{font-size:clamp(7px,1vw,11px);color:var(--mist);opacity:.8;font-family:var(--mono)}
@@ -60,16 +63,10 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 .why .in{display:grid;grid-template-columns:repeat(3,1fr);gap:4%;text-align:left}
 .why .col{border-top:1px solid rgba(243,238,230,.25);padding-top:.8em;opacity:0;min-width:0}
 .why .n{font-family:var(--display);font-weight:700;font-size:clamp(26px,6.5vw,78px);line-height:1;color:var(--cream);font-variant-numeric:tabular-nums}
-.why .n.o{color:var(--orange)}
+.why .n.o{color:var(--yellow)}
 .why .d{font-size:clamp(9px,1.5vw,16px);color:var(--mist);margin-top:.4em;line-height:1.3}
 .why .foot{grid-column:1/-1;font-family:var(--mono);font-size:clamp(7px,1vw,11px);color:var(--mist);opacity:.75}
 
-.logo{flex-direction:column;text-align:center}
-.logo .wm{font-family:var(--display);font-weight:700;letter-spacing:.06em;font-size:clamp(22px,5.6vw,64px);line-height:1}
-.logo .wm span{color:var(--orange)}
-.logo .rule{width:min(40%,280px);height:2px;background:var(--orange);margin:1.1em auto}
-.logo .ie{font-family:var(--display);font-weight:400;letter-spacing:.22em;text-transform:uppercase;font-size:clamp(11px,2vw,22px)}
-.logo .tag{font-weight:300;font-style:italic;color:var(--mist);font-size:clamp(10px,1.7vw,18px);margin-top:.7em}
 
 .film{position:relative}
 .cap{position:absolute;left:0;right:0;bottom:7%;display:flex;justify-content:center;padding-inline:8%;pointer-events:none}
@@ -79,13 +76,13 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 .value li em{font-style:normal}
 
 .bigplay{position:absolute;inset:0;margin:auto;width:76px;height:76px;border-radius:50%;border:1px solid rgba(243,238,230,.5);background:rgba(13,20,34,.55);color:var(--cream);display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(4px)}
-.bigplay:hover{border-color:var(--orange)}
+.bigplay:hover{border-color:var(--yellow)}
 .bigplay svg{width:26px;height:26px;margin-left:4px}
 
 .transport{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .btn{appearance:none;border:1px solid rgba(243,238,230,.22);background:var(--navy-2);color:var(--cream);font:500 13px var(--body);padding:8px 12px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:36px}
-.btn:hover{border-color:var(--orange)}
-.btn:focus-visible,.chap:focus-visible,input[type=range]:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.btn:hover{border-color:var(--yellow)}
+.btn:focus-visible,.chap:focus-visible,input[type=range]:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .btn[aria-pressed="false"]{color:var(--mist)}
 .btn svg{width:14px;height:14px}
 .time{font-family:var(--mono);font-size:12px;color:var(--mist);font-variant-numeric:tabular-nums;min-width:86px}
@@ -93,16 +90,16 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 .scrub input{width:100%;appearance:none;-webkit-appearance:none;background:transparent;height:36px;margin:0;position:relative;z-index:2;cursor:pointer}
 .scrub input::-webkit-slider-runnable-track{height:4px;background:transparent}
 .scrub input::-moz-range-track{height:4px;background:transparent}
-.scrub input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--orange);margin-top:-5px;border:2px solid var(--night)}
-.scrub input::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--orange);border:2px solid var(--night)}
+.scrub input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--yellow);margin-top:-5px;border:2px solid var(--night)}
+.scrub input::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--yellow);border:2px solid var(--night)}
 .track{position:absolute;left:0;right:0;top:50%;height:4px;transform:translateY(-50%);background:rgba(243,238,230,.14);border-radius:2px;overflow:hidden}
-.track i{position:absolute;left:0;top:0;bottom:0;background:var(--orange);width:0}
+.track i{position:absolute;left:0;top:0;bottom:0;background:var(--yellow);width:0}
 .track b{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--night)}
 
-.chapters{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.chapters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .chap{appearance:none;text-align:left;border:0;border-top:2px solid rgba(243,238,230,.15);background:transparent;color:var(--mist);padding:8px 2px 4px;cursor:pointer;font:400 12px/1.3 var(--body);min-width:0}
 .chap .k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;opacity:.8}
-.chap.on{border-top-color:var(--orange);color:var(--cream)}
+.chap.on{border-top-color:var(--yellow);color:var(--cream)}
 .chap:hover{color:var(--cream)}
 .note{font-size:12px;color:var(--mist);line-height:1.5;max-width:75ch}
 
@@ -112,7 +109,7 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
   .value li em,.why .long{display:none}
   .value li{font-size:12px}
   .why .d{font-size:10px}
-  .chapters{grid-template-columns:repeat(7,minmax(92px,1fr));overflow-x:auto;padding-bottom:4px}
+  .chapters{grid-template-columns:repeat(6,minmax(92px,1fr));overflow-x:auto;padding-bottom:4px}
   .value .in{grid-template-columns:1fr 1fr}
   .ov{padding:6% 5% 7%}
   .bigplay{width:56px;height:56px}
@@ -126,7 +123,7 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
       <div class="eyebrow">Sunbelt Rentals · Installed Energy</div>
       <h1>The Peak: a short film for the co-op</h1>
     </div>
-    <div class="meta">1 min 34 s · South Central Indiana · 100 MW data center</div>
+    <div class="meta">1 min 25 s · South Central Indiana · 100 MW data center</div>
   </header>
 
   <div class="film">
@@ -159,13 +156,6 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
       <div class="foot">Sunbelt Rentals, fiscal year ended April 30, 2026.</div>
     </div></div>
 
-    <div class="ov logo" id="ovLogo"><div class="in">
-      <div class="wm">SUNBELT <span>RENTALS</span></div>
-      <div class="rule"></div>
-      <div class="ie">Installed Energy</div>
-      <div class="tag">Say yes to the load. Skip the overbuild.</div>
-    </div></div>
-
     <div class="bars t"></div><div class="bars b"></div>
     <button class="bigplay" id="bigplay" aria-label="Play film" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l15 8-15 8z"/></svg></button>
   </div>
@@ -174,8 +164,8 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 
   <div class="transport">
     <button class="btn" id="play" aria-label="Pause"><svg id="pIco" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg><span id="pLab">Pause</span></button>
-    <div class="scrub"><div class="track"><i id="fill"></i></div><input id="scrub" type="range" min="0" max="94" step="0.05" value="0" aria-label="Seek"></div>
-    <span class="time" id="time">0:00 / 1:34</span>
+    <div class="scrub"><div class="track"><i id="fill"></i></div><input id="scrub" type="range" min="0" max="85" step="0.05" value="0" aria-label="Seek"></div>
+    <span class="time" id="time">0:00 / 1:25</span>
     <button class="btn" id="cc" aria-pressed="true">CC</button>
     <button class="btn" id="restart" aria-label="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
   </div>
@@ -185,9 +175,9 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 
 <script>
 (()=>{
-const DUR=94, W=1600, H=900;
-const C={night:'#0d1422',navy:'#2F3B52',orange:'#F26C21',ember:'#ff9a5c',cream:'#f3eee6',mist:'#a9b3c6',cool:'#7cc4e4',red:'#ff4b2e'};
-const chapters=[[0,'The night shift'],[12,'A very large neighbor'],[29,'A third option'],[43,'A day on the grid'],[59,'What it adds up to'],[73,'Why Sunbelt'],[85,'Firm power']];
+const DUR=85, W=1600, H=900;
+const C={night:'#0d1422',navy:'#2F3B52',yellow:'#fed203',green:'#008545',greenHi:'#2fb46e',cream:'#f3eee6',mist:'#a9b3c6',cool:'#7cc4e4',red:'#ff4b2e'};
+const chapters=[[0,'The night shift'],[12,'A very large neighbor'],[29,'A third option'],[43,'A day on the grid'],[59,'What it adds up to'],[73,'Why Sunbelt']];
 const caps=[
  [1,"Night in South Central Indiana. Porch lights. Grain dryers. A few thousand thermostats, mostly asleep."],
  [5.5,"The co-op that serves them has done this for generations. Quietly. Reliably."],
@@ -208,11 +198,9 @@ const caps=[
  [67.5,"In one published Texas study, 81 megawatts of well-placed storage resolved 100 megawatts of new load."],
  [73.5,"Why Sunbelt?"],
  [75.5,"More than sixteen hundred locations. A nineteen-billion-dollar fleet. Crews who already know the back roads."],
- [80.5,"Flexible terms. Scale up when the next big load calls. Scale back if it doesn't."],
- [85.5,"The grid has always run on planning. Now it can run on a little stored patience, too."],
- [90.5,""]
+ [80.5,"Flexible terms. Scale up when the next big load calls. Scale back if it doesn't."]
 ];
-const camK=[[0,-260,-30,1.28],[9,-170,-20,1.18],[14,250,-40,1.12],[27,140,0,1.02],[31,40,105,1.18],[41,90,115,1.24],[44,0,0,1.04],[73,0,-10,1.0],[85,0,-40,1.02],[94,0,-70,1.08]];
+const camK=[[0,-260,-30,1.28],[9,-170,-20,1.18],[14,250,-40,1.12],[27,140,0,1.02],[31,40,105,1.18],[41,90,115,1.24],[44,0,0,1.04],[73,0,-10,1.0],[85,0,-40,1.02]];
 
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),stage=document.getElementById('stage');
 const $=id=>document.getElementById(id);
@@ -236,7 +224,7 @@ function camAt(t){let i=0;while(i<camK.length-2&&t>camK[i+1][0])i++;const a=camK
 function layer(p,fn){ctx.save();const z=1+(cam.z-1)*p;ctx.translate(W/2,H/2);ctx.scale(z,z);ctx.translate(-W/2-cam.x*p,-H/2-cam.y*p);fn();ctx.restore()}
 
 function stressAt(t){return Math.max(es(t,8.5,11.5)*(1-es(t,38,42.5))*(t<12?1:.85), 0)}
-function dawn(t){return es(t,84,93)}
+function dawn(t){return 0} /* the sunrise (84-93 s) belonged to the closing chapter, which is cut */
 
 function drawSky(t){
   const d=dawn(t);
@@ -259,7 +247,7 @@ function drawFar(t){
   const d=dawn(t);
   ctx.fillStyle=mix('#141d31','#4a4a5e',d);ctx.beginPath();ctx.moveTo(-400,H);
   for(let x=-400;x<=W+400;x+=20)ctx.lineTo(x,hill(x,560,22,.004,1));ctx.lineTo(W+400,H);ctx.fill();
-  for(const l of town){const y=hill(l.x,560,22,.004,1)+4+l.s*10;const a=(.5+.5*Math.sin(t*.7+l.o))*(1-d*.8);ctx.fillStyle=`rgba(255,190,120,${.35*a})`;ctx.beginPath();ctx.arc(l.x,y,1.4,0,7);ctx.fill()}
+  for(const l of town){const y=hill(l.x,560,22,.004,1)+4+l.s*10;const a=(.5+.5*Math.sin(t*.7+l.o))*(1-d*.8);ctx.fillStyle=`rgba(255,214,120,${.35*a})`;ctx.beginPath();ctx.arc(l.x,y,1.4,0,7);ctx.fill()}
 }
 
 function catenary(x1,y1,x2,y2,s){return u=>[lerp(x1,x2,u),lerp(y1,y2,u)+s*4*u*(1-u)]}
@@ -281,8 +269,8 @@ function drawMid(t){
   for(const h of houses){const y=gy(h.x+40)+4;ctx.save();ctx.translate(h.x,y);ctx.scale(h.s,h.s);
     ctx.fillStyle=mix('#0b111e','#2e2c38',d);ctx.fillRect(0,-56,90,56);ctx.beginPath();ctx.moveTo(-8,-56);ctx.lineTo(45,-92);ctx.lineTo(98,-56);ctx.fill();ctx.fillRect(110,-80,26,80);ctx.beginPath();ctx.arc(123,-80,13,Math.PI,0);ctx.fill();
     const fl=.75+.25*Math.sin(t*2.1+h.x);const lit=1-st*.35*(Math.sin(t*9+h.x)>.6?1:0);
-    ctx.fillStyle=`rgba(255,184,110,${fl*lit*(1-d*.7)})`;ctx.fillRect(14,-40,16,16);ctx.fillRect(58,-40,16,16);
-    ctx.fillStyle=`rgba(255,184,110,${.12*fl*(1-d)})`;ctx.beginPath();ctx.arc(30,-30,40,0,7);ctx.fill();
+    ctx.fillStyle=`rgba(255,214,120,${fl*lit*(1-d*.7)})`;ctx.fillRect(14,-40,16,16);ctx.fillRect(58,-40,16,16);
+    ctx.fillStyle=`rgba(255,214,120,${.12*fl*(1-d)})`;ctx.beginPath();ctx.arc(30,-30,40,0,7);ctx.fill();
     // person in window, first house
     if(h.x===300){ctx.fillStyle='rgba(20,14,10,.85)';ctx.beginPath();ctx.arc(66,-34,3.4,0,7);ctx.fill();ctx.fillRect(62.5,-31,7,7)}
     ctx.restore()}
@@ -291,13 +279,13 @@ function drawMid(t){
   for(const x of towers){const y=gy(x)+2;ctx.strokeStyle=mix('#2a3550','#5a5666',d);ctx.lineWidth=2;ctx.beginPath();
     ctx.moveTo(x-18,y);ctx.lineTo(x-4,y-150);ctx.lineTo(x+4,y-150);ctx.lineTo(x+18,y);ctx.moveTo(x-30,y-130);ctx.lineTo(x+30,y-130);ctx.moveTo(x-22,y-105);ctx.lineTo(x+22,y-105);
     for(let k=0;k<5;k++){const yy=y-k*26;ctx.moveTo(x-18+k*2.8,yy);ctx.lineTo(x+18-(k+1)*2.8,yy-26)}ctx.stroke();tops.push([x,y-130])}
-  const lc=st>0?mix('#5d6a88','#ff6b3d',st):'#5d6a88';
+  const lc=st>0?mix('#5d6a88','#ff4b2e',st):'#5d6a88';
   for(const off of[-28,28]){ctx.strokeStyle=lc;ctx.globalAlpha=.55;ctx.lineWidth=1.2;ctx.beginPath();
     for(let i=0;i<tops.length-1;i++){const f=catenary(tops[i][0]+off,tops[i][1],tops[i+1][0]+off,tops[i+1][1],26);for(let u=0;u<=1.001;u+=.05){const[p,q]=f(u);i===0&&u===0?ctx.moveTo(p,q):ctx.lineTo(p,q)}}ctx.stroke();ctx.globalAlpha=1}
   // energy pulses
   const n=36,spd=.035+st*.06;
   for(let k=0;k<n;k++){const u=(((k/n)+Math.max(0,t)*spd)%1+1)%1;const seg_=u*(tops.length-1);const i=Math.floor(seg_);if(i>=tops.length-1)continue;const f=catenary(tops[i][0]+28,tops[i][1],tops[i+1][0]+28,tops[i+1][1],26);const[p,q]=f(seg_-i);
-    const col=st>.3?`rgba(255,90,50,${.9})`:'rgba(255,160,90,.9)';glow(p,q,2.2,col,12)}
+    const col=st>.3?`rgba(255,75,46,${.9})`:'rgba(254,210,3,.9)';glow(p,q,2.2,col,12)}
   // stress shimmer near data center
   if(st>.2&&dc>0){ctx.save();ctx.globalAlpha=st*.35*(.6+.4*Math.sin(t*6));const g=ctx.createRadialGradient(1300,520,10,1300,520,260);g.addColorStop(0,'rgba(255,75,46,.5)');g.addColorStop(1,'rgba(255,75,46,0)');ctx.fillStyle=g;ctx.fillRect(1000,280,600,480);ctx.restore()}
 }
@@ -327,8 +315,8 @@ function drawNear(t){
   const installed=seg(t,36.5,40);
   const mode=batteryMode(t);
   // cables
-  if(installed>0){ctx.strokeStyle=`rgba(242,108,33,${.5*installed})`;ctx.lineWidth=2;ctx.beginPath();for(const b of bess){ctx.moveTo(b.x+10,GY-2);ctx.quadraticCurveTo((b.x+sx+160)/2,GY+10,sx+160,GY-10)}ctx.stroke();
-    if(mode.k!==0){for(const b of bess){for(let k=0;k<4;k++){let u=((k/4)+t*.5)%1;if(mode.k<0)u=1-u;const x0=b.x+10,x1=sx+160;const mx=(x0+x1)/2;const p=(1-u)*(1-u)*x0+2*(1-u)*u*mx+u*u*x1;const q=(1-u)*(1-u)*(GY-2)+2*(1-u)*u*(GY+10)+u*u*(GY-10);glow(p,q,2,mode.k>0?'rgba(255,150,80,.95)':'rgba(124,196,228,.95)',10)}}}}
+  if(installed>0){ctx.strokeStyle=`rgba(47,180,110,${.6*installed})`;ctx.lineWidth=2;ctx.beginPath();for(const b of bess){ctx.moveTo(b.x+10,GY-2);ctx.quadraticCurveTo((b.x+sx+160)/2,GY+10,sx+160,GY-10)}ctx.stroke();
+    if(mode.k!==0){for(const b of bess){for(let k=0;k<4;k++){let u=((k/4)+t*.5)%1;if(mode.k<0)u=1-u;const x0=b.x+10,x1=sx+160;const mx=(x0+x1)/2;const p=(1-u)*(1-u)*x0+2*(1-u)*u*mx+u*u*x1;const q=(1-u)*(1-u)*(GY-2)+2*(1-u)*u*(GY+10)+u*u*(GY-10);glow(p,q,2,mode.k>0?'rgba(254,210,3,.95)':'rgba(124,196,228,.95)',10)}}}}
   // containers on ground
   bess.forEach((b,i)=>{const ts=truckState(i,t);if(ts.drop>=1)container(b.x,GY,1,t,mode,installed)});
   // trucks
@@ -342,12 +330,12 @@ function drawNear(t){
 function batteryMode(t){if(t<40)return{k:0};if(t<44)return{k:0};if(t>=46&&t<50.5)return{k:-1};if(t>=50.5&&t<56)return{k:1};if(t>=56)return{k:(Math.floor(t/4)%2?1:-1)};return{k:0}}
 function container(x,y,onGround,t,mode,inst){
   const w=100,h=46;ctx.save();ctx.translate(x,y);
-  const g=ctx.createLinearGradient(0,-h,0,0);g.addColorStop(0,'#f47a33');g.addColorStop(1,'#b8501a');ctx.fillStyle=g;ctx.fillRect(-w/2,-h,w,h);
+  const g=ctx.createLinearGradient(0,-h,0,0);g.addColorStop(0,'#0a9a52');g.addColorStop(1,'#00653e');ctx.fillStyle=g;ctx.fillRect(-w/2,-h,w,h);
   ctx.fillStyle='rgba(0,0,0,.18)';for(let i=0;i<9;i++)ctx.fillRect(-w/2+6+i*10.5,-h+4,3,h-8);
-  ctx.fillStyle='#2F3B52';ctx.fillRect(-w/2,-h-4,w,5);ctx.fillRect(-w/2+8,-h+8,26,12);
-  ctx.fillStyle='rgba(243,238,230,.9)';ctx.font='700 7px "Roboto Condensed",Arial';ctx.fillText('SUNBELT',-w/2+10,-h+17);
-  if(onGround&&inst>0){const col=mode.k>0?'rgba(255,170,90,1)':mode.k<0?'rgba(124,196,228,1)':'rgba(120,230,140,1)';const a=.6+.4*Math.sin(t*4+x);glow(w/2-10,-h+12,2.4,col.replace(',1)',`,${a*inst})`),10);
-    if(mode.k!==0){ctx.globalAlpha=.18*inst;const gg=ctx.createRadialGradient(0,-h/2,5,0,-h/2,90);gg.addColorStop(0,mode.k>0?'rgba(242,108,33,1)':'rgba(124,196,228,1)');gg.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gg;ctx.fillRect(-100,-h-60,200,140)}}
+  ctx.fillStyle='#004d2f';ctx.fillRect(-w/2,-h-4,w,5);ctx.fillStyle=C.yellow;ctx.fillRect(-w/2+8,-h+8,26,12);
+  ctx.fillStyle='#00653e';ctx.font='700 7px "Roboto Condensed",Arial';ctx.fillText('SUNBELT',-w/2+10,-h+17);
+  if(onGround&&inst>0){const col=mode.k>0?'rgba(254,210,3,1)':mode.k<0?'rgba(124,196,228,1)':'rgba(120,230,140,1)';const a=.6+.4*Math.sin(t*4+x);glow(w/2-10,-h+12,2.4,col.replace(',1)',`,${a*inst})`),10);
+    if(mode.k!==0){ctx.globalAlpha=.18*inst;const gg=ctx.createRadialGradient(0,-h/2,5,0,-h/2,90);gg.addColorStop(0,mode.k>0?'rgba(254,210,3,1)':'rgba(124,196,228,1)');gg.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gg;ctx.fillRect(-100,-h-60,200,140)}}
   ctx.restore()}
 function truck(x,y,d){ctx.save();ctx.translate(x,y);ctx.fillStyle=mix('#1d263a','#4c4856',d);ctx.fillRect(-30,-30,130,10);ctx.fillRect(100,-58,46,38);ctx.fillStyle='rgba(180,210,240,.35)';ctx.fillRect(122,-54,18,14);
   ctx.fillStyle='#05070c';for(const wx of[-10,40,124]){ctx.beginPath();ctx.arc(wx,-10,10,0,7);ctx.fill()}
@@ -357,7 +345,7 @@ function person(x,y,s,t,ph,d,hat){ctx.save();ctx.translate(x,y);ctx.scale(s,s);c
   ctx.beginPath();ctx.moveTo(-9,-34);ctx.quadraticCurveTo(-11,-52,-8,-62);ctx.lineTo(8,-62);ctx.quadraticCurveTo(11,-52,9,-34);ctx.fill();
   ctx.save();ctx.translate(-8,-60);ctx.rotate(.08+sw*.02);ctx.fillRect(-3,0,5,26);ctx.restore();ctx.save();ctx.translate(8,-60);ctx.rotate(-.1-sw*.03);ctx.fillRect(-2,0,5,26);ctx.restore();
   ctx.beginPath();ctx.arc(sw*.5,-70,7,0,7);ctx.fill();
-  if(hat){ctx.fillStyle=C.orange;ctx.beginPath();ctx.arc(sw*.5,-72,7.6,Math.PI,0);ctx.fill();ctx.fillRect(sw*.5-10,-72.5,20,2.2)}
+  if(hat){ctx.fillStyle=C.yellow;ctx.beginPath();ctx.arc(sw*.5,-72,7.6,Math.PI,0);ctx.fill();ctx.fillRect(sw*.5-10,-72.5,20,2.2)}
   // hi-vis stripe
   ctx.fillStyle='rgba(230,240,120,.55)';ctx.fillRect(-9,-50,18,2);ctx.restore()}
 function drawFore(t){const d=dawn(t);ctx.fillStyle=mix('#03050a','#16141a',d);ctx.beginPath();ctx.moveTo(-600,H);for(const g of grass){ctx.moveTo(g.x,H);ctx.lineTo(g.x+g.l*20,H-g.h-20);ctx.lineTo(g.x+5,H)}ctx.fill();ctx.fillRect(-600,H-22,W+1200,30)}
@@ -366,7 +354,7 @@ function drawFore(t){const d=dawn(t);ctx.fillStyle=mix('#03050a','#16141a',d);ct
 function drawGauge(t){const a=seg(t,1.5,3)*(1-seg(t,27,29));if(a<=0)return;const st=stressAt(t);ctx.save();ctx.globalAlpha=a;const x=70,y=90,w=300;
   ctx.font='600 15px "Roboto Condensed",Arial';ctx.fillStyle='rgba(243,238,230,.7)';ctx.fillText('CO-OP SYSTEM DEMAND',x,y);
   ctx.fillStyle='rgba(243,238,230,.12)';ctx.fillRect(x,y+12,w,8);
-  const v=clamp(.42+.52*st+.015*Math.sin(t*9)+.01*Math.sin(t*23));ctx.fillStyle=v>.8?C.red:C.orange;ctx.fillRect(x,y+12,w*v,8);
+  const v=clamp(.42+.52*st+.015*Math.sin(t*9)+.01*Math.sin(t*23));ctx.fillStyle=v>.8?C.red:C.yellow;ctx.fillRect(x,y+12,w*v,8);
   ctx.fillStyle=C.cream;ctx.fillRect(x+w*.8,y+6,2,20);ctx.font='500 12px "Roboto Mono",monospace';ctx.fillStyle='rgba(243,238,230,.65)';ctx.fillText('CONTRACTED PEAK',x+w*.8-56,y+42);
   if(v>.8){ctx.fillStyle=`rgba(255,75,46,${.6+.4*Math.sin(t*8)})`;ctx.font='700 13px "Roboto Mono",monospace';ctx.fillText('NEW PEAK',x+w+12,y+21)}
   ctx.restore()}
@@ -398,10 +386,10 @@ function drawChart(t){
   // charging
   const ca=es(t,46.5,49);if(ca>0){ctx.fillStyle=`rgba(124,196,228,${.55*ca})`;ctx.beginPath();ctx.moveTo(sx(0),sy(1+res(0)));hrs.forEach(h=>ctx.lineTo(sx(h),sy(1+res(h)+chg(h)*ca)));for(let i=hrs.length-1;i>=0;i--)ctx.lineTo(sx(hrs[i]),sy(1+res(hrs[i])));ctx.fill()}
   // total line
-  ctx.strokeStyle=C.orange;ctx.lineWidth=3;ctx.beginPath();hrs.forEach((h,i)=>{const v=1+res(h);i?ctx.lineTo(sx(h),sy(v)):ctx.moveTo(sx(h),sy(v))});ctx.stroke();
+  ctx.strokeStyle=C.yellow;ctx.lineWidth=3;ctx.beginPath();hrs.forEach((h,i)=>{const v=1+res(h);i?ctx.lineTo(sx(h),sy(v)):ctx.moveTo(sx(h),sy(v))});ctx.stroke();
   ctx.restore();
   // discharge region
-  const da=es(t,50.8,53.5);if(da>0){ctx.save();ctx.globalAlpha=a*da;ctx.fillStyle='rgba(242,108,33,.45)';ctx.beginPath();let started=false;const pts=hrs.filter(h=>1+res(h)>TH);if(pts.length){ctx.moveTo(sx(pts[0]),sy(TH));pts.forEach(h=>ctx.lineTo(sx(h),sy(1+res(h))));ctx.lineTo(sx(pts[pts.length-1]),sy(TH));ctx.fill()}
+  const da=es(t,50.8,53.5);if(da>0){ctx.save();ctx.globalAlpha=a*da;ctx.fillStyle='rgba(47,180,110,.5)';ctx.beginPath();let started=false;const pts=hrs.filter(h=>1+res(h)>TH);if(pts.length){ctx.moveTo(sx(pts[0]),sy(TH));pts.forEach(h=>ctx.lineTo(sx(h),sy(1+res(h))));ctx.lineTo(sx(pts[pts.length-1]),sy(TH));ctx.fill()}
     // net line
     ctx.strokeStyle=C.cream;ctx.lineWidth=2.4;ctx.setLineDash([]);ctx.beginPath();hrs.forEach((h,i)=>{const v=Math.min(TH,1+res(h))+chg(h);i?ctx.lineTo(sx(h),sy(v)):ctx.moveTo(sx(h),sy(v))});ctx.stroke();ctx.restore()}
   // labels
@@ -409,13 +397,13 @@ function drawChart(t){
   if(p>.2){ctx.fillStyle='rgba(200,225,255,.9)';ctx.fillText('Data center · 100 MW, around the clock',sx(.6),sy(.5)+5)}
   if(p>.6){ctx.fillStyle='rgba(243,238,230,.85)';ctx.fillText('Co-op members',sx(9.2),sy(1.2))}
   if(ca>.5){ctx.fillStyle=C.cool;ctx.fillText('Batteries charge',sx(.6),sy(1.62))}
-  if(da>.5){ctx.fillStyle=C.ember;ctx.fillText('Batteries discharge',sx(19.4),sy(1.84))}
+  if(da>.5){ctx.fillStyle=C.greenHi;ctx.fillText('Batteries discharge',sx(19.4),sy(1.84))}
   const ra=es(t,54.5,57);if(ra>0){ctx.save();ctx.globalAlpha=a*ra;const peak=1+res(18);ctx.setLineDash([6,6]);ctx.lineWidth=1.5;ctx.strokeStyle='rgba(255,75,46,.9)';ctx.beginPath();ctx.moveTo(X0,sy(peak));ctx.lineTo(X1,sy(peak));ctx.stroke();ctx.strokeStyle='rgba(243,238,230,.9)';ctx.beginPath();ctx.moveTo(X0,sy(TH));ctx.lineTo(X1,sy(TH));ctx.stroke();ctx.setLineDash([]);
     ctx.fillStyle='rgba(255,120,90,.95)';ctx.fillText('Peak without storage',sx(12.8),sy(peak)-8);ctx.fillStyle=C.cream;ctx.fillText('Peak the co-op buys for',sx(12.8),sy(TH)-8);
     const ax=sx(12.2);ctx.strokeStyle=C.cream;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(ax,sy(peak)+4);ctx.lineTo(ax,sy(TH)-4);ctx.moveTo(ax-6,sy(TH)-12);ctx.lineTo(ax,sy(TH)-4);ctx.lineTo(ax+6,sy(TH)-12);ctx.stroke();ctx.restore()}
   ctx.restore()}
 
-function dimAt(t){return Math.max(.72*seg(t,43,44.5)*(1-seg(t,58.5,59.5)),.6*seg(t,59,60.5)*(1-seg(t,84.5,86.5)),.35*seg(t,89.5,91))}
+function dimAt(t){return Math.max(.72*seg(t,43,44.5)*(1-seg(t,58.5,59.5)),.6*seg(t,59,60.5))}
 
 function render(t){
   cam=camAt(t);
@@ -433,9 +421,8 @@ function render(t){
   setO('ovValue',seg(t,59.3,60.5)*(1-seg(t,72.3,73.2)));
   [...document.querySelectorAll('#valueList li')].forEach((li,i)=>{const v=es(t,62+i*1.3,63+i*1.3);li.style.opacity=v;li.style.transform=`translateY(${(1-v)*8}px)`});
   $('valueStat').style.opacity=es(t,67.3,68.6);
-  setO('ovWhy',seg(t,73.2,74.2)*(1-seg(t,84.5,85.5)));
+  setO('ovWhy',seg(t,73.2,74.2));
   [...document.querySelectorAll('#ovWhy .col')].forEach((c,i)=>c.style.opacity=es(t,75.3+i*2.4,76.3+i*2.4));
-  setO('ovLogo',seg(t,90,91.6));
   // captions
   let c='';for(const[s,txt]of caps)if(t>=s)c=txt;
   if(c!==lastCap){lastCap=c;$('cap').textContent=c}
