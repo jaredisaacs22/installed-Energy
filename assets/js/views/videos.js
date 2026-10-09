@@ -4,7 +4,7 @@
 import { h } from '../ui.js';
 
 export const VIDEOS = [
-  { id: 'the-peak', title: 'The Peak', src: 'assets/videos/the-peak.html', about: 'A short film for a rural electric co-op: how rented, well-placed battery storage lets it say yes to a 100 MW data center without buying for the peak. 1 min 34 s, with captions and chapters.' },
+  { id: 'the-peak', title: 'The Peak', src: 'assets/videos/the-peak.html', about: 'A short film for a rural electric co-op: how rented, well-placed battery storage lets it say yes to a 100 MW data center without buying for the peak. 1 min 25 s, with captions and chapters.' },
 ];
 
 export function renderVideos(root, data, params) {
