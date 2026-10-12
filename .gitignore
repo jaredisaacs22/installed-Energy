@@ -2,3 +2,6 @@ node_modules/
 _site/
 .DS_Store
 *.log
+# Price books: only the encrypted one is committed. Keep plain price books (and the passphrase) out of the repo.
+*pricebook*.json
+!assets/workbench/pricebook.enc.json
