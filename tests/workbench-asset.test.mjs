@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 
 import { findProprietary, scrub } from '../scripts/scrub-workbench.mjs';
+import { injectAddon, readAddon, embeddedEnv } from '../scripts/workbench-addon.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
@@ -46,6 +47,25 @@ test('workbench asset: keeps the three workbench tabs and its self-test entry po
   assert.match(html, /\{id:"sizing",\s+label:"Sizing"\}/);
   assert.match(html, /\{id:"displace", label:"Energy Displacement"\}/);
   assert.match(html, /function runSelfTests\(\)\{/);
+});
+
+test('workbench asset: carries the current add-on and the committed encrypted price book', () => {
+  assert.equal(injectAddon(html, readAddon()), html, 'out of date: run node scripts/workbench-addon.mjs');
+  assert.deepEqual(embeddedEnv(html), JSON.parse(read('assets/workbench/pricebook.enc.json')));
+  for (const m of ['/* ATLAS-ADDON:BEGIN', '/* ATLAS-ADDON:END */', '/* ATLAS-ADDON-CSS:BEGIN', '/* ATLAS-ADDON-CSS:END */']) assert.equal(html.split(m).length, 2, `one ${m}`);
+  assert.ok(html.indexOf('/* ATLAS-ADDON:END */') < html.indexOf('/* ============================ Init ============================ */'), 'add-on runs before Init');
+});
+
+test('workbench asset: the locked build stays kW-only and the add-on hooks are in place', () => {
+  assert.match(html, /function modeBar\(\)\{\n  if\(!FIN\.on\)return '';/);
+  assert.match(html, /model\.tariffs\.mode="peak-shave";[^\n]*\n/, 'new sites still start in peak-shave mode');
+  assert.match(html, /finKwOnly\(\);\}   \/\* Atlas build/);
+  assert.match(html, /if\(finKwOnly\(\)\)\{try\{computeSizing\(\);\}catch\(e2\)\{\}\}/);
+  assert.match(html, /var TABS=\[\n  \{id:"interval"[^\n]*\n  \{id:"sizing"[^\n]*\n  \{id:"displace"[^\n]*\n\];/, 'only the three kW tabs until unlocked');
+  // the add-on unlocks only through the price book: no plaintext price, no key, no network
+  const addon = html.slice(html.indexOf('/* ATLAS-ADDON:BEGIN'), html.indexOf('/* ATLAS-ADDON:END */'));
+  assert.match(addon, /crypto\.subtle\.decrypt/);
+  assert.doesNotMatch(addon.replace(/var FIN_ENV=[^\n]*\n/, ''), /\b\d{5,}\b/, 'no price-sized figures in the add-on code');
 });
 
 test('workbench tab is wired into the app, nav and Pages build', () => {

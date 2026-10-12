@@ -1,6 +1,7 @@
 // Workbench: the Site Analysis Workbench (peak-demand shaving model) hosted inside the Atlas.
 // It is a self-contained page loaded in a same-origin iframe, so it runs exactly as the standalone file
-// does (own state, own save/open, own print). Fonts and unit prices were removed — see docs/WORKBENCH.md.
+// does (own state, own save/open, own print). Fonts and readable unit prices were removed; prices unlock from the
+// encrypted team price book inside the page — see docs/WORKBENCH.md.
 import { h } from '../ui.js';
 
 export const WORKBENCH_SRC = 'assets/workbench/workbench.html';
@@ -18,6 +19,6 @@ export function renderWorkbench(root) {
       ),
     ),
     h('iframe', { class: 'wb-frame', src: WORKBENCH_SRC, title: 'Site Analysis Workbench' }),
-    h('p', { class: 'small muted wb-note' }, 'Unit prices are not included in this copy, so units are ranked by savings rather than by cost. Work is saved in this browser by the workbench itself; use its Save button to keep a site file.'),
+    h('p', { class: 'small muted wb-note' }, 'Prices are kept in an encrypted team price book: use Unlock prices in the workbench’s top bar with the team passphrase to turn on costs and the Tariffs & Bills, Revenue, Deal Economics and Summary tabs. Locked, units are ranked by savings rather than by cost. Work is saved in this browser by the workbench itself; use its Save button to keep a site file.'),
   );
 }

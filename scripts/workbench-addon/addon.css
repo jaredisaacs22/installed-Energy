@@ -1,0 +1,33 @@
+/* Atlas add-on: Prices button and price-book dialog (scripts/workbench-addon/addon.js) */
+.fin-btn .fin-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--yellow);margin-right:7px;vertical-align:1px}
+.fin-modal .help-inner{max-width:740px}
+.fin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.fin-modal .btn{color:var(--green-d);border-color:var(--green);background:#fff}
+.fin-modal .btn:hover{background:var(--green-t)}
+.fin-modal .btn.solid{background:var(--green);color:#fff;border-color:var(--green)}
+.fin-modal .btn.solid:hover{background:var(--green-d);border-color:var(--green-d)}
+.fin-modal .btn:focus-visible,.fin-btn:focus-visible{outline:2px solid var(--green-dd);outline-offset:2px}
+.fin-btn:focus-visible{outline-color:var(--yellow)}
+.fin-lbl{display:block;font-weight:700;font-size:12.5px;margin:14px 0 4px}
+.fin-modal input[type=password],.fin-modal input[type=number]{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:7px 10px}
+.fin-modal input[type=password]{width:100%;max-width:380px}
+.fin-modal input[type=number]{width:130px;text-align:right}
+.fin-modal input:focus{outline:2px solid var(--green);border-color:transparent}
+.fin-modal input.bad{border-color:var(--bad);outline-color:var(--bad)}
+.fin-check{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:13px}
+.fin-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.fin-spacer{flex:1 1 auto}
+.fin-msg{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;min-height:1em}
+.fin-actions .fin-msg{margin:0}
+.fin-msg.bad{color:var(--bad)}
+.fin-scroll{overflow-x:auto;margin-top:10px}
+.fin-tbl td{vertical-align:middle}
+.fin-defaults{margin-top:14px}
+.fin-more{margin-top:18px;font-size:13px}
+.fin-more summary{cursor:pointer;color:var(--green-d);font-weight:700}
+.fin-note{margin-bottom:14px}
+@media (max-width:760px){
+  .toolbtns{flex:1 1 100%;flex-wrap:wrap;min-width:0}   /* the top-bar buttons overflowed a phone screen even before the Prices button */
+  .fin-modal .help-inner{padding:20px 16px}
+  .fin-modal input[type=number]{width:100px}
+}
